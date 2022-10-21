@@ -8,6 +8,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
+import tecnofenix.entidades.Usuario;
+import tecnofenix.interfaces.UsuarioBeanRemote;
+
 //import tecnocanarios.dao.DAOPersona;
 //import tecnocanarios.entidades.Persona;
 //import tecnocanarios.mensajes.MensajePopUp;
@@ -22,7 +26,8 @@ public class UILogin {
 	public JFrame frame;
 	private JTextField txtEmail;
 	private JTextField txtPass;
-//	private DAOPersona daoPersona;
+	private Usuario usuario;
+	EJBUsuarioRemoto ejbUsuario;
 //	MensajePopUp msj = new MensajePopUp();
 
 	/**
@@ -62,26 +67,27 @@ public class UILogin {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				if (!txtEmail.getText().equals("") && !txtPass.getText().equals("")) {
-//					Persona p = new Persona();
-//					p = DAOPersona.login(txtEmail.getText(), txtPass.getText());
-//					if (p != null) {
-//						JOptionPane.showMessageDialog(null, "Bienvenido " + p.getNombre1() + " " + p.getApellido1(),
-//								"Bienvenido", JOptionPane.INFORMATION_MESSAGE);
+				if (!txtEmail.getText().equals("") && !txtPass.getText().equals("")) {
+					usuario = new Usuario();
+					usuario = ejbUsuario.login(txtEmail.getText(), txtPass.getText());
+					if (usuario != null) {
+						JOptionPane.showMessageDialog(null, "Bienvenido " + usuario.getNombres() + " " + usuario.getApellidos(),
+								"Bienvenido", JOptionPane.INFORMATION_MESSAGE);
 						window.inicializar();
 						window.frame.setVisible(true);
 						frame.setVisible(false);
 //
-//					} else {
-//						msj.mostrarMensaje(Mensajes.ERROR);
-//						txtEmail.setText("");
-//						txtPass.setText("");
-//					}
-//				} else {
-//					JOptionPane.showMessageDialog(null, "Usuario y contraseña no validos, intente nuevamente",
-//							"Intente nuevamente", JOptionPane.INFORMATION_MESSAGE);
-//
-//				}
+					} else {
+						JOptionPane.showMessageDialog(null, "Error ",
+								"Error", JOptionPane.ERROR_MESSAGE);
+						txtEmail.setText("");
+						txtPass.setText("");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Usuario y contraseña no validos, intente nuevamente",
+							"Intente nuevamente", JOptionPane.INFORMATION_MESSAGE);
+
+				}
 
 			}
 		});

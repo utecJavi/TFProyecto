@@ -1,0 +1,17 @@
+package tecnofenix.interfaces;
+
+import java.util.List;
+
+import javax.ejb.Remote;
+
+import tecnofenix.entidades.ConvocatoriaAsistenciaEventoEstudiante;
+import tecnofenix.exception.ServiciosException;
+
+@Remote
+public interface ConvocatoriaAsistenciaEventoEstudianteBeanRemote {
+	ConvocatoriaAsistenciaEventoEstudiante crearClase(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu) throws ServiciosException;
+	ConvocatoriaAsistenciaEventoEstudiante modificarClase(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu) throws ServiciosException;
+	ConvocatoriaAsistenciaEventoEstudiante borrarClase(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu) throws ServiciosException;
+	List<ConvocatoriaAsistenciaEventoEstudiante> obtenerClasePorAtributo(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu);
+	
+}

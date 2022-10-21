@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -33,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class GestionEventoAnalista implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="gestion_evento_analista_seq")
+    @SequenceGenerator(name="gestion_evento_analista_seq", sequenceName="gestion_evento_analista_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;

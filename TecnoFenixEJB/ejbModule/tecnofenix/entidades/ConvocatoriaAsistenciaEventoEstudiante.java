@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,7 +37,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="conv_asist_even_estu_seq")
+    @SequenceGenerator(name="conv_asist_even_estu_seq", sequenceName="conv_asist_even_estu_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
