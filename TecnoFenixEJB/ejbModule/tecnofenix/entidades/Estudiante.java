@@ -13,15 +13,9 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,49 +34,45 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estudiante.findAll", query = "SELECT e FROM Estudiante e"),
     @NamedQuery(name = "Estudiante.findById", query = "SELECT e FROM Estudiante e WHERE e.id = :id"),
     @NamedQuery(name = "Estudiante.findByGeneracion", query = "SELECT e FROM Estudiante e WHERE e.generacion = :generacion")})
-public class Estudiante implements Serializable {
+public class Estudiante extends Usuario implements Serializable{
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="estudiante_seq")
-    @SequenceGenerator(name="estudiante_seq", sequenceName="estudiante_seq", allocationSize=1)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "generacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date generacion;
+    
     @OneToMany(mappedBy = "estudianteId")
     private Collection<Justificacion> justificacionCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estudianteId")
     private Collection<ConvocatoriaAsistenciaEventoEstudiante> convocatoriaAsistenciaEventoEstudianteCollection;
+    
     @OneToMany(mappedBy = "estudianteId")
     private Collection<Reclamo> reclamoCollection;
+    
     @OneToMany(mappedBy = "estudianteId")
     private Collection<Constancia> constanciaCollection;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Usuario idUsuario;
+    
 
     public Estudiante() {
     }
 
-    public Estudiante(Integer id) {
-        this.id = id;
-    }
+    
+    
+    public Estudiante(Integer id, int documento, String usuario, String contrasenia, String apellidos, String nombres,
+			Date fechaNacimiento, String mail, String telefono, Date generacion, Itr itr) {
+		super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
+		this.generacion=generacion;
+		super.setIdItr(itr);
+		//TODO Auto-generated constructor stub
+	}
 
-    public Estudiante(Integer id, Date generacion) {
-        this.id = id;
+
+
+	public Estudiante(Date generacion) {
         this.generacion = generacion;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Date getGeneracion() {
@@ -129,18 +119,12 @@ public class Estudiante implements Serializable {
         this.constanciaCollection = constanciaCollection;
     }
 
-    public Usuario getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
-    }
+ 
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (this.getId() != null ? this.getId().hashCode() : 0);
         return hash;
     }
 
@@ -151,7 +135,7 @@ public class Estudiante implements Serializable {
             return false;
         }
         Estudiante other = (Estudiante) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
             return false;
         }
         return true;
@@ -159,7 +143,7 @@ public class Estudiante implements Serializable {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Estudiante[ id=" + id + " ]";
+        return "tecnofenix.entidades.Estudiante[ id=" + this.getId() + " ]";
     }
     
 }

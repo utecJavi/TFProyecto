@@ -30,8 +30,8 @@ public class ItrBean implements ItrBeanRemote {
 
 	@Override
 	public Itr crearItr(Itr itr) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+		itr=em.merge(itr);
+		return itr;
 	}
 
 	@Override

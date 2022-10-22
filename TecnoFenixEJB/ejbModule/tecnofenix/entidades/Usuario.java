@@ -51,7 +51,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByLocalidad", query = "SELECT u FROM Usuario u WHERE u.localidad = :localidad"),
     @NamedQuery(name = "Usuario.findByMail", query = "SELECT u FROM Usuario u WHERE u.mail = :mail"),
     @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")})
-public class Usuario implements Serializable {
+public abstract class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="usuario_seq")
@@ -59,63 +59,76 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "documento")
     private int documento;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "usuario")
     private String usuario;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "contrasenia")
     private String contrasenia;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "apellidos")
     private String apellidos;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "nombres")
     private String nombres;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_nacimiento")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNacimiento;
+    
     @Size(max = 45)
     @Column(name = "departamento")
     private String departamento;
+    
     @Size(max = 1)
     @Column(name = "genero")
     private String genero;
+    
     @Size(max = 45)
     @Column(name = "localidad")
     private String localidad;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "mail")
     private String mail;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "telefono")
     private String telefono;
+    
     @JoinColumn(name = "id_itr", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.MERGE, optional = false)
     private Itr idItr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
-    private Collection<Estudiante> estudianteCollection;
-    @OneToMany(mappedBy = "idUsuario")
-    private Collection<Tutor> tutorCollection;
-    @OneToMany(mappedBy = "idUsuario")
-    private Collection<Analista> analistaCollection;
+    
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+//    private Collection<Estudiante> estudianteCollection;
+//    @OneToMany(mappedBy = "idUsuario")
+//    private Collection<Tutor> tutorCollection;
+//    @OneToMany(mappedBy = "idUsuario")
+//    private Collection<Analista> analistaCollection;
 
     public Usuario() {
     }
@@ -239,33 +252,33 @@ public class Usuario implements Serializable {
     public void setIdItr(Itr idItr) {
         this.idItr = idItr;
     }
-
-    @XmlTransient
-    public Collection<Estudiante> getEstudianteCollection() {
-        return estudianteCollection;
-    }
-
-    public void setEstudianteCollection(Collection<Estudiante> estudianteCollection) {
-        this.estudianteCollection = estudianteCollection;
-    }
-
-    @XmlTransient
-    public Collection<Tutor> getTutorCollection() {
-        return tutorCollection;
-    }
-
-    public void setTutorCollection(Collection<Tutor> tutorCollection) {
-        this.tutorCollection = tutorCollection;
-    }
-
-    @XmlTransient
-    public Collection<Analista> getAnalistaCollection() {
-        return analistaCollection;
-    }
-
-    public void setAnalistaCollection(Collection<Analista> analistaCollection) {
-        this.analistaCollection = analistaCollection;
-    }
+//
+//    @XmlTransient
+//    public Collection<Estudiante> getEstudianteCollection() {
+//        return estudianteCollection;
+//    }
+//
+//    public void setEstudianteCollection(Collection<Estudiante> estudianteCollection) {
+//        this.estudianteCollection = estudianteCollection;
+//    }
+//
+//    @XmlTransient
+//    public Collection<Tutor> getTutorCollection() {
+//        return tutorCollection;
+//    }
+//
+//    public void setTutorCollection(Collection<Tutor> tutorCollection) {
+//        this.tutorCollection = tutorCollection;
+//    }
+//
+//    @XmlTransient
+//    public Collection<Analista> getAnalistaCollection() {
+//        return analistaCollection;
+//    }
+//
+//    public void setAnalistaCollection(Collection<Analista> analistaCollection) {
+//        this.analistaCollection = analistaCollection;
+//    }
 
     @Override
     public int hashCode() {

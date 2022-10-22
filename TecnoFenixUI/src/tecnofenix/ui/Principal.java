@@ -38,9 +38,10 @@ public class Principal {
 
 					UILogin uiLogin = new UILogin();
 					uiLogin.inicializar(window);
+					
 //					window.frame.setVisible(true);
-					EJBUsuarioRemoto ejbusu = new EJBUsuarioRemoto();
-					ejbusu.ejecutarMetodo();
+//					EJBUsuarioRemoto ejbusu = new EJBUsuarioRemoto();
+//					ejbusu.ejecutarMetodo();
 
 				} catch (Exception e) {
 					e.printStackTrace();

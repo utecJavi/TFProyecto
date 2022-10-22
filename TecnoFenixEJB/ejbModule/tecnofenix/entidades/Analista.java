@@ -6,21 +6,14 @@
 
 package tecnofenix.entidades;
 
-import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -35,22 +28,21 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Analista.findAll", query = "SELECT a FROM Analista a"),
     @NamedQuery(name = "Analista.findById", query = "SELECT a FROM Analista a WHERE a.id = :id")})
-public class Analista implements Serializable {
+public class Analista extends Usuario {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="analista_seq")
-    @SequenceGenerator(name="analista_seq", sequenceName="analista_seq", allocationSize=1)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analistaId")
     private Collection<AccionReclamo> accionReclamoCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analistaId")
     private Collection<AccionJustificacion> accionJustificacionCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analistaId")
     private Collection<AccionConstancia> accionConstanciaCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analistaId")
     private Collection<GestionEventoAnalista> gestionEventoAnalistaCollection;
+    
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     @ManyToOne
     private Usuario idUsuario;
@@ -59,16 +51,9 @@ public class Analista implements Serializable {
     }
 
     public Analista(Integer id) {
-        this.id = id;
+        super.setId(id);
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     @XmlTransient
     public Collection<AccionReclamo> getAccionReclamoCollection() {
@@ -117,7 +102,7 @@ public class Analista implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (this.getId() != null ? this.getId().hashCode() : 0);
         return hash;
     }
 
@@ -128,7 +113,7 @@ public class Analista implements Serializable {
             return false;
         }
         Analista other = (Analista) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
             return false;
         }
         return true;
@@ -136,7 +121,7 @@ public class Analista implements Serializable {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Analista[ id=" + id + " ]";
+        return "tecnofenix.entidades.Analista[ id=" + this.getId() + " ]";
     }
     
 }

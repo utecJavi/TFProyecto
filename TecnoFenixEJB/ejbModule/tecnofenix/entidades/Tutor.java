@@ -6,21 +6,16 @@
 
 package tecnofenix.entidades;
 
-import java.io.Serializable;
+
 import java.util.Collection;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -37,14 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Tutor.findById", query = "SELECT t FROM Tutor t WHERE t.id = :id"),
     @NamedQuery(name = "Tutor.findByTipo", query = "SELECT t FROM Tutor t WHERE t.tipo = :tipo"),
     @NamedQuery(name = "Tutor.findByArea", query = "SELECT t FROM Tutor t WHERE t.area = :area")})
-public class Tutor implements Serializable {
+public class Tutor extends Usuario {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="tutor_seq")
-    @SequenceGenerator(name="tutor_seq", sequenceName="tutor_seq", allocationSize=1)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+
     @Column(name = "tipo")
     private Integer tipo;
     @Column(name = "area")
@@ -59,16 +49,9 @@ public class Tutor implements Serializable {
     }
 
     public Tutor(Integer id) {
-        this.id = id;
+        super.setId(id);
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getTipo() {
         return tipo;
@@ -106,7 +89,7 @@ public class Tutor implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (this.getId() != null ? this.getId().hashCode() : 0);
         return hash;
     }
 
@@ -117,7 +100,7 @@ public class Tutor implements Serializable {
             return false;
         }
         Tutor other = (Tutor) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
             return false;
         }
         return true;
@@ -125,7 +108,7 @@ public class Tutor implements Serializable {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Tutor[ id=" + id + " ]";
+        return "tecnofenix.entidades.Tutor[ id=" + this.getId() + " ]";
     }
     
 }

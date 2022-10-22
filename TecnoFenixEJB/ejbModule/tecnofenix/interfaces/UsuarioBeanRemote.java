@@ -12,7 +12,8 @@ public interface UsuarioBeanRemote {
 	Usuario crearUsuario(Usuario usuario) throws ServiciosException;
 	Usuario modificarUsuario(Usuario usuario) throws ServiciosException;
 	Usuario borrarUsuario(Usuario usuario) throws ServiciosException;
+	Usuario login(String usuario,String pass) throws ServiciosException;
 	List<Usuario> obtenerUsuarioPorAtributo(Usuario usuario);
-	public Usuario login(String usu, String pass);
+
 	
 }

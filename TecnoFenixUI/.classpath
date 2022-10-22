@@ -8,5 +8,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jboss-client.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-core-5.3.28.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
