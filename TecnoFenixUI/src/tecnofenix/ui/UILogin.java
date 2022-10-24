@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
+import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.UsuarioBeanRemote;
@@ -126,10 +127,20 @@ public class UILogin {
 		JButton btnLogin_1 = new JButton("Login");
 		btnLogin_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+//				Itr itr=new Itr(null, "SanPetersburg", "UTEC Peter");
 				Estudiante usu = new Estudiante(null, 45829221, "jasuaga", "123456", "Asuaga", "Javier", new Date(System.currentTimeMillis()), "jasuaga@gmail.com", "098195890", new Date(System.currentTimeMillis()), new Itr(null, "Durazno", "UTEC Durazno"));
 				usu=(Estudiante)ejbUsuario.crearUsuario(usu);
 				System.err.println(usu.toString());
 				System.out.println("Se creo el usuario");
+				
+//				Tutor tut = new Tutor(null, 45829222, "jasuaga", "123456", "Asuaga", "Javier", new Date(System.currentTimeMillis()), "jasuaga@gmail.com", "098195890",itr,1,1);
+//				tut.setIdItr(itr);
+//				tut=(Tutor)ejbUsuario.crearUsuario(tut);
+//				System.err.println(tut.toString());
+//				System.out.println("Se creo el usuario Tutor");
+				
+				
 			}
 		});
 		btnLogin_1.setBounds(78, 295, 85, 21);
