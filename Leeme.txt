@@ -1,0 +1,27 @@
+******************************************************
+******USUARIO DE LA BD CON TODOS LOS PERMISOS*********
+
+
+ALTER SESSION SET _oracle_script =true
+
+CREATE USER PROYECTO  IDENTIFIED BY PROYECTO;
+
+GRANT DBA TO PROYECTO;
+******************************************************
+
+
+
+
+En el wildfly  configurar el DataSources
+JNDI Name: java:/TecnoFenixDS
+******************************************************
+Ejemplo como debe quedar:
+Main Attributes
+JNDI Name: java:/TecnoFenixDS
+Driver Name: DriverOracle.jar
+Connection URL: jdbc:oracle:thin:@localhost:1521:XE
+Enabled: true
+Statistics Enabled: false
+******************************************************
+
+
