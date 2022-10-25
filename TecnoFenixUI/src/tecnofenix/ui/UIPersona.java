@@ -116,9 +116,9 @@ public class UIPersona {
 			modelo.addColumn(columnNames[column]);
 		}
 
-		// Se crea un array que serï¿½ una de las filas de la tabla.
+		// Se crea un array que será una de las filas de la tabla.
 		fila = new Object[columnNames.length];
-		// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
+		// Se rellena cada posición del array con una de las columnas de la tabla en
 		// base de datos.
 //		allPersona = daoPersona.getAll();
 //
@@ -135,9 +135,9 @@ public class UIPersona {
 //			modelo.addRow(fila);
 //		}
 
-		// Se aï¿½ade al modelo la fila completa.
+		// Se añade al modelo la fila completa.
 
-		// se define el tamaï¿½o de la tabla
+		// se define el tamaño de la tabla
 //		table.setPreferredScrollableViewportSize(new Dimension(99, 99));
 		table.setBounds(93, 215, 100, 100);
 		// Creamos un JscrollPane y le agregamos la JTable
