@@ -4,9 +4,7 @@ import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Estudiante;
-import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.UsuarioBeanRemote;
@@ -67,17 +65,16 @@ public class EJBUsuarioRemoto{
 	}
 	
 	public Usuario crearUsuario(Usuario usuario) {
-		
+		Estudiante usuDevuelto= new Estudiante();
 		try {
-			System.out.println("LEVANTANDOOO USUARIO");		
-			usuario=usuarioRemote.crearUsuario(usuario);
-
+			System.out.println("LEVANTANDOOO USUARIO");
+			usuDevuelto=(Estudiante) usuarioRemote.crearUsuario(usuario);
 		} catch (ServiciosException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("Usuario RETORNADO");
-		return usuario;
+		return usuDevuelto;
 	}
 	
 }

@@ -8,8 +8,6 @@ package tecnofenix.entidades;
 
 
 import java.util.Collection;
-import java.util.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,28 +39,16 @@ public class Tutor extends Usuario {
     private Integer tipo;
     @Column(name = "area")
     private Integer area;
-//    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
-//    @ManyToOne
-//    private Usuario idUsuario;
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
+    @ManyToOne
+    private Usuario idUsuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tutorId")
     private Collection<TutorResponsableEvento> tutorResponsableEventoCollection;
 
     public Tutor() {
     }
 
-    
-    
-    public Tutor(Integer id, int documento, String usuario, String contrasenia, String apellidos, String nombres,
-			Date fechaNacimiento, String mail, String telefono,Itr itr,Integer tipo, Integer area) {
-		super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
-		super.setIdItr(itr);
-		this.tipo = tipo;
-		this.area = area;
-	}
-
-
-
-	public Tutor(Integer id) {
+    public Tutor(Integer id) {
         super.setId(id);
     }
 
@@ -83,13 +69,13 @@ public class Tutor extends Usuario {
         this.area = area;
     }
 
-//    public Usuario getIdUsuario() {
-//        return idUsuario;
-//    }
-//
-//    public void setIdUsuario(Usuario idUsuario) {
-//        this.idUsuario = idUsuario;
-//    }
+    public Usuario getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuario idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
     @XmlTransient
     public Collection<TutorResponsableEvento> getTutorResponsableEventoCollection() {

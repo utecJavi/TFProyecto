@@ -29,16 +29,8 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
             <property name="javax.persistence.jdbc.user" value="PROYECTO" />
             <property name="javax.persistence.jdbc.password" value="PROYECTO" />  -->
             
-            <!-- 	
-	Valores de "hibernate.hbm2ddl.auto
-    validate:    validate the schema, makes no changes to the database.
-    update:      update the schema.
-    create:      creates the schema, destroying previous data.
-    create-drop: drop the schema when the SessionFactory is closed explicitly, typically when the application is stopped.
-    none:        does nothing with the schema, makes no changes to the database
-	 --> 
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="validate" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
 			<property name="show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 		</properties>
