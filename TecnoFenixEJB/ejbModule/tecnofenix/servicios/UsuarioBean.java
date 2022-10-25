@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import tecnofenix.entidades.Estudiante;
+import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.UsuarioBeanRemote;
@@ -23,23 +24,22 @@ public class UsuarioBean implements UsuarioBeanRemote {
 	@PersistenceContext
 	private EntityManager em;
 	
+	private ItrBean itrBean;
     /**
      * Default constructor. 
      */
     public UsuarioBean() {
-        // TODO Auto-generated constructor stub
+    	itrBean= new ItrBean();
     }
 
 	@Override
 	public Usuario crearUsuario(Usuario usuario) throws ServiciosException {
-//		Usuario usuCreado = new Usuario();
-//		System.out.println(usuario.getNombres());
-//		System.out.println(usuario.getApellidos());
-//		System.out.println(usuario.getDocumento());
-//		System.out.println(usuario.getDepartamento());
-//		System.out.println(usuario.getMail());
-//		System.out.println(usuario.getTelefono());
-//		System.out.println(usuario.toString());
+//		if(usuario.getIdItr().getId() == null) {
+//			Itr itr =usuario.getIdItr();
+//			itr=itrBean.crearItr(itr);
+//			usuario.setIdItr(itr);
+//		}
+		
 		usuario=em.merge(usuario);
 		em.flush();
 		return usuario;
@@ -67,8 +67,11 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 	@Override
 	public Usuario login(String usuario,String pass) {
-//		Query query = em.createNamedQuery("Usuario.findAll");
-		TypedQuery<Estudiante> query = em.createQuery("SELECT e FROM Estudiante e WHERE e.usuario = :usu AND e.contrasenia = :pass",Estudiante.class)
+
+		
+		
+		
+		TypedQuery<Usuario> query = em.createQuery("SELECT e FROM Usuario e WHERE e.usuario = :usu AND e.contrasenia = :pass",Usuario.class)
 				.setParameter("usu", usuario).setParameter("pass", pass);
 		for (int i = 0; i < query.getResultList().size(); i++) {
 			 System.out.println(query.getResultList().get(0).toString());
@@ -83,10 +86,10 @@ public class UsuarioBean implements UsuarioBeanRemote {
 		System.out.println(query.getResultList().get(0).toString());
 		em.flush();
 		System.out.println("USUARIOSBEAN LUEGO DE LA QUERY");
-		Estudiante estu = new Estudiante();
-		estu =query.getResultList().get(0);
+//		Estudiante estu = new Estudiante();
+//		estu =query.getResultList().get(0);
 //		System.out.println(query.getResultList().toString());
-		return estu;
+		return query.getResultList().get(0);
 	}
 
 }
