@@ -90,6 +90,9 @@ public class UILogin {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				window.inicializar();
+				window.frame.setVisible(true);
+				frame.setVisible(false);
 				if (!txtEmail.getText().equals("") && !txtPass.getText().equals("")) {
 					Usuario usuario = new Estudiante();
 					usuario = ejbUsuario.login(txtEmail.getText(),txtPass.getText());
@@ -145,8 +148,9 @@ public class UILogin {
 		});
 		btnLogin_1.setBounds(78, 295, 85, 21);
 		panel.add(btnLogin_1);
+		
+		
 		frame.pack();
-
 		frame.setVisible(true);
 
 	}

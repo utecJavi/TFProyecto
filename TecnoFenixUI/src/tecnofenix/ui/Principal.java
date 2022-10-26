@@ -69,32 +69,56 @@ public class Principal {
 		frame.getContentPane().setLayout(null);
 
 		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
-		JMenu jmenu, submenu;
-		JMenuItem menuUsuario, i2, i3, i4, i5;
-		jmenu = new JMenu("Menu");
-		submenu = new JMenu("Sub Menu");
-		menuUsuario = new JMenuItem("Usuario");
+		
+		JMenu constancia;
+		constancia = new JMenu("Constancias");
+		JMenuItem constAlta= new JMenuItem("Alta Constancias");
+		JMenuItem constModa= new JMenuItem("Modificacion Constancias");
+		JMenuItem constDeletea= new JMenuItem("Borrar Constancias");
+		constancia.add(constAlta);
+		constancia.add(constModa);
+		constancia.add(constDeletea);
+		menuBar.add(constancia);
+		
+		JMenu evento;
+		JMenuItem evenAlta= new JMenuItem("Alta Eventos");
+		JMenuItem evenMod= new JMenuItem("Modificacion Eventos");
+		JMenuItem evenDelete= new JMenuItem("Borrar Eventos");
+		evento= new JMenu("Eventos");
+		evento.add(evenAlta);
+		evento.add(evenMod);
+		evento.add(evenDelete);
+		menuBar.add(evento);
+		
+		JMenu itr;
+		JMenuItem itrAlta= new JMenuItem("Alta ITR");
+		JMenuItem itrMod= new JMenuItem("Modificacion ITR");
+		JMenuItem itrDelete= new JMenuItem("Borrar ITR");
+		itr= new JMenu("ITR");
+		itr.add(itrAlta);
+		itr.add(itrMod);
+		itr.add(itrDelete);
+		menuBar.add(itr);
+		
+		JMenu escolaridad;
+		JMenuItem escoAlta= new JMenuItem("Alta Escolaridad");
+		JMenuItem escoMod= new JMenuItem("Modificacion Escolaridad");
+		JMenuItem escoDelete= new JMenuItem("Borrar Escolaridad");
+		escolaridad= new JMenu("Escolaridad");
+		escolaridad.add(escoAlta);
+		escolaridad.add(escoMod);
+		escolaridad.add(escoDelete);
+		menuBar.add(escolaridad);
 
-		i2 = new JMenuItem("Item 2");
-		i3 = new JMenuItem("Item 3");
-		i4 = new JMenuItem("Item 4");
-		i5 = new JMenuItem("Item 5");
-		jmenu.add(menuUsuario);
-		jmenu.add(i2);
-		jmenu.add(i3);
-		submenu.add(i4);
-		submenu.add(i5);
-		jmenu.add(submenu);
-		menuBar.add(jmenu);
+		
 		frame.setJMenuBar(menuBar);
 
 		//Aca abrimos la ventana de usuario 
-		menuUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Abriendo ventana usuarios");
-			}
-		});
+//		menuUsuario.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				System.out.println("Abriendo ventana usuarios");
+//			}
+//		});
 		
 		
 		
