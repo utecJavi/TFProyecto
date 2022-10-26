@@ -366,12 +366,5 @@ public class UIPersona {
 	
 	
 	
-//	
-//	public DAOPersona getDaoPersona() {
-//		return daoPersona;
-//	}
-//
-//	public void setDaoPersona(DAOPersona daoPersona) {
-//		this.daoPersona = daoPersona;
-//	}
+
 }
