@@ -131,10 +131,20 @@ public class UILogin {
 		btnLogin_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-//				Itr itr=new Itr(null, "SanPetersburg", "UTEC Peter");
-				Estudiante usu = new Estudiante(null, 45829221, "jasuaga", "123456", "Asuaga", "Javier", new Date(System.currentTimeMillis()), "jasuaga@gmail.com", "098195890", new Date(System.currentTimeMillis()), new Itr(null, "Durazno", "UTEC Durazno"));
-				usu=(Estudiante)ejbUsuario.crearUsuario(usu);
-				System.err.println(usu.toString());
+				Itr itr=new Itr(null, "SanPetersburg", "UTEC Peter");
+//				Estudiante usu = new Estudiante(null, 45829221, "jasuaga", "123456", "Asuaga", "Javier", new Date(System.currentTimeMillis()), "jasuaga@gmail.com", "098195890", new Date(System.currentTimeMillis()), new Itr(null, "Durazno", "UTEC Durazno"));
+//				usu=(Estudiante)ejbUsuario.crearUsuario(usu);
+//				System.err.println(usu.toString());
+//				System.out.println("Se creo el usuario");
+				
+				Estudiante usu1 = new Estudiante(null, 12345678, "pepe", "123456", "Gutierrez", "Danny", new Date(System.currentTimeMillis()), "dani@gmail.com", "099123456", new Date(System.currentTimeMillis()), itr);
+				usu1=(Estudiante)ejbUsuario.crearUsuario(usu1);
+				System.err.println(usu1.toString());
+				System.out.println("Se creo el usuario");
+				
+				Estudiante usu2 = new Estudiante(null, 87654321, "hola", "123456", "Orlando", "Maximiliano", new Date(System.currentTimeMillis()), "maxi@gmail.com", "099321654", new Date(System.currentTimeMillis()), itr);
+				usu2=(Estudiante)ejbUsuario.crearUsuario(usu2);
+				System.err.println(usu2.toString());
 				System.out.println("Se creo el usuario");
 				
 //				Tutor tut = new Tutor(null, 45829222, "jasuaga", "123456", "Asuaga", "Javier", new Date(System.currentTimeMillis()), "jasuaga@gmail.com", "098195890",itr,1,1);

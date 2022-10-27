@@ -12,6 +12,7 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jasuaga
  */
 @Entity
-@Table(name = "tutor")
+@DiscriminatorValue(value ="Tutor")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tutor.findAll", query = "SELECT t FROM Tutor t"),

@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jasuaga
  */
 @Entity
-@Table(name = "estudiante")
+@DiscriminatorValue(value ="Estudiante")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Estudiante.findAll", query = "SELECT e FROM Estudiante e"),

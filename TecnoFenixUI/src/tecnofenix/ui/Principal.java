@@ -70,6 +70,26 @@ public class Principal {
 
 		JMenuBar menuBar = new JMenuBar();
 		
+		
+		JMenu usuario;
+		usuario = new JMenu("Administracion Usuarios");
+		JMenuItem usuAltDocente= new JMenuItem("Alta Docente");
+		JMenuItem usuModDocente= new JMenuItem("Modificacion Docente");
+		JMenuItem usuAltEstudiante= new JMenuItem("Alta Estudiante");
+		usuAltEstudiante.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UIUsuario windowsUsuario = new UIUsuario();
+				windowsUsuario.inicializar();
+				windowsUsuario.frame.setVisible(true);
+			}
+		});
+		JMenuItem usuModEstudiante= new JMenuItem("Modificacion Estudiante");
+		usuario.add(usuAltDocente);
+		usuario.add(usuModDocente);
+		usuario.add(usuAltEstudiante);
+		usuario.add(usuModEstudiante);
+		menuBar.add(usuario);
+		
 		JMenu constancia;
 		constancia = new JMenu("Constancias");
 		JMenuItem constAlta= new JMenuItem("Alta Constancias");
@@ -114,11 +134,15 @@ public class Principal {
 		frame.setJMenuBar(menuBar);
 
 		//Aca abrimos la ventana de usuario 
-//		menuUsuario.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println("Abriendo ventana usuarios");
-//			}
-//		});
+		
+		usuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Abriendo ventana usuarios");
+				
+				
+				
+			}
+		});
 		
 		
 		

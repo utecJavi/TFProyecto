@@ -17,6 +17,7 @@ public interface EstudianteBeanRemote {
 	Estudiante modificarEstudiante(Estudiante estudiante) throws ServiciosException;
 	Estudiante borrarEstudiante(Estudiante estudiante) throws ServiciosException;
 	Estudiante obtenerEstudiantePorAtributo(String documento)throws ServiciosException;
+	List<Estudiante> listarEstudiantes()throws ServiciosException;
 	List<Estudiante> listarAsistenciasAEventos(Integer eventoId)throws ServiciosException;
 	List<Estudiante> listarJustificaciones(Integer justificacionId)throws ServiciosException;
 	List<Estudiante> lisatEstudiantePorReclamos(Integer reclamoId)throws ServiciosException;

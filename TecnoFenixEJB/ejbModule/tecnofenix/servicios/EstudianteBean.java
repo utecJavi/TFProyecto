@@ -134,5 +134,15 @@ public class EstudianteBean implements EstudianteBeanRemote {
 		System.out.println("ESTUDIANTEBEAN LUEGO DE LA QUERY listarConstancias");
 		return query.getResultList();
 	}
+	
+	@Override
+	public List<Estudiante> listarEstudiantes() throws ServiciosException {
+		TypedQuery<Estudiante> query = em.createQuery("SELECT e FROM Estudiante e ",Estudiante.class);
+
+		em.flush();
+		System.out.println("ESTUDIANTEBEAN LUEGO DE LA QUERY listarEstudiantes");
+		return query.getResultList();
+
+	}
 
 }

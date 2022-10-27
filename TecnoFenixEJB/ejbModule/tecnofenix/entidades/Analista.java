@@ -8,6 +8,7 @@ package tecnofenix.entidades;
 
 import java.util.Collection;
 import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jasuaga
  */
 @Entity
-@Table(name = "analista")
+@DiscriminatorValue(value ="Analista")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Analista.findAll", query = "SELECT a FROM Analista a"),
@@ -43,9 +44,7 @@ public class Analista extends Usuario {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analistaId")
     private Collection<GestionEventoAnalista> gestionEventoAnalistaCollection;
     
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
-    @ManyToOne
-    private Usuario idUsuario;
+
 
     public Analista() {
     }
@@ -91,13 +90,6 @@ public class Analista extends Usuario {
         this.gestionEventoAnalistaCollection = gestionEventoAnalistaCollection;
     }
 
-    public Usuario getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
-    }
 
     @Override
     public int hashCode() {
