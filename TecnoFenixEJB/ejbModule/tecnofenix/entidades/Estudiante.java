@@ -63,6 +63,11 @@ public class Estudiante extends Usuario {
         this.generacion = generacion;
     }
 
+    public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr, Date generacion) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, departamento, genero, localidad, mail, telefono, itr);
+        this.generacion = generacion;
+    }
+
     public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres,
                       Date fechaNacimiento, String mail, String telefono, Date generacion, Itr itr) {
         super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
