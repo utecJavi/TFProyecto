@@ -1,36 +1,19 @@
 package tecnofenix.ui;
 
-import java.awt.Dimension;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
-import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
-import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.UsuarioBeanRemote;
-import tecnofenix.servicios.ConexionClienteJNDIRemote;
 
 import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-//import tecnocanarios.dao.DAOPersona;
-//import tecnocanarios.entidades.Persona;
-//import tecnocanarios.mensajes.MensajePopUp;
-//import tecnocanarios.mensajes.Mensajes;
-
-import javax.swing.JButton;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
-import java.util.List;
-import java.awt.event.ActionEvent;
 
 public class UILogin {
 
@@ -114,7 +97,7 @@ public class UILogin {
 						txtPass.setText("");
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Usuario y contraseña no validos, intente nuevamente",
+					JOptionPane.showMessageDialog(null, "Usuario y contraseï¿½a no validos, intente nuevamente",
 							"Intente nuevamente", JOptionPane.INFORMATION_MESSAGE);
 
 				}
@@ -129,7 +112,7 @@ public class UILogin {
 			public void actionPerformed(ActionEvent e) {
 				
 //				Itr itr=new Itr(null, "SanPetersburg", "UTEC Peter");
-				Estudiante usu = new Estudiante(null, 45829221, "jasuaga", "123456", "Asuaga", "Javier", new Date(System.currentTimeMillis()), "jasuaga@gmail.com", "098195890", new Date(System.currentTimeMillis()), new Itr(null, "Durazno", "UTEC Durazno"));
+				Estudiante usu = new Estudiante(45829221, "jasuaga", "123456", "Asuaga", "Javier", new Date(System.currentTimeMillis()), "jasuaga@gmail.com", "098195890", new Date(System.currentTimeMillis()), new Itr(1));
 				usu=(Estudiante)ejbUsuario.crearUsuario(usu);
 				System.err.println(usu.toString());
 				System.out.println("Se creo el usuario");

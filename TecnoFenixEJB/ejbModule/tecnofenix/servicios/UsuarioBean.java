@@ -1,19 +1,14 @@
 package tecnofenix.servicios;
 
-import java.util.List;
+import tecnofenix.entidades.Usuario;
+import tecnofenix.exception.ServiciosException;
+import tecnofenix.interfaces.UsuarioBeanRemote;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
-import tecnofenix.entidades.Estudiante;
-import tecnofenix.entidades.Itr;
-import tecnofenix.entidades.Usuario;
-import tecnofenix.exception.ServiciosException;
-import tecnofenix.interfaces.UsuarioBeanRemote;
+import java.util.List;
 
 
 /**
@@ -39,10 +34,21 @@ public class UsuarioBean implements UsuarioBeanRemote {
 //			itr=itrBean.crearItr(itr);
 //			usuario.setIdItr(itr);
 //		}
-		
-		usuario=em.merge(usuario);
+		System.out.println("HERNAN USUARIOOOO: "+em);
+		System.out.println(usuario.getItr());
+		usuario.setItr(itrBean.findById(usuario.getItr().getId()));
+		System.out.println("TEST1");
+		em.persist(usuario);
+		System.out.println("TEST2");
 		em.flush();
+		System.out.println("TEST3");
 		return usuario;
+	}
+
+	@Override
+	public int printTest() {
+		System.out.println("COSITAS!!!!");
+		return 4;
 	}
 
 	@Override

@@ -7,33 +7,23 @@
 package tecnofenix.entidades;
 
 
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 /**
- *
  * @author jasuaga
  */
 @Entity
-@Table(name = "tutor")
+@DiscriminatorValue(value = "TUTOR")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Tutor.findAll", query = "SELECT t FROM Tutor t"),
-    @NamedQuery(name = "Tutor.findById", query = "SELECT t FROM Tutor t WHERE t.id = :id"),
-    @NamedQuery(name = "Tutor.findByTipo", query = "SELECT t FROM Tutor t WHERE t.tipo = :tipo"),
-    @NamedQuery(name = "Tutor.findByArea", query = "SELECT t FROM Tutor t WHERE t.area = :area")})
+        @NamedQuery(name = "Tutor.findAll", query = "SELECT t FROM Tutor t"),
+        @NamedQuery(name = "Tutor.findById", query = "SELECT t FROM Tutor t WHERE t.id = :id"),
+        @NamedQuery(name = "Tutor.findByTipo", query = "SELECT t FROM Tutor t WHERE t.tipo = :tipo"),
+        @NamedQuery(name = "Tutor.findByArea", query = "SELECT t FROM Tutor t WHERE t.area = :area")})
 public class Tutor extends Usuario {
     private static final long serialVersionUID = 1L;
 
@@ -41,28 +31,24 @@ public class Tutor extends Usuario {
     private Integer tipo;
     @Column(name = "area")
     private Integer area;
-//    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
-//    @ManyToOne
-//    private Usuario idUsuario;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tutorId")
     private Collection<TutorResponsableEvento> tutorResponsableEventoCollection;
 
     public Tutor() {
     }
 
-    
-    
-    public Tutor(Integer id, int documento, String usuario, String contrasenia, String apellidos, String nombres,
-			Date fechaNacimiento, String mail, String telefono,Itr itr,Integer tipo, Integer area) {
-		super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
-		super.setIdItr(itr);
-		this.tipo = tipo;
-		this.area = area;
-	}
+
+    public Tutor(int documento, String usuario, String contrasenia, String apellidos, String nombres,
+                 Date fechaNacimiento, String mail, String telefono, Itr itr, Integer tipo, Integer area) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
+        super.setItr(itr);
+        this.tipo = tipo;
+        this.area = area;
+    }
 
 
-
-	public Tutor(Integer id) {
+    public Tutor(Integer id) {
         super.setId(id);
     }
 
@@ -82,14 +68,6 @@ public class Tutor extends Usuario {
     public void setArea(Integer area) {
         this.area = area;
     }
-
-//    public Usuario getIdUsuario() {
-//        return idUsuario;
-//    }
-//
-//    public void setIdUsuario(Usuario idUsuario) {
-//        this.idUsuario = idUsuario;
-//    }
 
     @XmlTransient
     public Collection<TutorResponsableEvento> getTutorResponsableEventoCollection() {
@@ -124,5 +102,5 @@ public class Tutor extends Usuario {
     public String toString() {
         return "tecnofenix.entidades.Tutor[ id=" + this.getId() + " ]";
     }
-    
+
 }

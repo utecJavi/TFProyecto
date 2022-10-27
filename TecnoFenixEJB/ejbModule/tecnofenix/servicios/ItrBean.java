@@ -1,16 +1,15 @@
 package tecnofenix.servicios;
 
-import java.util.List;
-
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
-
 import tecnofenix.entidades.Itr;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ItrBeanRemote;
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 
 /**
@@ -18,14 +17,15 @@ import tecnofenix.interfaces.ItrBeanRemote;
  */
 @Stateless
 public class ItrBean implements ItrBeanRemote {
-	@PersistenceContext
+	//@PersistenceContext
 	private EntityManager em;
 	
     /**
      * Default constructor. 
      */
     public ItrBean() {
-        // TODO Auto-generated constructor stub
+    	EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TecnoFenixEJB");
+    	em = entityManagerFactory.createEntityManager();
     }
 
 	@Override
@@ -50,6 +50,14 @@ public class ItrBean implements ItrBeanRemote {
 	public List<Itr> obtenerItrPorAtributo(Itr itr) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public Itr findById(Integer id) {
+		System.out.println("testito");
+		System.out.println(em);
+		TypedQuery<Itr> query = em.createNamedQuery("Itr.findById", Itr.class);
+		return query.setParameter("id", id).getSingleResult();
 	}
 
 }

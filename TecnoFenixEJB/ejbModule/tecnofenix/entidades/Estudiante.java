@@ -6,13 +6,12 @@
 
 package tecnofenix.entidades;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -26,54 +25,52 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author jasuaga
  */
 @Entity
-@Table(name = "estudiante")
+@DiscriminatorValue(value = "ESTUDIANTE")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Estudiante.findAll", query = "SELECT e FROM Estudiante e"),
-    @NamedQuery(name = "Estudiante.findById", query = "SELECT e FROM Estudiante e WHERE e.id = :id"),
-    @NamedQuery(name = "Estudiante.findByGeneracion", query = "SELECT e FROM Estudiante e WHERE e.generacion = :generacion")})
-public class Estudiante extends Usuario implements Serializable{
+        @NamedQuery(name = "Estudiante.findAll", query = "SELECT e FROM Estudiante e"),
+        @NamedQuery(name = "Estudiante.findById", query = "SELECT e FROM Estudiante e WHERE e.id = :id"),
+        @NamedQuery(name = "Estudiante.findByGeneracion", query = "SELECT e FROM Estudiante e WHERE e.generacion = :generacion")})
+public class Estudiante extends Usuario {
     private static final long serialVersionUID = 1L;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "generacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date generacion;
-    
+
     @OneToMany(mappedBy = "estudianteId")
-    private Collection<Justificacion> justificacionCollection;
-    
+    private Set<Justificacion> justificaciones;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estudianteId")
     private Collection<ConvocatoriaAsistenciaEventoEstudiante> convocatoriaAsistenciaEventoEstudianteCollection;
-    
+
     @OneToMany(mappedBy = "estudianteId")
-    private Collection<Reclamo> reclamoCollection;
-    
+    private Set<Reclamo> reclamos;
+
     @OneToMany(mappedBy = "estudianteId")
-    private Collection<Constancia> constanciaCollection;
-    
+    private Set<Constancia> constancias;
 
     public Estudiante() {
     }
 
-    
-    
-    public Estudiante(Integer id, int documento, String usuario, String contrasenia, String apellidos, String nombres,
-			Date fechaNacimiento, String mail, String telefono, Date generacion, Itr itr) {
-		super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
-		this.generacion=generacion;
-		super.setIdItr(itr);
-		//TODO Auto-generated constructor stub
-	}
+    public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Date generacion) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
+        this.generacion = generacion;
+    }
 
+    public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres,
+                      Date fechaNacimiento, String mail, String telefono, Date generacion, Itr itr) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
+        this.generacion = generacion;
+        super.setItr(itr);
+    }
 
-
-	public Estudiante(Date generacion) {
+    public Estudiante(Date generacion) {
         this.generacion = generacion;
     }
 
@@ -86,12 +83,12 @@ public class Estudiante extends Usuario implements Serializable{
     }
 
     @XmlTransient
-    public Collection<Justificacion> getJustificacionCollection() {
-        return justificacionCollection;
+    public Set<Justificacion> getJustificaciones() {
+        return justificaciones;
     }
 
-    public void setJustificacionCollection(Collection<Justificacion> justificacionCollection) {
-        this.justificacionCollection = justificacionCollection;
+    public void setJustificaciones(Set<Justificacion> justificaciones) {
+        this.justificaciones = justificaciones;
     }
 
     @XmlTransient
@@ -104,24 +101,22 @@ public class Estudiante extends Usuario implements Serializable{
     }
 
     @XmlTransient
-    public Collection<Reclamo> getReclamoCollection() {
-        return reclamoCollection;
+    public Set<Reclamo> getReclamos() {
+        return reclamos;
     }
 
-    public void setReclamoCollection(Collection<Reclamo> reclamoCollection) {
-        this.reclamoCollection = reclamoCollection;
+    public void setReclamos(Set<Reclamo> reclamos) {
+        this.reclamos = reclamos;
     }
 
     @XmlTransient
-    public Collection<Constancia> getConstanciaCollection() {
-        return constanciaCollection;
+    public Set<Constancia> getConstancias() {
+        return constancias;
     }
 
-    public void setConstanciaCollection(Collection<Constancia> constanciaCollection) {
-        this.constanciaCollection = constanciaCollection;
+    public void setConstancias(Set<Constancia> constancias) {
+        this.constancias = constancias;
     }
-
- 
 
     @Override
     public int hashCode() {
@@ -147,5 +142,5 @@ public class Estudiante extends Usuario implements Serializable{
     public String toString() {
         return "tecnofenix.entidades.Estudiante[ id=" + this.getId() + " ]";
     }
-    
+
 }
