@@ -9,9 +9,14 @@ import tecnofenix.exception.ServiciosException;
 
 @Remote
 public interface AccionJustificacionBeanRemote {
+	
 	AccionJustificacion crearAccionJustificacion(AccionJustificacion accionJusti) throws ServiciosException;
-	AccionJustificacion modificarAccionJustificacion(AccionJustificacion accionJusti) throws ServiciosException;
-	AccionJustificacion borrarAccionJustificacion(AccionJustificacion accionJusti) throws ServiciosException;
+	
+	void modificarAccionJustificacion(AccionJustificacion accionJusti) throws ServiciosException;
+	
+	void borrarAccionJustificacion(AccionJustificacion accionJusti) throws ServiciosException;
+	
 	List<AccionJustificacion> obtenerAccionJustificacionPorAtributo(AccionJustificacion accionJusti);
 	
+	List<AccionJustificacion> obtenerTodos();
 }
