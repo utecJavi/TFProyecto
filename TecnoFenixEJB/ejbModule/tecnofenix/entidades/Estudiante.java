@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jasuaga
  */
 @Entity
-@DiscriminatorValue(value = "ESTUDIANTE")
+@DiscriminatorValue(value = Usuario.TIPO_ESTUDIANTE)
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Estudiante.findAll", query = "SELECT e FROM Estudiante e"),
@@ -56,6 +56,12 @@ public class Estudiante extends Usuario {
     private Set<Constancia> constancias;
 
     public Estudiante() {
+    }
+
+    // TODO: falta separacion entre mail institucional y personal
+    public Estudiante(int id, int documento, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Date generacion) {
+        super(id, documento, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
+        this.generacion = generacion;
     }
 
     public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Date generacion) {

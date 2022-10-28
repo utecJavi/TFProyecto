@@ -17,7 +17,7 @@ import java.util.Date;
  * @author jasuaga
  */
 @Entity
-@DiscriminatorValue(value = "TUTOR")
+@DiscriminatorValue(value = Usuario.TIPO_TUTOR)
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Tutor.findAll", query = "SELECT t FROM Tutor t"),

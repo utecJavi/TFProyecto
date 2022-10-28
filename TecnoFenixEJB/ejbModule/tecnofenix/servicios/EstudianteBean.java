@@ -1,16 +1,15 @@
 package tecnofenix.servicios;
 
-import java.util.List;
+import tecnofenix.entidades.Estudiante;
+import tecnofenix.exception.ServiciosException;
+import tecnofenix.exception.UsuarioNoEncontradoException;
+import tecnofenix.interfaces.EstudianteBeanRemote;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
-
-import tecnofenix.entidades.Estudiante;
-import tecnofenix.exception.ServiciosException;
-import tecnofenix.interfaces.EstudianteBeanRemote;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.List;
 
 
 /**
@@ -18,14 +17,18 @@ import tecnofenix.interfaces.EstudianteBeanRemote;
  */
 @Stateless
 public class EstudianteBean implements EstudianteBeanRemote {
-	@PersistenceContext
+//	@PersistenceContext
 	private EntityManager em;
+
+	private UsuarioBean usuarioBean;
 	
     /**
      * Default constructor. 
      */
     public EstudianteBean() {
-        // TODO Auto-generated constructor stub
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TecnoFenixEJB");
+		em = entityManagerFactory.createEntityManager();
+		usuarioBean = new UsuarioBean();
     }
 
 	@Override
@@ -35,9 +38,27 @@ public class EstudianteBean implements EstudianteBeanRemote {
 	}
 
 	@Override
-	public Estudiante modificarEstudiante(Estudiante estudiante) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+	public Estudiante modificarEstudiante(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
+		System.out.println("ESTUDIANTE MODIFICADO 1 !");
+		Estudiante estudianteDb = (Estudiante) usuarioBean.encontrarUsuario(estudiante.getId());
+		System.out.println("ESTUDIANTE MODIFICADO 2 !");
+		estudianteDb.setDocumento(estudiante.getDocumento());
+		estudianteDb.setContrasenia(estudiante.getContrasenia());
+		estudianteDb.setApellidos(estudiante.getApellidos());
+		estudianteDb.setNombres(estudiante.getNombres());
+		estudianteDb.setFechaNacimiento(estudiante.getFechaNacimiento());
+		estudianteDb.setMail(estudiante.getMail());
+		estudianteDb.setTelefono(estudiante.getTelefono());
+		estudianteDb.setGeneracion(estudiante.getGeneracion());
+
+		System.out.println("ESTUDIANTE MODIFICADO 3 !");
+
+		em.merge(estudianteDb);
+		em.flush();
+
+		System.out.println("ESTUDIANTE MODIFICADO 4 !");
+
+		return estudianteDb;
 	}
 
 	@Override

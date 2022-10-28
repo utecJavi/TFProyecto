@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jasuaga
  */
 @Entity
-@DiscriminatorValue(value = "ANALISTA")
+@DiscriminatorValue(value = Usuario.TIPO_ANALISTA)
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Analista.findAll", query = "SELECT a FROM Analista a"),

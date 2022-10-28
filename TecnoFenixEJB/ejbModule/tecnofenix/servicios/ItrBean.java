@@ -1,6 +1,7 @@
 package tecnofenix.servicios;
 
 import tecnofenix.entidades.Itr;
+import tecnofenix.exception.ItrNoEncontradoException;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ItrBeanRemote;
 
@@ -54,10 +55,14 @@ public class ItrBean implements ItrBeanRemote {
 	
 	@Override
 	public Itr findById(Integer id) {
-		System.out.println("testito");
-		System.out.println(em);
 		TypedQuery<Itr> query = em.createNamedQuery("Itr.findById", Itr.class);
-		return query.setParameter("id", id).getSingleResult();
+		Itr itr = query.setParameter("id", id).getSingleResult();
+
+		if (itr == null) {
+			throw new ItrNoEncontradoException("ITR no encontrado.");
+		}
+
+		return itr;
 	}
 
 }

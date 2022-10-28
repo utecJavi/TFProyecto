@@ -41,6 +41,11 @@ import javax.xml.bind.annotation.XmlRootElement;
         @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")})
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    public static final String TIPO_ANALISTA = "ANALISTA";
+    public static final String TIPO_ESTUDIANTE = "ESTUDIANTE";
+    public static final String TIPO_TUTOR = "TUTOR";
+
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="usuario_seq")
     @SequenceGenerator(name="usuario_seq", sequenceName="usuario_seq", allocationSize=1)
@@ -113,6 +118,34 @@ public class Usuario implements Serializable {
 
     public Usuario() {
     }
+
+    public Usuario(int id, int documento, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono) {
+        this.id = id;
+        this.documento = documento;
+        this.contrasenia = contrasenia;
+        this.apellidos = apellidos;
+        this.nombres = nombres;
+        this.fechaNacimiento = fechaNacimiento;
+        this.mail = mail;
+        this.telefono = telefono;
+    }
+
+    public Usuario(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr) {
+        this.id = id;
+        this.documento = documento;
+        this.usuario = usuario;
+        this.contrasenia = contrasenia;
+        this.apellidos = apellidos;
+        this.nombres = nombres;
+        this.fechaNacimiento = fechaNacimiento;
+        this.departamento = departamento;
+        this.genero = genero;
+        this.localidad = localidad;
+        this.mail = mail;
+        this.telefono = telefono;
+        this.itr = itr;
+    }
+
 
     public Usuario(Integer id) {
         this.id = id;
@@ -274,6 +307,11 @@ public class Usuario implements Serializable {
 //    public void setAnalistaCollection(Collection<Analista> analistaCollection) {
 //        this.analistaCollection = analistaCollection;
 //    }
+
+    @Transient
+    public String getDecriminatorValue() {
+        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
+    }
 
     @Override
     public int hashCode() {
