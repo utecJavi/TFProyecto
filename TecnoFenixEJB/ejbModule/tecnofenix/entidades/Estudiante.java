@@ -63,7 +63,7 @@ public class Estudiante extends Usuario implements Serializable{
 
     
     
-    public Estudiante(Integer id, int documento, String usuario, String contrasenia, String apellidos, String nombres,
+    public Estudiante(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres,
 			Date fechaNacimiento, String mail, String telefono, Date generacion, Itr itr) {
 		super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
 		this.generacion=generacion;

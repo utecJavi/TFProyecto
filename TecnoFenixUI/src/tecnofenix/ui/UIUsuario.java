@@ -6,6 +6,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -21,9 +24,9 @@ import javax.swing.table.DefaultTableModel;
 
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.Estudiante;
+import tecnofenix.entidades.Itr;
 
 public class UIUsuario {
-
 
 	public JFrame frame;
 	private JTextField txtId;
@@ -34,15 +37,15 @@ public class UIUsuario {
 	JTable table;
 	DefaultTableModel modelo;
 	Object[] fila;
-	private JTextField txtSegNombre;
+	private JTextField txtNombreUsuario;
 	private JTextField txtApellido;
-	private JTextField txtSegApellido;
+	private JTextField txtTelefono;
 	private JTextField txtFechaNacimiento;
 	private JTextField txtEmail;
 	private JTextField txtDocumento;
-	private JTextField txtClave;
-	private JComboBox<String> comboBox;
-	
+	private JComboBox<Date> comboBoxGeneracion;
+	private JComboBox<Itr> comboBoxITR;
+
 	private EJBUsuarioRemoto usuarioRemote;
 
 	/**
@@ -98,7 +101,8 @@ public class UIUsuario {
 		table.setColumnSelectionAllowed(true);
 		table.setBackground(Color.BLACK);
 		// crea un array que contiene los nombre de las columnas
-		final String[] columnNames = { "Id","Generacion", "Documento", "Nombres","Apellidos","Fecha Nacimiento","e-mail","Usuario","ITR" };
+		final String[] columnNames = { "Id", "Generacion", "Documento", "Nombres", "Apellidos", "Fecha Nacimiento",
+				"e-mail", "Usuario", "ITR" };
 
 //U_TIPO, ID, APELLIDOS, CONTRASENIA, DEPARTAMENTO, DOCUMENTO, FECHA_NACIMIENTO, GENERO, LOCALIDAD, MAIL, NOMBRES, TELEFONO, USUARIO, AREA, TIPO, GENERACION, ID_ITR
 		// insertamos las columnas
@@ -109,7 +113,7 @@ public class UIUsuario {
 
 		// Se crea un array que será una de las filas de la tabla.
 		fila = new Object[columnNames.length];
-		allEstudiantes=usuarioRemote.listarEstudiantes();
+		allEstudiantes = usuarioRemote.listarEstudiantes();
 		// Se rellena cada posición del array con una de las columnas de la tabla en
 		// base de datos.
 
@@ -146,7 +150,7 @@ public class UIUsuario {
 		});
 		btnLimpiar.setBounds(671, 548, 85, 21);
 		panel.add(btnLimpiar);
-		
+
 		JButton btnBorrar = new JButton("Borrar");
 		btnBorrar.setBounds(671, 517, 85, 21);
 		btnBorrar.addActionListener(new ActionListener() {
@@ -156,109 +160,122 @@ public class UIUsuario {
 
 				if (row >= 0) {
 //					System.out.println(modelo.getValueAt(row, column));
-					String mensaje="Id "+modelo.getValueAt(row, 0).toString() +" Nombre "+modelo.getValueAt(row, 1).toString() +" Desc "+modelo.getValueAt(row, 2).toString();
+					String mensaje = "Id " + modelo.getValueAt(row, 0).toString() + " Nombre "
+							+ modelo.getValueAt(row, 1).toString() + " Desc " + modelo.getValueAt(row, 2).toString();
 
 					if (borrarRow(mensaje)) {
 //						daoPersona.delete(allPersona.get(row));
 						modelo.removeRow(row);
-						
+
 					}
 				}
 			}
 		});
 		panel.add(btnBorrar);
-		
-		JLabel lblSegundoNombre = new JLabel("Segundo Nombre:");
-		lblSegundoNombre.setBounds(396, 348, 133, 13);
-		panel.add(lblSegundoNombre);
-		
-		txtSegNombre = new JTextField();
-		txtSegNombre.setColumns(10);
-		txtSegNombre.setBounds(396, 361, 360, 19);
-		panel.add(txtSegNombre);
-		
+
+		JLabel lblNombreUsuario = new JLabel("Nombre de Usuario:");
+		lblNombreUsuario.setBounds(396, 348, 133, 13);
+		panel.add(lblNombreUsuario);
+
+		txtNombreUsuario = new JTextField();
+		txtNombreUsuario.setColumns(10);
+		txtNombreUsuario.setBounds(396, 361, 360, 19);
+		panel.add(txtNombreUsuario);
+
 		JLabel lblApellido = new JLabel("Apellido:");
 		lblApellido.setBounds(20, 390, 45, 13);
 		panel.add(lblApellido);
-		
+
 		txtApellido = new JTextField();
 		txtApellido.setColumns(10);
 		txtApellido.setBounds(20, 403, 360, 19);
 		panel.add(txtApellido);
-		
-		JLabel lblSegundoApellido = new JLabel("Segundo Apellido:");
-		lblSegundoApellido.setBounds(396, 390, 133, 13);
-		panel.add(lblSegundoApellido);
-		
-		txtSegApellido = new JTextField();
-		txtSegApellido.setColumns(10);
-		txtSegApellido.setBounds(396, 403, 360, 19);
-		panel.add(txtSegApellido);
-		
+
+		JLabel lblTelefono = new JLabel("Telefono:");
+		lblTelefono.setBounds(396, 390, 133, 13);
+		panel.add(lblTelefono);
+
+		txtTelefono = new JTextField();
+		txtTelefono.setColumns(10);
+		txtTelefono.setBounds(396, 403, 360, 19);
+		panel.add(txtTelefono);
+
 		JLabel lblFechaNacimiento = new JLabel("Fecha Nacimiento:");
 		lblFechaNacimiento.setBounds(20, 432, 85, 13);
 		panel.add(lblFechaNacimiento);
-		
+
 		txtFechaNacimiento = new JTextField();
 		txtFechaNacimiento.setColumns(10);
 		txtFechaNacimiento.setBounds(20, 445, 360, 19);
 		panel.add(txtFechaNacimiento);
-		
+
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setBounds(396, 432, 133, 13);
 		panel.add(lblEmail);
-		
+
 		txtEmail = new JTextField();
 		txtEmail.setColumns(10);
 		txtEmail.setBounds(396, 445, 360, 19);
 		panel.add(txtEmail);
-		
-		JLabel lblRol = new JLabel("Rol:");
-		lblRol.setBounds(20, 474, 45, 13);
-		panel.add(lblRol);
-		
+
+		JLabel lblGeneracion = new JLabel("Generacion:");
+		lblGeneracion.setBounds(20, 474, 133, 13);
+		panel.add(lblGeneracion);
+
 		JLabel lblDocumento = new JLabel("Documento:");
 		lblDocumento.setBounds(139, 325, 133, 13);
 		panel.add(lblDocumento);
-		
+
 		txtDocumento = new JTextField();
 		txtDocumento.setColumns(10);
 		txtDocumento.setBounds(206, 322, 189, 19);
 		panel.add(txtDocumento);
-		
-		
-		
+
 //		DAORol daoRol= new DAORol();
 //		List<Rol> rolCollection= new ArrayList<Rol>();
 //		rolCollection=daoRol.getAll();
+
+		comboBoxGeneracion = new JComboBox<Date>();
 		
-		comboBox = new JComboBox<String>();
-		
-		comboBox.addItem("Seleccione un Rol");
+		for (int i = 2011; i <= 2022; i++) {
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.YEAR, i);
+			cal.set(Calendar.MONTH, 0);
+			cal.set(Calendar.DAY_OF_MONTH, 1);
+			Date dateTmp=new Date(cal.getTimeInMillis());			
+			comboBoxGeneracion.addItem(dateTmp);
+		}
+
 //		for(Rol rol:rolCollection) {
 //			String nom =rol.getNombre();
 //			comboBox.addItem(nom);
 //		}
-		
+
 		// Accion a realizar cuando el JComboBox cambia de item seleccionado.
-		comboBox.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						System.out.println(comboBox.getSelectedItem().toString());
-					}
-				});
+		comboBoxGeneracion.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(comboBoxGeneracion.getSelectedItem().toString());
+			}
+		});
+
+		comboBoxGeneracion.setBounds(20, 486, 360, 21);
+		panel.add(comboBoxGeneracion);
+
+		comboBoxITR = new JComboBox<Itr>();
+		List<Itr>listItr = usuarioRemote.listarITR();
+		for(Itr itrItem: listItr){
+			comboBoxITR.addItem(itrItem);
+		}
 		
-		comboBox.setBounds(20, 486, 360, 21);
-		panel.add(comboBox);
 		
-		txtClave = new JTextField();
-		txtClave.setColumns(10);
-		txtClave.setBounds(396, 487, 189, 19);
-		panel.add(txtClave);
 		
-		JLabel lblPswd = new JLabel("Contrase\u00F1a:");
-		lblPswd.setBounds(396, 474, 95, 13);
-		panel.add(lblPswd);
+		comboBoxITR.setBounds(20, 529, 360, 21);
+		panel.add(comboBoxITR);
+
+		JLabel lblITR = new JLabel("ITR:");
+		lblITR.setBounds(20, 517, 133, 13);
+		panel.add(lblITR);
 
 		frame.pack();
 		frame.setVisible(true);
@@ -268,9 +285,9 @@ public class UIUsuario {
 	public void limpiar() {
 		txtId.setText("");
 		txtNombre.setText("");
-		txtSegNombre.setText("");
+		txtNombreUsuario.setText("");
 		txtApellido.setText("");
-		txtSegApellido.setText("");
+		txtTelefono.setText("");
 		txtFechaNacimiento.setText("");
 		txtDocumento.setText("");
 		txtEmail.setText("");
@@ -278,32 +295,43 @@ public class UIUsuario {
 	}
 
 	public void validarDatos() {
-		System.out.println("Validando datos UIPersona");
-		if (txtId.getText().equals("")) {
+		System.out.println("Validando datos UIESTUDIANTE");
+//		if (txtId.getText().equals("")) {
 //			msj.mostrarMensaje(Mensajes.ALTA_FUNCIONALIDAD_ID);
 //			txtId.setText(String.valueOf(daoPersona.maxId()+1));
-		} else {
-			if (validarId(Integer.valueOf(txtId.getText()))) {
+//		} else {
+//			if (validarId(Integer.valueOf(txtId.getText()))) {
 
-				if (txtNombre.getText().equals("") ||txtSegNombre.getText().equals("")||txtApellido.getText().equals("")
-						||txtSegApellido.getText().equals("")||txtEmail.getText().equals("")) {
+		if (txtNombre.getText().equals("") || txtNombreUsuario.getText().equals("") || txtApellido.getText().equals("")
+				|| txtTelefono.getText().equals("") || txtEmail.getText().equals("")
+				|| txtDocumento.getText().equals("")) {
 //					msj.mostrarMensaje(Mensajes.ERROR);
-				} else {
-					if (txtApellido.getText().equals("")) {
-//						msj.mostrarMensaje(Mensajes.ALTA_FUNCIONALIDAD_DESC);
-					} else {
-						addPersona();
-					}
-				}
-			}
+			System.out.println("FALTAN DATOS");
+		} else {
+//					if (txtApellido.getText().equals("")) {
+////						msj.mostrarMensaje(Mensajes.ALTA_FUNCIONALIDAD_DESC);
+//					} else {
+			System.out.println("AGREGANDO USUARIO ESTIDIANTE");
+			addEstudiante();
 		}
 	}
+//			}
+//		}
+//	}
 
-	public void addPersona() {
+	public void addEstudiante() {
 //		(Integer.valueOf(txtId.getText()), txtNombre.getText(),txtDesc.getText());
 //		Rol idRol = new Rol();
+		Estudiante estudiante = new Estudiante(null, Integer.valueOf(txtDocumento.getText()),
+				txtNombreUsuario.getText(), "123456", txtApellido.getText(), txtNombre.getText(),
+				new Date(System.currentTimeMillis()), txtEmail.getText(), txtTelefono.getText(),
+				new Date(System.currentTimeMillis()), (Itr) comboBoxITR.getSelectedItem());
+
+		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
+		System.err.println(estudiante.toString());
+		System.out.println("Se creo el usuario");
 		Date fechNac = new Date(System.currentTimeMillis());
-		comboBox.getSelectedItem();
+		comboBoxGeneracion.getSelectedItem();
 //		idRol=DAORol.getByName(comboBox.getSelectedItem().toString());
 //		Persona perTemp = new Persona(Integer.valueOf(txtId.getText()),
 //				txtDocumento.getText(),
@@ -343,18 +371,15 @@ public class UIUsuario {
 		return false;
 	}
 
-	
 	public boolean borrarRow(String mensaje) {
 //		msj.mostrarMensaje(Mensajes.BAJA);
-		
+
 		int dialogButton = JOptionPane.YES_NO_OPTION;
-		int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro quieres borrar: "+mensaje,"Warning",dialogButton);
-		if(dialogResult == JOptionPane.YES_OPTION){
+		int dialogResult = JOptionPane.showConfirmDialog(null, "Seguro quieres borrar: " + mensaje, "Warning",
+				dialogButton);
+		if (dialogResult == JOptionPane.YES_OPTION) {
 			return true;
 		}
 		return false;
 	}
-	
-	
-	
 }

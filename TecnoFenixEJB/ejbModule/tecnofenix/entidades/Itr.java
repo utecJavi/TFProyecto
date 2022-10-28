@@ -55,6 +55,7 @@ public class Itr implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idItr")
     private Collection<Usuario> usuarioCollection;
 
@@ -126,7 +127,7 @@ public class Itr implements Serializable {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Itr[ id=" + id + " ]";
+        return "[" + nombre + " ]";
     }
     
 }

@@ -70,7 +70,7 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "documento")
-    private int documento;
+    private Integer documento;
     
     @Basic(optional = false)
     @NotNull
@@ -164,11 +164,11 @@ public class Usuario implements Serializable {
         this.id = id;
     }
 
-    public int getDocumento() {
+    public Integer getDocumento() {
         return documento;
     }
 
-    public void setDocumento(int documento) {
+    public void setDocumento(Integer documento) {
         this.documento = documento;
     }
 
