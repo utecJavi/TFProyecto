@@ -117,7 +117,7 @@ public class UILogin {
 						txtPass.setText("");
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Usuario y contraseña no validos, intente nuevamente",
+					JOptionPane.showMessageDialog(null, "Usuario y contraseï¿½a no validos, intente nuevamente",
 							"Intente nuevamente", JOptionPane.INFORMATION_MESSAGE);
 
 				}
@@ -132,34 +132,39 @@ public class UILogin {
 			public void actionPerformed(ActionEvent e) {
 				
 				Itr itr=new Itr(null, "SanPetersburg", "UTEC Peter");
+				ejbUsuario.crearITR(itr);
+				Itr itr2=new Itr(null, "Duraxno", "UTEC Duraxno");
+				ejbUsuario.crearITR(itr2);
+				Itr itr3=new Itr(null, "Miami", "UTEC Miami");
+				ejbUsuario.crearITR(itr3);
 //				Estudiante usu = new Estudiante(null, 45829221, "jasuaga", "123456", "Asuaga", "Javier", new Date(System.currentTimeMillis()), "jasuaga@gmail.com", "098195890", new Date(System.currentTimeMillis()), new Itr(null, "Durazno", "UTEC Durazno"));
 //				usu=(Estudiante)ejbUsuario.crearUsuario(usu);
 //				System.err.println(usu.toString());
 //				System.out.println("Se creo el usuario");
-				
-				Estudiante usu1 = new Estudiante(null, 12345678, "pepe", "123456", "Gutierrez", "Danny", new Date(System.currentTimeMillis()), "dani@gmail.com", "099123456", new Date(System.currentTimeMillis()), itr);
-				usu1=(Estudiante)ejbUsuario.crearUsuario(usu1);
-				System.err.println(usu1.toString());
-				System.out.println("Se creo el usuario");
-				
-				Estudiante usu2 = new Estudiante(null, 87654321, "hola", "123456", "Orlando", "Maximiliano", new Date(System.currentTimeMillis()), "maxi@gmail.com", "099321654", new Date(System.currentTimeMillis()), itr);
-				usu2=(Estudiante)ejbUsuario.crearUsuario(usu2);
-				System.err.println(usu2.toString());
-				System.out.println("Se creo el usuario");
-				
+
+//				Estudiante usu1 = new Estudiante(null, 12345678, "pepe", "123456", "Gutierrez", "Danny", new Date(System.currentTimeMillis()), "dani@gmail.com", "099123456", new Date(System.currentTimeMillis()), itr);
+//				usu1=(Estudiante)ejbUsuario.crearUsuario(usu1);
+//				System.err.println(usu1.toString());
+//				System.out.println("Se creo el usuario");
+//
+//				Estudiante usu2 = new Estudiante(null, 87654321, "hola", "123456", "Orlando", "Maximiliano", new Date(System.currentTimeMillis()), "maxi@gmail.com", "099321654", new Date(System.currentTimeMillis()), itr);
+//				usu2=(Estudiante)ejbUsuario.crearUsuario(usu2);
+//				System.err.println(usu2.toString());
+//				System.out.println("Se creo el usuario");
+
 //				Tutor tut = new Tutor(null, 45829222, "jasuaga", "123456", "Asuaga", "Javier", new Date(System.currentTimeMillis()), "jasuaga@gmail.com", "098195890",itr,1,1);
 //				tut.setIdItr(itr);
 //				tut=(Tutor)ejbUsuario.crearUsuario(tut);
 //				System.err.println(tut.toString());
 //				System.out.println("Se creo el usuario Tutor");
-				
-				
+
+
 			}
 		});
 		btnLogin_1.setBounds(78, 295, 85, 21);
 		panel.add(btnLogin_1);
-		
-		
+
+
 		frame.pack();
 		frame.setVisible(true);
 

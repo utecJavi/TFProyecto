@@ -31,41 +31,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author jasuaga
  */
 @Entity
 @Table(name = "justificacion")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Justificacion.findAll", query = "SELECT j FROM Justificacion j"),
-    @NamedQuery(name = "Justificacion.findById", query = "SELECT j FROM Justificacion j WHERE j.id = :id"),
-    @NamedQuery(name = "Justificacion.findByDetalle", query = "SELECT j FROM Justificacion j WHERE j.detalle = :detalle"),
-    @NamedQuery(name = "Justificacion.findByFecha", query = "SELECT j FROM Justificacion j WHERE j.fecha = :fecha")})
+@NamedQueries({@NamedQuery(name = "Justificacion.findAll", query = "SELECT j FROM Justificacion j"), @NamedQuery(name = "Justificacion.findById", query = "SELECT j FROM Justificacion j WHERE j.id = :id"), @NamedQuery(name = "Justificacion.findByDetalle", query = "SELECT j FROM Justificacion j WHERE j.detalle = :detalle"), @NamedQuery(name = "Justificacion.findByFecha", query = "SELECT j FROM Justificacion j WHERE j.fecha = :fecha")})
 public class Justificacion implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="justificacion_seq")
-    @SequenceGenerator(name="justificacion_seq", sequenceName="justificacion_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "justificacion_seq")
+    @SequenceGenerator(name = "justificacion_seq", sequenceName = "justificacion_seq", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "detalle")
     private String detalle;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+
     @JoinColumn(name = "evento_id", referencedColumnName = "id")
     @ManyToOne
     private Evento eventoId;
+
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     @ManyToOne
     private Estudiante estudianteId;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "justificacionId")
     private Collection<AccionJustificacion> accionJustificacionCollection;
 
@@ -155,5 +156,5 @@ public class Justificacion implements Serializable {
     public String toString() {
         return "tecnofenix.entidades.Justificacion[ id=" + id + " ]";
     }
-    
+
 }

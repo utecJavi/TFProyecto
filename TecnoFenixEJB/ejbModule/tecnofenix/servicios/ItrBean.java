@@ -9,6 +9,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 import tecnofenix.entidades.Itr;
+import tecnofenix.exception.ItrNoEncontradoException;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ItrBeanRemote;
 
@@ -50,6 +51,27 @@ public class ItrBean implements ItrBeanRemote {
 	public List<Itr> obtenerItrPorAtributo(Itr itr) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Itr findById(Integer id) {
+		TypedQuery<Itr> query = em.createNamedQuery("Itr.findById", Itr.class);
+		Itr itr = query.setParameter("id", id).getSingleResult();
+
+		if (itr == null) {
+			throw new ItrNoEncontradoException("ITR no encontrado.");
+		}
+
+		return itr;
+	}
+
+	@Override
+	public List<Itr> listarItr() throws ServiciosException {
+		TypedQuery<Itr> query = em.createQuery("SELECT i FROM Itr i ",Itr.class);
+
+		em.flush();
+		System.out.println("ESTUDIANTEBEAN LUEGO DE LA QUERY listarItr");
+		return query.getResultList();
 	}
 
 }

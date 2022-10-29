@@ -1,16 +1,15 @@
 package tecnofenix.servicios;
 
-import java.util.List;
+import tecnofenix.entidades.Tutor;
+import tecnofenix.exception.ServiciosException;
+import tecnofenix.exception.UsuarioNoEncontradoException;
+import tecnofenix.interfaces.TutorBeanRemote;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
-
-import tecnofenix.entidades.Tutor;
-import tecnofenix.exception.ServiciosException;
-import tecnofenix.interfaces.TutorBeanRemote;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.List;
 
 
 /**
@@ -18,26 +17,68 @@ import tecnofenix.interfaces.TutorBeanRemote;
  */
 @Stateless
 public class TutorBean implements TutorBeanRemote  {
-	@PersistenceContext
+//	@PersistenceContext
 	private EntityManager em;
+
+	private UsuarioBean usuarioBean;
 	
     /**
      * Default constructor. 
      */
     public TutorBean() {
-        // TODO Auto-generated constructor stub
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TecnoFenixEJB");
+		em = entityManagerFactory.createEntityManager();
+		usuarioBean = new UsuarioBean();
     }
 
 	@Override
 	public Tutor crearTutor(Tutor tutor) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("ANALISTA MODIFICADO 1 !");
+		Tutor tutorDb = (Tutor) usuarioBean.encontrarUsuario(tutor.getId());
+		System.out.println("ANALISTA MODIFICADO 2 !");
+		tutorDb.setDocumento(tutor.getDocumento());
+		tutorDb.setContrasenia(tutor.getContrasenia());
+		tutorDb.setApellidos(tutor.getApellidos());
+		tutorDb.setNombres(tutor.getNombres());
+		tutorDb.setFechaNacimiento(tutor.getFechaNacimiento());
+		tutorDb.setMail(tutor.getMail());
+		tutorDb.setTelefono(tutor.getTelefono());
+
+		System.out.println("1 MODIFICADO 3 !");
+
+		em.merge(tutorDb);
+		em.flush();
+
+		System.out.println("ANALISTA MODIFICADO 4 !");
+
+		return tutorDb;
 	}
 
 	@Override
-	public Tutor modificarTutor(Tutor tutor) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+	public Tutor modificarTutorPropio(Tutor tutor) throws ServiciosException, UsuarioNoEncontradoException {
+		if (tutor.getId() == null) {
+			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
+		}
+
+		Tutor tutorDb = (Tutor) usuarioBean.encontrarUsuario(tutor.getId());
+		tutorDb.setContrasenia(tutor.getContrasenia());
+		tutorDb.setArea(tutor.getArea());
+		tutorDb.setTipo(tutor.getTipo());
+
+		return (Tutor) usuarioBean.modificarUsuario(tutorDb, tutor);
+	}
+
+	@Override
+	public Tutor modificarTutorAdmin(Tutor tutor) throws ServiciosException, UsuarioNoEncontradoException {
+		if (tutor.getId() == null) {
+			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
+		}
+
+		Tutor tutorDb = (Tutor) usuarioBean.encontrarUsuario(tutor.getId());
+		tutorDb.setArea(tutor.getArea());
+		tutorDb.setTipo(tutor.getTipo());
+
+		return (Tutor) usuarioBean.modificarUsuario(tutorDb, tutor);
 	}
 
 	@Override
