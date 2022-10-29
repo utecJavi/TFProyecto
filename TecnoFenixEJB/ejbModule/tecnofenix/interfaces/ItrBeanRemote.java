@@ -14,4 +14,6 @@ public interface ItrBeanRemote {
 	Itr borrarItr(Itr itr) throws ServiciosException;
 	List<Itr> obtenerItrPorAtributo(Itr itr);
 	Itr findById(Integer id);
+	List<Itr> listarItr()throws ServiciosException;
+
 }

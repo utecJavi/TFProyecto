@@ -8,7 +8,6 @@ package tecnofenix.entidades;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,42 +24,49 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
+ *
  * @author jasuaga
  */
 @Entity
 @DiscriminatorValue(value = Usuario.TIPO_ESTUDIANTE)
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Estudiante.findAll", query = "SELECT e FROM Estudiante e"),
-        @NamedQuery(name = "Estudiante.findById", query = "SELECT e FROM Estudiante e WHERE e.id = :id"),
-        @NamedQuery(name = "Estudiante.findByGeneracion", query = "SELECT e FROM Estudiante e WHERE e.generacion = :generacion")})
+    @NamedQuery(name = "Estudiante.findAll", query = "SELECT e FROM Estudiante e"),
+    @NamedQuery(name = "Estudiante.findById", query = "SELECT e FROM Estudiante e WHERE e.id = :id"),
+    @NamedQuery(name = "Estudiante.findByGeneracion", query = "SELECT e FROM Estudiante e WHERE e.generacion = :generacion")})
 public class Estudiante extends Usuario {
     private static final long serialVersionUID = 1L;
-
-    // TODO: falta separacion entre mail institucional y personal
-    // TODO: falta un atributo booleano que sea verificado o similar
-
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "generacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date generacion;
-
+    
     @OneToMany(mappedBy = "estudianteId")
-    private Set<Justificacion> justificaciones;
-
+    private Collection<Justificacion> justificacionCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estudianteId")
     private Collection<ConvocatoriaAsistenciaEventoEstudiante> convocatoriaAsistenciaEventoEstudianteCollection;
-
+    
     @OneToMany(mappedBy = "estudianteId")
-    private Set<Reclamo> reclamos;
-
+    private Collection<Reclamo> reclamoCollection;
+    
     @OneToMany(mappedBy = "estudianteId")
-    private Set<Constancia> constancias;
+    private Collection<Constancia> constanciaCollection;
+    
 
     public Estudiante() {
     }
 
+
+
+    public Estudiante(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres,
+                      Date fechaNacimiento, String mail, String telefono, Date generacion, Itr itr) {
+        super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
+        this.generacion=generacion;
+        super.setIdItr(itr);
+    }
     public Estudiante(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Date generacion) {
         super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
         this.generacion = generacion;
@@ -76,7 +82,7 @@ public class Estudiante extends Usuario {
         this.generacion = generacion;
     }
 
-    public Estudiante(Date generacion) {
+	public Estudiante(Date generacion) {
         this.generacion = generacion;
     }
 
@@ -89,12 +95,12 @@ public class Estudiante extends Usuario {
     }
 
     @XmlTransient
-    public Set<Justificacion> getJustificaciones() {
-        return justificaciones;
+    public Collection<Justificacion> getJustificacionCollection() {
+        return justificacionCollection;
     }
 
-    public void setJustificaciones(Set<Justificacion> justificaciones) {
-        this.justificaciones = justificaciones;
+    public void setJustificacionCollection(Collection<Justificacion> justificacionCollection) {
+        this.justificacionCollection = justificacionCollection;
     }
 
     @XmlTransient
@@ -107,21 +113,21 @@ public class Estudiante extends Usuario {
     }
 
     @XmlTransient
-    public Set<Reclamo> getReclamos() {
-        return reclamos;
+    public Collection<Reclamo> getReclamoCollection() {
+        return reclamoCollection;
     }
 
-    public void setReclamos(Set<Reclamo> reclamos) {
-        this.reclamos = reclamos;
+    public void setReclamoCollection(Collection<Reclamo> reclamoCollection) {
+        this.reclamoCollection = reclamoCollection;
     }
 
     @XmlTransient
-    public Set<Constancia> getConstancias() {
-        return constancias;
+    public Collection<Constancia> getConstanciaCollection() {
+        return constanciaCollection;
     }
 
-    public void setConstancias(Set<Constancia> constancias) {
-        this.constancias = constancias;
+    public void setConstanciaCollection(Collection<Constancia> constanciaCollection) {
+        this.constanciaCollection = constanciaCollection;
     }
 
     @Override
@@ -144,15 +150,9 @@ public class Estudiante extends Usuario {
         return true;
     }
 
-
-
     @Override
     public String toString() {
-        return "Estudiante {" +
-                "id=" + getId() +
-                ", documento=" + getDocumento() +
-                ", usuario='" + getUsuario() + '\'' +
-                ", generacion='" + getGeneracion() + '\'' +
-                '}';
+        return "tecnofenix.entidades.Estudiante[ id=" + this.getId() + " ]";
     }
+    
 }

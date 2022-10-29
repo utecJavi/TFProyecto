@@ -1,11 +1,13 @@
 package tecnofenix.interfaces;
 
+import java.util.List;
+
+import javax.ejb.Remote;
+
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
 
-import javax.ejb.Remote;
-import java.util.List;
 
 @Remote
 public interface EstudianteBeanRemote {
@@ -14,6 +16,10 @@ public interface EstudianteBeanRemote {
 	Estudiante modificarEstudiantePropio(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException;
 	Estudiante modificarEstudianteAdmin(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException;
 	Estudiante borrarEstudiante(Estudiante estudiante) throws ServiciosException;
-	List<Estudiante> obtenerEstudiantePorAtributo(Estudiante estudiante);
-	
+	Estudiante obtenerEstudiantePorAtributo(String documento)throws ServiciosException;
+	List<Estudiante> listarEstudiantes()throws ServiciosException;
+	List<Estudiante> listarAsistenciasAEventos(Integer eventoId)throws ServiciosException;
+	List<Estudiante> listarJustificaciones(Integer justificacionId)throws ServiciosException;
+	List<Estudiante> lisatEstudiantePorReclamos(Integer reclamoId)throws ServiciosException;
+	List<Estudiante> listarConstancias(Integer constanciaId)throws ServiciosException;
 }

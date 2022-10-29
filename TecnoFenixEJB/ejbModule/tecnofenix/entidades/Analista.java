@@ -7,8 +7,15 @@
 package tecnofenix.entidades;
 
 import java.util.Collection;
-import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -20,22 +27,24 @@ import javax.xml.bind.annotation.XmlTransient;
 @DiscriminatorValue(value = Usuario.TIPO_ANALISTA)
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Analista.findAll", query = "SELECT a FROM Analista a"),
-        @NamedQuery(name = "Analista.findById", query = "SELECT a FROM Analista a WHERE a.id = :id")})
+    @NamedQuery(name = "Analista.findAll", query = "SELECT a FROM Analista a"),
+    @NamedQuery(name = "Analista.findById", query = "SELECT a FROM Analista a WHERE a.id = :id")})
 public class Analista extends Usuario {
     private static final long serialVersionUID = 1L;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analistaId")
     private Collection<AccionReclamo> accionReclamoCollection;
-
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analistaId")
     private Collection<AccionJustificacion> accionJustificacionCollection;
-
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analistaId")
     private Collection<AccionConstancia> accionConstanciaCollection;
-
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analistaId")
     private Collection<GestionEventoAnalista> gestionEventoAnalistaCollection;
+    
+
 
     public Analista() {
     }
@@ -88,6 +97,7 @@ public class Analista extends Usuario {
         this.gestionEventoAnalistaCollection = gestionEventoAnalistaCollection;
     }
 
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -112,4 +122,5 @@ public class Analista extends Usuario {
     public String toString() {
         return "Analista{} " + super.toString();
     }
+    
 }

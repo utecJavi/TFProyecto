@@ -7,23 +7,34 @@
 package tecnofenix.entidades;
 
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
+ *
  * @author jasuaga
  */
 @Entity
 @DiscriminatorValue(value = Usuario.TIPO_TUTOR)
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Tutor.findAll", query = "SELECT t FROM Tutor t"),
-        @NamedQuery(name = "Tutor.findById", query = "SELECT t FROM Tutor t WHERE t.id = :id"),
-        @NamedQuery(name = "Tutor.findByTipo", query = "SELECT t FROM Tutor t WHERE t.tipo = :tipo"),
-        @NamedQuery(name = "Tutor.findByArea", query = "SELECT t FROM Tutor t WHERE t.area = :area")})
+    @NamedQuery(name = "Tutor.findAll", query = "SELECT t FROM Tutor t"),
+    @NamedQuery(name = "Tutor.findById", query = "SELECT t FROM Tutor t WHERE t.id = :id"),
+    @NamedQuery(name = "Tutor.findByTipo", query = "SELECT t FROM Tutor t WHERE t.tipo = :tipo"),
+    @NamedQuery(name = "Tutor.findByArea", query = "SELECT t FROM Tutor t WHERE t.area = :area")})
 public class Tutor extends Usuario {
     private static final long serialVersionUID = 1L;
 
@@ -53,7 +64,7 @@ public class Tutor extends Usuario {
     }
 
 
-    public Tutor(Integer id) {
+	public Tutor(Integer id) {
         super.setId(id);
     }
 
@@ -110,4 +121,5 @@ public class Tutor extends Usuario {
                 ", area=" + area +
                 "} " + super.toString();
     }
+    
 }

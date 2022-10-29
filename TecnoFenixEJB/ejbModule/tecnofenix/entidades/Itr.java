@@ -26,16 +26,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
+ *
  * @author jasuaga
  */
 @Entity
 @Table(name = "itr")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Itr.findAll", query = "SELECT i FROM Itr i"),
-        @NamedQuery(name = "Itr.findById", query = "SELECT i FROM Itr i WHERE i.id = :id"),
-        @NamedQuery(name = "Itr.findByDepartamento", query = "SELECT i FROM Itr i WHERE i.departamento = :departamento"),
-        @NamedQuery(name = "Itr.findByNombre", query = "SELECT i FROM Itr i WHERE i.nombre = :nombre")})
+    @NamedQuery(name = "Itr.findAll", query = "SELECT i FROM Itr i"),
+    @NamedQuery(name = "Itr.findById", query = "SELECT i FROM Itr i WHERE i.id = :id"),
+    @NamedQuery(name = "Itr.findByDepartamento", query = "SELECT i FROM Itr i WHERE i.departamento = :departamento"),
+    @NamedQuery(name = "Itr.findByNombre", query = "SELECT i FROM Itr i WHERE i.nombre = :nombre")})
 public class Itr implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -68,7 +69,8 @@ public class Itr implements Serializable {
         this.id = id;
     }
 
-    public Itr(String departamento, String nombre) {
+    public Itr(Integer id, String departamento, String nombre) {
+        this.id = id;
         this.departamento = departamento;
         this.nombre = nombre;
     }
@@ -128,7 +130,7 @@ public class Itr implements Serializable {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Itr[ id=" + id + " ]";
+        return "[" + nombre + " ]";
     }
-
+    
 }
