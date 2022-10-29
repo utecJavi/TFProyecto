@@ -21,11 +21,13 @@ public class EstudianteBean implements EstudianteBeanRemote {
 	@PersistenceContext
 	private EntityManager em;
 
+	private UsuarioBean usuarioBean;
+
 	/**
 	 * Default constructor.
 	 */
 	public EstudianteBean() {
-		// TODO Auto-generated constructor stub
+		usuarioBean = new UsuarioBean();
 	}
 
 	@Override
@@ -36,13 +38,6 @@ public class EstudianteBean implements EstudianteBeanRemote {
 		return estudiante;
 	}
 
-	@Override
-	public Estudiante modificarEstudiante(Estudiante estudiante) throws ServiciosException {
-		if (estudiante != null) {
-			estudiante = em.merge(estudiante);
-		}
-		return estudiante;
-	}
     @Override
     public Estudiante modificarEstudiantePropio(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
         if (estudiante.getId() == null) {
