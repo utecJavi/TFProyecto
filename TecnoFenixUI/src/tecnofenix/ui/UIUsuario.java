@@ -31,7 +31,6 @@ public class UIUsuario {
 	public JFrame frame;
 	private JTextField txtId;
 	private JTextField txtNombre;
-//	private DAOPersona daoPersona;
 	private List<Estudiante> allEstudiantes;
 //	MensajePopUp msj = new MensajePopUp();
 	JTable table;
@@ -330,8 +329,8 @@ public class UIUsuario {
 		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
 		System.err.println(estudiante.toString());
 		System.out.println("Se creo el usuario");
-		Date fechNac = new Date(System.currentTimeMillis());
-		comboBoxGeneracion.getSelectedItem();
+//		Date fechNac = new Date(System.currentTimeMillis());
+//		comboBoxGeneracion.getSelectedItem();
 //		idRol=DAORol.getByName(comboBox.getSelectedItem().toString());
 //		Persona perTemp = new Persona(Integer.valueOf(txtId.getText()),
 //				txtDocumento.getText(),
