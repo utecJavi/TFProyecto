@@ -43,6 +43,9 @@ public class Analista extends Usuario {
     public Analista(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
         super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
     }
+    public Analista(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+        super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
+    }
 
     public Analista(Integer id) {
         super.setId(id);

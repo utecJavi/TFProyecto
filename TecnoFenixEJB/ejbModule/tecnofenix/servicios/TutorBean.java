@@ -55,22 +55,7 @@ public class TutorBean implements TutorBeanRemote  {
 	}
 
 	@Override
-	public Tutor modificarTutor(Tutor tutorDb, Tutor tutor) throws ServiciosException {
-		tutorDb.setDocumento(tutor.getDocumento());
-		tutorDb.setApellidos(tutor.getApellidos());
-		tutorDb.setNombres(tutor.getNombres());
-		tutorDb.setFechaNacimiento(tutor.getFechaNacimiento());
-		tutorDb.setMail(tutor.getMail());
-		tutorDb.setTelefono(tutor.getTelefono());
-
-		em.merge(tutorDb);
-		em.flush();
-
-		return tutorDb;
-	}
-
-	@Override
-	public Tutor modificarTutorPropio(Tutor tutor) throws ServiciosException {
+	public Tutor modificarTutorPropio(Tutor tutor) throws ServiciosException, UsuarioNoEncontradoException {
 		if (tutor.getId() == null) {
 			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
 		}
@@ -80,11 +65,11 @@ public class TutorBean implements TutorBeanRemote  {
 		tutorDb.setArea(tutor.getArea());
 		tutorDb.setTipo(tutor.getTipo());
 
-		return modificarTutor(tutorDb, tutor);
+		return (Tutor) usuarioBean.modificarUsuario(tutorDb, tutor);
 	}
 
 	@Override
-	public Tutor modificarTutorAdmin(Tutor tutor) throws ServiciosException {
+	public Tutor modificarTutorAdmin(Tutor tutor) throws ServiciosException, UsuarioNoEncontradoException {
 		if (tutor.getId() == null) {
 			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
 		}
@@ -93,7 +78,7 @@ public class TutorBean implements TutorBeanRemote  {
 		tutorDb.setArea(tutor.getArea());
 		tutorDb.setTipo(tutor.getTipo());
 
-		return modificarTutor(tutorDb, tutor);
+		return (Tutor) usuarioBean.modificarUsuario(tutorDb, tutor);
 	}
 
 	@Override

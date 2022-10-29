@@ -61,8 +61,8 @@ public class Estudiante extends Usuario {
     public Estudiante() {
     }
 
-    public Estudiante(int id, int documento, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Date generacion) {
-        super(id, documento, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
+    public Estudiante(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Date generacion) {
+        super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
         this.generacion = generacion;
     }
 
@@ -144,10 +144,15 @@ public class Estudiante extends Usuario {
         return true;
     }
 
+
+
     @Override
     public String toString() {
-        return "Estudiante{" +
-                "generacion=" + generacion +
-                "} " + super.toString();
+        return "Estudiante {" +
+                "id=" + getId() +
+                ", documento=" + getDocumento() +
+                ", usuario='" + getUsuario() + '\'' +
+                ", generacion='" + getGeneracion() + '\'' +
+                '}';
     }
 }

@@ -38,22 +38,7 @@ public class AnalistaBean implements AnalistaBeanRemote {
 	}
 
 	@Override
-	public Analista modificarAnalista(Analista analistaDb, Analista analista) throws ServiciosException {
-		analistaDb.setDocumento(analista.getDocumento());
-		analistaDb.setApellidos(analista.getApellidos());
-		analistaDb.setNombres(analista.getNombres());
-		analistaDb.setFechaNacimiento(analista.getFechaNacimiento());
-		analistaDb.setMail(analista.getMail());
-		analistaDb.setTelefono(analista.getTelefono());
-
-		em.merge(analistaDb);
-		em.flush();
-
-		return analistaDb;
-	}
-
-	@Override
-	public Analista modificarAnalistaPropio(Analista analista) throws ServiciosException {
+	public Analista modificarAnalistaPropio(Analista analista) throws ServiciosException, UsuarioNoEncontradoException {
 		if (analista.getId() == null) {
 			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
 		}
@@ -62,18 +47,18 @@ public class AnalistaBean implements AnalistaBeanRemote {
 
 		analistaDb.setContrasenia(analista.getContrasenia());
 
-		return modificarAnalista(analistaDb, analista);
+		return (Analista) usuarioBean.modificarUsuario(analistaDb, analista);
 	}
 
 	@Override
-	public Analista modificarAnalistaAdmin(Analista analista) throws ServiciosException {
+	public Analista modificarAnalistaAdmin(Analista analista) throws ServiciosException, UsuarioNoEncontradoException {
 		if (analista.getId() == null) {
 			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
 		}
 
 		Analista analistaDb = (Analista) usuarioBean.encontrarUsuario(analista.getId());
 
-		return modificarAnalista(analistaDb, analista);
+		return (Analista) usuarioBean.modificarUsuario(analistaDb, analista);
 	}
 
 	@Override

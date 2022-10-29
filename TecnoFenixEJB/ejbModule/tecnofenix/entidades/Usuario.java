@@ -119,34 +119,6 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(int id, int documento, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono) {
-        this.id = id;
-        this.documento = documento;
-        this.contrasenia = contrasenia;
-        this.apellidos = apellidos;
-        this.nombres = nombres;
-        this.fechaNacimiento = fechaNacimiento;
-        this.mail = mail;
-        this.telefono = telefono;
-    }
-
-    public Usuario(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr) {
-        this.id = id;
-        this.documento = documento;
-        this.usuario = usuario;
-        this.contrasenia = contrasenia;
-        this.apellidos = apellidos;
-        this.nombres = nombres;
-        this.fechaNacimiento = fechaNacimiento;
-        this.departamento = departamento;
-        this.genero = genero;
-        this.localidad = localidad;
-        this.mail = mail;
-        this.telefono = telefono;
-        this.itr = itr;
-    }
-
-
     public Usuario(Integer id) {
         this.id = id;
     }
@@ -178,6 +150,27 @@ public class Usuario implements Serializable {
     }
 
     public Usuario(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+        this.documento = documento;
+        this.usuario = usuario;
+        this.contrasenia = contrasenia;
+        this.apellidos = apellidos;
+        this.nombres = nombres;
+        this.fechaNacimiento = fechaNacimiento;
+        this.mail = mail;
+        this.telefono = telefono;
+        this.itr = itr;
+    }
+    public Usuario(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+        this.id = id;
+        this.documento = documento;
+        this.usuario = usuario;
+        this.contrasenia = contrasenia;
+        this.apellidos = apellidos;
+        this.nombres = nombres;
+        this.fechaNacimiento = fechaNacimiento;
+        this.mail = mail;
+        this.telefono = telefono;
+        this.itr = itr;
     }
 
     public Integer getId() {

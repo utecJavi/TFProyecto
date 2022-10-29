@@ -2,6 +2,7 @@ package tecnofenix.ui;
 
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.*;
+import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.UsuarioBeanRemote;
 
@@ -110,35 +111,37 @@ public class UILogin {
         btnLogin_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // creaciones
-                Estudiante estudiante = new Estudiante(1234567, "test2", "contra", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1), new Date(System.currentTimeMillis()));
-                Analista analista = new Analista(1234567, "test3", "contra","Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1));
-                Tutor tutor = new Tutor(1234567, "test4", "contra", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1), 1, 2);
+//                Estudiante estudiante = new Estudiante(1234567, "test2", "contra", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1), new Date(System.currentTimeMillis()));
+//                Analista analista = new Analista(1234567, "test3", "contra","Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1));
+//                Tutor tutor = new Tutor(1234567, "test4", "contra", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1), 1, 2);
 
 
                 // modificaciones
-//                Estudiante estudiante = new Estudiante(1, 1234567, "test", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Date(System.currentTimeMillis()));
-//                Analista analista = new Analista(1, 1234567, "test", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Date(System.currentTimeMillis()));
-//                Tutor tutor = new Tutor(1, 1234567, "test", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Date(System.currentTimeMillis()));
+                Estudiante estudiante = new Estudiante(23, 1234567, "test10", "contra25", "Testito20", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1), new Date(System.currentTimeMillis()));
+                Analista analista = new Analista(24, 1234567, "test11", "contra26", "Testito30", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1));
+                Tutor tutor = new Tutor(25, 1234567, "test12", "contra27", "Testito40", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1), 1, 2);
                 try {
-                    System.out.println("ESTUDIANTE 1: "+estudiante);
-                    Estudiante estudiante1 = (Estudiante) ejbUsuario.crearUsuario(estudiante);
-                    Analista analista1 = (Analista) ejbUsuario.crearUsuario(analista);
-                    Tutor tutor1 = (Tutor) ejbUsuario.crearUsuario(tutor);
+                    // creaciones
+//                    Estudiante estudiante1 = (Estudiante) ejbUsuario.crearUsuario(estudiante);
+//                    Analista analista1 = (Analista) ejbUsuario.crearUsuario(analista);
+//                    Tutor tutor1 = (Tutor) ejbUsuario.crearUsuario(tutor);
+//
+                    Estudiante estudiante1 = ejbUsuario.modificarEstudiantePropio(estudiante);
+                    Analista analista1 =  ejbUsuario.modificarAnalistaPropio(analista);
+                    Tutor tutor1 = ejbUsuario.modificarTutorPropio(tutor);
 
                     System.out.println("----- LLEGO ACA");
                     System.out.println(estudiante1);
                     System.out.println(analista1);
                     System.out.println(tutor1);
 
-//                    estudiante = ejbUsuario.modificarEstudiantePropio(estudiante);
-
                 } catch (UsuarioNoEncontradoException ex) {
                     System.out.println("Usuario NO ENCONTRADO!!!");
                     ex.printStackTrace();
-                } /*catch (ServiciosException e1) {
+                } catch (ServiciosException e1) {
                     System.out.println("Usuario NO ENCONTRADO 2222 !!!");
                     e1.printStackTrace();
-                }*/
+                }
                 System.out.println("Se encontro el usuario: " + estudiante.getNombres());
             }
         });

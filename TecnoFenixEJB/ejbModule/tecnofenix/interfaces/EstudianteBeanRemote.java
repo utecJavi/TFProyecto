@@ -11,7 +11,6 @@ import java.util.List;
 public interface EstudianteBeanRemote {
 	Estudiante crearEstudiante(Estudiante estudiante) throws ServiciosException;
 
-	Estudiante modificarEstudiante(Estudiante estudianteDb, Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException;
 	Estudiante modificarEstudiantePropio(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException;
 	Estudiante modificarEstudianteAdmin(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException;
 	Estudiante borrarEstudiante(Estudiante estudiante) throws ServiciosException;
