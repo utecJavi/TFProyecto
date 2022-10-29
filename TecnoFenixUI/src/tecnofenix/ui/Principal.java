@@ -99,6 +99,7 @@ public class Principal {
 			public void actionPerformed(ActionEvent e) {
 				
 				bajaConstancia baj = new bajaConstancia(frame);
+				frame.pack();
 				baj.setVisible(true);
 				
 			}
@@ -110,6 +111,13 @@ public class Principal {
 		
 		JMenu evento;
 		JMenuItem evenAlta= new JMenuItem("Alta Eventos");
+		evenAlta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UIEvento uiEvento = new UIEvento();
+				uiEvento.inicializar();
+				uiEvento.frame.setVisible(true);
+			}
+		});
 		JMenuItem evenMod= new JMenuItem("Modificacion Eventos");
 		JMenuItem evenDelete= new JMenuItem("Borrar Eventos");
 		evento= new JMenu("Eventos");

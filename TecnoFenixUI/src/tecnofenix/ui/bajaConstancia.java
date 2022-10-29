@@ -1,9 +1,5 @@
 package tecnofenix.ui;
 
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -11,20 +7,19 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.AccionConstancia;
 import tecnofenix.interfaces.AccionConstanciaBeanRemote;
 import tecnofenix.interfaces.UsuarioBeanRemote;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.swing.BorderFactory;
+
 import javax.swing.JButton;
 
 public class bajaConstancia extends JFrame {
@@ -37,65 +32,6 @@ public class bajaConstancia extends JFrame {
 	AccionConstanciaBeanRemote accionRemote;
 	protected Object frame;
 	
-	public FrameListarMascotas(JFrame framePadre) {
-
-		
-
-		this.initalizeFrame(framePadre);
-	}
-
-	private void initalizeFrame(JFrame framePadre) {
-
-		JFrame frame = new JFrame("Listado de Mascotas");
-		frame.setSize(600, 600);
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		JPanel listarMascotasPanel = new JPanel(new GridBagLayout());
-		listarMascotasPanel.setSize(600, 600);
-
-		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets = new Insets(10, 2, 2, 10);
-
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		listarMascotasPanel.add(this.labelPatente, constraints);
-
-		constraints.gridx = 1;
-		listarMascotasPanel.add(this.textPatente, constraints);
-
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		listarMascotasPanel.add(this.labelTipo, constraints);
-
-		constraints.gridx = 1;
-		this.comboTipo = this.completarComboTipo();
-		this.comboTipo.setSelectedIndex(0);
-		listarMascotasPanel.add(this.comboTipo, constraints);
-
-		constraints.gridx = 0;
-		constraints.gridy = 5;
-		constraints.gridwidth = 5;
-		constraints.anchor = GridBagConstraints.CENTER;
-		this.tablaMascotas = this.cargarTablaMascotas();
-		listarMascotasPanel.add(new JScrollPane(this.tablaMascotas), constraints);
-
-		listarMascotasPanel
-				.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Lista de Mascotas"));
-
-		frame.add(listarMascotasPanel);
-
-		this.textPatente.getDocument().addDocumentListener(this);
-		this.comboTipo.addItemListener(this);
-
-		// frame.pack();
-		frame.setVisible(true);
-
-		this.frame = frame;
-
-	}
 	
 	public bajaConstancia(JFrame framePadre) {
 		try {
