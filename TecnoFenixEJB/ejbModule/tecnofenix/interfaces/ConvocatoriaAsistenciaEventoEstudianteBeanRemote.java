@@ -9,9 +9,16 @@ import tecnofenix.exception.ServiciosException;
 
 @Remote
 public interface ConvocatoriaAsistenciaEventoEstudianteBeanRemote {
+	
 	ConvocatoriaAsistenciaEventoEstudiante crearClase(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu) throws ServiciosException;
+	
 	ConvocatoriaAsistenciaEventoEstudiante modificarClase(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu) throws ServiciosException;
+	
 	ConvocatoriaAsistenciaEventoEstudiante borrarClase(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu) throws ServiciosException;
-	List<ConvocatoriaAsistenciaEventoEstudiante> obtenerClasePorAtributo(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu);
+	
+	List<ConvocatoriaAsistenciaEventoEstudiante> obtetenerTodos();
+
+	List<ConvocatoriaAsistenciaEventoEstudiante> obtenerClasePorAtributo(
+			ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu);
 	
 }

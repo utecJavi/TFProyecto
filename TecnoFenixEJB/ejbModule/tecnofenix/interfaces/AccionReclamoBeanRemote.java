@@ -9,9 +9,13 @@ import tecnofenix.exception.ServiciosException;
 
 @Remote
 public interface AccionReclamoBeanRemote {
+	
 	AccionReclamo crearAccionReclamo(AccionReclamo accionReclamo) throws ServiciosException;
+	
 	AccionReclamo modificarAccionReclamo(AccionReclamo accionReclamo) throws ServiciosException;
+	
 	AccionReclamo borrarAccionReclamo(AccionReclamo accionReclamo) throws ServiciosException;
+	
 	List<AccionReclamo> obtenerAccionReclamoPorAtributo(AccionReclamo accionReclamo);
 	
 }
