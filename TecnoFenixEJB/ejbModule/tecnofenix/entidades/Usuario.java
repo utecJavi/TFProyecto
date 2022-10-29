@@ -6,6 +6,7 @@
 
 package tecnofenix.entidades;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -14,6 +15,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -144,7 +146,7 @@ public class Usuario implements Serializable {
         this.id = id;
     }
 
-    public Usuario(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr) {
+    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr) {
         this.documento = documento;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
@@ -159,7 +161,7 @@ public class Usuario implements Serializable {
         this.itr = itr;
     }
 
-    public Usuario(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono) {
+    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono) {
         this.documento = documento;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
@@ -170,7 +172,7 @@ public class Usuario implements Serializable {
         this.telefono = telefono;
     }
 
-    public Usuario(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
         this.documento = documento;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
@@ -181,7 +183,7 @@ public class Usuario implements Serializable {
         this.telefono = telefono;
         this.itr = itr;
     }
-    public Usuario(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+    public Usuario(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
         this.id = id;
         this.documento = documento;
         this.usuario = usuario;

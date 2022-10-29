@@ -6,11 +6,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -125,7 +122,7 @@ public class UIUsuario {
 			fila[5] = estu.getFechaNacimiento();
 			fila[6] = estu.getMail();
 			fila[7] = estu.getUsuario();
-			fila[8] = estu.getIdItr().getNombre();
+			fila[8] = estu.getItr().getNombre();
 			modelo.addRow(fila);
 		}
 
@@ -321,10 +318,10 @@ public class UIUsuario {
 	public void addEstudiante() {
 //		(Integer.valueOf(txtId.getText()), txtNombre.getText(),txtDesc.getText());
 //		Rol idRol = new Rol();
-		Estudiante estudiante = new Estudiante(null, Integer.valueOf(txtDocumento.getText()),
+		Estudiante estudiante = new Estudiante( Integer.valueOf(txtDocumento.getText()),
 				txtNombreUsuario.getText(), "123456", txtApellido.getText(), txtNombre.getText(),
 				new Date(System.currentTimeMillis()), txtEmail.getText(), txtTelefono.getText(),
-				new Date(System.currentTimeMillis()), (Itr) comboBoxITR.getSelectedItem());
+				(Itr) comboBoxITR.getSelectedItem(),new Date(System.currentTimeMillis()));
 
 		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
 		System.err.println(estudiante.toString());
