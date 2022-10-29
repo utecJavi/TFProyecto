@@ -39,8 +39,9 @@ public class UsuarioBean implements UsuarioBeanRemote {
 //			itr=itrBean.crearItr(itr);
 //			usuario.setIdItr(itr);
 //		}
-        System.out.println("HERNAN USUARIOOOO: " + em);
-        System.out.println(usuario.getItr());
+    	System.out.println("COSITAS PA");
+        System.out.println("HERNAN USUARIOOOO 2: " + usuario);
+        System.out.println(itrBean);
         usuario.setItr(itrBean.findById(usuario.getItr().getId()));
         System.out.println("TEST1");
         em.persist(usuario);
@@ -50,22 +51,9 @@ public class UsuarioBean implements UsuarioBeanRemote {
         return usuario;
     }
 
-
     @Override
-    public int printTest() {
-        System.out.println("COSITAS!!!!");
-        return 4;
-    }
-
-    @Override
-    public Usuario modificarUsuario(Usuario usuario) throws ServiciosException, UsuarioNoEncontradoException {
-        if (usuario.getId() == null) {
-            throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
-        }
-
-        Usuario usuarioDb = encontrarUsuario(usuario.getId());
+    public Usuario modificarUsuario(Usuario usuarioDb, Usuario usuario) throws ServiciosException, UsuarioNoEncontradoException {
         usuarioDb.setDocumento(usuario.getDocumento());
-        usuarioDb.setContrasenia(usuario.getContrasenia());
         usuarioDb.setApellidos(usuario.getApellidos());
         usuarioDb.setNombres(usuario.getNombres());
         usuarioDb.setFechaNacimiento(usuario.getFechaNacimiento());
@@ -121,17 +109,12 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 
     public Usuario encontrarUsuario(Integer id) throws UsuarioNoEncontradoException {
-        System.out.println("ENCONTRANDO USUARIO ID: " + id);
         TypedQuery<Usuario> query = em.createNamedQuery("Usuario.findById", Usuario.class);
         Usuario usuario = query.setParameter("id", id).getSingleResult();
-
-        System.out.println("SIGUIO HASTA ACA!");
 
         if (usuario == null) {
             throw new UsuarioNoEncontradoException("Usuario no encontrado.");
         }
-
-        System.out.println("USUARIO ENCONTRADO: " + usuario.getNombres());
 
         return usuario;
     }

@@ -10,12 +10,13 @@ import java.util.List;
 @Remote
 public interface UsuarioBeanRemote {
 	Usuario crearUsuario(Usuario usuario) throws ServiciosException;
-	Usuario modificarUsuario(Usuario usuario) throws ServiciosException, UsuarioNoEncontradoException;
+
+	Usuario modificarUsuario(Usuario usuarioDb, Usuario usuario) throws ServiciosException, UsuarioNoEncontradoException;
+
 	Usuario borrarUsuario(Usuario usuario) throws ServiciosException;
 	Usuario login(String usuario,String pass) throws ServiciosException;
 	Usuario encontrarUsuario(Integer id) throws UsuarioNoEncontradoException;
 	List<Usuario> obtenerUsuarioPorAtributo(Usuario usuario);
-	int printTest();
 
 	
 }

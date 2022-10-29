@@ -17,60 +17,78 @@ import java.util.List;
  */
 @Stateless
 public class EstudianteBean implements EstudianteBeanRemote {
-//	@PersistenceContext
-	private EntityManager em;
+    //	@PersistenceContext
+    private EntityManager em;
 
-	private UsuarioBean usuarioBean;
-	
+    private UsuarioBean usuarioBean;
+
     /**
-     * Default constructor. 
+     * Default constructor.
      */
     public EstudianteBean() {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TecnoFenixEJB");
-		em = entityManagerFactory.createEntityManager();
-		usuarioBean = new UsuarioBean();
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TecnoFenixEJB");
+        em = entityManagerFactory.createEntityManager();
+        usuarioBean = new UsuarioBean();
     }
 
-	@Override
-	public Estudiante crearEstudiante(Estudiante estudiante) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Estudiante crearEstudiante(Estudiante estudiante) throws ServiciosException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Estudiante modificarEstudiante(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
-		System.out.println("ESTUDIANTE MODIFICADO 1 !");
-		Estudiante estudianteDb = (Estudiante) usuarioBean.encontrarUsuario(estudiante.getId());
-		System.out.println("ESTUDIANTE MODIFICADO 2 !");
-		estudianteDb.setDocumento(estudiante.getDocumento());
-		estudianteDb.setContrasenia(estudiante.getContrasenia());
-		estudianteDb.setApellidos(estudiante.getApellidos());
-		estudianteDb.setNombres(estudiante.getNombres());
-		estudianteDb.setFechaNacimiento(estudiante.getFechaNacimiento());
-		estudianteDb.setMail(estudiante.getMail());
-		estudianteDb.setTelefono(estudiante.getTelefono());
-		estudianteDb.setGeneracion(estudiante.getGeneracion());
+    @Override
+    public Estudiante modificarEstudiante(Estudiante estudianteDb, Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
+        estudianteDb.setDocumento(estudiante.getDocumento());
+        estudianteDb.setApellidos(estudiante.getApellidos());
+        estudianteDb.setNombres(estudiante.getNombres());
+        estudianteDb.setFechaNacimiento(estudiante.getFechaNacimiento());
+        estudianteDb.setMail(estudiante.getMail());
+        estudianteDb.setTelefono(estudiante.getTelefono());
 
-		System.out.println("ESTUDIANTE MODIFICADO 3 !");
+        em.merge(estudianteDb);
+        em.flush();
 
-		em.merge(estudianteDb);
-		em.flush();
+        return estudianteDb;
+    }
 
-		System.out.println("ESTUDIANTE MODIFICADO 4 !");
+    @Override
+    public Estudiante modificarEstudiantePropio(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
+        if (estudiante.getId() == null) {
+            throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
+        }
 
-		return estudianteDb;
-	}
+        Estudiante estudianteDb = (Estudiante) usuarioBean.encontrarUsuario(estudiante.getId());
 
-	@Override
-	public Estudiante borrarEstudiante(Estudiante estudiante) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        estudianteDb.setContrasenia(estudiante.getContrasenia());
+        estudianteDb.setGeneracion(estudiante.getGeneracion());
 
-	@Override
-	public List<Estudiante> obtenerEstudiantePorAtributo(Estudiante estudiante) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        return modificarEstudiante(estudianteDb, estudiante);
+    }
+
+    @Override
+    public Estudiante modificarEstudianteAdmin(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
+        if (estudiante.getId() == null) {
+            throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
+        }
+
+        Estudiante estudianteDb = (Estudiante) usuarioBean.encontrarUsuario(estudiante.getId());
+        estudianteDb.setGeneracion(estudiante.getGeneracion());
+
+        // TODO: RF001-03 faltan atributos de estado validado o no de usuario, aceptacion de su solicitud y modificar el tipo de usuario
+        return modificarEstudiante(estudianteDb, estudiante);
+    }
+
+    @Override
+    public Estudiante borrarEstudiante(Estudiante estudiante) throws ServiciosException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Estudiante> obtenerEstudiantePorAtributo(Estudiante estudiante) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

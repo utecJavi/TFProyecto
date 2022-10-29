@@ -1,9 +1,7 @@
 package tecnofenix.ui;
 
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
-import tecnofenix.entidades.Estudiante;
-import tecnofenix.entidades.Usuario;
-import tecnofenix.exception.ServiciosException;
+import tecnofenix.entidades.*;
 import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.UsuarioBeanRemote;
 
@@ -111,16 +109,36 @@ public class UILogin {
         JButton btnLogin_1 = new JButton("Login");
         btnLogin_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Estudiante estudiante = new Estudiante(1, 1234567, "test", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Date(System.currentTimeMillis()));
+                // creaciones
+                Estudiante estudiante = new Estudiante(1234567, "test2", "contra", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1), new Date(System.currentTimeMillis()));
+                Analista analista = new Analista(1234567, "test3", "contra","Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1));
+                Tutor tutor = new Tutor(1234567, "test4", "contra", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Itr(1), 1, 2);
+
+
+                // modificaciones
+//                Estudiante estudiante = new Estudiante(1, 1234567, "test", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Date(System.currentTimeMillis()));
+//                Analista analista = new Analista(1, 1234567, "test", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Date(System.currentTimeMillis()));
+//                Tutor tutor = new Tutor(1, 1234567, "test", "Testito", "El Nuevo Nombre", new Date(System.currentTimeMillis()), "mail@mail.com", "123123123", new Date(System.currentTimeMillis()));
                 try {
-                    estudiante = ejbUsuario.modificarEstudiante(estudiante);
+                    System.out.println("ESTUDIANTE 1: "+estudiante);
+                    Estudiante estudiante1 = (Estudiante) ejbUsuario.crearUsuario(estudiante);
+                    Analista analista1 = (Analista) ejbUsuario.crearUsuario(analista);
+                    Tutor tutor1 = (Tutor) ejbUsuario.crearUsuario(tutor);
+
+                    System.out.println("----- LLEGO ACA");
+                    System.out.println(estudiante1);
+                    System.out.println(analista1);
+                    System.out.println(tutor1);
+
+//                    estudiante = ejbUsuario.modificarEstudiantePropio(estudiante);
+
                 } catch (UsuarioNoEncontradoException ex) {
                     System.out.println("Usuario NO ENCONTRADO!!!");
                     ex.printStackTrace();
-                } catch (ServiciosException e1) {
+                } /*catch (ServiciosException e1) {
                     System.out.println("Usuario NO ENCONTRADO 2222 !!!");
                     e1.printStackTrace();
-                }
+                }*/
                 System.out.println("Se encontro el usuario: " + estudiante.getNombres());
             }
         });

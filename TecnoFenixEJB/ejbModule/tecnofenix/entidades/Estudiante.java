@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Estudiante extends Usuario {
     private static final long serialVersionUID = 1L;
 
+    // TODO: falta separacion entre mail institucional y personal
+    // TODO: falta un atributo booleano que sea verificado o similar
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "generacion")
@@ -58,27 +61,19 @@ public class Estudiante extends Usuario {
     public Estudiante() {
     }
 
-    // TODO: falta separacion entre mail institucional y personal
     public Estudiante(int id, int documento, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Date generacion) {
         super(id, documento, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
         this.generacion = generacion;
     }
 
-    public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Date generacion) {
-        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
+    public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Date generacion) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
         this.generacion = generacion;
     }
 
     public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr, Date generacion) {
         super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, departamento, genero, localidad, mail, telefono, itr);
         this.generacion = generacion;
-    }
-
-    public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres,
-                      Date fechaNacimiento, String mail, String telefono, Date generacion, Itr itr) {
-        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
-        this.generacion = generacion;
-        super.setItr(itr);
     }
 
     public Estudiante(Date generacion) {
@@ -151,7 +146,8 @@ public class Estudiante extends Usuario {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Estudiante[ id=" + this.getId() + " ]";
+        return "Estudiante{" +
+                "generacion=" + generacion +
+                "} " + super.toString();
     }
-
 }

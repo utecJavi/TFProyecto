@@ -38,11 +38,9 @@ public class Tutor extends Usuario {
     public Tutor() {
     }
 
-
     public Tutor(int documento, String usuario, String contrasenia, String apellidos, String nombres,
                  Date fechaNacimiento, String mail, String telefono, Itr itr, Integer tipo, Integer area) {
-        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
-        super.setItr(itr);
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
         this.tipo = tipo;
         this.area = area;
     }
@@ -100,7 +98,9 @@ public class Tutor extends Usuario {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Tutor[ id=" + this.getId() + " ]";
+        return "Tutor{" +
+                "tipo=" + tipo +
+                ", area=" + area +
+                "} " + super.toString();
     }
-
 }

@@ -177,6 +177,9 @@ public class Usuario implements Serializable {
         this.telefono = telefono;
     }
 
+    public Usuario(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+    }
+
     public Integer getId() {
         return id;
     }
@@ -335,7 +338,20 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Usuario[ id=" + id + " ]";
+        return "Usuario{" +
+                "id=" + id +
+                ", documento=" + documento +
+                ", usuario='" + usuario + '\'' +
+                ", contrasenia='" + contrasenia + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", nombres='" + nombres + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", departamento='" + departamento + '\'' +
+                ", genero='" + genero + '\'' +
+                ", localidad='" + localidad + '\'' +
+                ", mail='" + mail + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", itr=" + itr +
+                '}';
     }
-
 }

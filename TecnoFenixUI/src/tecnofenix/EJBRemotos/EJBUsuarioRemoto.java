@@ -84,10 +84,8 @@ public class EJBUsuarioRemoto {
     public Usuario crearUsuario(Usuario usuario) {
 
         try {
-            System.out.println("LEVANTANDOOO USUARIO");
+            System.out.println("ESTUDIANTE 2: " + usuario);
             usuario = usuarioRemote.crearUsuario(usuario);
-            int number = usuarioRemote.printTest();
-            System.out.println(number);
         } catch (Exception e) {
             System.out.println("DASDASDASDASDASDASDASD");
             System.out.println(e.getMessage());
@@ -97,12 +95,8 @@ public class EJBUsuarioRemoto {
         return usuario;
     }
 
-    public Estudiante modificarEstudiante(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
-        return estudianteRemote.modificarEstudiante(estudiante);
-    }
-
-    public Usuario modificarUsuario(Usuario usuario) throws ServiciosException, UsuarioNoEncontradoException {
-        return usuarioRemote.modificarUsuario(usuario);
+    public Estudiante modificarEstudiantePropio(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
+        return estudianteRemote.modificarEstudiantePropio(estudiante);
     }
 
     public Usuario encontrarUsuario(int id) throws UsuarioNoEncontradoException {

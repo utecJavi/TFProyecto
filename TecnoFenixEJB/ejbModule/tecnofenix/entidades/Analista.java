@@ -7,6 +7,7 @@
 package tecnofenix.entidades;
 
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -37,6 +38,10 @@ public class Analista extends Usuario {
     private Collection<GestionEventoAnalista> gestionEventoAnalistaCollection;
 
     public Analista() {
+    }
+
+    public Analista(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
     }
 
     public Analista(Integer id) {
@@ -102,7 +107,6 @@ public class Analista extends Usuario {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Analista[ id=" + this.getId() + " ]";
+        return "Analista{} " + super.toString();
     }
-
 }
