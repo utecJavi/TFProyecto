@@ -56,4 +56,10 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 		return null;
 	}
 
+	@Override
+	public List<ConvocatoriaAsistenciaEventoEstudiante> obtetenerTodos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
