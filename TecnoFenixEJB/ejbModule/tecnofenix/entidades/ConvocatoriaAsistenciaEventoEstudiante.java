@@ -36,23 +36,28 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ConvocatoriaAsistenciaEventoEstudiante.findByAsistencia", query = "SELECT c FROM ConvocatoriaAsistenciaEventoEstudiante c WHERE c.asistencia = :asistencia")})
 public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="conv_asist_even_estu_seq")
     @SequenceGenerator(name="conv_asist_even_estu_seq", sequenceName="conv_asist_even_estu_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "calificacion")
     private int calificacion;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "asistencia")
     private short asistencia;
+
     @JoinColumn(name = "evento_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Evento eventoId;
+
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Estudiante estudianteId;

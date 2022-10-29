@@ -8,9 +8,15 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import tecnofenix.entidades.*;
+import tecnofenix.entidades.Analista;
+import tecnofenix.entidades.Estudiante;
+import tecnofenix.entidades.Tutor;
+import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
+import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.*;
 import tecnofenix.servicios.ConexionClienteJNDIRemote;
+
 
 public class EJBUsuarioRemoto {
 
@@ -197,4 +203,19 @@ public class EJBUsuarioRemoto {
 	 * METODOS ITR REMOTOS FIN
 	 */
 
+	public Estudiante modificarEstudiantePropio(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
+		return estudianteRemote.modificarEstudiantePropio(estudiante);
+	}
+
+	public Analista modificarAnalistaPropio(Analista analista) throws ServiciosException, UsuarioNoEncontradoException {
+		return analistaBeanRemote.modificarAnalistaPropio(analista);
+	}
+
+	public Tutor modificarTutorPropio(Tutor tutor) throws ServiciosException, UsuarioNoEncontradoException {
+		return tutorBeanRemote.modificarTutorPropio(tutor);
+	}
+
+	public Usuario encontrarUsuario(int id) throws UsuarioNoEncontradoException {
+		return usuarioRemote.encontrarUsuario(id);
+	}
 }

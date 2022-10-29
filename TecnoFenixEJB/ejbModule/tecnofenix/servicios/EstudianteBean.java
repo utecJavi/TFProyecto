@@ -11,8 +11,8 @@ import javax.persistence.TypedQuery;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
+import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.EstudianteBeanRemote;
-
 /**
  * Session Bean implementation class CarrerasBean
  */
@@ -43,6 +43,32 @@ public class EstudianteBean implements EstudianteBeanRemote {
 		}
 		return estudiante;
 	}
+    @Override
+    public Estudiante modificarEstudiantePropio(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
+        if (estudiante.getId() == null) {
+            throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
+        }
+
+        Estudiante estudianteDb = (Estudiante) usuarioBean.encontrarUsuario(estudiante.getId());
+
+        estudianteDb.setContrasenia(estudiante.getContrasenia());
+        estudianteDb.setGeneracion(estudiante.getGeneracion());
+
+        return (Estudiante) usuarioBean.modificarUsuario(estudianteDb, estudiante);
+    }
+
+    @Override
+    public Estudiante modificarEstudianteAdmin(Estudiante estudiante) throws ServiciosException, UsuarioNoEncontradoException {
+        if (estudiante.getId() == null) {
+            throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
+        }
+
+        Estudiante estudianteDb = (Estudiante) usuarioBean.encontrarUsuario(estudiante.getId());
+        estudianteDb.setGeneracion(estudiante.getGeneracion());
+
+        // TODO: RF001-03 faltan atributos de estado validado o no de usuario, aceptacion de su solicitud y modificar el tipo de usuario
+        return (Estudiante) usuarioBean.modificarUsuario(estudianteDb, estudiante);
+    }
 
 	@Override
 	public Estudiante borrarEstudiante(Estudiante estudiante) throws ServiciosException {
@@ -134,7 +160,7 @@ public class EstudianteBean implements EstudianteBeanRemote {
 		System.out.println("ESTUDIANTEBEAN LUEGO DE LA QUERY listarConstancias");
 		return query.getResultList();
 	}
-	
+
 	@Override
 	public List<Estudiante> listarEstudiantes() throws ServiciosException {
 		TypedQuery<Estudiante> query = em.createQuery("SELECT e FROM Estudiante e ",Estudiante.class);

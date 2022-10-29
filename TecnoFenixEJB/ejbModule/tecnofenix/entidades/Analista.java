@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jasuaga
  */
 @Entity
-@DiscriminatorValue(value ="Analista")
+@DiscriminatorValue(value = Usuario.TIPO_ANALISTA)
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Analista.findAll", query = "SELECT a FROM Analista a"),
@@ -47,6 +47,13 @@ public class Analista extends Usuario {
 
 
     public Analista() {
+    }
+
+    public Analista(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
+    }
+    public Analista(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+        super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
     }
 
     public Analista(Integer id) {
@@ -113,7 +120,7 @@ public class Analista extends Usuario {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Analista[ id=" + this.getId() + " ]";
+        return "Analista{} " + super.toString();
     }
     
 }

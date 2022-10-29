@@ -6,13 +6,11 @@
 
 package tecnofenix.entidades;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -30,13 +28,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jasuaga
  */
 @Entity
-@DiscriminatorValue(value ="Estudiante")
+@DiscriminatorValue(value = Usuario.TIPO_ESTUDIANTE)
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Estudiante.findAll", query = "SELECT e FROM Estudiante e"),
     @NamedQuery(name = "Estudiante.findById", query = "SELECT e FROM Estudiante e WHERE e.id = :id"),
     @NamedQuery(name = "Estudiante.findByGeneracion", query = "SELECT e FROM Estudiante e WHERE e.generacion = :generacion")})
-public class Estudiante extends Usuario implements Serializable{
+public class Estudiante extends Usuario {
     private static final long serialVersionUID = 1L;
     
     @Basic(optional = false)
@@ -61,17 +59,28 @@ public class Estudiante extends Usuario implements Serializable{
     public Estudiante() {
     }
 
-    
-    
+
+
     public Estudiante(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres,
-			Date fechaNacimiento, String mail, String telefono, Date generacion, Itr itr) {
-		super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
-		this.generacion=generacion;
-		super.setIdItr(itr);
-		//TODO Auto-generated constructor stub
-	}
+                      Date fechaNacimiento, String mail, String telefono, Date generacion, Itr itr) {
+        super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
+        this.generacion=generacion;
+        super.setIdItr(itr);
+    }
+    public Estudiante(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Date generacion) {
+        super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
+        this.generacion = generacion;
+    }
 
+    public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Date generacion) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
+        this.generacion = generacion;
+    }
 
+    public Estudiante(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr, Date generacion) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, departamento, genero, localidad, mail, telefono, itr);
+        this.generacion = generacion;
+    }
 
 	public Estudiante(Date generacion) {
         this.generacion = generacion;
@@ -120,8 +129,6 @@ public class Estudiante extends Usuario implements Serializable{
     public void setConstanciaCollection(Collection<Constancia> constanciaCollection) {
         this.constanciaCollection = constanciaCollection;
     }
-
- 
 
     @Override
     public int hashCode() {

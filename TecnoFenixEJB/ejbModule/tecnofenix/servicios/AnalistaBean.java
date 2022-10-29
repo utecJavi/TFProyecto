@@ -1,16 +1,15 @@
 package tecnofenix.servicios;
 
-import java.util.List;
+import tecnofenix.entidades.Analista;
+import tecnofenix.exception.ServiciosException;
+import tecnofenix.exception.UsuarioNoEncontradoException;
+import tecnofenix.interfaces.AnalistaBeanRemote;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
-
-import tecnofenix.entidades.Analista;
-import tecnofenix.exception.ServiciosException;
-import tecnofenix.interfaces.AnalistaBeanRemote;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.List;
 
 
 /**
@@ -18,14 +17,18 @@ import tecnofenix.interfaces.AnalistaBeanRemote;
  */
 @Stateless
 public class AnalistaBean implements AnalistaBeanRemote {
-	@PersistenceContext
+//	@PersistenceContext
 	private EntityManager em;
+
+	private UsuarioBean usuarioBean;
 	
     /**
      * Default constructor. 
      */
     public AnalistaBean() {
-        // TODO Auto-generated constructor stub
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TecnoFenixEJB");
+		em = entityManagerFactory.createEntityManager();
+		usuarioBean = new UsuarioBean();
     }
 
 	@Override
@@ -35,9 +38,27 @@ public class AnalistaBean implements AnalistaBeanRemote {
 	}
 
 	@Override
-	public Analista modificarAnalista(Analista analista) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+	public Analista modificarAnalistaPropio(Analista analista) throws ServiciosException, UsuarioNoEncontradoException {
+		if (analista.getId() == null) {
+			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
+		}
+
+		Analista analistaDb = (Analista) usuarioBean.encontrarUsuario(analista.getId());
+
+		analistaDb.setContrasenia(analista.getContrasenia());
+
+		return (Analista) usuarioBean.modificarUsuario(analistaDb, analista);
+	}
+
+	@Override
+	public Analista modificarAnalistaAdmin(Analista analista) throws ServiciosException, UsuarioNoEncontradoException {
+		if (analista.getId() == null) {
+			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
+		}
+
+		Analista analistaDb = (Analista) usuarioBean.encontrarUsuario(analista.getId());
+
+		return (Analista) usuarioBean.modificarUsuario(analistaDb, analista);
 	}
 
 	@Override

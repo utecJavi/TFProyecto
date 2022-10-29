@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jasuaga
  */
 @Entity
-@DiscriminatorValue(value ="Tutor")
+@DiscriminatorValue(value = Usuario.TIPO_TUTOR)
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tutor.findAll", query = "SELECT t FROM Tutor t"),
@@ -42,25 +42,26 @@ public class Tutor extends Usuario {
     private Integer tipo;
     @Column(name = "area")
     private Integer area;
-//    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
-//    @ManyToOne
-//    private Usuario idUsuario;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tutorId")
     private Collection<TutorResponsableEvento> tutorResponsableEventoCollection;
 
     public Tutor() {
     }
 
-    
-    
-    public Tutor(Integer id, int documento, String usuario, String contrasenia, String apellidos, String nombres,
-			Date fechaNacimiento, String mail, String telefono,Itr itr,Integer tipo, Integer area) {
-		super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono);
-		super.setIdItr(itr);
-		this.tipo = tipo;
-		this.area = area;
-	}
+    public Tutor(int documento, String usuario, String contrasenia, String apellidos, String nombres,
+                 Date fechaNacimiento, String mail, String telefono, Itr itr, Integer tipo, Integer area) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
+        this.tipo = tipo;
+        this.area = area;
+    }
 
+    public Tutor(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres,
+                 Date fechaNacimiento, String mail, String telefono, Itr itr, Integer tipo, Integer area) {
+        super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
+        this.tipo = tipo;
+        this.area = area;
+    }
 
 
 	public Tutor(Integer id) {
@@ -83,14 +84,6 @@ public class Tutor extends Usuario {
     public void setArea(Integer area) {
         this.area = area;
     }
-
-//    public Usuario getIdUsuario() {
-//        return idUsuario;
-//    }
-//
-//    public void setIdUsuario(Usuario idUsuario) {
-//        this.idUsuario = idUsuario;
-//    }
 
     @XmlTransient
     public Collection<TutorResponsableEvento> getTutorResponsableEventoCollection() {
@@ -123,7 +116,10 @@ public class Tutor extends Usuario {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Tutor[ id=" + this.getId() + " ]";
+        return "Tutor{" +
+                "tipo=" + tipo +
+                ", area=" + area +
+                "} " + super.toString();
     }
     
 }

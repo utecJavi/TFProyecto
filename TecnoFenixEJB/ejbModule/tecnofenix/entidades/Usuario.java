@@ -39,9 +39,11 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jasuaga
  */
 @Entity
-
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "u_tipo",discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(
+        name = "u_tipo",
+        discriminatorType = DiscriminatorType.STRING
+)
 @Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
@@ -60,13 +62,18 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")})
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    public static final String TIPO_ANALISTA = "ANALISTA";
+    public static final String TIPO_ESTUDIANTE = "ESTUDIANTE";
+    public static final String TIPO_TUTOR = "TUTOR";
+
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="usuario_seq")
     @SequenceGenerator(name="usuario_seq", sequenceName="usuario_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "documento")
@@ -77,65 +84,58 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "usuario")
     private String usuario;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "contrasenia")
     private String contrasenia;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "apellidos")
     private String apellidos;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "nombres")
     private String nombres;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_nacimiento")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNacimiento;
-    
+
     @Size(max = 45)
     @Column(name = "departamento")
     private String departamento;
-    
+
     @Size(max = 1)
     @Column(name = "genero")
     private String genero;
-    
+
     @Size(max = 45)
     @Column(name = "localidad")
     private String localidad;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "mail")
     private String mail;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "telefono")
     private String telefono;
-    
+
     @JoinColumn(name = "id_itr", referencedColumnName = "id")
     @ManyToOne(cascade = CascadeType.MERGE, optional = false)
-    private Itr idItr;
-    
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
-//    private Collection<Estudiante> estudianteCollection;
-//    @OneToMany(mappedBy = "idUsuario")
-//    private Collection<Tutor> tutorCollection;
-//    @OneToMany(mappedBy = "idUsuario")
-//    private Collection<Analista> analistaCollection;
+    private Itr itr;
 
     public Usuario() {
     }
@@ -144,7 +144,44 @@ public class Usuario implements Serializable {
         this.id = id;
     }
 
-    public Usuario(Integer id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono) {
+    public Usuario(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr) {
+        this.documento = documento;
+        this.usuario = usuario;
+        this.contrasenia = contrasenia;
+        this.apellidos = apellidos;
+        this.nombres = nombres;
+        this.fechaNacimiento = fechaNacimiento;
+        this.departamento = departamento;
+        this.genero = genero;
+        this.localidad = localidad;
+        this.mail = mail;
+        this.telefono = telefono;
+        this.itr = itr;
+    }
+
+    public Usuario(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono) {
+        this.documento = documento;
+        this.usuario = usuario;
+        this.contrasenia = contrasenia;
+        this.apellidos = apellidos;
+        this.nombres = nombres;
+        this.fechaNacimiento = fechaNacimiento;
+        this.mail = mail;
+        this.telefono = telefono;
+    }
+
+    public Usuario(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+        this.documento = documento;
+        this.usuario = usuario;
+        this.contrasenia = contrasenia;
+        this.apellidos = apellidos;
+        this.nombres = nombres;
+        this.fechaNacimiento = fechaNacimiento;
+        this.mail = mail;
+        this.telefono = telefono;
+        this.itr = itr;
+    }
+    public Usuario(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
         this.id = id;
         this.documento = documento;
         this.usuario = usuario;
@@ -154,6 +191,7 @@ public class Usuario implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
         this.mail = mail;
         this.telefono = telefono;
+        this.itr = itr;
     }
 
     public Integer getId() {
@@ -252,12 +290,12 @@ public class Usuario implements Serializable {
         this.telefono = telefono;
     }
 
-    public Itr getIdItr() {
-        return idItr;
+    public Itr getItr() {
+        return itr;
     }
 
-    public void setIdItr(Itr idItr) {
-        this.idItr = idItr;
+    public void setItr(Itr itr) {
+        this.itr = itr;
     }
 //
 //    @XmlTransient
@@ -287,6 +325,11 @@ public class Usuario implements Serializable {
 //        this.analistaCollection = analistaCollection;
 //    }
 
+    @Transient
+    public String getDecriminatorValue() {
+        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -309,7 +352,21 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Usuario[ id=" + id + " ]";
+        return "Usuario{" +
+                "id=" + id +
+                ", documento=" + documento +
+                ", usuario='" + usuario + '\'' +
+                ", contrasenia='" + contrasenia + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", nombres='" + nombres + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", departamento='" + departamento + '\'' +
+                ", genero='" + genero + '\'' +
+                ", localidad='" + localidad + '\'' +
+                ", mail='" + mail + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", itr=" + itr +
+                '}';
     }
     
 }
