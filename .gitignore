@@ -27,3 +27,5 @@ build/*
 /build/
 .classpath
 .project
+TecnoFenixEJB/.settings/
+TecnoFenixEJB/build/
