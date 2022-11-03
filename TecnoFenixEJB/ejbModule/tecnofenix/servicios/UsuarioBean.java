@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  */
 @Stateless
 public class UsuarioBean implements UsuarioBeanRemote {
-//    @PersistenceContext
+    @PersistenceContext
     private EntityManager em;
 
     private ItrBean itrBean;
@@ -27,8 +28,8 @@ public class UsuarioBean implements UsuarioBeanRemote {
      * Default constructor.
      */
     public UsuarioBean() {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TecnoFenixEJB");
-        em = entityManagerFactory.createEntityManager();
+//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TecnoFenixEJB");
+//        em = entityManagerFactory.createEntityManager();
         itrBean = new ItrBean();
     }
 
@@ -74,7 +75,7 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
     @Override
     public List<Usuario> obtenerUsuarioPorAtributo(Usuario usuario) {
-
+    	//TODO:EL METODO NO ESTA RECIBIENDO NINGUN PARAMETRO
         TypedQuery<Usuario> query = em.createQuery("SELECT u FROM Usuario u", Usuario.class);
         return query.getResultList();
 
@@ -118,5 +119,17 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
         return usuario;
     }
+
+	@Override
+	public List<Usuario> listarUsuariosGeneral() throws UsuarioNoEncontradoException {
+		 TypedQuery<Usuario> query = em.createNamedQuery("Usuario.findAll", Usuario.class);
+		 List<Usuario> usuarios = query.getResultList();
+
+	        if (usuarios == null) {
+	            throw new UsuarioNoEncontradoException("Usuarios no encontrados.");
+	        }
+
+	        return usuarios;
+	}
 
 }

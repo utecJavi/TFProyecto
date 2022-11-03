@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
+import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Tutor;
@@ -90,24 +91,19 @@ public class UILogin {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				window.inicializar();
-				window.frame.setVisible(true);
-				frame.setVisible(false);
+//				window.inicializar();
+//				window.frame.setVisible(true);
+//				frame.setVisible(false);
 				if (!txtEmail.getText().equals("") && !txtPass.getText().equals("")) {
-					Usuario usuario = new Estudiante();
-					usuario = ejbUsuario.login(txtEmail.getText(),txtPass.getText());
-//					System.out.println(usuario.getId());
-//					System.out.println(usuario.getNombres());
-//					System.out.println(usuario.getApellidos());
-//					System.out.println(usuario.getDocumento());
-//					System.out.println(usuario.getDepartamento());
-//					System.out.println(usuario.getMail());
-//					System.out.println(usuario.getTelefono());
-//					System.out.println(usuario.toString());
-					if (usuario.getId() != null) {
-						JOptionPane.showMessageDialog(null, "Bienvenido " + usuario.getNombres() + " " + usuario.getApellidos(),
+					Usuario user;
+					user = ejbUsuario.login(txtEmail.getText(),txtPass.getText());
+					if (user.getId() != null) {
+						JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombres() + " " + user.getApellidos(),
 								"Bienvenido", JOptionPane.INFORMATION_MESSAGE);
-						window.inicializar();
+						if(user instanceof Analista)window.inicializar((Analista)user);
+						if(user instanceof Tutor)window.inicializar((Tutor)user);
+						if(user instanceof Estudiante)window.inicializar((Estudiante)user);
+						
 						window.frame.setVisible(true);
 						frame.setVisible(false);
 //
@@ -127,8 +123,8 @@ public class UILogin {
 		btnLogin.setBounds(254, 227, 85, 21);
 		panel.add(btnLogin);
 		
-		JButton btnLogin_1 = new JButton("Login");
-		btnLogin_1.addActionListener(new ActionListener() {
+		JButton btnRunConfig = new JButton("RunConfigs");
+		btnRunConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				Itr itr=new Itr(null, "SanPetersburg", "UTEC Peter");
@@ -161,8 +157,8 @@ public class UILogin {
 
 			}
 		});
-		btnLogin_1.setBounds(78, 295, 85, 21);
-		panel.add(btnLogin_1);
+		btnRunConfig.setBounds(10, 10, 85, 21);
+		panel.add(btnRunConfig);
 
 
 		frame.pack();

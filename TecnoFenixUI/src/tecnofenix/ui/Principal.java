@@ -8,6 +8,10 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
+import tecnofenix.entidades.Analista;
+import tecnofenix.entidades.Tutor;
+import tecnofenix.entidades.Estudiante;
+import tecnofenix.entidades.Usuario;
 
 //import tecnocanarios.dao.*;
 
@@ -38,7 +42,7 @@ public class Principal {
 
 					UILogin uiLogin = new UILogin();
 					uiLogin.inicializar(window);
-					
+
 //					window.frame.setVisible(true);
 //					EJBUsuarioRemoto ejbusu = new EJBUsuarioRemoto();
 //					ejbusu.ejecutarMetodo();
@@ -54,13 +58,13 @@ public class Principal {
 	 * @wbp.parser.entryPoint
 	 */
 	public Principal() {
-		inicializar();
+//		inicializar();
 	}
 
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public void inicializar() {
+	public void inicializar(Usuario user) {
 
 		System.out.println("Programa inicializado");
 		frame = new JFrame();
@@ -79,7 +83,10 @@ public class Principal {
 		usuAltEstudiante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UIUsuario windowsUsuario = new UIUsuario();
-				windowsUsuario.inicializar();
+				if(user instanceof Analista)windowsUsuario.inicializar((Analista)user);
+				if(user instanceof Tutor)windowsUsuario.inicializar((Tutor)user);
+				if(user instanceof Estudiante)windowsUsuario.inicializar((Estudiante)user);
+				
 				windowsUsuario.frame.setVisible(true);
 			}
 		});

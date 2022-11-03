@@ -103,10 +103,10 @@ public class EJBUsuarioRemoto {
 	}
 
 	public Usuario login(String usu, String pass) {
-		Estudiante logeado = new Estudiante();
+		Usuario logeado = null;
 		System.out.println("Verificando Login");
 		try {
-			logeado = (Estudiante) usuarioRemote.login(usu, pass);
+			logeado =  usuarioRemote.login(usu, pass);
 		} catch (Exception e) {
 			System.err.println(e);
 		}
@@ -218,4 +218,26 @@ public class EJBUsuarioRemoto {
 	public Usuario encontrarUsuario(int id) throws UsuarioNoEncontradoException {
 		return usuarioRemote.encontrarUsuario(id);
 	}
+	
+	/*
+	 * METODOS ANALISTA REMOTOS
+	 */
+	public List<Usuario> listarUsuarios() {
+		List<Usuario> lista = new ArrayList<Usuario>();
+		try {
+			lista = usuarioRemote.listarUsuariosGeneral();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+
+	}
+	
+	
+	
+
+	/*
+	 * METODOS ANALISTA REMOTOS FIN
+	 */
 }

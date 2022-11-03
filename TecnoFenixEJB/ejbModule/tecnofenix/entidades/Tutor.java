@@ -49,14 +49,14 @@ public class Tutor extends Usuario {
     public Tutor() {
     }
 
-    public Tutor(int documento, String usuario, String contrasenia, String apellidos, String nombres,
+    public Tutor(Integer documento, String usuario, String contrasenia, String apellidos, String nombres,
                  Date fechaNacimiento, String mail, String telefono, Itr itr, Integer tipo, Integer area) {
         super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
         this.tipo = tipo;
         this.area = area;
     }
 
-    public Tutor(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres,
+    public Tutor(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres,
                  Date fechaNacimiento, String mail, String telefono, Itr itr, Integer tipo, Integer area) {
         super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
         this.tipo = tipo;
