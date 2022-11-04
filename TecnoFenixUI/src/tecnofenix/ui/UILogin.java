@@ -32,6 +32,7 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class UILogin {
 
@@ -41,6 +42,7 @@ public class UILogin {
 //	private Estudiante usuario;
 	@EJB
 	UsuarioBeanRemote usuarioRemote;
+	private JPasswordField passwordField;
 	
 //	MensajePopUp msj = new MensajePopUp();
 
@@ -73,7 +75,7 @@ public class UILogin {
 		panel.add(lblUsuario);
 
 		txtEmail = new JTextField();
-		txtEmail.setText("");
+		txtEmail.setText("ggonzalez");
 		txtEmail.setBounds(117, 147, 222, 19);
 		panel.add(txtEmail);
 		txtEmail.setColumns(10);
@@ -83,7 +85,7 @@ public class UILogin {
 		panel.add(lblPswd);
 
 		txtPass = new JTextField();
-		txtPass.setText("");
+		txtPass.setText("123456");
 		txtPass.setBounds(117, 184, 222, 19);
 		panel.add(txtPass);
 		txtPass.setColumns(10);
@@ -159,6 +161,10 @@ public class UILogin {
 		});
 		btnRunConfig.setBounds(10, 10, 85, 21);
 		panel.add(btnRunConfig);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(117, 266, 222, 19);
+		panel.add(passwordField);
 
 
 		frame.pack();

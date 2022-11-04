@@ -22,18 +22,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class Principal {
 
 	public JFrame frame;
-//	private JButton btnUIPersona;
-//	private JButton btnUIFUncionalidad;
-//	private JButton btnUIRol;
-//	private JButton btnAdministracionDeRoles;
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
+
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -52,13 +48,6 @@ public class Principal {
 				}
 			}
 		});
-	}
-
-	/**
-	 * @wbp.parser.entryPoint
-	 */
-	public Principal() {
-//		inicializar();
 	}
 
 	/**
@@ -83,11 +72,13 @@ public class Principal {
 		usuAltEstudiante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UIUsuario windowsUsuario = new UIUsuario();
-				if(user instanceof Analista)windowsUsuario.inicializar((Analista)user);
-				if(user instanceof Tutor)windowsUsuario.inicializar((Tutor)user);
-				if(user instanceof Estudiante)windowsUsuario.inicializar((Estudiante)user);
-				
-				windowsUsuario.frame.setVisible(true);
+				if(user instanceof Analista) {
+					windowsUsuario.inicializar();
+					windowsUsuario.frame.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}	
 			}
 		});
 		JMenuItem usuModEstudiante= new JMenuItem("Modificacion Estudiante");
@@ -135,6 +126,14 @@ public class Principal {
 		
 		JMenu itr;
 		JMenuItem itrAlta= new JMenuItem("Alta ITR");
+		itrAlta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				UIITR uiItr = new UIITR();
+				uiItr.inicializar();
+				uiItr.frame.setVisible(true);
+			}
+		});
 		JMenuItem itrMod= new JMenuItem("Modificacion ITR");
 		JMenuItem itrDelete= new JMenuItem("Borrar ITR");
 		itr= new JMenu("ITR");
