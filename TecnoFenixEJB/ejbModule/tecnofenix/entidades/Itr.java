@@ -59,15 +59,12 @@ public class Itr implements Serializable {
     @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itr")
-    private Collection<Usuario> usuarioCollection;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itr")
+//    private Collection<Usuario> usuarioCollection;
 
     public Itr() {
     }
 
-    public Itr(Integer id) {
-        this.id = id;
-    }
 
     public Itr(Integer id, String departamento, String nombre) {
         this.id = id;
@@ -99,14 +96,14 @@ public class Itr implements Serializable {
         this.nombre = nombre;
     }
 
-    @XmlTransient
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
-    }
-
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
-    }
+//    @XmlTransient
+//    public Collection<Usuario> getUsuarioCollection() {
+//        return usuarioCollection;
+//    }
+//
+//    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
+//        this.usuarioCollection = usuarioCollection;
+//    }
 
     @Override
     public int hashCode() {

@@ -115,7 +115,7 @@ public class UILogin {
 						txtPass.setText("");
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Usuario y contraseï¿½a no validos, intente nuevamente",
+					JOptionPane.showMessageDialog(null, "Usuario y contraseña no validos, intente nuevamente",
 							"Intente nuevamente", JOptionPane.INFORMATION_MESSAGE);
 
 				}
