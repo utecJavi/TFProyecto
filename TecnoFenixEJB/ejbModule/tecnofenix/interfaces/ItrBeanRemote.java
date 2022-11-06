@@ -19,5 +19,5 @@ public interface ItrBeanRemote {
 	List<Itr> obtenerItrPorAtributo(Itr itr);
 	Itr findById(Integer id);
 	List<Itr> listarItr()throws ServiciosException;
-
+	List<Itr> buscarPor(String id, String nombre, String depto);
 }

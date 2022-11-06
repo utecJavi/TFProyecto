@@ -34,13 +34,15 @@ public class ItrBean implements ItrBeanRemote {
 	@Override
 	public Itr crearItr(Itr itr) throws ServiciosException {
 		itr=em.merge(itr);
+		em.flush();
 		return itr;
 	}
 
 	@Override
 	public Itr modificarItr(Itr itr) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+		itr=em.merge(itr);
+		em.flush();
+		return itr;
 	}
 
 	@Override
@@ -79,6 +81,38 @@ public class ItrBean implements ItrBeanRemote {
 	        }
 		System.out.println("ESTUDIANTEBEAN LUEGO DE LA QUERY listarItr");
 		return query.getResultList();
+	}
+
+	@Override
+	public List<Itr> buscarPor(String id, String nombre, String depto) {
+		String conditions="";
+		if (id != null && id !="") {
+			conditions=conditions+" i.id = "+id;
+		}
+		if (nombre != null && nombre !="" ) {
+			if(conditions=="") {
+				conditions=conditions+" i.nombre = '"+nombre+"'";
+			}else {
+				conditions=conditions+"AND i.nombre = '"+nombre+"'";
+			}
+			
+		}
+		if (depto != null&& depto !="") {
+			if(conditions=="") {
+				conditions=conditions+" i.departamento = '"+depto+"'";
+			}else {
+				conditions=conditions+"AND i.departamento = '"+depto+"'";
+			}
+			
+		}
+	
+		TypedQuery<Itr> query = em.createQuery("SELECT i FROM Itr i WHERE "+conditions, Itr.class);
+		List<Itr> list = query.getResultList();
+		if (list == null) {
+			throw new ItrNoEncontradoException("ITR no encontrado.");
+		}
+
+		return list;
 	}
 
 }

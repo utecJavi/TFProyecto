@@ -186,6 +186,17 @@ public class EJBUsuarioRemoto {
 		return itrDevueto;
 
 	}
+	public Itr editarITR(Itr itr) {
+		Itr itrDevueto = new Itr();
+		try {
+			itrDevueto = itrRemote.modificarItr(itr);
+		} catch (ServiciosException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return itrDevueto;
+
+	}
 
 	public List<Itr> listarITR() {
 		List<Itr> lista = new ArrayList<Itr>();
@@ -198,7 +209,17 @@ public class EJBUsuarioRemoto {
 		return lista;
 
 	}
-
+	public List<Itr> buscarItrPor(String id, String nombre ,String depto) {
+		List<Itr> lista = new ArrayList<Itr>();
+		try {
+			lista = itrRemote.buscarPor(id,nombre,depto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch blocks
+			e.printStackTrace();
+		}
+		return lista;
+		
+	}
 	/*
 	 * METODOS ITR REMOTOS FIN
 	 */
@@ -233,7 +254,6 @@ public class EJBUsuarioRemoto {
 		return lista;
 
 	}
-	
 	
 	
 
