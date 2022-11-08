@@ -40,8 +40,7 @@ public class Estudiante extends Usuario {
     @Basic(optional = false)
     @NotNull
     @Column(name = "generacion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date generacion;
+    private Integer generacion;
     
     @OneToMany(mappedBy = "estudianteId")
     private Collection<Justificacion> justificacionCollection;
@@ -59,30 +58,30 @@ public class Estudiante extends Usuario {
     public Estudiante() {
     }
     
-    public Estudiante(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Date generacion) {
+    public Estudiante(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Integer generacion) {
         super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
         this.generacion = generacion;
     }
 
-    public Estudiante(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Date generacion) {
+    public Estudiante(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Integer generacion) {
         super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
         this.generacion = generacion;
     }
 
-    public Estudiante(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr, Date generacion) {
+    public Estudiante(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr, Integer generacion) {
         super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, departamento, genero, localidad, mail, telefono, itr);
         this.generacion = generacion;
     }
 
-	public Estudiante(Date generacion) {
+	public Estudiante(Integer generacion) {
         this.generacion = generacion;
     }
 
-    public Date getGeneracion() {
+    public Integer getGeneracion() {
         return generacion;
     }
 
-    public void setGeneracion(Date generacion) {
+    public void setGeneracion(Integer generacion) {
         this.generacion = generacion;
     }
 

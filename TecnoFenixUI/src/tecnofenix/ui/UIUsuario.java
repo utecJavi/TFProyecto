@@ -25,6 +25,9 @@ import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
+import com.toedter.calendar.JYearChooser;
+import com.toedter.calendar.JDayChooser;
+import com.toedter.calendar.JDateChooser;
 
 public class UIUsuario {
 
@@ -38,10 +41,10 @@ public class UIUsuario {
 	private JTextField txtNombreUsuario;
 	private JTextField txtApellido;
 	private JTextField txtTelefono;
-	private JTextField txtFechaNacimiento;
 	private JTextField txtEmail;
 	private JTextField txtDocumento;
-	private JComboBox<Date> comboBoxGeneracion;
+	private JDateChooser dateChooser;
+	private JYearChooser yearChooser;
 	private JComboBox<Itr> comboBoxITR;
 
 	private EJBUsuarioRemoto usuarioRemote;
@@ -183,11 +186,6 @@ public class UIUsuario {
 		lblFechaNacimiento.setBounds(20, 591, 85, 13);
 		panel.add(lblFechaNacimiento);
 
-		txtFechaNacimiento = new JTextField();
-		txtFechaNacimiento.setBounds(20, 604, 360, 19);
-		txtFechaNacimiento.setColumns(10);
-		panel.add(txtFechaNacimiento);
-
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setBounds(396, 591, 133, 13);
 		panel.add(lblEmail);
@@ -209,27 +207,6 @@ public class UIUsuario {
 		txtDocumento.setBounds(87, 481, 189, 19);
 		txtDocumento.setColumns(10);
 		panel.add(txtDocumento);
-
-		comboBoxGeneracion = new JComboBox<Date>();
-		comboBoxGeneracion.setBounds(20, 645, 360, 21);
-		
-		for (int i = 2011; i <= 2022; i++) {
-			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.YEAR, i);
-			cal.set(Calendar.MONTH, 0);
-			cal.set(Calendar.DAY_OF_MONTH, 1);
-			Date dateTmp=new Date(cal.getTimeInMillis());			
-			comboBoxGeneracion.addItem(dateTmp);
-		}
-
-		// Accion a realizar cuando el JComboBox cambia de item seleccionado.
-		comboBoxGeneracion.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(comboBoxGeneracion.getSelectedItem().toString());
-			}
-		});
-		panel.add(comboBoxGeneracion);
 
 		comboBoxITR = new JComboBox<Itr>();
 		comboBoxITR.setBounds(20, 688, 360, 21);
@@ -253,6 +230,15 @@ public class UIUsuario {
 		});
 
 		panel.add(btnAgregarTutor);
+		
+		dateChooser = new JDateChooser();
+		dateChooser.setBounds(20, 604, 186, 19);
+		panel.add(dateChooser);
+
+		yearChooser = new JYearChooser();
+		yearChooser.setBounds(19, 645, 104, 19);
+		panel.add(yearChooser);
+		
 		frame.pack();
 		frame.setVisible(true);
 
@@ -266,10 +252,10 @@ public class UIUsuario {
 		txtNombreUsuario.setText("");
 		txtApellido.setText("");
 		txtTelefono.setText("");
-		txtFechaNacimiento.setText("");
+		dateChooser.cleanup();
 		txtDocumento.setText("");
 		txtEmail.setText("");
-		txtFechaNacimiento.setText("");
+		yearChooser.setYear(2022);
 	}
 
 	public void validarDatos() {
@@ -278,7 +264,7 @@ public class UIUsuario {
 
 		if (txtNombre.getText().equals("") || txtNombreUsuario.getText().equals("") || txtApellido.getText().equals("")
 				|| txtTelefono.getText().equals("") || txtEmail.getText().equals("")
-				|| txtDocumento.getText().equals("")) {
+				|| txtDocumento.getText().equals("") ||dateChooser.getDate()==null) {
 
 
 			System.out.println("FALTAN DATOS");
@@ -295,8 +281,8 @@ public class UIUsuario {
 //		Rol idRol = new Rol();
 		Estudiante estudiante = new Estudiante( Integer.valueOf(txtDocumento.getText()),
 				txtNombreUsuario.getText(), "123456", txtApellido.getText(), txtNombre.getText(),
-				new Date(System.currentTimeMillis()), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(),new Date(System.currentTimeMillis()));
+				dateChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
+				(Itr) comboBoxITR.getSelectedItem(),yearChooser.getYear());
 
 		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
 		System.err.println(estudiante.toString());
@@ -384,5 +370,4 @@ public class UIUsuario {
 		}
 
 	}
-	
 }

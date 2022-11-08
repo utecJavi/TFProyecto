@@ -82,6 +82,7 @@ public class Principal {
 			}
 		});
 		JMenuItem usuModEstudiante= new JMenuItem("Modificacion Estudiante");
+		
 		usuario.add(usuAltDocente);
 		usuario.add(usuModDocente);
 		usuario.add(usuAltEstudiante);

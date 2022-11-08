@@ -91,17 +91,17 @@ public class ItrBean implements ItrBeanRemote {
 		}
 		if (nombre != null && nombre !="" ) {
 			if(conditions=="") {
-				conditions=conditions+" i.nombre = '"+nombre+"'";
+				conditions=conditions+" i.nombre LIKE '"+nombre+"'";
 			}else {
-				conditions=conditions+"AND i.nombre = '"+nombre+"'";
+				conditions=conditions+"AND i.nombre LIKE '"+nombre+"'";
 			}
 			
 		}
 		if (depto != null&& depto !="") {
 			if(conditions=="") {
-				conditions=conditions+" i.departamento = '"+depto+"'";
+				conditions=conditions+" i.departamento LIKE '"+depto+"'";
 			}else {
-				conditions=conditions+"AND i.departamento = '"+depto+"'";
+				conditions=conditions+"AND i.departamento LIKE '"+depto+"'";
 			}
 			
 		}
