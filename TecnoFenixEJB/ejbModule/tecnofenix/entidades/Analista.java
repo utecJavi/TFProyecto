@@ -123,5 +123,16 @@ public class Analista extends Usuario {
     public String toString() {
         return "Analista{} " + super.toString();
     }
-    
+
+	@Override
+	public void darDeBaja() {
+		this.setActivo(false);
+		
+	}
+
+	@Override
+	public void reactivarUsuario() {
+		this.setActivo(true);
+		
+	}
 }

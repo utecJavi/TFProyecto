@@ -36,6 +36,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import tecnofenix.interfaces.BajaLogica;
+
 /**
  *
  * @author jasuaga
@@ -62,7 +64,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByLocalidad", query = "SELECT u FROM Usuario u WHERE u.localidad = :localidad"),
     @NamedQuery(name = "Usuario.findByMail", query = "SELECT u FROM Usuario u WHERE u.mail = :mail"),
     @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")})
-public abstract class Usuario implements Serializable {
+public abstract class Usuario extends Activo implements Serializable ,BajaLogica {
     private static final long serialVersionUID = 1L;
 
     public static final String TIPO_ANALISTA = "ANALISTA";
@@ -139,6 +141,7 @@ public abstract class Usuario implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE, optional = false)
     private Itr itr;
 
+    
     public Usuario() {
     }
 
