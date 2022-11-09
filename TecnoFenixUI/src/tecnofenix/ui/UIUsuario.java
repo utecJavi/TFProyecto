@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.swing.JButton;
@@ -60,6 +61,7 @@ public class UIUsuario {
 	public void inicializar() {
 
 		usuarioRemote = new EJBUsuarioRemoto();
+		allUsuarios = new ArrayList<Usuario>();
 		frame = new JFrame("Administracion de usuarios");
 		
 		JPanel panel = new JPanel();
@@ -317,57 +319,83 @@ public class UIUsuario {
 	}
 	public void actualizarLista() {
 		
-		if(allUsuarios !=null && !allUsuarios.isEmpty() && allUsuarios.size()>0)allUsuarios.clear();
-		for (int i = 0; i < modelo.getRowCount(); i++) {
-			modelo.removeRow(i);	
-		}		
+		limpiarTabla();
+		
 		allUsuarios= usuarioRemote.listarUsuarios();
-		// Se rellena cada posición del array con una de las columnas de la tabla en
-				// base de datos.
-		for (Usuario usuTemp : allUsuarios) {
-			if (usuTemp instanceof Estudiante) {
-				fila[0] = usuTemp.getDecriminatorValue();
-				fila[1] = usuTemp.getId();
-				fila[2] = ((Estudiante) usuTemp).getGeneracion();
-				fila[3] = usuTemp.getDocumento();
-				fila[4] = usuTemp.getNombres();
-				fila[5] = usuTemp.getApellidos();
-				fila[6] = usuTemp.getFechaNacimiento();
-				fila[7] = usuTemp.getMail();
-				fila[8] = usuTemp.getUsuario();
-				fila[9] = usuTemp.getItr().getNombre();
-				// Se añade al modelo la fila completa.
-				modelo.addRow(fila);
-			}
-			if (usuTemp instanceof Tutor) {
-				fila[0] = usuTemp.getDecriminatorValue();
-				fila[1] = usuTemp.getId();
-				fila[2] = "";
-				fila[3] = usuTemp.getDocumento();
-				fila[4] = usuTemp.getNombres();
-				fila[5] = usuTemp.getApellidos();
-				fila[6] = usuTemp.getFechaNacimiento();
-				fila[7] = usuTemp.getMail();
-				fila[8] = usuTemp.getUsuario();
-				fila[9] = usuTemp.getItr().getNombre();
-				// Se añade al modelo la fila completa.
-				modelo.addRow(fila);
-			}
-			if (usuTemp instanceof Analista) {
-				fila[0] = usuTemp.getDecriminatorValue();
-				fila[1] = usuTemp.getId();
-				fila[2] = "";
-				fila[3] = usuTemp.getDocumento();
-				fila[4] = usuTemp.getNombres();
-				fila[5] = usuTemp.getApellidos();
-				fila[6] = usuTemp.getFechaNacimiento();
-				fila[7] = usuTemp.getMail();
-				fila[8] = usuTemp.getUsuario();
-				fila[9] = usuTemp.getItr().getNombre();
-				// Se añade al modelo la fila completa.
-				modelo.addRow(fila);
-			}
-		}
+		
+		cargarTabla(allUsuarios);
+	
 
 	}
+	
+	
+	 public void cargarTabla(List<Usuario> listPasada) {
+		 	// Se rellena cada posición del array con una de las columnas de la tabla en
+			// base de datos.
+			for (Usuario usuTemp : listPasada) {
+				if (usuTemp instanceof Estudiante) {
+					fila[0] = usuTemp.getDecriminatorValue();
+					fila[1] = usuTemp.getId();
+					fila[2] = ((Estudiante) usuTemp).getGeneracion();
+					fila[3] = usuTemp.getDocumento();
+					fila[4] = usuTemp.getNombres();
+					fila[5] = usuTemp.getApellidos();
+					fila[6] = usuTemp.getFechaNacimiento();
+					fila[7] = usuTemp.getMail();
+					fila[8] = usuTemp.getUsuario();
+					fila[9] = usuTemp.getItr().getNombre();
+					// Se añade al modelo la fila completa.
+					modelo.addRow(fila);
+				}
+				if (usuTemp instanceof Tutor) {
+					fila[0] = usuTemp.getDecriminatorValue();
+					fila[1] = usuTemp.getId();
+					fila[2] = "";
+					fila[3] = usuTemp.getDocumento();
+					fila[4] = usuTemp.getNombres();
+					fila[5] = usuTemp.getApellidos();
+					fila[6] = usuTemp.getFechaNacimiento();
+					fila[7] = usuTemp.getMail();
+					fila[8] = usuTemp.getUsuario();
+					fila[9] = usuTemp.getItr().getNombre();
+					// Se añade al modelo la fila completa.
+					modelo.addRow(fila);
+				}
+				if (usuTemp instanceof Analista) {
+					fila[0] = usuTemp.getDecriminatorValue();
+					fila[1] = usuTemp.getId();
+					fila[2] = "";
+					fila[3] = usuTemp.getDocumento();
+					fila[4] = usuTemp.getNombres();
+					fila[5] = usuTemp.getApellidos();
+					fila[6] = usuTemp.getFechaNacimiento();
+					fila[7] = usuTemp.getMail();
+					fila[8] = usuTemp.getUsuario();
+					fila[9] = usuTemp.getItr().getNombre();
+					// Se añade al modelo la fila completa.
+					modelo.addRow(fila);
+				}
+			}
+	 }
+	public void buscarPor(String tipo, String id ,String depto,String doc,String nombre,String apellido
+			,String mail,String usuario,String itrNombre,String generacion) {
+		limpiarTabla();
+		allUsuarios = usuarioRemote.buscarUsuarioPor(tipo, id, depto, doc, nombre, apellido, mail, usuario, itrNombre, generacion);
+		if(allUsuarios != null) {
+		System.out.println(allUsuarios.toString());
+		// Se rellena cada posición del array con una de las columnas de la tabla en
+		// base de datos.
+		cargarTabla(allUsuarios);
+	}
+	}
+	
+	public void limpiarTabla() {
+		if (allUsuarios != null || !allUsuarios.isEmpty() || allUsuarios.size() > 0) {
+			allUsuarios.clear();	
+		}
+		modelo.getDataVector().removeAllElements();
+		modelo.fireTableDataChanged();
+
+	}
+	
 }

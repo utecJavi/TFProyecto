@@ -68,6 +68,16 @@ public class ItrBean implements ItrBeanRemote {
 
 		return itr;
 	}
+	public Itr findById2(Integer id,EntityManager a) {
+		TypedQuery<Itr> query = a.createNamedQuery("Itr.findById", Itr.class);
+		Itr itr = query.setParameter("id", id).getSingleResult();
+
+		if (itr == null) {
+			throw new ItrNoEncontradoException("ITR no encontrado.");
+		}
+
+		return itr;
+	}
 
 	@Override
 	public List<Itr> listarItr() throws ServiciosException {

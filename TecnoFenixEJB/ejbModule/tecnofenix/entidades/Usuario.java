@@ -138,11 +138,15 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
     private String telefono;
 
     @JoinColumn(name = "id_itr", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.MERGE, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Itr itr;
-
     
-    public Usuario() {
+    @Column(name = "u_tipo", insertable=false, updatable=false)
+    private String uTipo;
+    
+    
+  
+	public Usuario() {
     }
 
     public Usuario(Integer id) {
@@ -302,6 +306,16 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
     public void setItr(Itr itr) {
         this.itr = itr;
     }
+    
+    
+    public String getUTtipo() {
+		return uTipo;
+	}
+
+	public void setUTipoo(String uTipo) {
+		this.uTipo = uTipo;
+	}
+
 //
 //    @XmlTransient
 //    public Collection<Estudiante> getEstudianteCollection() {

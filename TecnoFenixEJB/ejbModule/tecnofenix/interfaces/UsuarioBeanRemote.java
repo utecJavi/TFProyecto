@@ -18,6 +18,7 @@ public interface UsuarioBeanRemote {
 	Usuario encontrarUsuario(Integer id) throws UsuarioNoEncontradoException;
 	List<Usuario> obtenerUsuarioPorAtributo(Usuario usuario);
 	List<Usuario> listarUsuariosGeneral() throws UsuarioNoEncontradoException;
-
+	List<Usuario> buscarUsuarioPor(String tipo, String id ,String depto,String doc,String nombre,String apellido
+			,String mail,String usuario,String itrNombre,String generacion) throws UsuarioNoEncontradoException;
 	
 }
