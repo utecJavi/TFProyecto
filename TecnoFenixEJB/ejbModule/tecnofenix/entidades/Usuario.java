@@ -139,8 +139,6 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 
-    public Usuario() {
-
     @Column(name = "u_tipo", insertable=false, updatable=false)
     private String uTipo;
 
