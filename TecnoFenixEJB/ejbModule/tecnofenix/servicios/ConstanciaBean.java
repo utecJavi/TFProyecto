@@ -8,7 +8,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
-import ejbModule.tecnofenix.interfaces.String;
 import tecnofenix.entidades.Constancia;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ConstanciaBeanRemote;
@@ -55,7 +54,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	}
 	
 	@Override
-	List<Constancia> listadoConstancias(String usuario) throws ServiciosException {
+	public	List<Constancia> listadoConstancias(String usuario) throws ServiciosException {
 		try {
 			String consulta = "SELECT c FROM Constancia c";
 			if (usuario != null) {
