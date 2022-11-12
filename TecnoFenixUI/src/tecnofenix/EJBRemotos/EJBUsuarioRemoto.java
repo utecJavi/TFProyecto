@@ -141,7 +141,13 @@ public class EJBUsuarioRemoto {
 		System.out.println("Usuario RETORNADO");
 		return usuario;
 	}
-
+	public List<Usuario> buscarUsuarioPor(String tipo, String id ,String depto,String doc,String nombre,String apellido
+			,String mail,String usuario,String itrNombre,String generacion){
+		List<Usuario> lista = new ArrayList<Usuario>();
+		lista = usuarioRemote.buscarUsuarioPor(tipo, id, depto, doc, nombre, apellido, mail, usuario, itrNombre, generacion);
+		return lista;
+	}
+	
 	/*
 	 * METODOS ESTUDIANTES REMOTOS
 	 */

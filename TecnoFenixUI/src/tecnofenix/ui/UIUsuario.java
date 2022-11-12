@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.swing.JButton;
@@ -28,6 +29,7 @@ import tecnofenix.entidades.Usuario;
 import com.toedter.calendar.JYearChooser;
 import com.toedter.calendar.JDayChooser;
 import com.toedter.calendar.JDateChooser;
+import java.awt.Font;
 
 public class UIUsuario {
 
@@ -43,12 +45,19 @@ public class UIUsuario {
 	private JTextField txtTelefono;
 	private JTextField txtEmail;
 	private JTextField txtDocumento;
-	private JDateChooser dateChooser;
-	private JYearChooser yearChooser;
+	private JDateChooser dateBuscarChooser;
+	private JYearChooser yearBuscarChooser;
 	private JComboBox<Itr> comboBoxITR;
 
 	private EJBUsuarioRemoto usuarioRemote;
-
+	private JTextField textBuscarDoc;
+	private JTextField textBuscarNombre;
+	private JTextField textBuscarApellido;
+	private JTextField textBuscarUsuario;
+	private JTextField textBuscarTelefono;
+	private JTextField textBuscarMail;
+	private JComboBox<String> comboBuscarTipoUsuario;
+	private JTextField textBuscarID;
 	
 	public UIUsuario() {
 		System.out.println("Instanciando ventana usuario");
@@ -60,6 +69,7 @@ public class UIUsuario {
 	public void inicializar() {
 
 		usuarioRemote = new EJBUsuarioRemoto();
+		allUsuarios = new ArrayList<Usuario>();
 		frame = new JFrame("Administracion de usuarios");
 		
 		JPanel panel = new JPanel();
@@ -70,7 +80,7 @@ public class UIUsuario {
 		panel.setLayout(null);
 
 		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(20, 507, 45, 13);
+		lblNombre.setBounds(20, 507, 85, 13);
 		panel.add(lblNombre);
 
 		txtNombre = new JTextField();
@@ -98,7 +108,7 @@ public class UIUsuario {
 		table.setBackground(Color.BLACK);
 		// crea un array que contiene los nombre de las columnas
 		final String[] columnNames = { "Tipo","Id", "Generacion", "Documento", "Nombres", "Apellidos", "Fecha Nacimiento",
-				"e-mail", "Usuario", "ITR"  };
+				"e-mail", "Usuario", "ITR" , "Activo" };
 //U_TIPO, ID, APELLIDOS, CONTRASENIA, DEPARTAMENTO, DOCUMENTO, FECHA_NACIMIENTO, GENERO, LOCALIDAD, MAIL, NOMBRES, TELEFONO, USUARIO, AREA, TIPO, GENERACION, ID_ITR
 
 		// insertamos las columnas
@@ -165,7 +175,7 @@ public class UIUsuario {
 		panel.add(txtNombreUsuario);
 
 		JLabel lblApellido = new JLabel("Apellido:");
-		lblApellido.setBounds(20, 549, 45, 13);
+		lblApellido.setBounds(20, 549, 103, 13);
 		panel.add(lblApellido);
 
 		txtApellido = new JTextField();
@@ -183,7 +193,7 @@ public class UIUsuario {
 		panel.add(txtTelefono);
 
 		JLabel lblFechaNacimiento = new JLabel("Fecha Nacimiento:");
-		lblFechaNacimiento.setBounds(20, 591, 85, 13);
+		lblFechaNacimiento.setBounds(20, 591, 118, 13);
 		panel.add(lblFechaNacimiento);
 
 		JLabel lblEmail = new JLabel("Email:");
@@ -231,13 +241,136 @@ public class UIUsuario {
 
 		panel.add(btnAgregarTutor);
 		
-		dateChooser = new JDateChooser();
-		dateChooser.setBounds(20, 604, 186, 19);
-		panel.add(dateChooser);
+		dateBuscarChooser = new JDateChooser();
+		dateBuscarChooser.setBounds(20, 604, 186, 19);
+		panel.add(dateBuscarChooser);
 
-		yearChooser = new JYearChooser();
-		yearChooser.setBounds(19, 645, 104, 19);
-		panel.add(yearChooser);
+		yearBuscarChooser = new JYearChooser();
+		yearBuscarChooser.setBounds(19, 645, 104, 19);
+		panel.add(yearBuscarChooser);
+		
+		JLabel lblDocumento_1 = new JLabel("Documento:");
+		lblDocumento_1.setBounds(20, 26, 133, 13);
+		panel.add(lblDocumento_1);
+		
+		textBuscarDoc = new JTextField();
+		textBuscarDoc.setColumns(10);
+		textBuscarDoc.setBounds(87, 23, 189, 19);
+		textBuscarDoc.setText("");
+		panel.add(textBuscarDoc);
+		
+		JLabel lblNombre_1 = new JLabel("Nombre:");
+		lblNombre_1.setBounds(20, 49, 85, 13);
+		panel.add(lblNombre_1);
+		
+		textBuscarNombre = new JTextField();
+		textBuscarNombre.setColumns(10);
+		textBuscarNombre.setBounds(20, 62, 360, 19);
+		textBuscarNombre.setText("");
+		panel.add(textBuscarNombre);
+		
+		JLabel lblApellido_1 = new JLabel("Apellido:");
+		lblApellido_1.setBounds(20, 91, 103, 13);
+		panel.add(lblApellido_1);
+		
+		textBuscarApellido = new JTextField();
+		textBuscarApellido.setColumns(10);
+		textBuscarApellido.setBounds(20, 104, 360, 19);
+		textBuscarApellido.setText("");
+		panel.add(textBuscarApellido);
+		
+		JLabel lblFechaNacimiento_1 = new JLabel("Tipo de usuario:");
+		lblFechaNacimiento_1.setBounds(20, 133, 118, 13);
+		panel.add(lblFechaNacimiento_1);
+		
+		JLabel lblNombreUsuario_1 = new JLabel("Nombre de Usuario:");
+		lblNombreUsuario_1.setBounds(390, 7, 133, 13);
+		panel.add(lblNombreUsuario_1);
+		
+		textBuscarUsuario = new JTextField();
+		textBuscarUsuario.setColumns(10);
+		textBuscarUsuario.setBounds(390, 20, 360, 19);
+		textBuscarUsuario.setText("");
+		panel.add(textBuscarUsuario);
+		
+		JLabel lblTelefono_1 = new JLabel("Telefono:");
+		lblTelefono_1.setBounds(390, 49, 133, 13);
+		panel.add(lblTelefono_1);
+		
+		textBuscarTelefono = new JTextField();
+		textBuscarTelefono.setColumns(10);
+		textBuscarTelefono.setBounds(390, 62, 360, 19);
+		textBuscarTelefono.setText("");
+		panel.add(textBuscarTelefono);
+		
+		JLabel lblEmail_1 = new JLabel("Email:");
+		lblEmail_1.setBounds(390, 91, 133, 13);
+		panel.add(lblEmail_1);
+		
+		textBuscarMail = new JTextField();
+		textBuscarMail.setColumns(10);
+		textBuscarMail.setBounds(390, 104, 360, 19);
+		textBuscarMail.setText("");
+		panel.add(textBuscarMail);
+		
+		JLabel lblITR_1 = new JLabel("ITR:");
+		lblITR_1.setBounds(396, 132, 133, 13);
+		panel.add(lblITR_1);
+		
+		JComboBox<Itr> comboBuscarITR = new JComboBox<Itr>();
+		comboBuscarITR.addItem(new Itr(null,"",""));
+		for(Itr itrItem: listItr){
+			comboBuscarITR.addItem(itrItem);
+		}
+		comboBuscarITR.setBounds(396, 144, 210, 21);
+		comboBuscarITR.setSelectedIndex(0);
+		panel.add(comboBuscarITR);
+		
+		JYearChooser yearChooBuscar = new JYearChooser();
+		yearChooBuscar.setBounds(216, 146, 164, 19);
+		panel.add(yearChooBuscar);
+		
+		JLabel lblGeneracion_1 = new JLabel("Generacion:");
+		lblGeneracion_1.setBounds(216, 133, 133, 13);
+		panel.add(lblGeneracion_1);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				buscarPor( comboBuscarTipoUsuario.getSelectedItem().toString(),  textBuscarID.getText() , "", 
+						textBuscarDoc.getText(), textBuscarNombre.getText(), textBuscarApellido.getText()
+						, textBuscarMail.getText(), textBuscarUsuario.getText(), 
+						comboBuscarITR.getSelectedItem().toString(), String.valueOf(yearChooBuscar.getYear()));
+				
+				
+			}
+		});
+		btnBuscar.setBounds(671, 138, 85, 21);
+		panel.add(btnBuscar);
+		
+		comboBuscarTipoUsuario = new JComboBox<String>();
+		comboBuscarTipoUsuario.setBounds(20, 144, 189, 21);
+		comboBuscarTipoUsuario.addItem("");
+		comboBuscarTipoUsuario.addItem("ESTUDIANTE");
+		comboBuscarTipoUsuario.addItem("TUTOR");
+		comboBuscarTipoUsuario.addItem("ANALISTA");
+		comboBuscarTipoUsuario.setSelectedItem("");
+		panel.add(comboBuscarTipoUsuario);
+		
+		textBuscarID = new JTextField();
+		textBuscarID.setColumns(10);
+		textBuscarID.setBounds(306, 23, 74, 19);
+		textBuscarID.setText("");
+		panel.add(textBuscarID);
+		
+		JLabel lblNewLabel = new JLabel("ID:");
+		lblNewLabel.setBounds(304, 7, 45, 13);
+		panel.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Filtros de Busqueda");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_1.setBounds(20, 7, 164, 13);
+		panel.add(lblNewLabel_1);
 		
 		frame.pack();
 		frame.setVisible(true);
@@ -252,10 +385,10 @@ public class UIUsuario {
 		txtNombreUsuario.setText("");
 		txtApellido.setText("");
 		txtTelefono.setText("");
-		dateChooser.cleanup();
+		dateBuscarChooser.cleanup();
 		txtDocumento.setText("");
 		txtEmail.setText("");
-		yearChooser.setYear(2022);
+		yearBuscarChooser.setYear(2022);
 	}
 
 	public void validarDatos() {
@@ -264,7 +397,7 @@ public class UIUsuario {
 
 		if (txtNombre.getText().equals("") || txtNombreUsuario.getText().equals("") || txtApellido.getText().equals("")
 				|| txtTelefono.getText().equals("") || txtEmail.getText().equals("")
-				|| txtDocumento.getText().equals("") ||dateChooser.getDate()==null) {
+				|| txtDocumento.getText().equals("") ||dateBuscarChooser.getDate()==null) {
 
 
 			System.out.println("FALTAN DATOS");
@@ -281,8 +414,8 @@ public class UIUsuario {
 //		Rol idRol = new Rol();
 		Estudiante estudiante = new Estudiante( Integer.valueOf(txtDocumento.getText()),
 				txtNombreUsuario.getText(), "123456", txtApellido.getText(), txtNombre.getText(),
-				dateChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(),yearChooser.getYear());
+				dateBuscarChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
+				(Itr) comboBoxITR.getSelectedItem(),yearBuscarChooser.getYear());
 
 		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
 		System.err.println(estudiante.toString());
@@ -317,57 +450,97 @@ public class UIUsuario {
 	}
 	public void actualizarLista() {
 		
-		if(allUsuarios !=null && !allUsuarios.isEmpty() && allUsuarios.size()>0)allUsuarios.clear();
-		for (int i = 0; i < modelo.getRowCount(); i++) {
-			modelo.removeRow(i);	
-		}		
+		limpiarTabla();
+		
 		allUsuarios= usuarioRemote.listarUsuarios();
+		
+		cargarTabla(allUsuarios);
+	
+
+	}
+	
+	
+	 public void cargarTabla(List<Usuario> listPasada) {
+		 	// Se rellena cada posición del array con una de las columnas de la tabla en
+			// base de datos.
+			for (Usuario usuTemp : listPasada) {
+				if (usuTemp instanceof Estudiante) {
+					fila[0] = usuTemp.getDecriminatorValue();
+					fila[1] = usuTemp.getId();
+					fila[2] = ((Estudiante) usuTemp).getGeneracion();
+					fila[3] = usuTemp.getDocumento();
+					fila[4] = usuTemp.getNombres();
+					fila[5] = usuTemp.getApellidos();
+					fila[6] = usuTemp.getFechaNacimiento();
+					fila[7] = usuTemp.getMail();
+					fila[8] = usuTemp.getUsuario();
+					fila[9] = usuTemp.getItr().getNombre();
+					if (usuTemp.getValidado()) {
+						fila[10] = "Si";
+					} else {
+						fila[10] = "No";
+					}
+					// Se añade al modelo la fila completa.
+					modelo.addRow(fila);
+				}
+				if (usuTemp instanceof Tutor) {
+					fila[0] = usuTemp.getDecriminatorValue();
+					fila[1] = usuTemp.getId();
+					fila[2] = "";
+					fila[3] = usuTemp.getDocumento();
+					fila[4] = usuTemp.getNombres();
+					fila[5] = usuTemp.getApellidos();
+					fila[6] = usuTemp.getFechaNacimiento();
+					fila[7] = usuTemp.getMail();
+					fila[8] = usuTemp.getUsuario();
+					fila[9] = usuTemp.getItr().getNombre();
+					if (usuTemp.getValidado()) {
+						fila[10] = "Si";
+					} else {
+						fila[10] = "No";
+					}
+					// Se añade al modelo la fila completa.
+					modelo.addRow(fila);
+				}
+				if (usuTemp instanceof Analista) {
+					fila[0] = usuTemp.getDecriminatorValue();
+					fila[1] = usuTemp.getId();
+					fila[2] = "";
+					fila[3] = usuTemp.getDocumento();
+					fila[4] = usuTemp.getNombres();
+					fila[5] = usuTemp.getApellidos();
+					fila[6] = usuTemp.getFechaNacimiento();
+					fila[7] = usuTemp.getMail();
+					fila[8] = usuTemp.getUsuario();
+					fila[9] = usuTemp.getItr().getNombre();
+					if (usuTemp.getValidado()) {
+						fila[10] = "Si";
+					} else {
+						fila[10] = "No";
+					}
+					// Se añade al modelo la fila completa.
+					modelo.addRow(fila);
+				}
+			}
+	 }
+	public void buscarPor(String tipo, String id ,String depto,String doc,String nombre,String apellido
+			,String mail,String usuario,String itrNombre,String generacion) {
+		limpiarTabla();
+		allUsuarios = usuarioRemote.buscarUsuarioPor(tipo, id, depto, doc, nombre, apellido, mail, usuario, itrNombre, generacion);
+		if(allUsuarios != null) {
+		System.out.println(allUsuarios.toString());
 		// Se rellena cada posición del array con una de las columnas de la tabla en
-				// base de datos.
-		for (Usuario usuTemp : allUsuarios) {
-			if (usuTemp instanceof Estudiante) {
-				fila[0] = usuTemp.getDecriminatorValue();
-				fila[1] = usuTemp.getId();
-				fila[2] = ((Estudiante) usuTemp).getGeneracion();
-				fila[3] = usuTemp.getDocumento();
-				fila[4] = usuTemp.getNombres();
-				fila[5] = usuTemp.getApellidos();
-				fila[6] = usuTemp.getFechaNacimiento();
-				fila[7] = usuTemp.getMail();
-				fila[8] = usuTemp.getUsuario();
-				fila[9] = usuTemp.getItr().getNombre();
-				// Se añade al modelo la fila completa.
-				modelo.addRow(fila);
-			}
-			if (usuTemp instanceof Tutor) {
-				fila[0] = usuTemp.getDecriminatorValue();
-				fila[1] = usuTemp.getId();
-				fila[2] = "";
-				fila[3] = usuTemp.getDocumento();
-				fila[4] = usuTemp.getNombres();
-				fila[5] = usuTemp.getApellidos();
-				fila[6] = usuTemp.getFechaNacimiento();
-				fila[7] = usuTemp.getMail();
-				fila[8] = usuTemp.getUsuario();
-				fila[9] = usuTemp.getItr().getNombre();
-				// Se añade al modelo la fila completa.
-				modelo.addRow(fila);
-			}
-			if (usuTemp instanceof Analista) {
-				fila[0] = usuTemp.getDecriminatorValue();
-				fila[1] = usuTemp.getId();
-				fila[2] = "";
-				fila[3] = usuTemp.getDocumento();
-				fila[4] = usuTemp.getNombres();
-				fila[5] = usuTemp.getApellidos();
-				fila[6] = usuTemp.getFechaNacimiento();
-				fila[7] = usuTemp.getMail();
-				fila[8] = usuTemp.getUsuario();
-				fila[9] = usuTemp.getItr().getNombre();
-				// Se añade al modelo la fila completa.
-				modelo.addRow(fila);
-			}
+		// base de datos.
+		cargarTabla(allUsuarios);
+	}
+	}
+	
+	public void limpiarTabla() {
+		if (allUsuarios != null || !allUsuarios.isEmpty() || allUsuarios.size() > 0) {
+			allUsuarios.clear();	
 		}
+		modelo.getDataVector().removeAllElements();
+		modelo.fireTableDataChanged();
 
 	}
 }

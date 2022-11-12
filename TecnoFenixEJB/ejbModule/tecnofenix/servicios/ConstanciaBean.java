@@ -52,5 +52,23 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public	List<Constancia> listadoConstancias(String usuario) throws ServiciosException {
+		try {
+			String consulta = "SELECT c FROM Constancia c";
+			if (usuario != null) {
+				consulta = consulta + " WHERE c.estudianteId.usuario = :usuario";
+			}
+			
+			TypedQuery<Constancia> query = em.createQuery(consulta, Constancia.class);
+			if (usuario != null) {
+				query.setParameter("usuario", usuario);
+			}
+			return query.getResultList();
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrió un error al consultar constancias: " + pe.getMessage());
+		}
+	}
 
 }

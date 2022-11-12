@@ -127,7 +127,7 @@ public class Itr implements Serializable {
 
     @Override
     public String toString() {
-        return "[" + nombre + " ]";
+        return  nombre ;
     }
     
 }

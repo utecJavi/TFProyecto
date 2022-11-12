@@ -12,6 +12,7 @@ import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Usuario;
+import tecnofenix.ui.UIConstancia;
 
 //import tecnocanarios.dao.*;
 
@@ -64,12 +65,25 @@ public class Principal {
 		JMenuBar menuBar = new JMenuBar();
 		
 		
-		JMenu usuario;
-		usuario = new JMenu("Administracion Usuarios");
-		JMenuItem usuAltDocente= new JMenuItem("Alta Docente");
-		JMenuItem usuModDocente= new JMenuItem("Modificacion Docente");
-		JMenuItem usuAltEstudiante= new JMenuItem("Alta Estudiante");
-		usuAltEstudiante.addActionListener(new ActionListener() {
+		JMenu usuario = new JMenu("Administracion Usuarios");
+		
+		
+		JMenuItem adminDocentes= new JMenuItem("Administracion usuarios Docentes");
+		
+		
+		
+		
+		
+		
+		JMenuItem adminAnalista= new JMenuItem("Administracion usuarios Analistas");
+		
+		
+		
+		
+		
+		
+		JMenuItem adminEstudiantes= new JMenuItem("Administracion usuarios Estudiantes");
+		adminEstudiantes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UIUsuario windowsUsuario = new UIUsuario();
 				if(user instanceof Analista) {
@@ -81,16 +95,16 @@ public class Principal {
 				}	
 			}
 		});
-		JMenuItem usuModEstudiante= new JMenuItem("Modificacion Estudiante");
 		
-		usuario.add(usuAltDocente);
-		usuario.add(usuModDocente);
-		usuario.add(usuAltEstudiante);
-		usuario.add(usuModEstudiante);
-		menuBar.add(usuario);
+		JMenuItem pedirConstanciaEstudiante= new JMenuItem("Solicitar constancias");
 		
-		JMenu constancia;
-		constancia = new JMenu("Constancias");
+		
+		JMenuItem adminDatosPersonales= new JMenuItem("Editar datos cuenta");
+		
+		
+
+		
+		JMenu constancia= new JMenu("Constancias");
 		JMenuItem constAlta= new JMenuItem("Alta Constancias");
 		JMenuItem constModa= new JMenuItem("Modificacion Constancias");
 		JMenuItem constDeletea= new JMenuItem("Borrar Constancias");
@@ -103,12 +117,20 @@ public class Principal {
 				
 			}
 		});
-		constancia.add(constAlta);
-		constancia.add(constModa);
-		constancia.add(constDeletea);
-		menuBar.add(constancia);
 		
-		JMenu evento;
+		JMenuItem constListado = new JMenuItem("Listado Constancias");
+		constListado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				UIConstancia windowsConstancia = new UIConstancia();
+				windowsConstancia.inicializar(user);
+				windowsConstancia.frame.setVisible(true);
+				
+			}
+		});
+		
+		
+		JMenu evento= new JMenu("Eventos");
 		JMenuItem evenAlta= new JMenuItem("Alta Eventos");
 		evenAlta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -119,15 +141,14 @@ public class Principal {
 		});
 		JMenuItem evenMod= new JMenuItem("Modificacion Eventos");
 		JMenuItem evenDelete= new JMenuItem("Borrar Eventos");
-		evento= new JMenu("Eventos");
-		evento.add(evenAlta);
-		evento.add(evenMod);
-		evento.add(evenDelete);
-		menuBar.add(evento);
+
 		
-		JMenu itr;
-		JMenuItem itrAlta= new JMenuItem("Alta ITR");
-		itrAlta.addActionListener(new ActionListener() {
+		
+		
+		
+		JMenu itr= new JMenu("ITR");
+		JMenuItem itrAdministracion= new JMenuItem("Administrar ITR");
+		itrAdministracion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				UIITR uiItr = new UIITR();
@@ -135,19 +156,43 @@ public class Principal {
 				uiItr.frame.setVisible(true);
 			}
 		});
-		JMenuItem itrMod= new JMenuItem("Modificacion ITR");
-		JMenuItem itrDelete= new JMenuItem("Borrar ITR");
-		itr= new JMenu("ITR");
-		itr.add(itrAlta);
-		itr.add(itrMod);
-		itr.add(itrDelete);
-		menuBar.add(itr);
 		
-		JMenu escolaridad;
+
+		
+		JMenu escolaridad= new JMenu("Escolaridad");
 		JMenuItem escoAlta= new JMenuItem("Alta Escolaridad");
 		JMenuItem escoMod= new JMenuItem("Modificacion Escolaridad");
 		JMenuItem escoDelete= new JMenuItem("Borrar Escolaridad");
-		escolaridad= new JMenu("Escolaridad");
+		
+		
+		
+		
+		usuario.add(adminDocentes);
+		usuario.add(adminAnalista);
+		usuario.add(adminEstudiantes);
+		usuario.add(pedirConstanciaEstudiante);
+		usuario.add(adminDatosPersonales);
+		menuBar.add(usuario);
+		
+		
+		 
+		constancia.add(constAlta);
+		constancia.add(constModa);
+		constancia.add(constDeletea);
+		constancia.add(constListado);
+		menuBar.add(constancia);
+		
+		
+		evento.add(evenAlta);
+		evento.add(evenMod);
+		evento.add(evenDelete);
+		menuBar.add(evento);
+		
+		
+		itr.add(itrAdministracion);
+		menuBar.add(itr);
+		
+		
 		escolaridad.add(escoAlta);
 		escolaridad.add(escoMod);
 		escolaridad.add(escoDelete);
@@ -169,45 +214,7 @@ public class Principal {
 		
 		
 		
-//		btnUIPersona = new JButton("Personas");
-//		btnUIPersona.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				UIPersona uiPersona = new UIPersona();
-//				uiPersona.inicializar();
-//			}
-//		});
-//		btnUIPersona.setBounds(57, 42, 238, 21);
-//		frame.getContentPane().add(btnUIPersona);
-//		
-//		btnUIRol = new JButton("Roles");
-//		btnUIRol.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				UIRol uiRol = new UIRol();
-//				uiRol.inicializar();
-//			}
-//		});
-//		btnUIRol.setBounds(57, 73, 238, 21);
-//		frame.getContentPane().add(btnUIRol);
-//		
-//		btnUIFUncionalidad = new JButton("Funcionalidades");
-//		btnUIFUncionalidad.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				UIFuncionalidad uiFuncionalidad = new UIFuncionalidad();
-//				uiFuncionalidad.inicializar();
-//			}
-//		});
-//		btnUIFUncionalidad.setBounds(57, 104, 238, 21);
-//		frame.getContentPane().add(btnUIFUncionalidad);
-//		
-//		btnAdministracionDeRoles = new JButton("Administracion de Roles");
-//		btnAdministracionDeRoles.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				UIRolHasFuncionalidad uiRolHasFun = new UIRolHasFuncionalidad();
-//				uiRolHasFun.inicializar();
-//			}
-//		});
-//		btnAdministracionDeRoles.setBounds(57, 139, 238, 21);
-//		frame.getContentPane().add(btnAdministracionDeRoles);
+
 
 	}
 }

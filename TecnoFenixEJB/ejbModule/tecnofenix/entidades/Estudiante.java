@@ -16,9 +16,6 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -145,5 +142,17 @@ public class Estudiante extends Usuario {
     public String toString() {
         return "tecnofenix.entidades.Estudiante[ id=" + this.getId() + " name: " + this.getNombres() + " cedula: " + this.getDocumento() + " ]";
     }
+
+	@Override
+	public void darDeBaja() {
+		this.setActivo(false);
+		
+	}
+
+	@Override
+	public void reactivarUsuario() {
+		this.setActivo(true);
+		
+	}
     
 }

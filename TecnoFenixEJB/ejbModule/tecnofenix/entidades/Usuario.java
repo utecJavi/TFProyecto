@@ -11,7 +11,6 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +30,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import tecnofenix.interfaces.BajaLogica;
 
 /**
  *
@@ -58,7 +58,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByLocalidad", query = "SELECT u FROM Usuario u WHERE u.localidad = :localidad"),
     @NamedQuery(name = "Usuario.findByMail", query = "SELECT u FROM Usuario u WHERE u.mail = :mail"),
     @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")})
-public abstract class Usuario implements Serializable {
+public abstract class Usuario extends Activo implements Serializable ,BajaLogica {
     private static final long serialVersionUID = 1L;
 
     public static final String TIPO_ANALISTA = "ANALISTA";
@@ -132,14 +132,23 @@ public abstract class Usuario implements Serializable {
     private String telefono;
 
     @JoinColumn(name = "id_itr", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.MERGE, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Itr itr;
-    
+
     @ManyToOne()
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 
     public Usuario() {
+
+    @Column(name = "u_tipo", insertable=false, updatable=false)
+    private String uTipo;
+
+    @Basic(optional = false)
+    @Column(name = "validado")
+    private Boolean validado;
+
+	public Usuario() {
     }
 
     public Usuario(Integer id) {
@@ -299,6 +308,23 @@ public abstract class Usuario implements Serializable {
     public void setItr(Itr itr) {
         this.itr = itr;
     }
+
+
+    public String getUTtipo() {
+		return uTipo;
+	}
+
+	public void setUTipoo(String uTipo) {
+		this.uTipo = uTipo;
+	}
+
+    public Boolean getValidado() {
+		return validado;
+	}
+
+	public void setValidado(Boolean validado) {
+		this.validado = validado;
+	}
 //
 //    @XmlTransient
 //    public Collection<Estudiante> getEstudianteCollection() {
@@ -327,7 +353,9 @@ public abstract class Usuario implements Serializable {
 //        this.analistaCollection = analistaCollection;
 //    }
 
-    @Transient
+
+
+	@Transient
     public String getDecriminatorValue() {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }

@@ -121,5 +121,16 @@ public class Tutor extends Usuario {
                 ", area=" + area +
                 "} " + super.toString();
     }
-    
+
+	@Override
+	public void darDeBaja() {
+		this.setActivo(false);
+		
+	}
+
+	@Override
+	public void reactivarUsuario() {
+		this.setActivo(true);
+		
+	}
 }
