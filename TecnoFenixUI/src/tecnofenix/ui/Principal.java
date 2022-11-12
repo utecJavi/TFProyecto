@@ -12,7 +12,6 @@ import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Usuario;
-import tecnofenix.ui.UIConstancia;
 
 //import tecnocanarios.dao.*;
 
@@ -118,17 +117,6 @@ public class Principal {
 			}
 		});
 		
-		JMenuItem constListado = new JMenuItem("Listado Constancias");
-		constListado.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				UIConstancia windowsConstancia = new UIConstancia();
-				windowsConstancia.inicializar(user);
-				windowsConstancia.frame.setVisible(true);
-				
-			}
-		});
-		
 		
 		JMenu evento= new JMenu("Eventos");
 		JMenuItem evenAlta= new JMenuItem("Alta Eventos");
@@ -179,7 +167,6 @@ public class Principal {
 		constancia.add(constAlta);
 		constancia.add(constModa);
 		constancia.add(constDeletea);
-		constancia.add(constListado);
 		menuBar.add(constancia);
 		
 		
