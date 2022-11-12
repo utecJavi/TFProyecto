@@ -74,6 +74,12 @@ public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
         this.calificacion = calificacion;
         this.asistencia = asistencia;
     }
+    
+    public ConvocatoriaAsistenciaEventoEstudiante(Integer id, Evento evento, Estudiante estudiante) {
+        this.id = id;
+        this.eventoId = evento;
+        this.estudianteId= estudiante;
+    }
 
     public Integer getId() {
         return id;

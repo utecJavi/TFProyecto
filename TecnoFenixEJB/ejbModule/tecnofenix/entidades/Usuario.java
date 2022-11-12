@@ -135,7 +135,7 @@ public abstract class Usuario implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE, optional = false)
     private Itr itr;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 

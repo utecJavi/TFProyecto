@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import tecnofenix.entidades.*;
@@ -51,5 +52,29 @@ public class EventoBean implements EventoBeanRemote {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Evento obtenerEvento(Integer id) {
+		TypedQuery<Evento> query = em.createNamedQuery("Evento.findById", Evento.class);
+		query.setParameter("id", id);
+		return query.getSingleResult();
+	}
+
+	@Override
+	public List<Estudiante> obtenerEstudiantesConvocados(Evento evento) {
+		evento = obtenerEvento(evento.getId());
+//		Query query = em.createQuery("SELECT es FROM Evento ev INNER JOIN FETCH ev.convocatoriaAsistenciaEventoEstudianteCollection c INNER JOIN FETCH c.estudianteId es WHERE ev.id = :id");
+		TypedQuery<Estudiante> query = em.createQuery("SELECT es FROM Evento ev INNER JOIN ev.convocatoriaAsistenciaEventoEstudianteCollection c INNER JOIN c.estudianteId es WHERE ev.id = :id", Estudiante.class);
+		query.setParameter("id", evento.getId());
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Evento> obtenerEventos() {
+		TypedQuery<Evento> query = em.createNamedQuery("Evento.findAll", Evento.class);
+		return query.getResultList();
+	}
+	
+	
 
 }

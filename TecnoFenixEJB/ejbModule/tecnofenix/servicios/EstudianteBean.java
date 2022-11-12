@@ -72,7 +72,7 @@ public class EstudianteBean implements EstudianteBeanRemote {
 	}
 
 	@Override
-	public Estudiante obtenerEstudiantePorAtributo(String documento) {
+	public Estudiante obtenerEstudiantePorAtributo(Integer documento) {
 
 		TypedQuery<Estudiante> query = em
 				.createQuery("SELECT e FROM Estudiante e WHERE e.documento = :documento", Estudiante.class)

@@ -143,7 +143,7 @@ public class Estudiante extends Usuario {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Estudiante[ id=" + this.getId() + " ]";
+        return "tecnofenix.entidades.Estudiante[ id=" + this.getId() + " name: " + this.getNombres() + " cedula: " + this.getDocumento() + " ]";
     }
     
 }
