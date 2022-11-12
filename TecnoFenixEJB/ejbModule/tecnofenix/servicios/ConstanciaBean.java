@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
+import ejbModule.tecnofenix.interfaces.String;
 import tecnofenix.entidades.Constancia;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ConstanciaBeanRemote;
@@ -51,6 +52,24 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	public List<Constancia> obtenerConstanciaPorAtributo(Constancia constancia) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	List<Constancia> listadoConstancias(String usuario) throws ServiciosException {
+		try {
+			String consulta = "SELECT c FROM Constancia c";
+			if (usuario != null) {
+				consulta = consulta + " WHERE c.estudianteId.usuario = :usuario";
+			}
+			
+			TypedQuery<Constancia> query = em.createQuery(consulta, Constancia.class);
+			if (usuario != null) {
+				query.setParameter("usuario", usuario);
+			}
+			return query.getResultList();
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrió un error al consultar constancias: " + pe.getMessage());
+		}
 	}
 
 }
