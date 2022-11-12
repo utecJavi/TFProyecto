@@ -144,8 +144,10 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
     @Column(name = "u_tipo", insertable=false, updatable=false)
     private String uTipo;
     
+    @Basic(optional = false)
+    @Column(name = "validado")
+    private Boolean validado;
     
-  
 	public Usuario() {
     }
 
@@ -315,7 +317,14 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
 	public void setUTipoo(String uTipo) {
 		this.uTipo = uTipo;
 	}
+	
+    public Boolean getValidado() {
+		return validado;
+	}
 
+	public void setValidado(Boolean validado) {
+		this.validado = validado;
+	}
 //
 //    @XmlTransient
 //    public Collection<Estudiante> getEstudianteCollection() {
@@ -344,7 +353,9 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
 //        this.analistaCollection = analistaCollection;
 //    }
 
-    @Transient
+
+
+	@Transient
     public String getDecriminatorValue() {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }

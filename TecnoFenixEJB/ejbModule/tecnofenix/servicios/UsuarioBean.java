@@ -45,7 +45,7 @@ public class UsuarioBean implements UsuarioBeanRemote {
 		System.out.println("COSITAS PA");
 		System.out.println("HERNAN USUARIOOOO 2: " + usuario);
 		System.out.println(itrBean);
-		usuario.setItr(itrBean.findById2(usuario.getItr().getId(),em));
+		usuario.setItr(itrBean.findById2(usuario.getItr().getId(), em));
 		System.out.println("TEST1");
 		em.merge(usuario);
 		System.out.println("TEST2");
@@ -140,89 +140,65 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			throws UsuarioNoEncontradoException {
 
 		String conditions = "";
+		String joinJPQL = "";
 		if (id != null && id != "") {
-			conditions = conditions + " u.id = " + id;
+			conditions = conditions + " AND u.id = " + id;
 		}
 		if (nombre != null && nombre != "") {
-			if (conditions == "") {
-				conditions = conditions + " u.nombre LIKE '" + nombre + "'";
-			} else {
-				conditions = conditions + "AND u.nombre LIKE '" + nombre + "'";
-			}
+
+			conditions = conditions + " AND u.nombre LIKE '" + nombre + "'";
 
 		}
 		if (depto != null && depto != "") {
-			if (conditions == "") {
-				conditions = conditions + " u.departamento LIKE '" + depto + "'";
-			} else {
-				conditions = conditions + "AND u.departamento LIKE '" + depto + "'";
-			}
+
+			conditions = conditions + " AND u.departamento LIKE '" + depto + "'";
 
 		}
 
 		if (doc != null && doc != "") {
-			if (conditions == "") {
-				conditions = conditions + " u.documento LIKE '" + doc + "'";
-			} else {
-				conditions = conditions + "AND u.documento LIKE '" + doc + "'";
-			}
+
+			conditions = conditions + " AND u.documento LIKE '" + doc + "'";
 
 		}
 
 		if (apellido != null && apellido != "") {
-			if (conditions == "") {
-				conditions = conditions + " u.apellidos LIKE '" + apellido + "'";
-			} else {
-				conditions = conditions + "AND u.apellidos LIKE '" + apellido + "'";
-			}
+
+			conditions = conditions + " AND u.apellidos LIKE '" + apellido + "'";
 
 		}
 
 		if (mail != null && mail != "") {
-			if (conditions == "") {
-				conditions = conditions + " u.mail LIKE '" + mail + "'";
-			} else {
-				conditions = conditions + "AND u.mail LIKE '" + mail + "'";
-			}
+
+			conditions = conditions + " AND u.mail LIKE '" + mail + "'";
 
 		}
 
 		if (usuario != null && usuario != "") {
-			if (conditions == "") {
-				conditions = conditions + " u.usuario LIKE '" + usuario + "'";
-			} else {
-				conditions = conditions + "AND u.usuario LIKE '" + usuario + "'";
-			}
+
+			conditions = conditions + " AND u.usuario LIKE '" + usuario + "'";
 
 		}
 
 		if (tipo != null && tipo != "") {
-			if (conditions == "") {
-				conditions = conditions + " u.tipo LIKE '" + tipo + "'";
-			} else {
-				conditions = conditions + "AND u.tipo LIKE '" + tipo + "'";
-			}
+
+			conditions = conditions + " AND u.uTipo LIKE '" + tipo + "'";
 
 			if (itrNombre != null && itrNombre != "") {
-				if (conditions == "") {
-					conditions = conditions + " i.itr LIKE '" + itrNombre + "'";
-				} else {
-					conditions = conditions + "AND i.itr LIKE '" + itrNombre + "'";
-				}
+
+				joinJPQL = " INNER JOIN u.itr i ";
+				conditions = conditions + " AND i.nombre LIKE '" + itrNombre + "'";
 
 			}
 			if (generacion != null && generacion != "") {
-				if (conditions == "") {
-					conditions = conditions + " u.generacion LIKE '" + generacion + "'";
-				} else {
-					conditions = conditions + "AND u.generacion LIKE '" + generacion + "'";
-				}
+
+				conditions = conditions + " AND u.generacion = " + generacion ;
 
 			}
 
 		}
-
-		TypedQuery<Usuario> query = em.createQuery("SELECT u FROM Usuario u WHERE " + conditions, Usuario.class);
+		String jpql ="SELECT u FROM Usuario u " + joinJPQL + " WHERE 1=1 " + conditions;
+		TypedQuery<Usuario> query = em.createQuery(jpql,Usuario.class);
+		System.out.println(jpql);
 		List<Usuario> list = query.getResultList();
 		if (list == null) {
 			throw new ItrNoEncontradoException("Usuario no encontrado.");

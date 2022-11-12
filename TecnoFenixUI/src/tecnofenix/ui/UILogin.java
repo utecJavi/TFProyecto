@@ -29,20 +29,23 @@ import javax.naming.NamingException;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
+import javax.swing.JCheckBox;
 
 public class UILogin {
 
 	public JFrame frame;
 	private JTextField txtEmail;
-	private JTextField txtPass;
+	private JPasswordField txtPass;
 //	private Estudiante usuario;
 	@EJB
 	UsuarioBeanRemote usuarioRemote;
-	private JPasswordField passwordField;
+//	private JPasswordField passwordField;
 	
 //	MensajePopUp msj = new MensajePopUp();
 
@@ -84,7 +87,7 @@ public class UILogin {
 		lblPswd.setBounds(10, 187, 97, 13);
 		panel.add(lblPswd);
 
-		txtPass = new JTextField();
+		txtPass = new JPasswordField();
 		txtPass.setText("123456");
 		txtPass.setBounds(117, 184, 222, 19);
 		panel.add(txtPass);
@@ -96,9 +99,9 @@ public class UILogin {
 //				window.inicializar();
 //				window.frame.setVisible(true);
 //				frame.setVisible(false);
-				if (!txtEmail.getText().equals("") && !txtPass.getText().equals("")) {
+				if (!txtEmail.getText().equals("") && !String.valueOf(txtPass.getPassword()).equals("")) {
 					Usuario user;
-					user = ejbUsuario.login(txtEmail.getText(),txtPass.getText());
+					user = ejbUsuario.login(txtEmail.getText(),String.valueOf(txtPass.getPassword()));
 					if (user.getId() != null) {
 						JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombres() + " " + user.getApellidos(),
 								"Bienvenido", JOptionPane.INFORMATION_MESSAGE);
@@ -122,6 +125,22 @@ public class UILogin {
 
 			}
 		});
+		
+		JCheckBox hidePasswordCheckbox = new JCheckBox("Ver");
+		hidePasswordCheckbox.setBounds(345, 183, 93, 21);
+		
+		
+		hidePasswordCheckbox.addItemListener(new ItemListener() {
+		    public void itemStateChanged(ItemEvent e) {
+		        if (e.getStateChange() == ItemEvent.SELECTED) {
+		        	txtPass.setEchoChar('*');
+		        } else {
+		        	txtPass.setEchoChar((char) 0);
+		        }
+		    }
+		});
+		panel.add(hidePasswordCheckbox);
+		
 		btnLogin.setBounds(254, 227, 85, 21);
 		panel.add(btnLogin);
 		
@@ -161,10 +180,7 @@ public class UILogin {
 		});
 		btnRunConfig.setBounds(10, 10, 85, 21);
 		panel.add(btnRunConfig);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(117, 266, 222, 19);
-		panel.add(passwordField);
+			
 
 
 		frame.pack();
