@@ -100,6 +100,13 @@ public class Principal {
 		
 		
 		JMenuItem adminDatosPersonales= new JMenuItem("Editar datos cuenta");
+		adminDatosPersonales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UIUsuarioDatosPropios winUsuarioDP = new UIUsuarioDatosPropios();
+				winUsuarioDP.inicializar(user);
+				winUsuarioDP.frame.setVisible(true);
+			}
+		});
 		
 		
 

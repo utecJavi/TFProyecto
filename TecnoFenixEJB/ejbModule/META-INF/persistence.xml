@@ -22,6 +22,8 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 		<class>tecnofenix.entidades.Reclamo</class>
 		<class>tecnofenix.entidades.Tutor</class>
 		<class>tecnofenix.entidades.TutorResponsableEvento</class>
+		<class>tecnofenix.entidades.Funcionalidad</class>
+		<class>tecnofenix.entidades.Rol</class>
 		<properties>
 		    <!-- Configuring The Database Connection Details oracle.jdbc.driver.OracleDriver
             <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
@@ -38,7 +40,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
     none:        does nothing with the schema, makes no changes to the database
 	 --> 
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="none" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 			<property name="show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 		</properties>

@@ -5,6 +5,8 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import tecnofenix.entidades.ConvocatoriaAsistenciaEventoEstudiante;
+import tecnofenix.entidades.Estudiante;
+import tecnofenix.entidades.Evento;
 import tecnofenix.exception.ServiciosException;
 
 @Remote
@@ -20,5 +22,8 @@ public interface ConvocatoriaAsistenciaEventoEstudianteBeanRemote {
 
 	List<ConvocatoriaAsistenciaEventoEstudiante> obtenerClasePorAtributo(
 			ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu);
+	
+	void agregarEstudiante(Estudiante estudiante, Evento evento);
+	void registrarAsistencia(Integer id);
 	
 }

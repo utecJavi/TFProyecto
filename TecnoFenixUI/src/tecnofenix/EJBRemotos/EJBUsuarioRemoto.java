@@ -261,6 +261,39 @@ public class EJBUsuarioRemoto {
 
 	}
 	
+	public List<Estudiante> listarEstudiantesConvocados() {
+		try {
+			Evento evento = eventoBeanRemote.obtenerEvento(1);
+			System.out.println("Evento: " + evento);
+			return eventoBeanRemote.obtenerEstudiantesConvocados(evento);
+		} catch (Exception e) {
+			System.out.println("Error en listar estudiantes convocados: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return new ArrayList<Estudiante>();
+	}
+	
+	public void agregarEstudianteEvento() {
+		try {
+			Evento evento = eventoBeanRemote.obtenerEvento(1);
+			Estudiante estudiante = estudianteRemote.obtenerEstudiantePorAtributo(String.valueOf(556664));
+			convocatoriaAsistenciaEventoEstudianteBeanRemote.agregarEstudiante(estudiante, evento);
+		} catch (Exception e) {
+			System.out.println("Error en agregar convocatoria estudiante evento: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public void registrarAsistencia() {
+		try {
+			convocatoriaAsistenciaEventoEstudianteBeanRemote.registrarAsistencia(4);
+		} catch (Exception e) {
+			System.out.println("Error en registrar asistencia: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
 	
 
 	/*

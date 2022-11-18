@@ -11,19 +11,24 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.sql.Date;
+
+import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class UIUsuarioDatosPropios {
 
 	public JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-
+	private JTextField txtDocumento;
+	private JTextField txtNombre;
+	private JTextField txtUsuario;
+	private JTextField txtTelefono;
+	private JTextField txtEmail;
+	private JTextField txtApellido;
+	private JTextField txtGeneracion;
+	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -43,66 +48,67 @@ public class UIUsuarioDatosPropios {
 		lblDocumento.setBounds(23, 37, 133, 13);
 		panel.add(lblDocumento);
 		
-		textField = new JTextField();
-		textField.setEnabled(false);
-		textField.setColumns(10);
-		textField.setBounds(90, 34, 189, 19);
-		panel.add(textField);
+		txtDocumento = new JTextField();
+		txtDocumento.setEnabled(false);
+		txtDocumento.setColumns(10);
+		txtDocumento.setBounds(116, 34, 189, 19);
+		panel.add(txtDocumento);
 		
 		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(23, 60, 45, 13);
+		lblNombre.setBounds(23, 60, 86, 13);
 		panel.add(lblNombre);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(23, 73, 360, 19);
-		panel.add(textField_1);
+		txtNombre = new JTextField();
+		txtNombre.setColumns(10);
+		txtNombre.setBounds(23, 73, 360, 19);
+		panel.add(txtNombre);
 		
 		JLabel lblNombreUsuario = new JLabel("Nombre de Usuario:");
 		lblNombreUsuario.setBounds(23, 144, 133, 13);
 		panel.add(lblNombreUsuario);
 		
-		textField_2 = new JTextField();
-		textField_2.setEnabled(false);
-		textField_2.setColumns(10);
-		textField_2.setBounds(23, 157, 360, 19);
-		panel.add(textField_2);
+		txtUsuario = new JTextField();
+		txtUsuario.setEnabled(false);
+		txtUsuario.setColumns(10);
+		txtUsuario.setBounds(23, 157, 360, 19);
+		panel.add(txtUsuario);
 		
 		JLabel lblTelefono = new JLabel("Telefono:");
 		lblTelefono.setBounds(23, 186, 133, 13);
 		panel.add(lblTelefono);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(23, 199, 360, 19);
-		panel.add(textField_3);
+		txtTelefono = new JTextField();
+		txtTelefono.setColumns(10);
+		txtTelefono.setBounds(23, 199, 360, 19);
+		panel.add(txtTelefono);
 		
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setBounds(23, 228, 133, 13);
 		panel.add(lblEmail);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(23, 241, 360, 19);
-		panel.add(textField_4);
+		txtEmail = new JTextField();
+		txtEmail.setColumns(10);
+		txtEmail.setBounds(23, 241, 360, 19);
+		panel.add(txtEmail);
 		
 		JLabel lblApellido = new JLabel("Apellido:");
-		lblApellido.setBounds(23, 102, 45, 13);
+		lblApellido.setBounds(23, 102, 86, 13);
 		panel.add(lblApellido);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(23, 115, 360, 19);
-		panel.add(textField_5);
+		txtApellido = new JTextField();
+		txtApellido.setColumns(10);
+		txtApellido.setBounds(23, 115, 360, 19);
+		panel.add(txtApellido);
 		
 		JLabel lblGeneracion = new JLabel("Generacion:");
 		lblGeneracion.setBounds(23, 287, 133, 13);
 		panel.add(lblGeneracion);
 		
-		JComboBox<Date> comboBoxGeneracion = new JComboBox<Date>();
-		comboBoxGeneracion.setEnabled(false);
-		comboBoxGeneracion.setBounds(23, 299, 360, 21);
-		panel.add(comboBoxGeneracion);
+		txtGeneracion = new JTextField();
+		txtGeneracion.setColumns(10);
+		txtGeneracion.setEnabled(false);
+		txtGeneracion.setBounds(23, 299, 360, 21);
+		panel.add(txtGeneracion);
 		
 		JLabel lblITR = new JLabel("ITR:");
 		lblITR.setBounds(23, 330, 133, 13);
@@ -113,7 +119,20 @@ public class UIUsuarioDatosPropios {
 		comboBoxITR.setBounds(23, 342, 360, 21);
 		panel.add(comboBoxITR);
 		
+		txtNombre.setText(usuario.getNombres());
+		txtApellido.setText(usuario.getApellidos());
+		txtEmail.setText(usuario.getMail());
+		txtTelefono.setText(usuario.getTelefono());
+		txtUsuario.setText(usuario.getUsuario());
+		txtGeneracion.setText(String.valueOf(((Estudiante)usuario).getGeneracion()));
+		txtDocumento.setText(String.valueOf(usuario.getDocumento()));
+		
 		JButton btnAcrualizar = new JButton("Actualizar Datos");
+		btnAcrualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnAcrualizar.setBounds(276, 498, 107, 21);
 		panel.add(btnAcrualizar);
 	}

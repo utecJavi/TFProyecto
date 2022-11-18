@@ -28,5 +28,6 @@ build/*
 .classpath
 .project
 TecnoFenixEJB/.settings/
+TecnoFenixUI/.settings/
 TecnoFenixEJB/build/
 TecnoFenixUI/bin/

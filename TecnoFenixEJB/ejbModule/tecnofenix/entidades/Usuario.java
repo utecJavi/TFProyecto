@@ -147,8 +147,12 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
     @Basic(optional = false)
     @Column(name = "validado")
     private Boolean validado;
-    
-	public Usuario() {
+
+    @ManyToOne()
+    @JoinColumn(name = "id_rol", nullable = false)
+    private Rol rol;
+
+    public Usuario() {
     }
 
     public Usuario(Integer id) {
@@ -353,9 +357,7 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
 //        this.analistaCollection = analistaCollection;
 //    }
 
-
-
-	@Transient
+    @Transient
     public String getDecriminatorValue() {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
