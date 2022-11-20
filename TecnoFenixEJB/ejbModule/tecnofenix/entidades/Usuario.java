@@ -185,7 +185,7 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
         this.telefono = telefono;
     }
 
-    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Rol rol) {
         this.documento = documento;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
@@ -195,6 +195,7 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
         this.mail = mail;
         this.telefono = telefono;
         this.itr = itr;
+        this.rol = rol;
     }
     public Usuario(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
         this.id = id;

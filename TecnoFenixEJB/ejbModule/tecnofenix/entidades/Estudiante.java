@@ -60,8 +60,8 @@ public class Estudiante extends Usuario {
         this.generacion = generacion;
     }
 
-    public Estudiante(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Integer generacion) {
-        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
+    public Estudiante(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Integer generacion ,Rol rol) {
+        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr,rol);
         this.generacion = generacion;
     }
 

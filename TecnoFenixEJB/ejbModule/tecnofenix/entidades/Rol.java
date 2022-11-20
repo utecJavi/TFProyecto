@@ -3,6 +3,8 @@ package tecnofenix.entidades;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +35,7 @@ public class Rol implements Serializable {
             joinColumns = @JoinColumn(name = "id_rol"),
             inverseJoinColumns = @JoinColumn(name = "id_funcionalidad")
     )
-    Set<Funcionalidad> funcionalidades = new HashSet<>();
+    Collection<Funcionalidad> funcionalidades = new ArrayList<Funcionalidad>();
 
     public Rol() {}
 
@@ -63,15 +65,16 @@ public class Rol implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Set<Funcionalidad> getFuncionalidades() {
-        return funcionalidades;
-    }
+   
+    public Collection<Funcionalidad> getFuncionalidades() {
+		return funcionalidades;
+	}
 
-    public void setFuncionalidades(Set<Funcionalidad> funcionalidades) {
-        this.funcionalidades = funcionalidades;
-    }
+	public void setFuncionalidades(Collection<Funcionalidad> funcionalidades) {
+		this.funcionalidades = funcionalidades;
+	}
 
-    @Override
+	@Override
     public String toString() {
         return "Rol{" +
                 "id=" + id +
