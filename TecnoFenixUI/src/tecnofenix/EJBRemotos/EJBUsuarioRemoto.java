@@ -36,7 +36,9 @@ public class EJBUsuarioRemoto {
 	private static String RUTA_JUSTIFICACION_EJB = "ejb:/TecnoFenixEJB/JustificacionBean!tecnofenix.interfaces.JustificacionBeanRemote";
 	private static String RUTA_RECLAMO_EJB = "ejb:/TecnoFenixEJB/ReclamoBean!tecnofenix.interfaces.ReclamoBeanRemote";
 	private static String RUTA_TUTOR_RESPONSABLE_EVENTO_EJB = "ejb:/TecnoFenixEJB/TutorResponsableEventoBean!tecnofenix.interfaces.TutorResponsableEventoBeanRemote";
+	private static String RUTA_ROL_EJB = "ejb:/TecnoFenixEJB/RolBean!tecnofenix.interfaces.RolBeanRemote";
 
+	
 	@EJB
 	ConexionClienteJNDIRemote claseRemota;
 	@EJB
@@ -69,6 +71,8 @@ public class EJBUsuarioRemoto {
 	TutorBeanRemote tutorBeanRemote;
 	@EJB
 	TutorResponsableEventoBeanRemote tutorResponsableEventoBeanRemote;
+	@EJB
+	RolBeanRemote rolBeanRemote;
 
 	public EJBUsuarioRemoto() {
 		try {
@@ -90,7 +94,8 @@ public class EJBUsuarioRemoto {
 			justificacionBeanRemote = (JustificacionBeanRemote) ctx.lookup(RUTA_JUSTIFICACION_EJB);
 			reclamoBeanRemote = (ReclamoBeanRemote) ctx.lookup(RUTA_RECLAMO_EJB);
 			tutorResponsableEventoBeanRemote = (TutorResponsableEventoBeanRemote) ctx.lookup(RUTA_TUTOR_RESPONSABLE_EVENTO_EJB);
-
+			rolBeanRemote = (RolBeanRemote) ctx.lookup(RUTA_ROL_EJB);
+			
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -298,5 +303,26 @@ public class EJBUsuarioRemoto {
 
 	/*
 	 * METODOS ANALISTA REMOTOS FIN
+	 */
+	
+	public List<Rol> listarRoles(){
+		List<Rol> listado = null;
+		try {
+			listado = rolBeanRemote.listarRoles();
+		} catch (ServiciosException e) {
+			
+			e.printStackTrace();
+		}
+		return listado;
+	}
+
+	/*
+	 * METODOS ROL REMOTOS INICIO
+	 */
+	
+	
+	
+	/*
+	 * METODOS ROL REMOTOS FIN
 	 */
 }

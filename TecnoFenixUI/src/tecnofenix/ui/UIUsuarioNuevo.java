@@ -9,9 +9,12 @@ import javax.swing.JPanel;
 
 import tecnofenix.entidades.Usuario;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
@@ -58,6 +61,7 @@ public class UIUsuarioNuevo {
 	private JTextField txtPass;
 	private JTextField txtRepetirPass;
 	private EJBUsuarioRemoto usuarioRemote;
+
 	JYearChooser generacionEstudiante;
 	private static final String EMAIL_VALIDO ="^(.+)@(\\S+)$";
 	
@@ -66,7 +70,7 @@ public class UIUsuarioNuevo {
 	boolean emailValido = false;
 	boolean passCoincideValido = false;
 	boolean emailPerCoincideValido = false;
-	private Rol rol;
+	private List<Rol> roles;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -76,7 +80,8 @@ public class UIUsuarioNuevo {
 //		Usuario usuario = new Es
 		frame = new JFrame("Usuario Nuevo");
 		usuarioRemote = new EJBUsuarioRemoto();
-		rol = new Rol();
+		roles = new ArrayList<Rol>();
+		roles = usuarioRemote.listarRoles();
 		
 		JPanel panel = new JPanel();
 		// definimos un layout
@@ -483,16 +488,18 @@ public class UIUsuarioNuevo {
 	
 	public void addEstudiante() {
 		if(validarDatos()) {
+
 		Estudiante estudiante = new Estudiante( Integer.valueOf(txtDocumento.getText()),
 				txtUsuario.getText(), txtPass.getText(), txtApellido.getText(), txtNombre.getText(),
 				dateChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(),generacionEstudiante.getYear(),rol);
+				(Itr) comboBoxITR.getSelectedItem(),generacionEstudiante.getYear(),setRolNuevoUsuario("ESTUDIANTE"));
 		
 		estudiante.setValidado(false);
 		estudiante.setActivo(true);
 		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
-		System.err.println(estudiante.toString());
-		System.out.println("Se creo el usuario");
+		JOptionPane.showMessageDialog(null, "Se creo el usuario Estudiante ["+txtUsuario.getText()+"] , para iniciar sesion debe esperar a que lo habiliten en el sistema",
+				"Error", JOptionPane.INFORMATION_MESSAGE);
+		limpiarDatos();
 		}
 	}
 	public void addTutor() {
@@ -500,13 +507,14 @@ public class UIUsuarioNuevo {
 		Tutor tutor = new Tutor( Integer.valueOf(txtDocumento.getText()),
 				txtUsuario.getText(),  txtPass.getText(), txtApellido.getText(), txtNombre.getText(),
 				dateChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(), cmbTipoTutor.getSelectedIndex(), cmbArea.getSelectedIndex());
+				(Itr) comboBoxITR.getSelectedItem(), cmbTipoTutor.getSelectedIndex(), cmbArea.getSelectedIndex(),setRolNuevoUsuario("TUTOR"));
 				
 		tutor.setValidado(false);
 		tutor.setActivo(true);
 		tutor = (Tutor) usuarioRemote.crearUsuario(tutor);
-		System.err.println(tutor.toString());
-		System.out.println("Se creo el usuario tutor");
+		JOptionPane.showMessageDialog(null, "Se creo el usuario Tutor ["+txtUsuario.getText()+"] , para iniciar sesion debe esperar a que lo habiliten en el sistema",
+				"Error", JOptionPane.INFORMATION_MESSAGE);
+		limpiarDatos();
 		}
 	}
 	public void addAnalista() {
@@ -514,7 +522,7 @@ public class UIUsuarioNuevo {
 		Analista analista = new Analista( Integer.valueOf(txtDocumento.getText()),
 				txtUsuario.getText(), txtPass.getText(), txtApellido.getText(), txtNombre.getText(),
 				dateChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem());
+				(Itr) comboBoxITR.getSelectedItem(),setRolNuevoUsuario("ANALISTA"));
 		analista.setValidado(false);
 		analista.setActivo(true);
 		analista = (Analista) usuarioRemote.crearUsuario(analista);
@@ -524,15 +532,36 @@ public class UIUsuarioNuevo {
 	}
 	 public boolean validarDatos() {
 		 if(passValido && emailValido && passCoincideValido && emailPerCoincideValido) {
-			 if(txtDocumento.getText().length()==8 && txtApellido.getText()!= "" && txtNombre.getText()!= "") {
-				 
+			 if(txtDocumento.getText().length()==8 && txtApellido.getText()!= "" && txtNombre.getText()!= "") {				 
 			 return true; 
-			 }
-			 
-			 
-			
+			 }		
 		 }
 		 return false;
+	 }
+	 
+	 public Rol setRolNuevoUsuario(String roleName) {	 
+			Rol rol = null;
+			System.out.println("Imprimiendo roles:");
+			for (int i = 0; i < roles.size(); i++) {
+				System.out.println(roles.get(i).getNombre());
+				if(roles.get(i).getNombre().equals(roleName)) {
+					rol=roles.get(i);
+				}
+			}
+			return rol;
+	 }
+	 
+	 public void limpiarDatos() {
+		 txtApellido.setText("");
+		 txtDocumento.setText("");
+		 txtEmail.setText("");
+		 txtEmailInstitucional.setText("");
+		 txtNombre.setText("");
+		 txtPass.setText("");
+		 txtRepetirEmail.setText("");
+		 txtRepetirPass.setText("");
+		 txtTelefono.setText("");
+		 txtUsuario.setText("");
 	 }
 	 
 }

@@ -24,6 +24,7 @@ import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
+import tecnofenix.entidades.Rol;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
 import com.toedter.calendar.JYearChooser;
@@ -58,6 +59,8 @@ public class UIUsuario {
 	private JTextField textBuscarMail;
 	private JComboBox<String> comboBuscarTipoUsuario;
 	private JTextField textBuscarID;
+	private List<Rol> roles;
+	
 	
 	public UIUsuario() {
 		System.out.println("Instanciando ventana usuario");
@@ -71,6 +74,7 @@ public class UIUsuario {
 		usuarioRemote = new EJBUsuarioRemoto();
 		allUsuarios = new ArrayList<Usuario>();
 		frame = new JFrame("Administracion de usuarios");
+		roles = usuarioRemote.listarRoles();
 		
 		JPanel panel = new JPanel();
 		// definimos un layout
@@ -415,7 +419,7 @@ public class UIUsuario {
 		Estudiante estudiante = new Estudiante( Integer.valueOf(txtDocumento.getText()),
 				txtNombreUsuario.getText(), "123456", txtApellido.getText(), txtNombre.getText(),
 				dateBuscarChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(),yearBuscarChooser.getYear());
+				(Itr) comboBoxITR.getSelectedItem(),yearBuscarChooser.getYear(),setRolNuevoUsuario("ESTUDIANTE"));
 
 		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
 		System.err.println(estudiante.toString());
@@ -428,7 +432,7 @@ public class UIUsuario {
 		Tutor tutor = new Tutor( Integer.valueOf(txtDocumento.getText()),
 				txtNombreUsuario.getText(), "123456", txtApellido.getText(), txtNombre.getText(),
 				new Date(System.currentTimeMillis()), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(), 1, 1);
+				(Itr) comboBoxITR.getSelectedItem(), 1, 1,setRolNuevoUsuario("TUTOR"));
 
 		tutor = (Tutor) usuarioRemote.crearUsuario(tutor);
 		System.err.println(tutor.toString());
@@ -543,4 +547,17 @@ public class UIUsuario {
 		modelo.fireTableDataChanged();
 
 	}
+	
+	 public Rol setRolNuevoUsuario(String roleName) {	 
+			Rol rol = null;
+			System.out.println("Imprimiendo roles:");
+			for (int i = 0; i < roles.size(); i++) {
+				
+				System.out.println(roles.get(i).getNombre());
+				if(roles.get(i).getNombre().equals(roleName)) {
+					rol=roles.get(i);
+				}
+			}
+			return rol;
+	 }
 }

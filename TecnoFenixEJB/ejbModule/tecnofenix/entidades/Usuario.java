@@ -148,8 +148,8 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
     @Column(name = "validado")
     private Boolean validado;
 
-    @ManyToOne()
-    @JoinColumn(name = "id_rol", nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE,  optional = false)
+    @JoinColumn(name = "id_rol", referencedColumnName = "id",nullable = false)
     private Rol rol;
 
     public Usuario() {
