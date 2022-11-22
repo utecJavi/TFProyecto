@@ -79,7 +79,7 @@ public class UILogin {
 
 		txtEmail = new JTextField();
 		txtEmail.setText("ggonzalez");
-		txtEmail.setBounds(117, 147, 222, 19);
+		txtEmail.setBounds(90, 147, 249, 19);
 		panel.add(txtEmail);
 		txtEmail.setColumns(10);
 
@@ -89,7 +89,7 @@ public class UILogin {
 
 		txtPass = new JPasswordField();
 		txtPass.setText("123456");
-		txtPass.setBounds(117, 184, 222, 19);
+		txtPass.setBounds(90, 184, 249, 19);
 		panel.add(txtPass);
 		txtPass.setColumns(10);
 
@@ -154,7 +154,7 @@ public class UILogin {
 
 			}
 		});
-		btnRunConfig.setBounds(117, 227, 85, 21);
+		btnRunConfig.setBounds(90, 227, 154, 21);
 		panel.add(btnRunConfig);
 			
 

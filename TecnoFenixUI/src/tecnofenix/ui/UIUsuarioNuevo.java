@@ -55,6 +55,8 @@ public class UIUsuarioNuevo {
 	JRadioButton rdbtnEstudiante;
 	JRadioButton rdbtnTutor;
 	JRadioButton rdbtnAnalista;
+	JLabel lblArea;
+	JLabel lbltipoTutor;
 	JComboBox cmbTipoTutor;
 	JComboBox cmbArea;
 	private JTextField txtRepetirEmail;
@@ -71,6 +73,7 @@ public class UIUsuarioNuevo {
 	boolean passCoincideValido = false;
 	boolean emailPerCoincideValido = false;
 	private List<Rol> roles;
+	private JTextField txtLocalidad;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -88,14 +91,15 @@ public class UIUsuarioNuevo {
 
 		panel.setPreferredSize(new Dimension(470, 780));
 		frame.getContentPane().setSize(new Dimension(475, 785));
-		frame.getContentPane().add(panel);
+		frame.getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(null);
 
 		JLabel lblDocumento = new JLabel("Documento:");
-		lblDocumento.setBounds(23, 104, 133, 13);
+		lblDocumento.setBounds(23, 79, 133, 13);
 		panel.add(lblDocumento);
 
 		txtDocumento = new JTextField();
+		txtDocumento.setBounds(120, 76, 189, 19);
 		txtDocumento.addKeyListener(new KeyAdapter() {
 		    public void keyTyped(KeyEvent e) {
 		        char c = e.getKeyChar();
@@ -107,43 +111,43 @@ public class UIUsuarioNuevo {
 		        }
 		      }
 		    });
-		txtDocumento.setBounds(116, 101, 189, 19);
 		txtDocumento.setColumns(10);
 		panel.add(txtDocumento);
 
 		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(23, 127, 86, 13);
+		lblNombre.setBounds(23, 102, 86, 13);
 		panel.add(lblNombre);
 
 		txtNombre = new JTextField();
-		txtNombre.setBounds(23, 140, 360, 19);
+		txtNombre.setBounds(23, 115, 360, 19);
 		txtNombre.setColumns(10);
 		panel.add(txtNombre);
 
 		JLabel lblNombreUsuario = new JLabel("Nombre de Usuario:");
-		lblNombreUsuario.setBounds(23, 295, 133, 13);
+		lblNombreUsuario.setBounds(23, 364, 133, 13);
 		panel.add(lblNombreUsuario);
 
 		txtUsuario = new JTextField();
+		txtUsuario.setBounds(23, 377, 360, 19);
 		txtUsuario.setEnabled(false);
-		txtUsuario.setBounds(23, 308, 360, 19);
 		txtUsuario.setColumns(10);
 		panel.add(txtUsuario);
 
 		JLabel lblTelefono = new JLabel("Telefono:");
-		lblTelefono.setBounds(23, 211, 133, 13);
+		lblTelefono.setBounds(23, 186, 133, 13);
 		panel.add(lblTelefono);
 
 		txtTelefono = new JTextField();
-		txtTelefono.setBounds(23, 224, 360, 19);
+		txtTelefono.setBounds(23, 199, 360, 19);
 		txtTelefono.setColumns(10);
 		panel.add(txtTelefono);
 
 		JLabel lblEmail = new JLabel("Email personal:");
-		lblEmail.setBounds(23, 421, 133, 13);
+		lblEmail.setBounds(23, 490, 133, 13);
 		panel.add(lblEmail);
 
 		txtEmail = new JTextField();
+		txtEmail.setBounds(23, 503, 360, 19);
 		txtEmail.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -151,45 +155,44 @@ public class UIUsuarioNuevo {
 				validarEmailPerIguales();
 			}
 		});
-		txtEmail.setBounds(23, 434, 360, 19);
 		txtEmail.setColumns(10);
 		panel.add(txtEmail);
 
 		JLabel lblApellido = new JLabel("Apellido:");
-		lblApellido.setBounds(23, 169, 86, 13);
+		lblApellido.setBounds(23, 144, 86, 13);
 		panel.add(lblApellido);
 
 		txtApellido = new JTextField();
-		txtApellido.setBounds(23, 182, 360, 19);
+		txtApellido.setBounds(23, 157, 360, 19);
 		txtApellido.setColumns(10);
 		panel.add(txtApellido);
 
 		
 
 		JLabel lblITR = new JLabel("ITR:");
-		lblITR.setBounds(23, 595, 133, 13);
+		lblITR.setBounds(23, 569, 133, 13);
 		panel.add(lblITR);
 
 		comboBoxITR = new JComboBox<Itr>();
+		comboBoxITR.setBounds(23, 581, 360, 21);
 		List<Itr> listItr = usuarioRemote.listarITR();
 		for (Itr itrItem : listItr) {
 			comboBoxITR.addItem(itrItem);
 		}
-		comboBoxITR.setBounds(23, 607, 360, 21);
 		comboBoxITR.setEnabled(true);
 		panel.add(comboBoxITR);
 
 		
 		JLabel lblGeneracion = new JLabel("Generacion:");
-		lblGeneracion.setBounds(23, 543, 133, 13);
+		lblGeneracion.setBounds(23, 608, 133, 13);
 		panel.add(lblGeneracion);
 		
 		generacionEstudiante = new JYearChooser();
-		generacionEstudiante.setBounds(23, 560, 86, 19);
+		generacionEstudiante.setBounds(23, 624, 86, 19);
 		panel.add(generacionEstudiante);
 
 		JButton btnAcrualizar = new JButton("Crear usuario");
-		btnAcrualizar.setBounds(276, 638, 107, 21);
+		btnAcrualizar.setBounds(238, 694, 145, 21);
 		btnAcrualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnEstudiante.isSelected()) {
@@ -208,43 +211,55 @@ public class UIUsuarioNuevo {
 		ButtonGroup butonGroup = new ButtonGroup();
 
 		rdbtnEstudiante = new JRadioButton("Estudiante");
+		rdbtnEstudiante.setBounds(53, 29, 86, 21);
 		rdbtnEstudiante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnEstudiante.isSelected()) {
 					validarMailInstitucional("estudiantes.utec.edu.uy");
 					generacionEstudiante.setVisible(true);
 					lblGeneracion.setVisible(true);
+					cmbArea.setVisible(false);
+					cmbTipoTutor.setVisible(false);
+					lblArea.setVisible(false);
+					lbltipoTutor.setVisible(false);
 				}
 			}
 		});
-		rdbtnEstudiante.setBounds(53, 29, 86, 21);
 		rdbtnEstudiante.setSelected(true);
 		panel.add(rdbtnEstudiante);
 
 		rdbtnTutor = new JRadioButton("Tutor");
+		rdbtnTutor.setBounds(158, 29, 71, 21);
 		rdbtnTutor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnTutor.isSelected()) {
 					validarMailInstitucional("tutor.utec.edu.uy");
 					generacionEstudiante.setVisible(false);
 					lblGeneracion.setVisible(false);
+					cmbArea.setVisible(true);
+					cmbTipoTutor.setVisible(true);
+					lblArea.setVisible(true);
+					lbltipoTutor.setVisible(true);
 				}
 			}
 		});
-		rdbtnTutor.setBounds(158, 29, 71, 21);
 		panel.add(rdbtnTutor);
 
 		rdbtnAnalista = new JRadioButton("Analista");
+		rdbtnAnalista.setBounds(251, 29, 86, 21);
 		rdbtnAnalista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnAnalista.isSelected()) {
 					validarMailInstitucional("analista.utec.edu.uy");
 					generacionEstudiante.setVisible(false);
 					lblGeneracion.setVisible(false);
+					cmbArea.setVisible(false);
+					cmbTipoTutor.setVisible(false);
+					lblArea.setVisible(false);
+					lbltipoTutor.setVisible(false);
 				}
 			}
 		});
-		rdbtnAnalista.setBounds(251, 29, 86, 21);
 		panel.add(rdbtnAnalista);
 
 		butonGroup.add(rdbtnEstudiante);
@@ -252,46 +267,47 @@ public class UIUsuarioNuevo {
 		butonGroup.add(rdbtnAnalista);
 
 		dateChooser = new JDateChooser();
-		dateChooser.setBounds(23, 514, 99, 19);
+		dateChooser.setBounds(23, 241, 99, 19);
 		panel.add(dateChooser);
 
 		JLabel lblNewLabel = new JLabel("Fecha Nacimiento");
-		lblNewLabel.setBounds(23, 502, 86, 13);
+		lblNewLabel.setBounds(23, 228, 86, 13);
 		panel.add(lblNewLabel);
 
 		
 
 		JLabel lblEmailInstitucional = new JLabel("Email institucional:");
-		lblEmailInstitucional.setBounds(23, 253, 133, 13);
+		lblEmailInstitucional.setBounds(23, 322, 133, 13);
 		panel.add(lblEmailInstitucional);
 
 		lblEmailValido = new JLabel("Valido!");
-		lblEmailValido.setBounds(389, 269, 56, 13);
+		lblEmailValido.setBounds(389, 338, 56, 13);
 		lblEmailValido.setVisible(false);
 		panel.add(lblEmailValido);
 
 		lblpassValido = new JLabel("Valido!");
-		lblpassValido.setBounds(389, 353, 56, 13);
+		lblpassValido.setBounds(389, 422, 56, 13);
 		lblpassValido.setVisible(false);
 		panel.add(lblpassValido);
 		
 		lblpassCoincide = new JLabel("Valido!");
-		lblpassCoincide.setBounds(389, 395, 92, 13);
+		lblpassCoincide.setBounds(389, 464, 92, 13);
 		lblpassCoincide.setVisible(false);
 		panel.add(lblpassCoincide);
 		
 		lblEmailPersonalValido = new JLabel("Valido!");
-		lblEmailPersonalValido.setBounds(389, 437, 92, 13);
+		lblEmailPersonalValido.setBounds(389, 506, 92, 13);
 		lblEmailPersonalValido.setVisible(false);
 		panel.add(lblEmailPersonalValido);
 		
 		lblemailPersonalCoincide = new JLabel("Valido!");
-		lblemailPersonalCoincide.setBounds(389, 476, 92, 13);
+		lblemailPersonalCoincide.setBounds(389, 548, 92, 13);
 		lblemailPersonalCoincide.setVisible(false);
 		panel.add(lblemailPersonalCoincide);
 		
 		
 		txtEmailInstitucional = new JTextField();
+		txtEmailInstitucional.setBounds(23, 335, 360, 19);
 		txtEmailInstitucional.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -335,14 +351,14 @@ public class UIUsuarioNuevo {
 			}
 		});
 		txtEmailInstitucional.setColumns(10);
-		txtEmailInstitucional.setBounds(23, 266, 360, 19);
 		panel.add(txtEmailInstitucional);
 
 		JLabel lblRepetirEmailPersonal = new JLabel("Repetir Email personal:");
-		lblRepetirEmailPersonal.setBounds(23, 460, 133, 13);
+		lblRepetirEmailPersonal.setBounds(23, 532, 133, 13);
 		panel.add(lblRepetirEmailPersonal);
 
 		txtRepetirEmail = new JTextField();
+		txtRepetirEmail.setBounds(23, 545, 360, 19);
 		txtRepetirEmail.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -350,14 +366,14 @@ public class UIUsuarioNuevo {
 			}
 		});
 		txtRepetirEmail.setColumns(10);
-		txtRepetirEmail.setBounds(23, 473, 360, 19);
 		panel.add(txtRepetirEmail);
 
 		JLabel lblContrasea = new JLabel("Contrase\u00F1a:");
-		lblContrasea.setBounds(23, 337, 133, 13);
+		lblContrasea.setBounds(23, 406, 133, 13);
 		panel.add(lblContrasea);
 
 		txtPass = new JTextField();
+		txtPass.setBounds(23, 419, 360, 19);
 		txtPass.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -366,14 +382,14 @@ public class UIUsuarioNuevo {
 			}
 		});
 		txtPass.setColumns(10);
-		txtPass.setBounds(23, 350, 360, 19);
 		panel.add(txtPass);
 
 		JLabel lblRepetirContrasea = new JLabel("Repetir contrase\u00F1a:");
-		lblRepetirContrasea.setBounds(23, 379, 133, 13);
+		lblRepetirContrasea.setBounds(23, 448, 133, 13);
 		panel.add(lblRepetirContrasea);
 
 		txtRepetirPass = new JTextField();
+		txtRepetirPass.setBounds(23, 461, 360, 19);
 		txtRepetirPass.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -382,43 +398,61 @@ public class UIUsuarioNuevo {
 			}
 		});
 		txtRepetirPass.setColumns(10);
-		txtRepetirPass.setBounds(23, 392, 360, 19);
 		panel.add(txtRepetirPass);
 		
 		cmbArea = new JComboBox();
-		cmbArea.setBounds(158, 516, 225, 21);
+		cmbArea.setBounds(158, 620, 225, 21);
 		panel.add(cmbArea);
 		
-		JLabel lblArea = new JLabel("Area:");
-		lblArea.setBounds(155, 502, 45, 13);
+		lblArea = new JLabel("Area:");
+		lblArea.setBounds(158, 608, 45, 13);
 		panel.add(lblArea);
 		
 		cmbTipoTutor = new JComboBox();
-		cmbTipoTutor.setBounds(158, 560, 225, 21);
+		cmbTipoTutor.setBounds(158, 663, 225, 21);
 		panel.add(cmbTipoTutor);
 		
-		JLabel lbltipoTutor = new JLabel("Tipo");
-		lbltipoTutor.setBounds(158, 543, 45, 13);
+		lbltipoTutor = new JLabel("Tipo");
+		lbltipoTutor.setBounds(158, 651, 45, 13);
 		panel.add(lbltipoTutor);
+		
+		JLabel lblLocalidad = new JLabel("Localidad:");
+		lblLocalidad.setBounds(155, 228, 99, 13);
+		panel.add(lblLocalidad);
+		
+		txtLocalidad = new JTextField();
+		txtLocalidad.setBounds(155, 241, 228, 19);
+		panel.add(txtLocalidad);
+		txtLocalidad.setColumns(10);
+		
+		JLabel lblDepartamento = new JLabel("Departamento:");
+		lblDepartamento.setBounds(23, 278, 159, 13);
+		panel.add(lblDepartamento);
+		
+		JComboBox cmbDepto = new JComboBox();
+		cmbDepto.setBounds(23, 291, 360, 21);
+		panel.add(cmbDepto);
 
 		frame.pack();
 	}
 	
 	public void validarMailInstitucional(String patron) {
-		if (!txtEmailInstitucional.getText().matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"+patron+"$")) {
-			lblEmailValido.setVisible(true);
-			lblEmailValido.setText("Invalido!");
-			lblEmailValido.setForeground(Color.RED);
-			emailInstValido = false;
-		} else {
-			lblEmailValido.setVisible(true);
-			lblEmailValido.setText("Valido!");
-			lblEmailValido.setForeground(Color.GREEN);
-			String email =txtEmailInstitucional.getText();
-			email=email.replaceAll("@"+patron,"");
-			txtUsuario.setText(email);
-			emailInstValido = true;
+		if (txtEmailInstitucional.getText() != null && !txtEmailInstitucional.getText().isEmpty()) {
+			if (!txtEmailInstitucional.getText().matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + patron + "$")) {
+				lblEmailValido.setVisible(true);
+				lblEmailValido.setText("Invalido!");
+				lblEmailValido.setForeground(Color.RED);
+				emailInstValido = false;
+			} else {
+				lblEmailValido.setVisible(true);
+				lblEmailValido.setText("Valido!");
+				lblEmailValido.setForeground(Color.GREEN);
+				String email = txtEmailInstitucional.getText();
+				email = email.replaceAll("@" + patron, "");
+				txtUsuario.setText(email);
+				emailInstValido = true;
 
+			}
 		}
 	}
 	public void validarContrasenia() {
@@ -563,5 +597,4 @@ public class UIUsuarioNuevo {
 		 txtTelefono.setText("");
 		 txtUsuario.setText("");
 	 }
-	 
 }
