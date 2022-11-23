@@ -68,8 +68,10 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 	@Override
 	public Usuario borrarUsuario(Usuario usuario) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+		TypedQuery<Usuario> query = em.createNamedQuery("Usuario.logicalDelete", Usuario.class);
+		Usuario usr = query.setParameter("id", usuario.getId()).getSingleResult();
+
+		return usr;
 	}
 
 	@Override
@@ -132,8 +134,8 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 	@Override
 	public List<Usuario> buscarUsuarioPor(String tipo, String id, String depto, String doc, String nombre,
-			String apellido, String mail, String usuario, String itrNombre, String generacion)
-			throws UsuarioNoEncontradoException {
+			String apellido, String mail, String usuario, String itrNombre, String generacion, Boolean validado,
+			Boolean activo, Boolean todos,String localidad,String telefono, Boolean noValidados ,Boolean noActivos) throws UsuarioNoEncontradoException {
 
 		String conditions = "";
 		String joinJPQL = "";
@@ -148,6 +150,17 @@ public class UsuarioBean implements UsuarioBeanRemote {
 		if (depto != null && depto != "") {
 
 			conditions = conditions + " AND u.departamento LIKE '" + depto + "'";
+
+		}
+		if (telefono != null && telefono != "") {
+
+			conditions = conditions + " AND u.telefono LIKE '" + telefono + "'";
+
+		}
+		
+		if (localidad != null && localidad != "") {
+
+			conditions = conditions + " AND u.localidad LIKE '" + localidad + "'";
 
 		}
 
@@ -169,9 +182,34 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 		}
 
+		if (!todos) {
+			
+			if(validado) {
+			conditions = conditions + " AND u.validado = " + validado;
+			}
+			if(noValidados) {
+				conditions = conditions + " AND u.validado = " + !noValidados;
+			}
+			if(activo) {
+			conditions = conditions + " AND u.activo = " + activo;
+			}
+			if(noActivos) {
+			conditions = conditions + " AND u.activo = " + !noActivos;
+			}
+			
+		}
+		
+		
 		if (usuario != null && usuario != "") {
 
 			conditions = conditions + " AND u.usuario LIKE '" + usuario + "'";
+
+		}
+
+		if (itrNombre != null && itrNombre != "") {
+
+			joinJPQL = " INNER JOIN u.itr i ";
+			conditions = conditions + " AND i.nombre LIKE '" + itrNombre + "'";
 
 		}
 
@@ -179,21 +217,16 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 			conditions = conditions + " AND u.uTipo LIKE '" + tipo + "'";
 
-			if (itrNombre != null && itrNombre != "") {
+			if (tipo == "ESTUDIANTE") {
+				if (generacion != null && generacion != "") {
 
-				joinJPQL = " INNER JOIN u.itr i ";
-				conditions = conditions + " AND i.nombre LIKE '" + itrNombre + "'";
+					conditions = conditions + " AND u.generacion = " + generacion;
 
+				}
 			}
-			if (generacion != null && generacion != "") {
-
-				conditions = conditions + " AND u.generacion = " + generacion ;
-
-			}
-
 		}
-		String jpql ="SELECT u FROM Usuario u " + joinJPQL + " WHERE 1=1 " + conditions;
-		TypedQuery<Usuario> query = em.createQuery(jpql,Usuario.class);
+		String jpql = "SELECT u FROM Usuario u " + joinJPQL + " WHERE 1=1 " + conditions;
+		TypedQuery<Usuario> query = em.createQuery(jpql, Usuario.class);
 		System.out.println(jpql);
 		List<Usuario> list = query.getResultList();
 		if (list == null) {
@@ -202,6 +235,14 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 		return list;
 
+	}
+
+	@Override
+	public Usuario validarUsuario(Usuario usuario) throws UsuarioNoEncontradoException {
+		TypedQuery<Usuario> query = em.createNamedQuery("Usuario.validarUsuario", Usuario.class);
+		Usuario usr = query.setParameter("id", usuario.getId()).getSingleResult();
+
+		return null;
 	}
 
 }

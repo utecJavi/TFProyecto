@@ -2,10 +2,14 @@ package tecnofenix.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -19,18 +23,28 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.Analista;
+import tecnofenix.entidades.Departamentos;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Rol;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
 import com.toedter.calendar.JYearChooser;
+
+
 import com.toedter.calendar.JDayChooser;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Font;
+import java.awt.GridLayout;
+
+import javax.swing.JCheckBox;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class UIUsuario {
 
@@ -47,21 +61,31 @@ public class UIUsuario {
 	private JTextField txtEmail;
 	private JTextField txtDocumento;
 	private JDateChooser dateBuscarChooser;
+	
 	private JYearChooser yearBuscarChooser;
+	private JYearChooser generacionAnioBuscar;
+	
 	private JComboBox<Itr> comboBoxITR;
-
+	private JComboBox<Itr> comboBuscarITR;
+	
 	private EJBUsuarioRemoto usuarioRemote;
 	private JTextField textBuscarDoc;
 	private JTextField textBuscarNombre;
 	private JTextField textBuscarApellido;
+	private JComboBox cmbDepto;//departamentos combo
 	private JTextField textBuscarUsuario;
 	private JTextField textBuscarTelefono;
 	private JTextField textBuscarMail;
 	private JComboBox<String> comboBuscarTipoUsuario;
 	private JTextField textBuscarID;
 	private List<Rol> roles;
+	private JTextField textLocalidad;
 	
-	
+	private JCheckBox chckbxValidado;
+	private JCheckBox chckbxActivo;
+	private JCheckBox chckbxNoValidado;
+	private JCheckBox chckbxNoActivo;
+	private JCheckBox chckbxTodos;
 	public UIUsuario() {
 		System.out.println("Instanciando ventana usuario");
 	}
@@ -79,8 +103,8 @@ public class UIUsuario {
 		JPanel panel = new JPanel();
 		// definimos un layout
 
-		panel.setPreferredSize(new Dimension(800, 800));
-		frame.getContentPane().add(panel, BorderLayout.SOUTH);
+		panel.setPreferredSize(new Dimension(1200, 1000));
+		frame.getContentPane().add(panel, BorderLayout.EAST);
 		panel.setLayout(null);
 
 		JLabel lblNombre = new JLabel("Nombre:");
@@ -93,7 +117,7 @@ public class UIUsuario {
 		txtNombre.setColumns(10);
 
 		JButton btnAdd = new JButton("Agregar");
-		btnAdd.setBounds(671, 645, 85, 21);
+		btnAdd.setBounds(1084, 521, 85, 21);
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				validarDatos();
@@ -111,8 +135,8 @@ public class UIUsuario {
 		table.setColumnSelectionAllowed(true);
 		table.setBackground(Color.BLACK);
 		// crea un array que contiene los nombre de las columnas
-		final String[] columnNames = { "Tipo","Id", "Generacion", "Documento", "Nombres", "Apellidos", "Fecha Nacimiento",
-				"e-mail", "Usuario", "ITR" , "Activo" };
+		final String[] columnNames = {"Id","Tipo", "Generacion", "Documento", "Nombres", "Apellidos", "Fecha Nacimiento",
+				"e-mail", "Usuario", "ITR" ,"Depto","Localidad", "Validado","Activo" };
 //U_TIPO, ID, APELLIDOS, CONTRASENIA, DEPARTAMENTO, DOCUMENTO, FECHA_NACIMIENTO, GENERO, LOCALIDAD, MAIL, NOMBRES, TELEFONO, USUARIO, AREA, TIPO, GENERACION, ID_ITR
 
 		// insertamos las columnas
@@ -131,15 +155,16 @@ public class UIUsuario {
 
 		// se define el tamaño de la tabla
 		table.setBounds(93, 215, 100, 100);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); // this is obvius part
 		// Creamos un JscrollPane y le agregamos la JTable
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 169, 780, 302);
+		scrollPane.setBounds(10, 169, 1159, 302);
 		// definimos un layout
 		// Agregamos el JScrollPane al contenedor
 		panel.add(scrollPane);
 
 		JButton btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.setBounds(671, 707, 85, 21);
+		btnLimpiar.setBounds(1084, 583, 85, 21);
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limpiar();
@@ -148,7 +173,7 @@ public class UIUsuario {
 		panel.add(btnLimpiar);
 
 		JButton btnBorrar = new JButton("Borrar");
-		btnBorrar.setBounds(671, 676, 85, 21);
+		btnBorrar.setBounds(1084, 552, 85, 21);
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -234,17 +259,6 @@ public class UIUsuario {
 		lblITR.setBounds(20, 676, 133, 13);
 		panel.add(lblITR);
 		
-		JButton btnAgregarTutor = new JButton("Agregar tutor");
-		btnAgregarTutor.setBounds(541, 645, 128, 21);
-		btnAgregarTutor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				addTutor();
-			}
-			
-		});
-
-		panel.add(btnAgregarTutor);
-		
 		dateBuscarChooser = new JDateChooser();
 		dateBuscarChooser.setBounds(20, 604, 186, 19);
 		panel.add(dateBuscarChooser);
@@ -318,38 +332,52 @@ public class UIUsuario {
 		panel.add(textBuscarMail);
 		
 		JLabel lblITR_1 = new JLabel("ITR:");
-		lblITR_1.setBounds(396, 132, 133, 13);
+		lblITR_1.setBounds(396, 133, 133, 13);
 		panel.add(lblITR_1);
 		
-		JComboBox<Itr> comboBuscarITR = new JComboBox<Itr>();
+		comboBuscarITR = new JComboBox<Itr>();
 		comboBuscarITR.addItem(new Itr(null,"",""));
 		for(Itr itrItem: listItr){
 			comboBuscarITR.addItem(itrItem);
 		}
-		comboBuscarITR.setBounds(396, 144, 210, 21);
+		comboBuscarITR.setBounds(396, 145, 338, 21);
 		comboBuscarITR.setSelectedIndex(0);
 		panel.add(comboBuscarITR);
 		
-		JYearChooser yearChooBuscar = new JYearChooser();
-		yearChooBuscar.setBounds(216, 146, 164, 19);
-		panel.add(yearChooBuscar);
+		generacionAnioBuscar = new JYearChooser();
+		generacionAnioBuscar.setBounds(216, 146, 164, 19);
+		panel.add(generacionAnioBuscar);
 		
 		JLabel lblGeneracion_1 = new JLabel("Generacion:");
 		lblGeneracion_1.setBounds(216, 133, 133, 13);
 		panel.add(lblGeneracion_1);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Filtrar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				buscarPor( comboBuscarTipoUsuario.getSelectedItem().toString(),  textBuscarID.getText() , "", 
-						textBuscarDoc.getText(), textBuscarNombre.getText(), textBuscarApellido.getText()
-						, textBuscarMail.getText(), textBuscarUsuario.getText(), 
-						comboBuscarITR.getSelectedItem().toString(), String.valueOf(yearChooBuscar.getYear()));
+				buscarPor(comboBuscarTipoUsuario.getSelectedItem().toString(), 
+						textBuscarID.getText() , 
+						cmbDepto.getSelectedItem().toString(), 
+						textBuscarDoc.getText(),
+						textBuscarNombre.getText(),
+						textBuscarApellido.getText(),
+						textBuscarMail.getText(),
+						textBuscarUsuario.getText(), 
+						comboBuscarITR.getSelectedItem().toString(),
+						String.valueOf(generacionAnioBuscar.getYear()),
+						chckbxValidado.isSelected(),
+						chckbxActivo.isSelected(),
+						chckbxTodos.isSelected(),
+						textLocalidad.getText(),
+						textBuscarTelefono.getText(),
+						chckbxNoValidado.isSelected(),
+						chckbxNoActivo.isSelected()
+						);
 				
 				
 			}
 		});
-		btnBuscar.setBounds(671, 138, 85, 21);
+		btnBuscar.setBounds(1049, 138, 85, 21);
 		panel.add(btnBuscar);
 		
 		comboBuscarTipoUsuario = new JComboBox<String>();
@@ -368,13 +396,81 @@ public class UIUsuario {
 		panel.add(textBuscarID);
 		
 		JLabel lblNewLabel = new JLabel("ID:");
-		lblNewLabel.setBounds(304, 7, 45, 13);
+		lblNewLabel.setBounds(286, 26, 45, 13);
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Filtros de Busqueda");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel_1.setBounds(20, 7, 164, 13);
 		panel.add(lblNewLabel_1);
+		
+		chckbxValidado = new JCheckBox("Validado");
+		chckbxValidado.setSelected(false);
+		chckbxValidado.setBounds(777, 116, 93, 21);
+		panel.add(chckbxValidado);
+		
+		chckbxActivo = new JCheckBox("Activo");
+		chckbxActivo.setSelected(false);
+		chckbxActivo.setBounds(872, 116, 74, 21);
+		panel.add(chckbxActivo);
+		
+		JLabel lblLocalidad = new JLabel("Localidad:");
+		lblLocalidad.setBounds(777, 7, 99, 13);
+		panel.add(lblLocalidad);
+		
+		textLocalidad = new JTextField();
+		textLocalidad.setColumns(10);
+		textLocalidad.setBounds(777, 23, 357, 19);
+		panel.add(textLocalidad);
+		
+		JLabel lblDepartamento = new JLabel("Departamento:");
+		lblDepartamento.setBounds(777, 49, 159, 13);
+		panel.add(lblDepartamento);
+		
+		cmbDepto = new JComboBox(Departamentos.values());
+		cmbDepto.setBounds(774, 61, 360, 21);
+		panel.add(cmbDepto);
+		
+		chckbxNoValidado = new JCheckBox("No Validado");
+		chckbxNoValidado.setSelected(false);
+		chckbxNoValidado.setBounds(777, 142, 93, 21);
+		panel.add(chckbxNoValidado);
+		
+		chckbxNoActivo = new JCheckBox("No Activo");
+		chckbxNoActivo.setSelected(false);
+		chckbxNoActivo.setBounds(872, 142, 88, 21);
+		panel.add(chckbxNoActivo);
+		
+		
+		chckbxTodos = new JCheckBox("Todos");
+		chckbxTodos.addItemListener(new ItemListener() {
+		    public void itemStateChanged(ItemEvent e) {
+		        if (e.getStateChange() == ItemEvent.SELECTED) {
+		        	chckbxActivo.setVisible(false);
+		        	chckbxValidado.setVisible(false);
+		        	chckbxNoActivo.setVisible(false);
+		        	chckbxNoValidado.setVisible(false);
+		        } else {
+		        	chckbxActivo.setVisible(true);
+		        	chckbxValidado.setVisible(true);
+		        	chckbxNoActivo.setVisible(true);
+		        	chckbxNoValidado.setVisible(true);
+		        }
+		    }
+		});
+		chckbxTodos.setSelected(true);
+		chckbxTodos.setBounds(962, 142, 65, 21);
+		panel.add(chckbxTodos);
+		
+		JButton btnLimpiarFiltros = new JButton("Limpiar");
+		btnLimpiarFiltros.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				limpiarFiltros();
+			}
+		});
+		btnLimpiarFiltros.setBounds(1049, 116, 85, 21);
+		panel.add(btnLimpiarFiltros);
+		
 		
 		frame.pack();
 		frame.setVisible(true);
@@ -416,28 +512,24 @@ public class UIUsuario {
 	public void addEstudiante() {
 //		(Integer.valueOf(txtId.getText()), txtNombre.getText(),txtDesc.getText());
 //		Rol idRol = new Rol();
-		Estudiante estudiante = new Estudiante( Integer.valueOf(txtDocumento.getText()),
-				txtNombreUsuario.getText(), "123456", txtApellido.getText(), txtNombre.getText(),
-				dateBuscarChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(),yearBuscarChooser.getYear(),setRolNuevoUsuario("ESTUDIANTE"));
-
-		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
-		System.err.println(estudiante.toString());
-		System.out.println("Se creo el usuario");
-		actualizarLista();
-	}
-	public void addTutor() {
-//		(Integer.valueOf(txtId.getText()), txtNombre.getText(),txtDesc.getText());
-//		Rol idRol = new Rol();
-		Tutor tutor = new Tutor( Integer.valueOf(txtDocumento.getText()),
-				txtNombreUsuario.getText(), "123456", txtApellido.getText(), txtNombre.getText(),
-				new Date(System.currentTimeMillis()), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(), 1, 1,setRolNuevoUsuario("TUTOR"));
-
-		tutor = (Tutor) usuarioRemote.crearUsuario(tutor);
-		System.err.println(tutor.toString());
-		System.out.println("Se creo el usuario tutor");
-		actualizarLista();
+//		Estudiante estudiante = new Estudiante( Integer.valueOf(txtDocumento.getText()),
+//		txtUsuario.getText(),
+//		txtPass.getText(),
+//		txtApellido.getText(),
+//		txtNombre.getText(),
+//		fechaNacimientoChoser.getDate(),
+//		cmbDepto.getSelectedItem().toString(),
+//		cmbBoxGenero.getSelectedItem().toString(),
+//		txtLocalidad.getText(),
+//		txtEmail.getText(),
+//		txtTelefono.getText(),
+//		(Itr) comboBoxITR.getSelectedItem(),
+//		setRolNuevoUsuario("ESTUDIANTE"),
+//		generacionEstudiante.getYear());
+//		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
+//		System.err.println(estudiante.toString());
+//		System.out.println("Se creo el usuario");
+//		actualizarLista();
 	}
 
 
@@ -465,78 +557,124 @@ public class UIUsuario {
 	
 	
 	 public void cargarTabla(List<Usuario> listPasada) {
+		 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		
 		 	// Se rellena cada posición del array con una de las columnas de la tabla en
-			// base de datos.
+			// base de datos. 
 			for (Usuario usuTemp : listPasada) {
 				if (usuTemp instanceof Estudiante) {
-					fila[0] = usuTemp.getDecriminatorValue();
-					fila[1] = usuTemp.getId();
+					fila[0] = usuTemp.getId();
+					fila[1] = usuTemp.getDecriminatorValue();
 					fila[2] = ((Estudiante) usuTemp).getGeneracion();
 					fila[3] = usuTemp.getDocumento();
 					fila[4] = usuTemp.getNombres();
 					fila[5] = usuTemp.getApellidos();
-					fila[6] = usuTemp.getFechaNacimiento();
+					fila[6] = formatter.format(usuTemp.getFechaNacimiento());
 					fila[7] = usuTemp.getMail();
 					fila[8] = usuTemp.getUsuario();
 					fila[9] = usuTemp.getItr().getNombre();
+					fila[10] = usuTemp.getDepartamento();
+					fila[11] = usuTemp.getLocalidad();
 					if (usuTemp.getValidado()) {
-						fila[10] = "Si";
+						fila[12] = "Si";
 					} else {
-						fila[10] = "No";
+						fila[12] = "No";
+					}
+					if (usuTemp.getActivo()) {
+						fila[13] = "Si";
+					} else {
+						fila[13] = "No";
 					}
 					// Se añade al modelo la fila completa.
 					modelo.addRow(fila);
 				}
 				if (usuTemp instanceof Tutor) {
-					fila[0] = usuTemp.getDecriminatorValue();
-					fila[1] = usuTemp.getId();
+					fila[0] = usuTemp.getId();
+					fila[1] = usuTemp.getDecriminatorValue();
 					fila[2] = "";
 					fila[3] = usuTemp.getDocumento();
 					fila[4] = usuTemp.getNombres();
 					fila[5] = usuTemp.getApellidos();
-					fila[6] = usuTemp.getFechaNacimiento();
+					fila[6] = formatter.format(usuTemp.getFechaNacimiento());
 					fila[7] = usuTemp.getMail();
 					fila[8] = usuTemp.getUsuario();
 					fila[9] = usuTemp.getItr().getNombre();
+					fila[10] = usuTemp.getDepartamento();
+					fila[11] = usuTemp.getLocalidad();
 					if (usuTemp.getValidado()) {
-						fila[10] = "Si";
+						fila[12] = "Si";
 					} else {
-						fila[10] = "No";
+						fila[12] = "No";
+					}
+					if (usuTemp.getActivo()) {
+						fila[13] = "Si";
+					} else {
+						fila[12] = "No";
 					}
 					// Se añade al modelo la fila completa.
 					modelo.addRow(fila);
 				}
 				if (usuTemp instanceof Analista) {
-					fila[0] = usuTemp.getDecriminatorValue();
-					fila[1] = usuTemp.getId();
+					fila[0] = usuTemp.getId();
+					fila[1] = usuTemp.getDecriminatorValue();
 					fila[2] = "";
 					fila[3] = usuTemp.getDocumento();
 					fila[4] = usuTemp.getNombres();
 					fila[5] = usuTemp.getApellidos();
-					fila[6] = usuTemp.getFechaNacimiento();
+					fila[6] = formatter.format(usuTemp.getFechaNacimiento());
 					fila[7] = usuTemp.getMail();
 					fila[8] = usuTemp.getUsuario();
 					fila[9] = usuTemp.getItr().getNombre();
+					fila[10] = usuTemp.getDepartamento();
+					fila[11] = usuTemp.getLocalidad();
 					if (usuTemp.getValidado()) {
-						fila[10] = "Si";
+						fila[12] = "Si";
 					} else {
-						fila[10] = "No";
+						fila[12] = "No";
+					}
+					if (usuTemp.getActivo()) {
+						fila[13] = "Si";
+					} else {
+						fila[13] = "No";
 					}
 					// Se añade al modelo la fila completa.
 					modelo.addRow(fila);
 				}
 			}
+			autoAjustarTabla(table);
 	 }
 	public void buscarPor(String tipo, String id ,String depto,String doc,String nombre,String apellido
-			,String mail,String usuario,String itrNombre,String generacion) {
+			,String mail,String usuario,String itrNombre,String generacion, Boolean validado ,Boolean activo,Boolean todos, String localidad, String telefono,Boolean noValidados ,Boolean noActivos) {
 		limpiarTabla();
-		allUsuarios = usuarioRemote.buscarUsuarioPor(tipo, id, depto, doc, nombre, apellido, mail, usuario, itrNombre, generacion);
+		allUsuarios = usuarioRemote.buscarUsuarioPor(tipo, id, depto, doc, nombre, apellido, mail, usuario, itrNombre, generacion,validado,activo,todos,localidad,telefono,noValidados,noActivos);
 		if(allUsuarios != null) {
 		System.out.println(allUsuarios.toString());
 		// Se rellena cada posición del array con una de las columnas de la tabla en
 		// base de datos.
 		cargarTabla(allUsuarios);
 	}
+	}
+	
+	
+	public void limpiarFiltros() {
+		comboBuscarTipoUsuario.setSelectedIndex(0);
+		textBuscarID.setText("");
+		cmbDepto.setSelectedIndex(0);
+		textBuscarTelefono.setText("");
+		textBuscarDoc.setText("");
+		textBuscarNombre.setText("");
+		textBuscarApellido.setText("");
+		textBuscarMail.setText("");
+		textBuscarUsuario.setText("");
+		comboBuscarITR.setSelectedIndex(0);
+		generacionAnioBuscar.setYear(2022);
+		chckbxValidado.setSelected(false);
+		chckbxActivo.setSelected(false);
+		chckbxNoValidado.setSelected(false);
+		chckbxNoActivo.setSelected(false);
+		chckbxTodos.setSelected(true);
+		textLocalidad.setText("");
+		
 	}
 	
 	public void limpiarTabla() {
@@ -560,4 +698,20 @@ public class UIUsuario {
 			}
 			return rol;
 	 }
+	 
+	 
+	 public void autoAjustarTabla(JTable table) {
+		    final TableColumnModel columnModel = table.getColumnModel();
+		    for (int column = 0; column < table.getColumnCount(); column++) {
+		        int width = 15; // Min width
+		        for (int row = 0; row < table.getRowCount(); row++) {
+		            TableCellRenderer renderer = table.getCellRenderer(row, column);
+		            Component comp = table.prepareRenderer(renderer, row, column);
+		            width = Math.max(comp.getPreferredSize().width +1 , width);
+		        }
+		        if(width > 300)
+		            width=300;
+		        columnModel.getColumn(column).setPreferredWidth(width);
+		    }
+		}
 }

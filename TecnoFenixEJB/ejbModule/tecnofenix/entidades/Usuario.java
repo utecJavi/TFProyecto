@@ -35,7 +35,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 import tecnofenix.interfaces.BajaLogica;
 
 /**
@@ -63,7 +62,9 @@ import tecnofenix.interfaces.BajaLogica;
     @NamedQuery(name = "Usuario.findByGenero", query = "SELECT u FROM Usuario u WHERE u.genero = :genero"),
     @NamedQuery(name = "Usuario.findByLocalidad", query = "SELECT u FROM Usuario u WHERE u.localidad = :localidad"),
     @NamedQuery(name = "Usuario.findByMail", query = "SELECT u FROM Usuario u WHERE u.mail = :mail"),
-    @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")})
+    @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono"),
+    @NamedQuery(name = "Usuario.logicalDelete", query = "UPDATE Usuario u SET u.activo = true WHERE u.id = :id"),
+    @NamedQuery(name = "Usuario.validarUsuario", query = "UPDATE Usuario u SET u.validado = true WHERE u.id = :id")})
 public abstract class Usuario extends Activo implements Serializable ,BajaLogica {
     private static final long serialVersionUID = 1L;
 
@@ -147,6 +148,10 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
     @Basic(optional = false)
     @Column(name = "validado")
     private Boolean validado;
+    
+    @Basic(optional = false)
+    @Column(name = "activo")
+    private Boolean activo;
 
     @ManyToOne(cascade = CascadeType.MERGE,  optional = false)
     @JoinColumn(name = "id_rol", referencedColumnName = "id",nullable = false)
@@ -158,8 +163,8 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
     public Usuario(Integer id) {
         this.id = id;
     }
-
-    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr) {
+    
+    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr,Rol rol) {
         this.documento = documento;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
@@ -172,43 +177,34 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
         this.mail = mail;
         this.telefono = telefono;
         this.itr = itr;
+        this.rol =rol;
     }
 
-    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono) {
-        this.documento = documento;
-        this.usuario = usuario;
-        this.contrasenia = contrasenia;
-        this.apellidos = apellidos;
-        this.nombres = nombres;
-        this.fechaNacimiento = fechaNacimiento;
-        this.mail = mail;
-        this.telefono = telefono;
-    }
 
-    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Rol rol) {
-        this.documento = documento;
-        this.usuario = usuario;
-        this.contrasenia = contrasenia;
-        this.apellidos = apellidos;
-        this.nombres = nombres;
-        this.fechaNacimiento = fechaNacimiento;
-        this.mail = mail;
-        this.telefono = telefono;
-        this.itr = itr;
-        this.rol = rol;
-    }
-    public Usuario(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
-        this.id = id;
-        this.documento = documento;
-        this.usuario = usuario;
-        this.contrasenia = contrasenia;
-        this.apellidos = apellidos;
-        this.nombres = nombres;
-        this.fechaNacimiento = fechaNacimiento;
-        this.mail = mail;
-        this.telefono = telefono;
-        this.itr = itr;
-    }
+//    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr, Rol rol) {
+//        this.documento = documento;
+//        this.usuario = usuario;
+//        this.contrasenia = contrasenia;
+//        this.apellidos = apellidos;
+//        this.nombres = nombres;
+//        this.fechaNacimiento = fechaNacimiento;
+//        this.mail = mail;
+//        this.telefono = telefono;
+//        this.itr = itr;
+//        this.rol = rol;
+//    }
+//    public Usuario(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
+//        this.id = id;
+//        this.documento = documento;
+//        this.usuario = usuario;
+//        this.contrasenia = contrasenia;
+//        this.apellidos = apellidos;
+//        this.nombres = nombres;
+//        this.fechaNacimiento = fechaNacimiento;
+//        this.mail = mail;
+//        this.telefono = telefono;
+//        this.itr = itr;
+//    }
 
     public Integer getId() {
         return id;
@@ -330,6 +326,21 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
 	public void setValidado(Boolean validado) {
 		this.validado = validado;
 	}
+    public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
 //
 //    @XmlTransient
 //    public Collection<Estudiante> getEstudianteCollection() {
@@ -383,7 +394,9 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
         return true;
     }
 
-    @Override
+
+
+	@Override
     public String toString() {
         return "Usuario{" +
                 "id=" + id +

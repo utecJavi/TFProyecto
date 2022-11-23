@@ -19,9 +19,12 @@ import java.util.List;
 
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.Analista;
+import tecnofenix.entidades.Departamentos;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Rol;
+import tecnofenix.entidades.TipoGenero;
+import tecnofenix.entidades.TipoTutorEncargado;
 import tecnofenix.entidades.Tutor;
 
 import javax.swing.ButtonGroup;
@@ -45,20 +48,22 @@ public class UIUsuarioNuevo {
 	private JTextField txtApellido;
 	private JTextField txtEmailInstitucional;
 	boolean emailInstValido = false;
-	JLabel lblEmailValido;
-	JLabel lblEmailPersonalValido;
-	JLabel lblpassValido;
-	JLabel lblpassCoincide;
-	JLabel lblemailPersonalCoincide;
-	JDateChooser dateChooser;
-	JComboBox<Itr> comboBoxITR;
-	JRadioButton rdbtnEstudiante;
-	JRadioButton rdbtnTutor;
-	JRadioButton rdbtnAnalista;
-	JLabel lblArea;
-	JLabel lbltipoTutor;
-	JComboBox cmbTipoTutor;
-	JComboBox cmbArea;
+	private JLabel lblEmailValido;
+	private JLabel lblEmailPersonalValido;
+	private JLabel lblpassValido;
+	private JLabel lblpassCoincide;
+	private JLabel lblemailPersonalCoincide;
+	private JDateChooser fechaNacimientoChoser;
+	private JComboBox<Itr> comboBoxITR;
+	private JRadioButton rdbtnEstudiante;
+	private JRadioButton rdbtnTutor;
+	private JRadioButton rdbtnAnalista;
+	private JLabel lblArea;
+	private JLabel lbltipoTutor;
+	private JComboBox cmbTipoTutor;
+	private JComboBox cmbArea;
+	private JComboBox cmbDepto;
+	private JComboBox cmbBoxGenero;
 	private JTextField txtRepetirEmail;
 	private JTextField txtPass;
 	private JTextField txtRepetirPass;
@@ -138,7 +143,7 @@ public class UIUsuarioNuevo {
 		panel.add(lblTelefono);
 
 		txtTelefono = new JTextField();
-		txtTelefono.setBounds(23, 199, 360, 19);
+		txtTelefono.setBounds(23, 199, 127, 19);
 		txtTelefono.setColumns(10);
 		panel.add(txtTelefono);
 
@@ -266,13 +271,13 @@ public class UIUsuarioNuevo {
 		butonGroup.add(rdbtnTutor);
 		butonGroup.add(rdbtnAnalista);
 
-		dateChooser = new JDateChooser();
-		dateChooser.setBounds(23, 241, 99, 19);
-		panel.add(dateChooser);
+		fechaNacimientoChoser = new JDateChooser();
+		fechaNacimientoChoser.setBounds(23, 241, 99, 19);
+		panel.add(fechaNacimientoChoser);
 
-		JLabel lblNewLabel = new JLabel("Fecha Nacimiento");
-		lblNewLabel.setBounds(23, 228, 86, 13);
-		panel.add(lblNewLabel);
+		JLabel lblfechaNacimiento = new JLabel("Fecha Nacimiento");
+		lblfechaNacimiento.setBounds(23, 228, 86, 13);
+		panel.add(lblfechaNacimiento);
 
 		
 
@@ -408,7 +413,8 @@ public class UIUsuarioNuevo {
 		lblArea.setBounds(158, 608, 45, 13);
 		panel.add(lblArea);
 		
-		cmbTipoTutor = new JComboBox();
+		cmbTipoTutor = new JComboBox(TipoTutorEncargado.values());
+		cmbTipoTutor.setSelectedIndex(0);
 		cmbTipoTutor.setBounds(158, 663, 225, 21);
 		panel.add(cmbTipoTutor);
 		
@@ -417,11 +423,11 @@ public class UIUsuarioNuevo {
 		panel.add(lbltipoTutor);
 		
 		JLabel lblLocalidad = new JLabel("Localidad:");
-		lblLocalidad.setBounds(155, 228, 99, 13);
+		lblLocalidad.setBounds(165, 228, 99, 13);
 		panel.add(lblLocalidad);
 		
 		txtLocalidad = new JTextField();
-		txtLocalidad.setBounds(155, 241, 228, 19);
+		txtLocalidad.setBounds(165, 241, 218, 19);
 		panel.add(txtLocalidad);
 		txtLocalidad.setColumns(10);
 		
@@ -429,9 +435,19 @@ public class UIUsuarioNuevo {
 		lblDepartamento.setBounds(23, 278, 159, 13);
 		panel.add(lblDepartamento);
 		
-		JComboBox cmbDepto = new JComboBox();
+		cmbDepto = new JComboBox(Departamentos.values());
+		cmbDepto.setSelectedIndex(0);
 		cmbDepto.setBounds(23, 291, 360, 21);
 		panel.add(cmbDepto);
+		
+		JLabel lblGenero = new JLabel("Genero:");
+		lblGenero.setBounds(166, 186, 45, 13);
+		panel.add(lblGenero);
+		
+		cmbBoxGenero = new JComboBox(TipoGenero.values());
+		cmbBoxGenero.setBounds(166, 198, 217, 21);
+		cmbBoxGenero.setSelectedIndex(0);
+		panel.add(cmbBoxGenero);
 
 		frame.pack();
 	}
@@ -523,10 +539,21 @@ public class UIUsuarioNuevo {
 	public void addEstudiante() {
 		if(validarDatos()) {
 
-		Estudiante estudiante = new Estudiante( Integer.valueOf(txtDocumento.getText()),
-				txtUsuario.getText(), txtPass.getText(), txtApellido.getText(), txtNombre.getText(),
-				dateChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(),generacionEstudiante.getYear(),setRolNuevoUsuario("ESTUDIANTE"));
+		Estudiante estudiante = 
+				new Estudiante( Integer.valueOf(txtDocumento.getText()),
+				txtUsuario.getText(),
+				txtPass.getText(),
+				txtApellido.getText(),
+				txtNombre.getText(),
+				fechaNacimientoChoser.getDate(),
+				cmbDepto.getSelectedItem().toString(),
+				cmbBoxGenero.getSelectedItem().toString(),
+				txtLocalidad.getText(),
+				txtEmail.getText(),
+				txtTelefono.getText(),
+				(Itr) comboBoxITR.getSelectedItem(),
+				setRolNuevoUsuario("ESTUDIANTE"),
+				generacionEstudiante.getYear());
 		
 		estudiante.setValidado(false);
 		estudiante.setActivo(true);
@@ -538,10 +565,21 @@ public class UIUsuarioNuevo {
 	}
 	public void addTutor() {
 		if(validarDatos()) {
-		Tutor tutor = new Tutor( Integer.valueOf(txtDocumento.getText()),
-				txtUsuario.getText(),  txtPass.getText(), txtApellido.getText(), txtNombre.getText(),
-				dateChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(), cmbTipoTutor.getSelectedIndex(), cmbArea.getSelectedIndex(),setRolNuevoUsuario("TUTOR"));
+		Tutor tutor = new Tutor(Integer.valueOf(txtDocumento.getText()),
+				txtUsuario.getText(),
+				txtPass.getText(),
+				txtApellido.getText(),
+				txtNombre.getText(),
+				fechaNacimientoChoser.getDate(),
+				cmbDepto.getSelectedItem().toString(),
+				cmbBoxGenero.getSelectedItem().toString(),
+				txtLocalidad.getText(),
+				txtEmail.getText(),
+				txtTelefono.getText(),
+				(Itr) comboBoxITR.getSelectedItem(),
+				cmbTipoTutor.getSelectedIndex(),
+				cmbArea.getSelectedIndex(),
+				setRolNuevoUsuario("TUTOR"));
 				
 		tutor.setValidado(false);
 		tutor.setActivo(true);
@@ -554,9 +592,19 @@ public class UIUsuarioNuevo {
 	public void addAnalista() {
 		if(validarDatos()) {
 		Analista analista = new Analista( Integer.valueOf(txtDocumento.getText()),
-				txtUsuario.getText(), txtPass.getText(), txtApellido.getText(), txtNombre.getText(),
-				dateChooser.getDate(), txtEmail.getText(), txtTelefono.getText(),
-				(Itr) comboBoxITR.getSelectedItem(),setRolNuevoUsuario("ANALISTA"));
+				txtUsuario.getText(),
+				txtPass.getText(),
+				txtApellido.getText(),
+				txtNombre.getText(),
+				fechaNacimientoChoser.getDate(),
+				cmbDepto.getSelectedItem().toString(),
+				cmbBoxGenero.getSelectedItem().toString(),
+				txtLocalidad.getText(),
+				txtEmail.getText(),
+				txtTelefono.getText(),
+				(Itr) comboBoxITR.getSelectedItem(),
+				setRolNuevoUsuario("ANALISTA")
+				);
 		analista.setValidado(false);
 		analista.setActivo(true);
 		analista = (Analista) usuarioRemote.crearUsuario(analista);

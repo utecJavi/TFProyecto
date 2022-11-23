@@ -49,17 +49,16 @@ public class Analista extends Usuario {
 
     public Analista() {
     }
-
-    public Analista(int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr,Rol rol) {
-        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr,rol);
-    }
-    public Analista(int id, int documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String mail, String telefono, Itr itr) {
-        super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
-    }
-
+    
     public Analista(Integer id) {
         super.setId(id);
     }
+    
+    public Analista(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr,Rol rol) {
+    	super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, departamento, genero, localidad, mail, telefono, itr, rol);
+    }
+
+
 
 
     @XmlTransient

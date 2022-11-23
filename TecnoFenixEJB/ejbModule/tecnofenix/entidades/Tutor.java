@@ -48,17 +48,10 @@ public class Tutor extends Usuario {
 
     public Tutor() {
     }
-
-    public Tutor(Integer documento, String usuario, String contrasenia, String apellidos, String nombres,
-                 Date fechaNacimiento, String mail, String telefono, Itr itr, Integer tipo, Integer area ,Rol rol) {
-        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr,rol);
-        this.tipo = tipo;
-        this.area = area;
-    }
-
-    public Tutor(Integer id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres,
-                 Date fechaNacimiento, String mail, String telefono, Itr itr, Integer tipo, Integer area) {
-        super(id, documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr);
+                
+    public Tutor(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr, Integer tipo, Integer area ,Rol rol) {
+//        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr,rol);
+       super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, departamento, genero, localidad, mail, telefono, itr,rol);
         this.tipo = tipo;
         this.area = area;
     }

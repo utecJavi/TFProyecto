@@ -16,9 +16,10 @@ public interface UsuarioBeanRemote {
 	Usuario borrarUsuario(Usuario usuario) throws ServiciosException;
 	Usuario login(String usuario,String pass) throws ServiciosException;
 	Usuario encontrarUsuario(Integer id) throws UsuarioNoEncontradoException;
+	Usuario validarUsuario(Usuario usuario) throws UsuarioNoEncontradoException;
 	List<Usuario> obtenerUsuarioPorAtributo(Usuario usuario);
 	List<Usuario> listarUsuariosGeneral() throws UsuarioNoEncontradoException;
 	List<Usuario> buscarUsuarioPor(String tipo, String id ,String depto,String doc,String nombre,String apellido
-			,String mail,String usuario,String itrNombre,String generacion) throws UsuarioNoEncontradoException;
+			,String mail,String usuario,String itrNombre,String generacion, Boolean validado ,Boolean activo,Boolean todos,String localidad,String telefono,Boolean noValidados ,Boolean noActivos) throws UsuarioNoEncontradoException;
 	
 }
