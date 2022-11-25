@@ -14,7 +14,7 @@ public interface ConstanciaBeanRemote {
 	
 	Constancia modificarConstancia(Constancia constancia) throws ServiciosException;
 	
-	Constancia borrarConstancia(Constancia constancia) throws ServiciosException;
+	void borrarConstancia(Constancia constancia) throws ServiciosException;
 	
 	List<Constancia> obtenerConstanciaPorAtributo(Constancia constancia);
 	

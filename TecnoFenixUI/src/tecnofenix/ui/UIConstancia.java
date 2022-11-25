@@ -72,7 +72,7 @@ public class UIConstancia {
 		// definimos un layout
 
 		panel.setPreferredSize(new Dimension(800, 800));
-		frame.getContentPane().add(panel, BorderLayout.WEST);
+		frame.getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(null);
 		
 		JScrollPane scrollPanel = new JScrollPane();
@@ -83,7 +83,7 @@ public class UIConstancia {
         scrollPanel.setViewportView(textAreaListado);
         
         JLabel lblUsuario = new JLabel("Usuario:");
-        lblUsuario.setBounds(20, 507, 45, 13);
+        lblUsuario.setBounds(20, 507, 90, 13);
 		panel.add(lblUsuario);
 		lblUsuario.setVisible(usuario instanceof Analista);
 
@@ -93,9 +93,9 @@ public class UIConstancia {
 		txtUsuario.setColumns(10);
 		txtUsuario.setVisible(usuario instanceof Analista);
 		
-		JButton btnAgregarTutor = new JButton("Listar constancias");
-		btnAgregarTutor.setBounds(87, 481, 189, 19);
-		btnAgregarTutor.addActionListener(new ActionListener() {
+		JButton btnListarConstancias = new JButton("Listar constancias");
+		btnListarConstancias.setBounds(87, 481, 189, 19);
+		btnListarConstancias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Borro lo previamente cargado en el textfield
         		textAreaListado.setText(null);
@@ -123,6 +123,56 @@ public class UIConstancia {
 			}
 			
 		});
-		panel.add(btnAgregarTutor);
+		panel.add(btnListarConstancias);
+		
+		
+		JButton btnSolicitarConstancia = new JButton("Solicitar constancia");
+		btnSolicitarConstancia.setBounds(286, 481, 189, 19);
+		btnSolicitarConstancia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				//Llamar a panel de alta de constancia
+			}
+			
+		});
+		btnSolicitarConstancia.setVisible(usuario instanceof Estudiante);
+		panel.add(btnSolicitarConstancia);
+		
+		JButton btnModificarConstancia = new JButton("Ver constancia");
+		btnModificarConstancia.setBounds(485, 481, 189, 19);
+		btnModificarConstancia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				//Llamar a panel de modificacion de constancia
+				
+				//Tiene botón de modificar sólo si es estudiante
+			}
+			
+		});
+		panel.add(btnModificarConstancia);
+		
+		JButton btnModificarEstadoConstancia = new JButton("Modificar estado constancia");
+		btnModificarEstadoConstancia.setBounds(390, 520, 189, 19);
+		btnModificarEstadoConstancia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				//Llamar a panel de modificacion de estado constancia
+			}
+			
+		});
+		btnModificarEstadoConstancia.setVisible(usuario instanceof Analista);
+		panel.add(btnModificarEstadoConstancia);
+		
+		JButton btnBorrarConstancia = new JButton("Borrar constancia");
+		btnBorrarConstancia.setBounds(589, 520, 189, 19);
+		btnBorrarConstancia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				//dialogo si desea borrar y luego llama a borrar
+			}
+			
+		});
+		btnBorrarConstancia.setVisible(usuario instanceof Estudiante);
+		panel.add(btnBorrarConstancia);
 	}
 }
