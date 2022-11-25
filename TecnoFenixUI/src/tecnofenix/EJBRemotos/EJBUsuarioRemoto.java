@@ -160,6 +160,19 @@ public class EJBUsuarioRemoto {
 		return usuario;
 	}
 	
+	public Usuario bajaLogicaUsuario(Usuario usuario) {
+
+		try {
+			System.out.println("Borrando Usuario borrado Logico");
+			usuario = usuarioRemote.borrarUsuario(usuario);
+
+		} catch (ServiciosException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Usuario borrado");
+		return usuario;
+	}
 	
 	
 	

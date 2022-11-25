@@ -579,7 +579,7 @@ public class UIUsuarioNuevo {
 				txtEmail.getText(),
 				txtTelefono.getText(),
 				(Itr) comboBoxITR.getSelectedItem(),
-				cmbTipoTutor.getSelectedIndex(),
+				TipoTutorEncargado.getIdTipo(cmbTipoTutor.getSelectedItem().toString()),
 				cmbArea.getSelectedIndex(),
 				setRolNuevoUsuario("TUTOR"));
 				

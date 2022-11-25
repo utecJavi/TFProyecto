@@ -69,8 +69,9 @@ public class UsuarioBean implements UsuarioBeanRemote {
 	@Override
 	public Usuario borrarUsuario(Usuario usuario) throws ServiciosException {
 		TypedQuery<Usuario> query = em.createNamedQuery("Usuario.logicalDelete", Usuario.class);
-		Usuario usr = query.setParameter("id", usuario.getId()).getSingleResult();
-
+		query.setParameter("id", usuario.getId()).executeUpdate();
+		em.getTransaction().commit();
+		Usuario usr=encontrarUsuario(usuario.getId());
 		return usr;
 	}
 
