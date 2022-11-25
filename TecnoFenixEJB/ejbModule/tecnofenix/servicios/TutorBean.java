@@ -60,12 +60,12 @@ public class TutorBean implements TutorBeanRemote  {
 			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
 		}
 
-		Tutor tutorDb = (Tutor) usuarioBean.encontrarUsuario(tutor.getId());
-		tutorDb.setContrasenia(tutor.getContrasenia());
-		tutorDb.setArea(tutor.getArea());
-		tutorDb.setTipo(tutor.getTipo());
+//		Tutor tutorDb = (Tutor) usuarioBean.encontrarUsuario(tutor.getId());
+//		tutorDb.setContrasenia(tutor.getContrasenia());
+//		tutorDb.setArea(tutor.getArea());
+//		tutorDb.setTipo(tutor.getTipo());
 
-		return (Tutor) usuarioBean.modificarUsuario(tutorDb, tutor);
+		return (Tutor) usuarioBean.modificarUsuario( tutor);
 	}
 
 	@Override
@@ -74,11 +74,11 @@ public class TutorBean implements TutorBeanRemote  {
 			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
 		}
 
-		Tutor tutorDb = (Tutor) usuarioBean.encontrarUsuario(tutor.getId());
-		tutorDb.setArea(tutor.getArea());
-		tutorDb.setTipo(tutor.getTipo());
+//		Tutor tutorDb = (Tutor) usuarioBean.encontrarUsuario(tutor.getId());
+//		tutorDb.setArea(tutor.getArea());
+//		tutorDb.setTipo(tutor.getTipo());
 
-		return (Tutor) usuarioBean.modificarUsuario(tutorDb, tutor);
+		return (Tutor) usuarioBean.modificarUsuario( tutor);
 	}
 
 	@Override

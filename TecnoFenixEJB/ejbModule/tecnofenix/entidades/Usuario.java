@@ -131,6 +131,11 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
     @Size(min = 1, max = 45)
     @Column(name = "mail")
     private String mail;
+    
+    @Basic(optional = false)
+    @Size(min = 1, max = 45)
+    @Column(name = "mail_personal")
+    private String mailPersonal;
 
     @Basic(optional = false)
     @NotNull
@@ -164,7 +169,7 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
         this.id = id;
     }
     
-    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String telefono, Itr itr,Rol rol) {
+    public Usuario(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail,String mailPersonal, String telefono, Itr itr,Rol rol) {
         this.documento = documento;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
@@ -175,6 +180,7 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
         this.genero = genero;
         this.localidad = localidad;
         this.mail = mail;
+        this.mailPersonal = mailPersonal;
         this.telefono = telefono;
         this.itr = itr;
         this.rol =rol;
@@ -294,7 +300,15 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
         this.mail = mail;
     }
 
-    public String getTelefono() {
+    public String getMailPersonal() {
+		return mailPersonal;
+	}
+
+	public void setMailPersonal(String mailPersonal) {
+		this.mailPersonal = mailPersonal;
+	}
+
+	public String getTelefono() {
         return telefono;
     }
 

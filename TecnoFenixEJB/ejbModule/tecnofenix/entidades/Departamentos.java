@@ -17,6 +17,15 @@ public enum Departamentos {
 		return depto;
 	}
 
+	  public static Departamentos fromString(String text) {
+	        for (Departamentos d : Departamentos.values()) {
+	            if (d.depto.equalsIgnoreCase(text)) {
+	                return d;
+	            }
+	        }
+	        return null;
+	    }
+	
 	@Override
 	public String toString() {
 		return this.depto;

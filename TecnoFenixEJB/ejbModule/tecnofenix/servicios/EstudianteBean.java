@@ -44,12 +44,12 @@ public class EstudianteBean implements EstudianteBeanRemote {
             throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
         }
 
-        Estudiante estudianteDb = (Estudiante) usuarioBean.encontrarUsuario(estudiante.getId());
+//        Estudiante estudianteDb = (Estudiante) usuarioBean.encontrarUsuario(estudiante.getId());
 
-        estudianteDb.setContrasenia(estudiante.getContrasenia());
-        estudianteDb.setGeneracion(estudiante.getGeneracion());
+//        estudianteDb.setContrasenia(estudiante.getContrasenia());
+//        estudianteDb.setGeneracion(estudiante.getGeneracion());
 
-        return (Estudiante) usuarioBean.modificarUsuario(estudianteDb, estudiante);
+        return (Estudiante) usuarioBean.modificarUsuario( estudiante);
     }
 
     @Override
@@ -58,11 +58,11 @@ public class EstudianteBean implements EstudianteBeanRemote {
             throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
         }
 
-        Estudiante estudianteDb = (Estudiante) usuarioBean.encontrarUsuario(estudiante.getId());
-        estudianteDb.setGeneracion(estudiante.getGeneracion());
+//        Estudiante estudianteDb = (Estudiante) usuarioBean.encontrarUsuario(estudiante.getId());
+//        estudianteDb.setGeneracion(estudiante.getGeneracion());
 
         // TODO: RF001-03 faltan atributos de estado validado o no de usuario, aceptacion de su solicitud y modificar el tipo de usuario
-        return (Estudiante) usuarioBean.modificarUsuario(estudianteDb, estudiante);
+        return (Estudiante) usuarioBean.modificarUsuario( estudiante);
     }
 
 	@Override

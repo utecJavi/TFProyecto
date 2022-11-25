@@ -44,6 +44,8 @@ import java.awt.GridLayout;
 
 import javax.swing.JCheckBox;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ChangeEvent;
 
 public class UIUsuario {
@@ -60,7 +62,8 @@ public class UIUsuario {
 	private JTextField txtTelefono;
 	private JTextField txtEmail;
 	private JTextField txtDocumento;
-	private JDateChooser dateBuscarChooser;
+	private JComboBox cmbDepartamento;
+	private JDateChooser fechaNacimientoCalendar;
 	
 	private JYearChooser yearBuscarChooser;
 	private JYearChooser generacionAnioBuscar;
@@ -86,6 +89,11 @@ public class UIUsuario {
 	private JCheckBox chckbxNoValidado;
 	private JCheckBox chckbxNoActivo;
 	private JCheckBox chckbxTodos;
+	private JTextField txtEmailPersonal;
+	private JTextField txtLocalidad;
+	private JTextField txtId;
+	private Usuario editable;
+	
 	public UIUsuario() {
 		System.out.println("Instanciando ventana usuario");
 	}
@@ -129,10 +137,12 @@ public class UIUsuario {
 
 		// se crea la Tabla con el modelo DefaultTableModel
 		table = new JTable(modelo);
-		table.setDefaultEditor(Object.class, null);
-		table.setCellSelectionEnabled(true);
+		table.setCellSelectionEnabled(false);
+		table.setRowSelectionAllowed(true);
+//		table.setDefaultEditor(Object.class, null);
+//		table.setCellSelectionEnabled(true);
 		table.setForeground(Color.GREEN);
-		table.setColumnSelectionAllowed(true);
+//		table.setColumnSelectionAllowed(true);
 		table.setBackground(Color.BLACK);
 		// crea un array que contiene los nombre de las columnas
 		final String[] columnNames = {"Id","Tipo", "Generacion", "Documento", "Nombres", "Apellidos", "Fecha Nacimiento",
@@ -162,6 +172,25 @@ public class UIUsuario {
 		// definimos un layout
 		// Agregamos el JScrollPane al contenedor
 		panel.add(scrollPane);
+		
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			@Override
+	        public void valueChanged(ListSelectionEvent event) {
+				if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1) {
+				System.out.println("Buscando usuario seleccionado... ");
+				editable=usuarioRemote.encontrarUsuario(Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString()));
+	            txtId.setText(editable.getId().toString());
+	            txtDocumento.setText(editable.getDocumento().toString());
+	            txtApellido.setText(editable.getApellidos());
+	            txtNombre.setText(editable.getNombres());
+	            txtEmail.setText(editable.getMail());
+	            txtEmailPersonal.setText(editable.getMailPersonal());
+	            txtTelefono.setText(editable.getTelefono());
+	            txtLocalidad.setText(editable.getLocalidad());
+	            txtNombreUsuario.setText(editable.getUsuario());
+				}
+	        }
+	    });
 
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.setBounds(1084, 583, 85, 21);
@@ -259,9 +288,9 @@ public class UIUsuario {
 		lblITR.setBounds(20, 676, 133, 13);
 		panel.add(lblITR);
 		
-		dateBuscarChooser = new JDateChooser();
-		dateBuscarChooser.setBounds(20, 604, 186, 19);
-		panel.add(dateBuscarChooser);
+		fechaNacimientoCalendar = new JDateChooser();
+		fechaNacimientoCalendar.setBounds(20, 604, 186, 19);
+		panel.add(fechaNacimientoCalendar);
 
 		yearBuscarChooser = new JYearChooser();
 		yearBuscarChooser.setBounds(19, 645, 104, 19);
@@ -471,6 +500,58 @@ public class UIUsuario {
 		btnLimpiarFiltros.setBounds(1049, 116, 85, 21);
 		panel.add(btnLimpiarFiltros);
 		
+		JLabel lblEmailPersonal = new JLabel("Email personal:");
+		lblEmailPersonal.setBounds(396, 633, 133, 13);
+		panel.add(lblEmailPersonal);
+		
+		txtEmailPersonal = new JTextField();
+		txtEmailPersonal.setColumns(10);
+		txtEmailPersonal.setBounds(396, 646, 360, 19);
+		panel.add(txtEmailPersonal);
+		
+		JCheckBox chckbxActivarUsuario = new JCheckBox("Activo");
+		chckbxActivarUsuario.setBounds(777, 519, 93, 21);
+		panel.add(chckbxActivarUsuario);
+		
+		JLabel lblActivarUsuario = new JLabel("Activar usuario");
+		lblActivarUsuario.setForeground(Color.RED);
+		lblActivarUsuario.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblActivarUsuario.setBounds(777, 507, 99, 13);
+		panel.add(lblActivarUsuario);
+		
+		JLabel lblLocalidad_1 = new JLabel("Localidad:");
+		lblLocalidad_1.setBounds(399, 678, 99, 13);
+		panel.add(lblLocalidad_1);
+		
+		txtLocalidad = new JTextField();
+		txtLocalidad.setColumns(10);
+		txtLocalidad.setBounds(399, 694, 357, 19);
+		panel.add(txtLocalidad);
+		
+		JLabel lblDepartamento_1 = new JLabel("Departamento:");
+		lblDepartamento_1.setBounds(399, 720, 159, 13);
+		panel.add(lblDepartamento_1);
+		
+		cmbDepartamento = new JComboBox(Departamentos.values());
+		cmbDepartamento.setBounds(396, 732, 360, 21);
+		cmbDepartamento.setSelectedIndex(0);
+		panel.add(cmbDepartamento);
+		
+		JLabel lblNewLabel_2 = new JLabel("ID:");
+		lblNewLabel_2.setBounds(286, 484, 45, 13);
+		panel.add(lblNewLabel_2);
+		
+		txtId = new JTextField();
+		txtId.setEnabled(false);
+		txtId.setText("");
+		txtId.setColumns(10);
+		txtId.setBounds(306, 481, 74, 19);
+		panel.add(txtId);
+		
+		JCheckBox chckbxValidarUsuario = new JCheckBox("Validado");
+		chckbxValidarUsuario.setBounds(777, 552, 93, 21);
+		panel.add(chckbxValidarUsuario);
+		
 		
 		frame.pack();
 		frame.setVisible(true);
@@ -485,7 +566,7 @@ public class UIUsuario {
 		txtNombreUsuario.setText("");
 		txtApellido.setText("");
 		txtTelefono.setText("");
-		dateBuscarChooser.cleanup();
+		fechaNacimientoCalendar.cleanup();
 		txtDocumento.setText("");
 		txtEmail.setText("");
 		yearBuscarChooser.setYear(2022);
@@ -497,7 +578,7 @@ public class UIUsuario {
 
 		if (txtNombre.getText().equals("") || txtNombreUsuario.getText().equals("") || txtApellido.getText().equals("")
 				|| txtTelefono.getText().equals("") || txtEmail.getText().equals("")
-				|| txtDocumento.getText().equals("") ||dateBuscarChooser.getDate()==null) {
+				|| txtDocumento.getText().equals("") ||fechaNacimientoCalendar.getDate()==null) {
 
 
 			System.out.println("FALTAN DATOS");

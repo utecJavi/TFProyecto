@@ -51,19 +51,19 @@ public class UsuarioBean implements UsuarioBeanRemote {
 	}
 
 	@Override
-	public Usuario modificarUsuario(Usuario usuarioDb, Usuario usuario)
+	public Usuario modificarUsuario( Usuario usuario)
 			throws ServiciosException, UsuarioNoEncontradoException {
-		usuarioDb.setDocumento(usuario.getDocumento());
-		usuarioDb.setApellidos(usuario.getApellidos());
-		usuarioDb.setNombres(usuario.getNombres());
-		usuarioDb.setFechaNacimiento(usuario.getFechaNacimiento());
-		usuarioDb.setMail(usuario.getMail());
-		usuarioDb.setTelefono(usuario.getTelefono());
+//		usuarioDb.setDocumento(usuario.getDocumento());
+//		usuarioDb.setApellidos(usuario.getApellidos());
+//		usuarioDb.setNombres(usuario.getNombres());
+//		usuarioDb.setFechaNacimiento(usuario.getFechaNacimiento());
+//		usuarioDb.setMail(usuario.getMail());
+//		usuarioDb.setTelefono(usuario.getTelefono());
 
-		em.merge(usuarioDb);
+		em.merge(usuario);
 		em.flush();
 
-		return usuarioDb;
+		return usuario;
 	}
 
 	@Override

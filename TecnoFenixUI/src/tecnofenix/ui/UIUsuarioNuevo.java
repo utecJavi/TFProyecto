@@ -547,8 +547,9 @@ public class UIUsuarioNuevo {
 				txtNombre.getText(),
 				fechaNacimientoChoser.getDate(),
 				cmbDepto.getSelectedItem().toString(),
-				cmbBoxGenero.getSelectedItem().toString(),
+				TipoGenero.getCharGenero(cmbBoxGenero.getSelectedItem().toString()),
 				txtLocalidad.getText(),
+				txtEmailInstitucional.getText(),
 				txtEmail.getText(),
 				txtTelefono.getText(),
 				(Itr) comboBoxITR.getSelectedItem(),
@@ -559,7 +560,7 @@ public class UIUsuarioNuevo {
 		estudiante.setActivo(true);
 		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
 		JOptionPane.showMessageDialog(null, "Se creo el usuario Estudiante ["+txtUsuario.getText()+"] , para iniciar sesion debe esperar a que lo habiliten en el sistema",
-				"Error", JOptionPane.INFORMATION_MESSAGE);
+				"Informacion", JOptionPane.INFORMATION_MESSAGE);
 		limpiarDatos();
 		}
 	}
@@ -572,8 +573,9 @@ public class UIUsuarioNuevo {
 				txtNombre.getText(),
 				fechaNacimientoChoser.getDate(),
 				cmbDepto.getSelectedItem().toString(),
-				cmbBoxGenero.getSelectedItem().toString(),
+				TipoGenero.getCharGenero(cmbBoxGenero.getSelectedItem().toString()),
 				txtLocalidad.getText(),
+				txtEmailInstitucional.getText(),
 				txtEmail.getText(),
 				txtTelefono.getText(),
 				(Itr) comboBoxITR.getSelectedItem(),
@@ -585,7 +587,7 @@ public class UIUsuarioNuevo {
 		tutor.setActivo(true);
 		tutor = (Tutor) usuarioRemote.crearUsuario(tutor);
 		JOptionPane.showMessageDialog(null, "Se creo el usuario Tutor ["+txtUsuario.getText()+"] , para iniciar sesion debe esperar a que lo habiliten en el sistema",
-				"Error", JOptionPane.INFORMATION_MESSAGE);
+				"Informacion", JOptionPane.INFORMATION_MESSAGE);
 		limpiarDatos();
 		}
 	}
@@ -598,8 +600,9 @@ public class UIUsuarioNuevo {
 				txtNombre.getText(),
 				fechaNacimientoChoser.getDate(),
 				cmbDepto.getSelectedItem().toString(),
-				cmbBoxGenero.getSelectedItem().toString(),
+				TipoGenero.getCharGenero(cmbBoxGenero.getSelectedItem().toString()),
 				txtLocalidad.getText(),
+				txtEmailInstitucional.getText(),
 				txtEmail.getText(),
 				txtTelefono.getText(),
 				(Itr) comboBoxITR.getSelectedItem(),
@@ -608,8 +611,9 @@ public class UIUsuarioNuevo {
 		analista.setValidado(false);
 		analista.setActivo(true);
 		analista = (Analista) usuarioRemote.crearUsuario(analista);
-		System.err.println(analista.toString());
-		System.out.println("Se creo el usuario tutor");
+		JOptionPane.showMessageDialog(null, "Se creo el usuario Analista ["+txtUsuario.getText()+"] , para iniciar sesion debe esperar a que lo habiliten en el sistema",
+				"Informacion", JOptionPane.INFORMATION_MESSAGE);
+		limpiarDatos();
 		}
 	}
 	 public boolean validarDatos() {

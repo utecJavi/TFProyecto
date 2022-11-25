@@ -47,7 +47,7 @@ public class AnalistaBean implements AnalistaBeanRemote {
 
 		analistaDb.setContrasenia(analista.getContrasenia());
 
-		return (Analista) usuarioBean.modificarUsuario(analistaDb, analista);
+		return (Analista) usuarioBean.modificarUsuario( analista);
 	}
 
 	@Override
@@ -56,9 +56,9 @@ public class AnalistaBean implements AnalistaBeanRemote {
 			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
 		}
 
-		Analista analistaDb = (Analista) usuarioBean.encontrarUsuario(analista.getId());
+//		Analista analistaDb = (Analista) usuarioBean.encontrarUsuario(analista.getId());
 
-		return (Analista) usuarioBean.modificarUsuario(analistaDb, analista);
+		return (Analista) usuarioBean.modificarUsuario(analista);
 	}
 
 	@Override

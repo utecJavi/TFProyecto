@@ -146,6 +146,24 @@ public class EJBUsuarioRemoto {
 		System.out.println("Usuario RETORNADO");
 		return usuario;
 	}
+	public Usuario modificarUsuario(Usuario usuario) {
+
+		try {
+			System.out.println("modificarUsuario");
+			usuario = usuarioRemote.modificarUsuario(usuario);
+
+		} catch (ServiciosException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Usuario RETORNADO");
+		return usuario;
+	}
+	
+	
+	
+	
+	
 	public List<Usuario> buscarUsuarioPor(String tipo, String id ,String depto,String doc,String nombre,String apellido
 			,String mail,String usuario,String itrNombre,String generacion, Boolean validado ,Boolean activo,Boolean todos,String localidad,String telefono,Boolean noValidados ,Boolean noActivos){
 		List<Usuario> lista = new ArrayList<Usuario>();
