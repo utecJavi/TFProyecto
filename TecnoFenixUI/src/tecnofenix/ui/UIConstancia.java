@@ -130,8 +130,9 @@ public class UIConstancia {
 		btnSolicitarConstancia.setBounds(286, 481, 189, 19);
 		btnSolicitarConstancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
-				//Llamar a panel de alta de constancia
+				UIAltaConstancia altaConstancia = new UIAltaConstancia();
+				altaConstancia.inicializar(usuario);
+				altaConstancia.frame.setVisible(true);
 			}
 			
 		});

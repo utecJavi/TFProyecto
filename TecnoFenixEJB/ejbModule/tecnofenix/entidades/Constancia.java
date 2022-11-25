@@ -72,7 +72,7 @@ public class Constancia implements Serializable {
     @Column(nullable = false)
     private EstadoConstancia estado;
 
-    public Constancia() {
+	public Constancia() {
     }
 
     public Constancia(Integer id) {
@@ -142,6 +142,14 @@ public class Constancia implements Serializable {
     public void setEstudianteId(Estudiante estudianteId) {
         this.estudianteId = estudianteId;
     }
+    
+    public EstadoConstancia getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoConstancia estado) {
+		this.estado = estado;
+	}
 
     @Override
     public int hashCode() {
