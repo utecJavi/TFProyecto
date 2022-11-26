@@ -222,7 +222,7 @@ public class Evento implements Serializable {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Evento[ id=" + id + " ]";
+        return id + " " + titulo;
     }
     
 }

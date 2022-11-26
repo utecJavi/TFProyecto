@@ -101,19 +101,6 @@ public class Principal {
 
 		
 		JMenu constancia= new JMenu("Constancias");
-		JMenuItem constAlta= new JMenuItem("Alta Constancias");
-		JMenuItem constModa= new JMenuItem("Modificacion Constancias");
-		JMenuItem constDeletea= new JMenuItem("Borrar Constancias");
-		constDeletea.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				bajaConstancia baj = new bajaConstancia(frame);
-				frame.pack();
-				baj.setVisible(true);
-				
-			}
-		});
-		
 		JMenuItem constListado = new JMenuItem("Listado Constancias");
 		constListado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

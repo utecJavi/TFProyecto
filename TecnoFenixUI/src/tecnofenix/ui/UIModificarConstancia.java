@@ -86,7 +86,7 @@ public class UIModificarConstancia {
 		lblModEventos.setVisible(usuario instanceof Estudiante);
 		panel.add(lblModEventos);
 		
-		JComboBox comboEventos = new JComboBox<Evento>();
+		JComboBox<Evento> comboEventos = new JComboBox<Evento>();
 		comboEventos.setBounds(23, 263, 360, 21);
 		List<Evento> eventos = eventoBeanRemote.obtenerEventos();
 		for(Evento eventoItem: eventos){
@@ -100,7 +100,7 @@ public class UIModificarConstancia {
 		lblEstado.setVisible(usuario instanceof Analista);
 		panel.add(lblEstado);
 		
-		JComboBox comboEstados = new JComboBox<Evento>();
+		JComboBox<Constancia.EstadoConstancia> comboEstados = new JComboBox<Constancia.EstadoConstancia>();
 		comboEstados.setBounds(23, 313, 360, 21);
 		comboEstados.addItem(Constancia.EstadoConstancia.INGRESADO);
 		comboEstados.addItem(Constancia.EstadoConstancia.EN_PROCESO);
@@ -115,10 +115,10 @@ public class UIModificarConstancia {
 				
 				if (usuario instanceof Estudiante) {
 					constancia.setDetalle(txtDetalle.getText());
-					Evento evento = comboEventos.getSelectedItem();
+					Evento evento = (Evento) comboEventos.getSelectedItem();
 					constancia.setEventoId(evento);
 				} else if (usuario instanceof Analista) {
-					Constancia.EstadoConstancia estado = comboEstados.getSelectedItem();
+					Constancia.EstadoConstancia estado = (Constancia.EstadoConstancia) comboEstados.getSelectedItem();
 					constancia.setEstado(estado);
 				}
 				
