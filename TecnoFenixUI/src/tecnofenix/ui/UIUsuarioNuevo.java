@@ -124,6 +124,7 @@ public class UIUsuarioNuevo {
 		panel.add(lblNombre);
 
 		txtNombre = new JTextField();
+		txtNombre.setText("");
 		txtNombre.setBounds(23, 115, 360, 19);
 		txtNombre.setColumns(10);
 		panel.add(txtNombre);
@@ -168,6 +169,7 @@ public class UIUsuarioNuevo {
 		panel.add(lblApellido);
 
 		txtApellido = new JTextField();
+		txtApellido.setText("");
 		txtApellido.setBounds(23, 157, 360, 19);
 		txtApellido.setColumns(10);
 		panel.add(txtApellido);
@@ -185,6 +187,7 @@ public class UIUsuarioNuevo {
 			comboBoxITR.addItem(itrItem);
 		}
 		comboBoxITR.setEnabled(true);
+		comboBoxITR.setSelectedIndex(-1);
 		panel.add(comboBoxITR);
 
 		
@@ -616,14 +619,111 @@ public class UIUsuarioNuevo {
 		limpiarDatos();
 		}
 	}
-	 public boolean validarDatos() {
-		 if(passValido && emailValido && passCoincideValido && emailPerCoincideValido) {
-			 if(txtDocumento.getText().length()==8 && txtApellido.getText()!= "" && txtNombre.getText()!= "") {				 
-			 return true; 
-			 }		
-		 }
-		 return false;
-	 }
+
+	public boolean validarDatos() {
+//		if (passValido && emailValido && passCoincideValido && emailPerCoincideValido) {
+//			if (txtDocumento.getText().length() == 8 && txtApellido.getText() != "" && txtNombre.getText() != "") {
+//				return true;
+//			}
+//		}
+		if (txtDocumento.getText().length() == 8) {
+		} else {
+			JOptionPane.showMessageDialog(null,
+					"La cedula de identidad es un dato obligatorio, ingresela sin puntos ni guiones [maximo 8 numeros]",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+
+		if (txtApellido.getText() == null || txtApellido.getText() == "") {
+
+			JOptionPane.showMessageDialog(null,
+					"El apellido es un dato obligatorio, no puede ser vacío",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if (txtNombre.getText() == null || txtNombre.getText() == "") {
+
+			JOptionPane.showMessageDialog(null,
+					"El nombre es un dato obligatorio, no puede ser vacío",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if (txtTelefono.getText() == null || txtTelefono.getText() == "") {
+
+			JOptionPane.showMessageDialog(null,
+					"Ingrese su numero de telefono, no puede ser vacío",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		
+		if (fechaNacimientoChoser.getDate() == null ) {
+
+			JOptionPane.showMessageDialog(null,
+					"Seleccione su fecha de nacimiento, no puede ser vacío",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		
+		if (cmbDepto.getSelectedIndex() == 0 ) {
+
+			JOptionPane.showMessageDialog(null,
+					"Seleccione el departamento",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if (comboBoxITR.getSelectedIndex() == -1 ) {
+
+			JOptionPane.showMessageDialog(null,
+					"Seleccione el ITR",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		
+		
+		if (!passValido) {
+			JOptionPane.showMessageDialog(null,
+					"El password no cumple con las validaciones necesarias [8 caracteres mínimo, 1 carácter especial (@#$%), al menos 1 mayúscula y al menos 1 minúscula]",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if (!emailValido) {
+			JOptionPane.showMessageDialog(null,
+					"El mail es un dato requerido, su formato es usuario@dominio ",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if (txtEmailInstitucional.getText() == null || txtEmailInstitucional.getText() == "") {
+			JOptionPane.showMessageDialog(null,
+					"El mail institucional es un dato requerido, su formato es usuario@dominio (El dominio se agrega automaticamente cuando ingrese el @)",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if (!passCoincideValido) {
+			JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Datos no validos",
+					JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+
+		if (!emailPerCoincideValido) {
+			JOptionPane.showMessageDialog(null, "Debe ingresar la misma direccion de correo electronico [no coinciden]",
+					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		
+		if(rdbtnEstudiante.isSelected()) {
+			
+			if (generacionEstudiante.getYear() > 2022 ||generacionEstudiante.getYear()<2010) {
+
+				JOptionPane.showMessageDialog(null,
+						"La generacion debe ser el año en formato 4 cifras numericas, no puede ser vacío",
+						"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
+				return false;
+			}
+		}
+		
+
+		return true;
+	}
 	 
 	 public Rol setRolNuevoUsuario(String roleName) {	 
 			Rol rol = null;
