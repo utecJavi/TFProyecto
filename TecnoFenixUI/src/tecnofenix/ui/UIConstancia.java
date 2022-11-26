@@ -152,20 +152,8 @@ public class UIConstancia {
 		});
 		panel.add(btnModificarConstancia);
 		
-		JButton btnModificarEstadoConstancia = new JButton("Modificar estado constancia");
-		btnModificarEstadoConstancia.setBounds(390, 520, 189, 19);
-		btnModificarEstadoConstancia.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			
-				//Llamar a panel de modificacion de estado constancia
-			}
-			
-		});
-		btnModificarEstadoConstancia.setVisible(usuario instanceof Analista);
-		panel.add(btnModificarEstadoConstancia);
-		
 		JButton btnBorrarConstancia = new JButton("Borrar constancia");
-		btnBorrarConstancia.setBounds(589, 520, 189, 19);
+		btnBorrarConstancia.setBounds(390, 520, 189, 19);
 		btnBorrarConstancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
