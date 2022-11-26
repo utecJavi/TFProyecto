@@ -40,10 +40,6 @@ public class Principal {
 					UILogin uiLogin = new UILogin();
 					uiLogin.inicializar(window);
 
-//					window.frame.setVisible(true);
-//					EJBUsuarioRemoto ejbusu = new EJBUsuarioRemoto();
-//					ejbusu.ejecutarMetodo();
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -54,13 +50,14 @@ public class Principal {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public void inicializar(Usuario user) {
+	public void inicializar(Usuario user ) {
 
 		System.out.println("Programa inicializado");
 		frame = new JFrame();
 		frame.setBounds(100, 100, 676, 326);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
 
 		JMenuBar menuBar = new JMenuBar();
 		
@@ -70,18 +67,10 @@ public class Principal {
 		
 		JMenuItem adminDocentes= new JMenuItem("Administracion usuarios Docentes");
 		
-		
-		
-		
-		
-		
+
 		JMenuItem adminAnalista= new JMenuItem("Administracion usuarios Analistas");
 		
-		
-		
-		
-		
-		
+
 		JMenuItem adminEstudiantes= new JMenuItem("Administracion usuarios Estudiantes");
 		adminEstudiantes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -213,15 +202,9 @@ public class Principal {
 		usuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Abriendo ventana usuarios");
-				
-				
-				
+
 			}
 		});
-		
-		
-		
-
 
 	}
 }

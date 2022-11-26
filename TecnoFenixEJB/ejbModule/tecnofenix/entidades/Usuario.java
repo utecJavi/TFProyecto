@@ -31,6 +31,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -63,7 +64,7 @@ import tecnofenix.interfaces.BajaLogica;
     @NamedQuery(name = "Usuario.findByLocalidad", query = "SELECT u FROM Usuario u WHERE u.localidad = :localidad"),
     @NamedQuery(name = "Usuario.findByMail", query = "SELECT u FROM Usuario u WHERE u.mail = :mail"),
     @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono"),
-    @NamedQuery(name = "Usuario.logicalDelete", query = "UPDATE Usuario u SET u.activo = true WHERE u.id = :id"),
+    @NamedQuery(name = "Usuario.logicalDelete", query = "UPDATE Usuario u SET u.activo = false WHERE u.id = :id"),
     @NamedQuery(name = "Usuario.validarUsuario", query = "UPDATE Usuario u SET u.validado = true WHERE u.id = :id")})
 public abstract class Usuario extends Activo implements Serializable ,BajaLogica {
     private static final long serialVersionUID = 1L;
@@ -81,7 +82,7 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "documento")
+    @Column(unique=true,name = "documento")
     private Integer documento;
     
     @Basic(optional = false)
@@ -132,8 +133,7 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
     @Column(name = "mail")
     private String mail;
     
-    @Basic(optional = false)
-    @Size(min = 1, max = 45)
+    @Basic(optional = true)
     @Column(name = "mail_personal")
     private String mailPersonal;
 

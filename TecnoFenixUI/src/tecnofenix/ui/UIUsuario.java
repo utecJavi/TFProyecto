@@ -32,6 +32,8 @@ import tecnofenix.entidades.Departamentos;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Rol;
+import tecnofenix.entidades.TipoGenero;
+import tecnofenix.entidades.TipoTutorEncargado;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
 import com.toedter.calendar.JYearChooser;
@@ -63,8 +65,10 @@ public class UIUsuario {
 	private JTextField txtEmail;
 	private JTextField txtDocumento;
 	private JComboBox cmbDepartamento;
+	private JComboBox cmbBoxGenero;
 	private JDateChooser fechaNacimientoCalendar;
-	
+	private JCheckBox chckbxActivarUsuario;
+	private JCheckBox chckbxValidarUsuario;
 	private JYearChooser yearBuscarChooser;
 	private JYearChooser generacionAnioBuscar;
 	
@@ -92,7 +96,12 @@ public class UIUsuario {
 	private JTextField txtEmailPersonal;
 	private JTextField txtLocalidad;
 	private JTextField txtId;
-	private Usuario editable;
+	private Usuario usuarioEditable;
+	private JComboBox cmbArea;
+	private JLabel lblArea;
+	private JLabel lbltipoTutor;
+	private JComboBox cmbTipoTutor;
+	private JLabel lblGeneracion;
 	
 	public UIUsuario() {
 		System.out.println("Instanciando ventana usuario");
@@ -124,14 +133,14 @@ public class UIUsuario {
 		panel.add(txtNombre);
 		txtNombre.setColumns(10);
 
-		JButton btnAdd = new JButton("Agregar");
-		btnAdd.setBounds(1084, 521, 85, 21);
-		btnAdd.addActionListener(new ActionListener() {
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setBounds(1084, 521, 85, 21);
+		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				validarDatos();
 			}
 		});
-		panel.add(btnAdd);
+		panel.add(btnModificar);
 
 		modelo = new DefaultTableModel();
 
@@ -160,8 +169,6 @@ public class UIUsuario {
 			
 		actualizarLista();
 		
-		
-
 
 		// se define el tamaño de la tabla
 		table.setBounds(93, 215, 100, 100);
@@ -178,16 +185,44 @@ public class UIUsuario {
 	        public void valueChanged(ListSelectionEvent event) {
 				if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1) {
 				System.out.println("Buscando usuario seleccionado... ");
-				editable=usuarioRemote.encontrarUsuario(Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString()));
-	            txtId.setText(editable.getId().toString());
-	            txtDocumento.setText(editable.getDocumento().toString());
-	            txtApellido.setText(editable.getApellidos());
-	            txtNombre.setText(editable.getNombres());
-	            txtEmail.setText(editable.getMail());
-	            txtEmailPersonal.setText(editable.getMailPersonal());
-	            txtTelefono.setText(editable.getTelefono());
-	            txtLocalidad.setText(editable.getLocalidad());
-	            txtNombreUsuario.setText(editable.getUsuario());
+				usuarioEditable=usuarioRemote.encontrarUsuario(Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString()));
+	           
+				txtId.setText(usuarioEditable.getId().toString());
+	            txtDocumento.setText(usuarioEditable.getDocumento().toString());
+	            txtApellido.setText(usuarioEditable.getApellidos());
+	            txtNombre.setText(usuarioEditable.getNombres());
+	            txtEmail.setText(usuarioEditable.getMail());
+	            txtEmailPersonal.setText(usuarioEditable.getMailPersonal());
+	            txtTelefono.setText(usuarioEditable.getTelefono());
+	            txtLocalidad.setText(usuarioEditable.getLocalidad());
+	            txtNombreUsuario.setText(usuarioEditable.getUsuario());
+	            comboBoxITR.setSelectedItem(usuarioEditable.getItr());
+	            cmbBoxGenero.setSelectedItem(TipoGenero.fromString(usuarioEditable.getGenero()));
+	            cmbDepartamento.setSelectedItem(Departamentos.fromString(usuarioEditable.getDepartamento()));
+	            fechaNacimientoCalendar.setDate(usuarioEditable.getFechaNacimiento());
+	            chckbxActivarUsuario.setSelected(usuarioEditable.getActivo());
+	            chckbxValidarUsuario.setSelected(usuarioEditable.getValidado());
+	            
+	            if(usuarioEditable instanceof Estudiante) {
+	            	lblGeneracion.setVisible(true);
+	            	yearBuscarChooser.setVisible(true);
+	            	yearBuscarChooser.setYear(((Estudiante)usuarioEditable).getGeneracion());
+	            }else {
+	            	lblGeneracion.setVisible(false);
+	            	yearBuscarChooser.setVisible(false);
+	            }
+	            if(usuarioEditable instanceof Tutor) {
+	            	cmbTipoTutor.setVisible(true);
+	            	cmbArea.setVisible(true);
+	            	lblArea.setVisible(true);
+	            	lbltipoTutor.setVisible(true);
+	            	cmbTipoTutor.setSelectedItem(TipoTutorEncargado.getIdTipo(((Tutor)usuarioEditable).getTipo()));
+	            }else {
+	            	lblArea.setVisible(false);
+	            	lbltipoTutor.setVisible(false);
+	            	cmbTipoTutor.setVisible(false);
+	            	cmbArea.setVisible(false);
+	            }
 				}
 	        }
 	    });
@@ -205,19 +240,19 @@ public class UIUsuario {
 		btnBorrar.setBounds(1084, 552, 85, 21);
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				int row = table.getSelectedRow();
-
 				if (row >= 0) {
-//					System.out.println(modelo.getValueAt(row, column));
-					String mensaje = "Id " + modelo.getValueAt(row, 0).toString() + " Nombre "
-							+ modelo.getValueAt(row, 1).toString() + " Desc " + modelo.getValueAt(row, 2).toString();
-
+					String mensaje = "CI " + modelo.getValueAt(row, 3).toString() + " Nombre "
+							+ modelo.getValueAt(row, 4).toString() + " " +modelo.getValueAt(row, 5).toString();
 					if (borrarRow(mensaje)) {
-//						daoPersona.delete(allPersona.get(row));
-						modelo.removeRow(row);
+						usuarioEditable.setActivo(false);
+						usuarioRemote.modificarUsuario(usuarioEditable);
+						actualizarLista();
 
 					}
+				}else {
+					JOptionPane.showMessageDialog(null, "Ningun usuario esta seleccionado, haga click sobre la tabla para seleccionar uno",
+							"Intente nuevamente", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
@@ -263,8 +298,8 @@ public class UIUsuario {
 		txtEmail.setColumns(10);
 		panel.add(txtEmail);
 
-		JLabel lblGeneracion = new JLabel("Generacion:");
-		lblGeneracion.setBounds(20, 633, 133, 13);
+		lblGeneracion = new JLabel("Generacion:");
+		lblGeneracion.setBounds(20, 720, 133, 13);
 		panel.add(lblGeneracion);
 
 		JLabel lblDocumento = new JLabel("Documento:");
@@ -293,7 +328,7 @@ public class UIUsuario {
 		panel.add(fechaNacimientoCalendar);
 
 		yearBuscarChooser = new JYearChooser();
-		yearBuscarChooser.setBounds(19, 645, 104, 19);
+		yearBuscarChooser.setBounds(19, 732, 104, 19);
 		panel.add(yearBuscarChooser);
 		
 		JLabel lblDocumento_1 = new JLabel("Documento:");
@@ -434,12 +469,12 @@ public class UIUsuario {
 		panel.add(lblNewLabel_1);
 		
 		chckbxValidado = new JCheckBox("Validado");
-		chckbxValidado.setSelected(false);
+		chckbxValidado.setSelected(true);
 		chckbxValidado.setBounds(777, 116, 93, 21);
 		panel.add(chckbxValidado);
 		
 		chckbxActivo = new JCheckBox("Activo");
-		chckbxActivo.setSelected(false);
+		chckbxActivo.setSelected(true);
 		chckbxActivo.setBounds(872, 116, 74, 21);
 		panel.add(chckbxActivo);
 		
@@ -487,7 +522,6 @@ public class UIUsuario {
 		        }
 		    }
 		});
-		chckbxTodos.setSelected(true);
 		chckbxTodos.setBounds(962, 142, 65, 21);
 		panel.add(chckbxTodos);
 		
@@ -509,15 +543,9 @@ public class UIUsuario {
 		txtEmailPersonal.setBounds(396, 646, 360, 19);
 		panel.add(txtEmailPersonal);
 		
-		JCheckBox chckbxActivarUsuario = new JCheckBox("Activo");
+		chckbxActivarUsuario = new JCheckBox("Activo");
 		chckbxActivarUsuario.setBounds(777, 519, 93, 21);
 		panel.add(chckbxActivarUsuario);
-		
-		JLabel lblActivarUsuario = new JLabel("Activar usuario");
-		lblActivarUsuario.setForeground(Color.RED);
-		lblActivarUsuario.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblActivarUsuario.setBounds(777, 507, 99, 13);
-		panel.add(lblActivarUsuario);
 		
 		JLabel lblLocalidad_1 = new JLabel("Localidad:");
 		lblLocalidad_1.setBounds(399, 678, 99, 13);
@@ -548,9 +576,35 @@ public class UIUsuario {
 		txtId.setBounds(306, 481, 74, 19);
 		panel.add(txtId);
 		
-		JCheckBox chckbxValidarUsuario = new JCheckBox("Validado");
+		chckbxValidarUsuario = new JCheckBox("Validado");
 		chckbxValidarUsuario.setBounds(777, 552, 93, 21);
 		panel.add(chckbxValidarUsuario);
+		
+		JLabel lblGenero = new JLabel("Genero:");
+		lblGenero.setBounds(20, 633, 202, 13);
+		panel.add(lblGenero);
+		
+		cmbBoxGenero = new JComboBox(TipoGenero.values());
+		cmbBoxGenero.setSelectedIndex(0);
+		cmbBoxGenero.setBounds(20, 646, 202, 21);
+		panel.add(cmbBoxGenero);
+		
+		cmbArea = new JComboBox();
+		cmbArea.setBounds(777, 603, 225, 21);
+		panel.add(cmbArea);
+		
+		lblArea = new JLabel("Area:");
+		lblArea.setBounds(777, 591, 45, 13);
+		panel.add(lblArea);
+		
+		lbltipoTutor = new JLabel("Tipo");
+		lbltipoTutor.setBounds(777, 634, 45, 13);
+		panel.add(lbltipoTutor);
+		
+		cmbTipoTutor = new JComboBox(TipoTutorEncargado.values());
+		cmbTipoTutor.setSelectedIndex(0);
+		cmbTipoTutor.setBounds(777, 646, 225, 21);
+		panel.add(cmbTipoTutor);
 		
 		
 		frame.pack();
@@ -561,7 +615,23 @@ public class UIUsuario {
 	
 	
 	public void limpiar() {
-		
+		usuarioEditable=null;
+		txtId.setText("");
+        txtDocumento.setText("");
+        txtApellido.setText("");
+        txtNombre.setText("");
+        txtEmail.setText("");
+        txtEmailPersonal.setText("");
+        txtTelefono.setText("");
+        txtLocalidad.setText("");
+        txtNombreUsuario.setText("");
+        comboBoxITR.setSelectedIndex(0);
+        cmbBoxGenero.setSelectedIndex(0);
+        cmbDepartamento.setSelectedIndex(0);
+        fechaNacimientoCalendar.cleanup();
+        chckbxActivarUsuario.setSelected(false);
+        chckbxValidarUsuario.setSelected(false);
+        
 		txtNombre.setText("");
 		txtNombreUsuario.setText("");
 		txtApellido.setText("");
@@ -585,40 +655,44 @@ public class UIUsuario {
 		} else {
 
 			System.out.println("AGREGANDO USUARIO ESTUDIANTE");
-			addEstudiante();
+			modificarUsuario();
 		}
 	}
 
 
-	public void addEstudiante() {
-//		(Integer.valueOf(txtId.getText()), txtNombre.getText(),txtDesc.getText());
-//		Rol idRol = new Rol();
-//		Estudiante estudiante = new Estudiante( Integer.valueOf(txtDocumento.getText()),
-//		txtUsuario.getText(),
-//		txtPass.getText(),
-//		txtApellido.getText(),
-//		txtNombre.getText(),
-//		fechaNacimientoChoser.getDate(),
-//		cmbDepto.getSelectedItem().toString(),
-//		cmbBoxGenero.getSelectedItem().toString(),
-//		txtLocalidad.getText(),
-//		txtEmail.getText(),
-//		txtTelefono.getText(),
-//		(Itr) comboBoxITR.getSelectedItem(),
-//		setRolNuevoUsuario("ESTUDIANTE"),
-//		generacionEstudiante.getYear());
-//		estudiante = (Estudiante) usuarioRemote.crearUsuario(estudiante);
-//		System.err.println(estudiante.toString());
-//		System.out.println("Se creo el usuario");
-//		actualizarLista();
+	public void modificarUsuario() {
+		//el id y documento siguen igual siempre
+		usuarioEditable.setApellidos(txtApellido.getText());
+		usuarioEditable.setNombres(txtNombre.getText());
+		usuarioEditable.setMail(txtEmail.getText());
+		usuarioEditable.setMailPersonal(txtEmailPersonal.getText());
+		usuarioEditable.setTelefono(txtTelefono.getText());
+		usuarioEditable.setLocalidad(txtLocalidad.getText());
+		usuarioEditable.setUsuario(txtNombreUsuario.getText());
+		usuarioEditable.setItr((Itr)comboBoxITR.getSelectedItem());
+		usuarioEditable.setGenero(TipoGenero.getCharGenero(cmbBoxGenero.getSelectedItem().toString()));
+		usuarioEditable.setDepartamento(cmbDepartamento.getSelectedItem().toString());
+		usuarioEditable.setFechaNacimiento(fechaNacimientoCalendar.getDate());
+		usuarioEditable.setActivo(chckbxActivarUsuario.isSelected());
+		usuarioEditable.setValidado( chckbxValidarUsuario.isSelected());
+        
+        if(usuarioEditable instanceof Estudiante) {	
+        	((Estudiante)usuarioEditable).setGeneracion(yearBuscarChooser.getYear());
+        }
+        if(usuarioEditable instanceof Tutor) {
+        	((Tutor)usuarioEditable).setTipo(TipoTutorEncargado.getIdTipo(cmbTipoTutor.getSelectedItem().toString()));
+        }
+        
+        usuarioEditable=usuarioRemote.modificarUsuario(usuarioEditable);
+        JOptionPane.showMessageDialog(null, "Se modifico el usuario " + usuarioEditable.getNombres() +" "+ usuarioEditable.getApellidos(),
+				"Modificar usuario", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 
 	public boolean borrarRow(String mensaje) {
-//		msj.mostrarMensaje(Mensajes.BAJA);
 
 		int dialogButton = JOptionPane.YES_NO_OPTION;
-		int dialogResult = JOptionPane.showConfirmDialog(null, "Seguro quieres borrar: " + mensaje, "Warning",
+		int dialogResult = JOptionPane.showConfirmDialog(null, "Seguro quieres dar de baja al usuario: " + mensaje, "Warning",
 				dialogButton);
 		if (dialogResult == JOptionPane.YES_OPTION) {
 			return true;

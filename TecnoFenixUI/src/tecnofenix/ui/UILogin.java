@@ -1,7 +1,6 @@
 package tecnofenix.ui;
 
 import java.awt.Dimension;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -11,12 +10,12 @@ import javax.swing.JTextField;
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Estudiante;
-import tecnofenix.entidades.Itr;
+
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
-import tecnofenix.exception.ServiciosException;
+
 import tecnofenix.interfaces.UsuarioBeanRemote;
-import tecnofenix.servicios.ConexionClienteJNDIRemote;
+
 
 import javax.ejb.EJB;
 import javax.naming.InitialContext;
@@ -31,8 +30,6 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.Date;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.JCheckBox;
@@ -42,12 +39,10 @@ public class UILogin {
 	public JFrame frame;
 	private JTextField txtEmail;
 	private JPasswordField txtPass;
-//	private Estudiante usuario;
+
 	@EJB
 	UsuarioBeanRemote usuarioRemote;
-//	private JPasswordField passwordField;
-	
-//	MensajePopUp msj = new MensajePopUp();
+
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -58,8 +53,8 @@ public class UILogin {
 		try {
 			InitialContext ctx = new InitialContext();
 			// Instanciamos las interfaces remotas con el lookup
-			
-			usuarioRemote= (UsuarioBeanRemote) ctx.lookup("ejb:/TecnoFenixEJB/UsuarioBean!tecnofenix.interfaces.UsuarioBeanRemote");
+
+			usuarioRemote = (UsuarioBeanRemote) ctx.lookup("ejb:/TecnoFenixEJB/UsuarioBean!tecnofenix.interfaces.UsuarioBeanRemote");
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,24 +91,41 @@ public class UILogin {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				window.inicializar();
-//				window.frame.setVisible(true);
-//				frame.setVisible(false);
 				if (!txtEmail.getText().equals("") && !String.valueOf(txtPass.getPassword()).equals("")) {
 					Usuario user;
-					user = ejbUsuario.login(txtEmail.getText(),String.valueOf(txtPass.getPassword()));
+					user = ejbUsuario.login(txtEmail.getText(), String.valueOf(txtPass.getPassword()));
 					if (user.getId() != null) {
-						JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombres() + " " + user.getApellidos(),
-								"Bienvenido", JOptionPane.INFORMATION_MESSAGE);
-						if(user instanceof Analista)window.inicializar((Analista)user);
-						if(user instanceof Tutor)window.inicializar((Tutor)user);
-						if(user instanceof Estudiante)window.inicializar((Estudiante)user);
-						
-						window.frame.setVisible(true);
-						frame.setVisible(false);
-//
+						if (user.getValidado()) {
+							if (user.getActivo()) {
+								JOptionPane.showMessageDialog(null,
+										"Bienvenido " + user.getNombres() + " " + user.getApellidos(), "Bienvenido",
+										JOptionPane.INFORMATION_MESSAGE);
+								if (user instanceof Analista)
+									window.inicializar((Analista) user);
+								if (user instanceof Tutor)
+									window.inicializar((Tutor) user);
+								if (user instanceof Estudiante)
+									window.inicializar((Estudiante) user);
+
+								window.frame.setVisible(true);
+								frame.setVisible(false);
+							} else {
+								JOptionPane.showMessageDialog(null,
+										"El usuario " + user.getNombres() + " " + user.getApellidos()
+												+ " fue dado de baja del sistema.",
+										"Comuniquese con info@sistemas.utec.edu.uy", JOptionPane.INFORMATION_MESSAGE);
+							}
+						} else {
+
+							JOptionPane.showMessageDialog(null,
+									"El usuario " + user.getNombres() + " " + user.getApellidos()
+											+ " todavia no fue validado por un Analista.",
+									"Comuniquese con info@sistemas.utec.edu.uy", JOptionPane.INFORMATION_MESSAGE);
+
+						}
+
 					} else {
-						JOptionPane.showMessageDialog(null, "Error ","Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Error ", "Error", JOptionPane.ERROR_MESSAGE);
 						txtEmail.setText("");
 						txtPass.setText("");
 					}
@@ -125,26 +137,26 @@ public class UILogin {
 
 			}
 		});
-		
+
 		JCheckBox hidePasswordCheckbox = new JCheckBox("Ver");
 		hidePasswordCheckbox.setBounds(345, 183, 93, 21);
-		
-		
+
 		hidePasswordCheckbox.addItemListener(new ItemListener() {
-		    public void itemStateChanged(ItemEvent e) {
-		        if (e.getStateChange() == ItemEvent.SELECTED) {
-		        	txtPass.setEchoChar((char) 0);
-		        } else {
-		        	txtPass.setEchoChar('*');
-		        	
-		        }
-		    }
+
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					txtPass.setEchoChar((char) 0);
+				} else {
+					txtPass.setEchoChar('*');
+
+				}
+			}
 		});
 		panel.add(hidePasswordCheckbox);
-		
+
 		btnLogin.setBounds(254, 227, 85, 21);
 		panel.add(btnLogin);
-		
+
 		JButton btnRunConfig = new JButton("Crear nuevo usuario");
 		btnRunConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -156,8 +168,6 @@ public class UILogin {
 		});
 		btnRunConfig.setBounds(90, 227, 154, 21);
 		panel.add(btnRunConfig);
-			
-
 
 		frame.pack();
 		frame.setVisible(true);
