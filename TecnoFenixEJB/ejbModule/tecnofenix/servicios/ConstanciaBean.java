@@ -8,7 +8,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
-import ejbModule.tecnofenix.interfaces.Integer;
 import tecnofenix.entidades.Constancia;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ConstanciaBeanRemote;

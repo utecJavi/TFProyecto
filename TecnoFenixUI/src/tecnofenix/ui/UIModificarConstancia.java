@@ -1,4 +1,4 @@
-package src.tecnofenix.ui;
+package tecnofenix.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -30,6 +30,7 @@ import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.entidades.Evento;
 import tecnofenix.entidades.Constancia;
+import tecnofenix.entidades.Constancia.EstadoConstancia;
 
 public class UIModificarConstancia {
 	
@@ -57,7 +58,7 @@ public class UIModificarConstancia {
 		JPanel panel = new JPanel();
 		// definimos un layout
 
-		panel.setPreferredSize(new Dimension(500, 500));
+		panel.setPreferredSize(new Dimension(550, 550));
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(null);
 		
@@ -77,7 +78,7 @@ public class UIModificarConstancia {
 		
 		JTextField txtEvento = new JTextField();
 		txtEvento.setBounds(23, 213, 360, 19);
-		txtEvento.setText(constancia.getEventoId());
+		txtEvento.setText(constancia.getEventoId().getId().toString());
 		txtEvento.setEnabled(false);
 		panel.add(txtEvento);
 		
@@ -115,10 +116,10 @@ public class UIModificarConstancia {
 				
 				if (usuario instanceof Estudiante) {
 					constancia.setDetalle(txtDetalle.getText());
-					Evento evento = comboEventos.getSelectedItem();
+					Evento evento = (Evento) comboEventos.getSelectedItem();
 					constancia.setEventoId(evento);
 				} else if (usuario instanceof Analista) {
-					Constancia.EstadoConstancia estado = comboEstados.getSelectedItem();
+					Constancia.EstadoConstancia estado = (EstadoConstancia) comboEstados.getSelectedItem();
 					constancia.setEstado(estado);
 				}
 				
@@ -135,7 +136,7 @@ public class UIModificarConstancia {
 			
 		});
 		panel.add(btnModificarConstancia);
-		
+		frame.pack();
 		
 	}
 	

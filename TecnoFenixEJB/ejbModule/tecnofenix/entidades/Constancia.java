@@ -13,6 +13,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,24 +52,30 @@ public class Constancia implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "detalle")
     private String detalle;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "constanciaId")
     private Collection<AccionConstancia> accionConstanciaCollection;
+    
     @JoinColumn(name = "evento_id", referencedColumnName = "id")
     @ManyToOne
     private Evento eventoId;
+    
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     @ManyToOne
     private Estudiante estudianteId;
+    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EstadoConstancia estado;

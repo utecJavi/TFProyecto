@@ -218,6 +218,7 @@ public class UIConstancia {
 		});
 		btnBorrarConstancia.setVisible(usuario instanceof Estudiante);
 		panel.add(btnBorrarConstancia);
+		frame.pack();
 	}
 	
 	private void autoAjustarTabla(JTable table) {

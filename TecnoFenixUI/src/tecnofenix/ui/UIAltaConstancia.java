@@ -1,10 +1,11 @@
-package src.tecnofenix.ui;
+package tecnofenix.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.List;
 
 import javax.naming.InitialContext;
@@ -19,8 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import javax.ejb.EJB;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import tecnofenix.interfaces.ConstanciaBeanRemote;
 import tecnofenix.interfaces.EventoBeanRemote;
 import tecnofenix.exception.ServiciosException;
@@ -56,7 +55,7 @@ public class UIAltaConstancia {
 		JPanel panel = new JPanel();
 		// definimos un layout
 
-		panel.setPreferredSize(new Dimension(500, 500));
+		panel.setPreferredSize(new Dimension(800, 500));
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(null);
 		
@@ -88,10 +87,10 @@ public class UIAltaConstancia {
         		Constancia constancia = new Constancia();
         		
         		String detalle = txtDetalle.getText();
-        		Evento evento = comboEventos.getSelectedItem();
+        		Evento evento = (Evento) comboEventos.getSelectedItem();
         		
         		constancia.setDetalle(detalle);
-        		constancia.setFecha(new Date());
+        		constancia.setFecha(new Date(System.currentTimeMillis()));
         		constancia.setEventoId(evento);
         		constancia.setEstudianteId((Estudiante) usuario);
         		constancia.setEstado(Constancia.EstadoConstancia.INGRESADO);
@@ -109,6 +108,8 @@ public class UIAltaConstancia {
 			
 		});
 		panel.add(btnAltaConstancia);
+		
+		frame.pack();
 	}
 
 }

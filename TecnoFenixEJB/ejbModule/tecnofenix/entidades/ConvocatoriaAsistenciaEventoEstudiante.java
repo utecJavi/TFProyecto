@@ -52,7 +52,7 @@ public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "asistencia")
-    private short asistencia;
+    private Boolean asistencia;
 
     @JoinColumn(name = "evento_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -69,7 +69,7 @@ public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
         this.id = id;
     }
 
-    public ConvocatoriaAsistenciaEventoEstudiante(Integer id, int calificacion, short asistencia) {
+    public ConvocatoriaAsistenciaEventoEstudiante(Integer id, int calificacion, Boolean asistencia) {
         this.id = id;
         this.calificacion = calificacion;
         this.asistencia = asistencia;
@@ -97,11 +97,11 @@ public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
         this.calificacion = calificacion;
     }
 
-    public short getAsistencia() {
+    public Boolean getAsistencia() {
         return asistencia;
     }
 
-    public void setAsistencia(short asistencia) {
+    public void setAsistencia(Boolean asistencia) {
         this.asistencia = asistencia;
     }
 
