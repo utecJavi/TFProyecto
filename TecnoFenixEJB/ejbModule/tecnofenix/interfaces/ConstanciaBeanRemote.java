@@ -10,6 +10,8 @@ import tecnofenix.exception.ServiciosException;
 @Remote
 public interface ConstanciaBeanRemote {
 	
+	Constancia buscarConstancia(Integer idConstancia) throws ServiciosException;
+	
 	Constancia crearConstancia(Constancia constancia) throws ServiciosException;
 	
 	Constancia modificarConstancia(Constancia constancia) throws ServiciosException;

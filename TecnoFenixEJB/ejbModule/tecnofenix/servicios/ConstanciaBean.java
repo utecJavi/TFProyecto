@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
+import ejbModule.tecnofenix.interfaces.Integer;
 import tecnofenix.entidades.Constancia;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ConstanciaBeanRemote;
@@ -29,6 +30,15 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
         // TODO Auto-generated constructor stub
     }
 
+    @Override
+    public Constancia buscarConstancia(Integer idConstancia) throws ServiciosException {
+    	try {
+			return em.find(Constancia.class, idConstancia);
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrió un error al buscar constancia: " + pe.getMessage());
+		}
+    }
+    
 	@Override
 	public Constancia crearConstancia(Constancia constancia) throws ServiciosException {
 		try {
