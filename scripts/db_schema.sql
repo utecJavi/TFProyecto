@@ -134,6 +134,7 @@ CREATE TABLE constancia
     fecha         timestamp    NOT NULL,
     evento_id     int DEFAULT NULL,
     estudiante_id int DEFAULT NULL,
+    estado        varchar2(20) NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_constancia_estudiante FOREIGN KEY (estudiante_id) REFERENCES estudiante (id),
     CONSTRAINT fk_constancia_evento FOREIGN KEY (evento_id) REFERENCES evento (id)

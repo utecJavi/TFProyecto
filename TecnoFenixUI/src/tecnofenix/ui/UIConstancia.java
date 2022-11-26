@@ -3,6 +3,7 @@ package tecnofenix.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 //import tecnocanarios.dao.DAOPersona;
 //import tecnocanarios.dao.DAORol;
@@ -72,18 +75,32 @@ public class UIConstancia {
 		// definimos un layout
 
 		panel.setPreferredSize(new Dimension(800, 800));
-		frame.getContentPane().add(panel, BorderLayout.WEST);
+		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(null);
 		
-		JScrollPane scrollPanel = new JScrollPane();
+		DefaultTableModel modelo = new DefaultTableModel();
+
+		JTable table = new JTable(modelo);
+		table.setCellSelectionEnabled(false);
+		table.setRowSelectionAllowed(true);
+		table.setForeground(Color.GREEN);
+		table.setBackground(Color.BLACK);
+		table.setBounds(93, 215, 100, 100);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		
+		final String[] columnNames = {"Id","Detalle", "Evento", "Estudiante", "Estado"};
+		for (int column = 0; column < columnNames.length; column++) {
+			modelo.addColumn(columnNames[column]);
+		}
+
+		Object[] filas = new Object[columnNames.length];
+		
+		JScrollPane scrollPanel = new JScrollPane(table);
         scrollPanel.setBounds(10, 169, 780, 302);
         panel.add(scrollPanel);
         
-        JTextArea textAreaListado = new JTextArea();
-        scrollPanel.setViewportView(textAreaListado);
-        
         JLabel lblUsuario = new JLabel("Usuario:");
-        lblUsuario.setBounds(20, 507, 45, 13);
+        lblUsuario.setBounds(20, 507, 90, 13);
 		panel.add(lblUsuario);
 		lblUsuario.setVisible(usuario instanceof Analista);
 
@@ -93,13 +110,14 @@ public class UIConstancia {
 		txtUsuario.setColumns(10);
 		txtUsuario.setVisible(usuario instanceof Analista);
 		
-		JButton btnAgregarTutor = new JButton("Listar constancias");
-		btnAgregarTutor.setBounds(87, 481, 189, 19);
-		btnAgregarTutor.addActionListener(new ActionListener() {
+		JButton btnListarConstancias = new JButton("Listar constancias");
+		btnListarConstancias.setBounds(87, 481, 189, 19);
+		btnListarConstancias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Borro lo previamente cargado en el textfield
-        		textAreaListado.setText(null);
-        		
+				//Borro lo previamente cargado en la tabla
+				modelo.getDataVector().removeAllElements();
+				modelo.fireTableDataChanged();
+				
         		String user = null;
         		if (usuario instanceof Estudiante) {
         			user = usuario.getUsuario();
@@ -110,19 +128,112 @@ public class UIConstancia {
         		try {
         			List<Constancia> constancias = constanciaBeanRemote.listadoConstancias(user);
         			
-        			for(int i=0; i < constancias.size(); i++) {
-        				String texto = textAreaListado.getText();
-        				String textoConstancia = constancias.get(i).getDetalle() + " " + constancias.get(i).getEstudianteId().getUsuario();
-        				textAreaListado.setText(texto + textoConstancia + "\n");
+        			for(Constancia constancia : constancias) {
+        				
+        				filas[0] = constancia.getId();
+        				filas[1] = constancia.getDetalle();
+        				filas[2] = constancia.getEventoId();
+        				filas[3] = constancia.getEstudianteId().getUsuario();
+        				filas[4] = constancia.getEstado();
+        				
+        				modelo.addRow(filas);
         			}
+        			
+        			autoAjustarTabla(table);
         		} catch (ServiciosException se) {
-        			textAreaListado.setText(se.getMessage());
+        			System.out.println("Error al consultar constancia: " + se.getMessage());
         		}
         		
         		
 			}
 			
 		});
-		panel.add(btnAgregarTutor);
+		panel.add(btnListarConstancias);		
+		
+		JButton btnSolicitarConstancia = new JButton("Solicitar constancia");
+		btnSolicitarConstancia.setBounds(286, 481, 189, 19);
+		btnSolicitarConstancia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UIAltaConstancia altaConstancia = new UIAltaConstancia();
+				altaConstancia.inicializar(usuario);
+				altaConstancia.frame.setVisible(true);
+			}
+			
+		});
+		btnSolicitarConstancia.setVisible(usuario instanceof Estudiante);
+		panel.add(btnSolicitarConstancia);
+		
+		JButton btnModificarConstancia = new JButton("Ver constancia");
+		btnModificarConstancia.setBounds(485, 481, 189, 19);
+		btnModificarConstancia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				int row = table.getSelectedRow();
+				if (row >= 0) {
+					try {
+						Integer id = Integer.parseInt(modelo.getValueAt(row, 0).toString());
+						Constancia constancia = constanciaBeanRemote.buscarConstancia(id);
+						
+						UIModificarConstancia verConstancia = new UIModificarConstancia();
+						verConstancia.inicializar(usuario, constancia);
+						verConstancia.frame.setVisible(true);
+						
+					} catch (ServiciosException | NumberFormatException se) {
+	        			System.out.println("Error al consultar constancia: " + se.getMessage());
+	        		}
+					
+				}
+			}
+			
+		});
+		panel.add(btnModificarConstancia);
+		
+		JButton btnBorrarConstancia = new JButton("Borrar constancia");
+		btnBorrarConstancia.setBounds(390, 520, 189, 19);
+		btnBorrarConstancia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				int row = table.getSelectedRow();
+				if (row >= 0) {
+					try {
+						Integer id = Integer.parseInt(modelo.getValueAt(row, 0).toString());
+						Constancia constancia = constanciaBeanRemote.buscarConstancia(id);
+						
+						constanciaBeanRemote.borrarConstancia(constancia);
+						
+						//Borro lo previamente cargado en la tabla
+						modelo.getDataVector().removeAllElements();
+						modelo.fireTableDataChanged();
+						
+					} catch (ServiciosException | NumberFormatException se) {
+	        			System.out.println("Error al consultar constancia: " + se.getMessage());
+	        			JOptionPane.showMessageDialog(null, "Hubo un error al borrar la constancia.", "Error", JOptionPane.ERROR_MESSAGE);
+	        		}
+					
+					JOptionPane.showMessageDialog(null, "Se borró la constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+					
+				}
+			}
+			
+		});
+		btnBorrarConstancia.setVisible(usuario instanceof Estudiante);
+		panel.add(btnBorrarConstancia);
 	}
+	
+	private void autoAjustarTabla(JTable table) {
+	    final TableColumnModel columnModel = table.getColumnModel();
+	    for (int column = 0; column < table.getColumnCount(); column++) {
+	        int width = 15;
+	        for (int row = 0; row < table.getRowCount(); row++) {
+	            TableCellRenderer renderer = table.getCellRenderer(row, column);
+	            Component comp = table.prepareRenderer(renderer, row, column);
+	            width = Math.max(comp.getPreferredSize().width + 1 , width);
+	        }
+	        
+	        if (width > 300)
+	            width=300;
+	        columnModel.getColumn(column).setPreferredWidth(width);
+	    }
+	}
+	
 }

@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
+import ejbModule.tecnofenix.interfaces.Integer;
 import tecnofenix.entidades.Constancia;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ConstanciaBeanRemote;
@@ -29,22 +30,49 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
         // TODO Auto-generated constructor stub
     }
 
+    @Override
+    public Constancia buscarConstancia(Integer idConstancia) throws ServiciosException {
+    	try {
+			return em.find(Constancia.class, idConstancia);
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrió un error al buscar constancia: " + pe.getMessage());
+		}
+    }
+    
 	@Override
 	public Constancia crearConstancia(Constancia constancia) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			constancia = em.merge(constancia);
+			em.flush();
+			return constancia;
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrió un error al crear constancia: " + pe.getMessage());
+		}
 	}
 
 	@Override
 	public Constancia modificarConstancia(Constancia constancia) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			if (constancia.getId() != null) {
+				constancia = em.merge(constancia);
+				em.flush();
+				return constancia;
+			} else {
+				throw new ServiciosException("Se quiere modificar una constancia no existente.");
+			}
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrió un error al modficar constancia: " + pe.getMessage());
+		}
 	}
 
 	@Override
-	public Constancia borrarConstancia(Constancia constancia) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+	public void borrarConstancia(Constancia constancia) throws ServiciosException {
+		try {
+			em.remove(constancia);
+			em.flush();
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrió un error al borrar constancia: " + pe.getMessage());
+		}
 	}
 
 	@Override

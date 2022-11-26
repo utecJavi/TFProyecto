@@ -68,8 +68,11 @@ public class Constancia implements Serializable {
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     @ManyToOne
     private Estudiante estudianteId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoConstancia estado;
 
-    public Constancia() {
+	public Constancia() {
     }
 
     public Constancia(Integer id) {
@@ -80,6 +83,15 @@ public class Constancia implements Serializable {
         this.id = id;
         this.detalle = detalle;
         this.fecha = fecha;
+    }
+    
+    public Constancia(Integer id, String detalle, Date fecha, Evento eventoId, Estudiante estudianteId, EstadoConstancia estado) {
+        this.id = id;
+        this.detalle = detalle;
+        this.fecha = fecha;
+        this.eventoId = eventoId;
+        this.estudianteId = estudianteId;
+        this.estado = estado;
     }
 
     public Integer getId() {
@@ -130,6 +142,14 @@ public class Constancia implements Serializable {
     public void setEstudianteId(Estudiante estudianteId) {
         this.estudianteId = estudianteId;
     }
+    
+    public EstadoConstancia getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoConstancia estado) {
+		this.estado = estado;
+	}
 
     @Override
     public int hashCode() {
@@ -154,6 +174,12 @@ public class Constancia implements Serializable {
     @Override
     public String toString() {
         return "tecnofenix.entidades.Constancia[ id=" + id + " ]";
+    }
+    
+    public enum EstadoConstancia {
+    	INGRESADO,
+    	EN_PROCESO,
+    	FINALIZADO
     }
     
 }
