@@ -9,13 +9,20 @@ package tecnofenix.entidades;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -41,30 +48,60 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Evento.findByFin", query = "SELECT e FROM Evento e WHERE e.fin = :fin")})
 public class Evento implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="evento_seq")
     @SequenceGenerator(name="evento_seq", sequenceName="evento_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
+    @Column(name = "titulo")
+    @Basic(optional = false)
+    @NotNull
+    private String titulo;
+    
+    @Enumerated
+    @NotNull
+    private TipoEvento tipo;
+    
+    @Enumerated
+    @NotNull
+    private ModalidadEvento modalidad;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "inicio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date inicio;
+    
     @Column(name = "fin")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fin;
+    
+    @Column(nullable = true)
+    @Basic(optional = true)
+    private String localizacion;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_itr", nullable = false)
+    private Itr itr;
+    
     @OneToMany(mappedBy = "eventoId")
     private Collection<Justificacion> justificacionCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
     private Collection<ConvocatoriaAsistenciaEventoEstudiante> convocatoriaAsistenciaEventoEstudianteCollection;
+    
     @OneToMany(mappedBy = "eventoId")
     private Collection<Reclamo> reclamoCollection;
+    
     @OneToMany(mappedBy = "eventoId")
     private Collection<Constancia> constanciaCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
     private Collection<TutorResponsableEvento> tutorResponsableEventoCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
     private Collection<GestionEventoAnalista> gestionEventoAnalistaCollection;
 
@@ -76,6 +113,11 @@ public class Evento implements Serializable {
     }
 
     public Evento(Integer id, Date inicio) {
+        this.id = id;
+        this.inicio = inicio;
+    }
+    
+    public Evento(Integer id, Date inicio, String titulo, TipoEvento tipo, ModalidadEvento modalidad, String localizacion, Itr itr) {
         this.id = id;
         this.inicio = inicio;
     }

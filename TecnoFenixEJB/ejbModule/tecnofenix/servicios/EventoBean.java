@@ -31,6 +31,8 @@ public class EventoBean implements EventoBeanRemote {
 
 	@Override
 	public Evento crearEvento(Evento evento) throws ServiciosException {
+		em.persist(evento);
+		em.flush();
 		// TODO Auto-generated method stub
 		return null;
 	}

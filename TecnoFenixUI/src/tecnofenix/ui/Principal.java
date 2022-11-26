@@ -137,18 +137,25 @@ public class Principal {
 		});
 		
 		
-		JMenu evento= new JMenu("Eventos");
-		JMenuItem evenAlta= new JMenuItem("Alta Eventos");
-		evenAlta.addActionListener(new ActionListener() {
+		JMenu evento = new JMenu("Eventos");
+		JMenuItem evenAlta = new JMenuItem("Alta Eventos");
+		JMenuItem evenMod = new JMenuItem("Modificacion Eventos");
+		JMenuItem evenDelete = new JMenuItem("Borrar Eventos");
+		JMenuItem evenList = new JMenuItem("Listar Eventos");
+		evenList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UIEvento uiEvento = new UIEvento();
 				uiEvento.inicializar();
 				uiEvento.frame.setVisible(true);
 			}
 		});
-		JMenuItem evenMod= new JMenuItem("Modificacion Eventos");
-		JMenuItem evenDelete= new JMenuItem("Borrar Eventos");
-
+		evenAlta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UIEventoNuevo uiEventoNuevo = new UIEventoNuevo();
+				uiEventoNuevo.inicializar();
+				uiEventoNuevo.frame.setVisible(true);
+			}
+		});
 		
 		
 		
@@ -193,6 +200,7 @@ public class Principal {
 		evento.add(evenAlta);
 		evento.add(evenMod);
 		evento.add(evenDelete);
+		evento.add(evenList);
 		menuBar.add(evento);
 		
 		

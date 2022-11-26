@@ -299,6 +299,26 @@ public class EJBUsuarioRemoto {
 		}
 	}
 	
+	public List<Evento> obtenerEventos() {
+		try {
+			return eventoBeanRemote.obtenerEventos();
+		} catch (Exception e) {
+			System.out.println("Error en obtener eventos: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return new ArrayList<Evento>();
+	}
+	
+	public void crearEvento(Evento evento) {
+		try {
+			eventoBeanRemote.crearEvento(evento);
+		} catch (ServiciosException e) {
+			System.out.println("Error al crear evento: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
 	
 
 	/*
