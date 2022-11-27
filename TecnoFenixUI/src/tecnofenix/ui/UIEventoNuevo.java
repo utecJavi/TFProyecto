@@ -114,7 +114,7 @@ public class UIEventoNuevo {
 		fechaFinLabel.setBounds(33, 208, 96, 13);
 		panel.add(fechaFinLabel);
 		
-		JComboBox itrComboBox = new JComboBox();
+		JComboBox<?> itrComboBox = new JComboBox();
 		itrComboBox.setBounds(167, 45, 96, 21);
 		panel.add(itrComboBox);
 		
