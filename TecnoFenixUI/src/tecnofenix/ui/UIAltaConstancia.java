@@ -71,7 +71,7 @@ public class UIAltaConstancia {
 		lblEventos.setBounds(23, 200, 86, 13);
 		panel.add(lblEventos);
 		
-		JComboBox comboEventos = new JComboBox<Evento>();
+		JComboBox<Evento> comboEventos = new JComboBox<Evento>();
 		comboEventos.setBounds(23, 213, 360, 21);
 		List<Evento> eventos = eventoBeanRemote.obtenerEventos();
 		for(Evento eventoItem: eventos){
