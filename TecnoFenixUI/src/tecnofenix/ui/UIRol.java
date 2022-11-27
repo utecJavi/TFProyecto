@@ -15,34 +15,39 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+
+import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
+import tecnofenix.entidades.Rol;
+import tecnofenix.entidades.Usuario;
 
 
 
 
 
 public class UIRol {
-/*
+
 	public JFrame frame;
 	private JTextField txtId;
 	private JTextField txtNombre;
 	private JTextField txtDesc;
-	private DAORol daoRol;
-	private List<Rol> allRol;
-	MensajePopUp msj = new MensajePopUp();
+	private List<Rol> listRoles;
+	EJBUsuarioRemoto usuarioRemote;
 	JTable table;
 	DefaultTableModel modelo;
 	Object[] fila;
 
 	/**
 	 * @wbp.parser.entryPoint
+	 * 
 	 */
-	/*
-	public void inicializar() {
+	public void inicializar(Usuario user) {
 
-		this.daoRol = new DAORol();
+		usuarioRemote = new EJBUsuarioRemoto();
 
-		frame = new JFrame("Nombre de la funcionalidad de la UI");
+		frame = new JFrame("Administracion de Roles");
 
 		JPanel panel = new JPanel();
 		// definimos un layout
@@ -108,13 +113,13 @@ public class UIRol {
 		fila = new Object[columnNames.length];
 		// Se rellena cada posición del array con una de las columnas de la tabla en
 		// base de datos.
-		allRol = daoRol.getAll();
+		listRoles = usuarioRemote.listarRoles();
 
-		for (Rol fun : allRol) {
+		for (Rol rol : listRoles) {
 
-			fila[0] = fun.getId();
-			fila[1] = fun.getNombre();
-			fila[2] = fun.getDescripcion();
+			fila[0] = rol.getId();
+			fila[1] = rol.getNombre();
+			fila[2] = rol.getDescripcion();
 			modelo.addRow(fila);
 		}
 
@@ -147,20 +152,35 @@ public class UIRol {
 				int row = table.getSelectedRow();
 
 				if (row >= 0) {
-//					System.out.println(modelo.getValueAt(row, column));
+
 					String mensaje="Id "+modelo.getValueAt(row, 0).toString() +" Nombre "+modelo.getValueAt(row, 1).toString() +" Desc "+modelo.getValueAt(row, 2).toString();
 
 					if (borrarRow(mensaje)) {
-						daoRol.delete(allRol.get(row));
+						usuarioRemote.borrarRol(listRoles.get(row));
 						modelo.removeRow(row);
 						
 					}
+				}else {
+					JOptionPane.showMessageDialog(null, "Primero debe seleccionar un registro", "Seleccione con click en la tabla",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
 		btnBorrar.setBounds(40, 351, 85, 21);
 		panel.add(btnBorrar);
-
+		
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			@Override
+	        public void valueChanged(ListSelectionEvent event) {
+				if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1) {
+				System.out.println("Buscando rol seleccionado... ");
+				txtId.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+				txtNombre.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+				txtDesc.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+				}
+			}
+	    });
+		
 		frame.pack();
 		frame.setVisible(true);
 
@@ -173,51 +193,50 @@ public class UIRol {
 
 	}
 
-	public void validarDatos() {
+	public boolean validarDatos() {
 		System.out.println("Validando datos UIRol");
-		if (txtId.getText().equals("")) {
-			msj.mostrarMensaje(Mensajes.ALTA_FUNCIONALIDAD_ID);
-			txtId.setText(String.valueOf(daoRol.maxId()+1));
-		} else {
-			if (validarId(Integer.valueOf(txtId.getText()))) {
 
-				if (txtNombre.getText().equals("")) {
-					msj.mostrarMensaje(Mensajes.ALTA_FUNCIONALIDAD_NOMBRE);
-				} else {
-					if (txtDesc.getText().equals("")) {
-						msj.mostrarMensaje(Mensajes.ALTA_FUNCIONALIDAD_DESC);
-					} else {
-						addRol();
-					}
-				}
-			}
+		if (txtNombre.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "El nombre del rol no puede ser vacío", "Datos invalidos",
+					JOptionPane.INFORMATION_MESSAGE);
+			return false;
 		}
+		if (txtDesc.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "La descripcion del rol no puede ser vacío", "Datos invalidos",
+					JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} 
+			
+		
+
+		return true;
 	}
 		public void addRol() {
 
-			Rol funTemp = new Rol(Integer.valueOf(txtId.getText()), txtNombre.getText(),txtDesc.getText());
-			if (daoRol.insert(funTemp) != null) {
+				Rol rolTemp = new Rol();
+				if(txtId.getText()!= null && txtId.getText()!="" ) {
+					rolTemp.setId(Long.valueOf(txtId.getText()));
+				}
+				rolTemp.setNombre(txtNombre.getText());
+				rolTemp.setDescripcion(txtDesc.getText());
+				rolTemp= usuarioRemote.crearRol(rolTemp);
+				if (rolTemp != null && rolTemp.getId() != null) {
 
-				allRol.add(funTemp);
-				fila[0] = funTemp.getId();
-				fila[1] = funTemp.getNombre();
-				fila[2] = funTemp.getDescripcion();
-				modelo.addRow(fila);
-				
-				msj.mostrarMensaje(Mensajes.ALTA_FUNCIONALIDAD_EXITO);
-				
-			} else {
-				msj.mostrarMensaje(Mensajes.ALTA_FUNCIONALIDAD_ERRORINSERTANDO);
+					listRoles.add(rolTemp);
+					fila[0] = rolTemp.getId();
+					fila[1] = rolTemp.getNombre();
+					fila[2] = rolTemp.getDescripcion();
+					modelo.addRow(fila);
+					
+					JOptionPane.showMessageDialog(null, "La funcionalidad fue creada/editada con exito", "Datos invalidos",
+							JOptionPane.INFORMATION_MESSAGE);
+					
+				} else {
+					JOptionPane.showMessageDialog(null, "Hubo un erro ingresando la funcionalidad", "Datos invalidos",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
-		}
 
-		public boolean validarId(Integer id) {
-			if (daoRol.maxId()+1 == id) {
-				return true;
-			}
-			msj.mostrarMensaje(Mensajes.ALTA_FUNCIONALIDAD_IDREPETIDO);
-			return false;
-		}
 
 		
 		public boolean borrarRow(String mensaje) {
@@ -233,13 +252,6 @@ public class UIRol {
 		
 		
 		
+	
 		
-		public DAORol getDaoRol() {
-			return daoRol;
-		}
-
-		public void setDaoRol(DAORol daoRol) {
-			this.daoRol = daoRol;
-		}
-		*/
 }

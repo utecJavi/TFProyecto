@@ -50,7 +50,7 @@ public class UIFuncionalidad {
 		funcionalidad = new Funcionalidad();
 		usuarioRemote = new EJBUsuarioRemoto();
 		
-		frame = new JFrame("Nombre de la funcionalidad de la UI");
+		frame = new JFrame("Administracion de Funcionalidades");
 
 		JPanel panel = new JPanel();
 		// definimos un layout
@@ -94,10 +94,7 @@ public class UIFuncionalidad {
 		table = new JTable(modelo);
 		table.setCellSelectionEnabled(false);
 		table.setRowSelectionAllowed(true);
-//		table.setDefaultEditor(Object.class, null);
-//		table.setCellSelectionEnabled(true);
 		table.setForeground(Color.GREEN);
-//		table.setColumnSelectionAllowed(true);
 		table.setBackground(Color.BLACK);
 		// crea un array que contiene los nombre de las columnas
 		final String[] columnNames = { "Id", "Nombre", "Descripcion" };

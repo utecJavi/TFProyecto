@@ -8,10 +8,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import tecnofenix.entidades.*;
-import tecnofenix.entidades.Analista;
-import tecnofenix.entidades.Estudiante;
-import tecnofenix.entidades.Tutor;
-import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.*;
@@ -345,7 +341,28 @@ public class EJBUsuarioRemoto {
 	/*
 	 * METODOS ROL REMOTOS INICIO
 	 */
+	public Rol crearRol(Rol rol) {
+
+		try {
+			rol = rolBeanRemote.crearRol(rol);
+		} catch (ServiciosException e) {
+
+			e.printStackTrace();
+		}
+		return rol;
+	}
 	
+	public Rol modificarRol(Rol rol) {
+
+		try {
+			rol = rolBeanRemote.modificarRol(rol);
+		} catch (ServiciosException e) {
+
+			e.printStackTrace();
+		}
+		return rol;
+	}
+
 	public List<Rol> listarRoles(){
 		List<Rol> listado = null;
 		try {
@@ -356,6 +373,18 @@ public class EJBUsuarioRemoto {
 		}
 		return listado;
 	}
+	public Rol borrarRol(Rol rol) {
+
+		try {
+			rol = rolBeanRemote.borrarRol(rol);
+		} catch (ServiciosException e) {
+
+			e.printStackTrace();
+		}
+		return rol;
+	}
+	
+
 	
 	/*
 	 * METODOS ROL REMOTOS FIN
@@ -397,6 +426,8 @@ public class EJBUsuarioRemoto {
 		}
 		return funcionalidad;
 	}
+
+
 	
 	/*
 	 * METODOS FUNCIONALIDAD REMOTOS FIN

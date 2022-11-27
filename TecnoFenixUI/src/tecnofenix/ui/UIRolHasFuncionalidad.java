@@ -14,28 +14,32 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
+import tecnofenix.entidades.Funcionalidad;
+import tecnofenix.entidades.Rol;
+import tecnofenix.entidades.Usuario;
+
 
 public class UIRolHasFuncionalidad {
-	/*
+	
 	public JFrame frame;
-	private JComboBox<String> comboBoxRol;
-	MensajePopUp msj = new MensajePopUp();
+	private JComboBox<Rol> comboBoxRol;
 	private JLabel lblRol;
 	private JLabel lblSeleccioneFuncionalidad;
-	private JComboBox<String> comboBoxFuncionalidad;
+	private JComboBox<Funcionalidad> comboBoxFuncionalidad;
 	private JButton btnAgregar;
 	private java.awt.List list;
-private RolFuncion rolfun;
+	EJBUsuarioRemoto usuarioRemote;
 	private String[] listaTmp;
 	private JButton btnAgregar_1;
 	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	/*
-	public void inicializar() {
-
-		frame = new JFrame("Funcionalidades de Roles");
+	
+	public void inicializar(Usuario user) {
+		usuarioRemote = new EJBUsuarioRemoto();
+		frame = new JFrame("Rol tiene funcionalidades");
 		
 		JPanel panel = new JPanel();
 		// definimos un layout
@@ -47,7 +51,7 @@ private RolFuncion rolfun;
 		/*LISTTAAA
 		 * 
 		 * 
-		 * *//*
+		 * */
 		list = new java.awt.List();
 //		list.add("Hola");
 //		list.removeAll();
@@ -64,21 +68,23 @@ private RolFuncion rolfun;
 		
 //		DAORol daoRol= new DAORol();
 		List<Rol> rolCollection= new ArrayList<Rol>();
-		rolCollection=DAORol.getAll();
+		rolCollection=usuarioRemote.listarRoles();
 		
-		rolfun=DAORolFuncion.getAllFunDeRol(rolCollection.get(0).getId());
-		if (rolfun != null && rolfun.getFunCollection()!= null) {
-			for (Funcionalidad fun : rolfun.getFunCollection()) {
+		List<Funcionalidad> listFuncionalidades =  new ArrayList<Funcionalidad>();;
+		listFuncionalidades = usuarioRemote.listarFuncionalidades();
+//		rolfun=DAORolFuncion.getAllFunDeRol(rolCollection.get(0).getId());
+//		if (rolfun != null && rolfun.getFunCollection()!= null) {
+			for (Funcionalidad fun : listFuncionalidades) {
 				String nom = fun.getNombre();
 				list.add(nom);
 			}
-		}
+//		}
 		
-		comboBoxRol = new JComboBox<String>();
+		comboBoxRol = new JComboBox<Rol>();
 		
 		for(Rol rol:rolCollection) {
-			String nom =rol.getNombre();
-			comboBoxRol.addItem(nom);
+//			String nom =rol.getNombre();
+			comboBoxRol.addItem(rol);
 		}
 		
 		// Accion a realizar cuando el JComboBox cambia de item seleccionado.
@@ -86,6 +92,7 @@ private RolFuncion rolfun;
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						System.out.println(comboBoxRol.getSelectedItem().toString());
+						Rol rol = (Rol)comboBoxRol.getSelectedItem();
 						list.removeAll();
 //						List<String> tmp;
 //						tmp=DAORolFuncion.getNomFunByRolId(DAORol.getByName(comboBoxRol.getSelectedItem().toString()).getId());
@@ -93,9 +100,10 @@ private RolFuncion rolfun;
 //							
 //							list.add(fun);
 //						}
-						rolfun=DAORolFuncion.getAllFunDeRol(DAORol.getByName(comboBoxRol.getSelectedItem().toString()).getId());
-					if (rolfun != null && rolfun.getFunCollection()!= null) {
-						for (Funcionalidad fun : rolfun.getFunCollection()) {
+//						rolfun=DAORolFuncion.getAllFunDeRol(DAORol.getByName(comboBoxRol.getSelectedItem().toString()).getId());
+					
+						if (rol != null && rol.getFuncionalidades()!= null) {
+						for (Funcionalidad fun : rol.getFuncionalidades()) {
 							String nom = fun.getNombre();
 							list.add(nom);
 						}
@@ -112,15 +120,12 @@ private RolFuncion rolfun;
 		lblSeleccioneFuncionalidad.setBounds(31, 107, 152, 13);
 		panel.add(lblSeleccioneFuncionalidad);
 		
-		DAOFuncionalidad daoFun= new DAOFuncionalidad();
-		List<Funcionalidad> funCollection= new ArrayList<Funcionalidad>();
-		funCollection=daoFun.getAll();
+				
+		comboBoxFuncionalidad = new JComboBox<Funcionalidad>();
 		
-		comboBoxFuncionalidad = new JComboBox<String>();
-		
-		for(Funcionalidad f:funCollection) {
+		for(Funcionalidad f:listFuncionalidades) {
 			String nom =f.getNombre();
-			comboBoxFuncionalidad.addItem(nom);
+			comboBoxFuncionalidad.addItem(f);
 		}
 		
 		// Accion a realizar cuando el JComboBox cambia de item seleccionado.
@@ -147,8 +152,10 @@ private RolFuncion rolfun;
 				}
 				if(flag) {
 					list.add(comboBoxFuncionalidad.getSelectedItem().toString());
-					
-					DAORolFuncion.insert(comboBoxRol.getSelectedItem().toString(),comboBoxFuncionalidad.getSelectedItem().toString());
+					Rol rol = (Rol) comboBoxRol.getSelectedItem();
+					rol.getFuncionalidades().add((Funcionalidad)comboBoxFuncionalidad.getSelectedItem());
+					rol=usuarioRemote.modificarRol(rol);
+//					DAORolFuncion.insert(comboBoxRol.getSelectedItem().toString(),comboBoxFuncionalidad.getSelectedItem().toString());
 				}else {
 					JOptionPane.showMessageDialog(null, "La funcionalidad ya se encuentra presente en el rol",
 							"Ya existe", JOptionPane.INFORMATION_MESSAGE);
@@ -165,8 +172,21 @@ private RolFuncion rolfun;
 				
 				list.getSelectedItem();
 				if(borrarRow(list.getSelectedItem())) {
-					Integer id =DAORolFuncion.getIDByRolFuncionalidad(comboBoxRol.getSelectedItem().toString(), list.getSelectedItem());
-					DAORolFuncion.delete(id);
+					Rol rol = (Rol) comboBoxRol.getSelectedItem();
+					Funcionalidad faeliminar=null;
+					for(Funcionalidad funT : rol.getFuncionalidades()) {
+						if(funT.getNombre().equals(list.getSelectedItem())) {
+							faeliminar=funT;	
+						}
+						
+					}
+					if(faeliminar!=null) {
+					rol.getFuncionalidades().remove(faeliminar);
+					}
+					rol = usuarioRemote.modificarRol(rol);
+//					list.getSelectedItem()
+//					Integer id =DAORolFuncion.getIDByRolFuncionalidad(comboBoxRol.getSelectedItem().toString(), list.getSelectedItem());
+//					DAORolFuncion.delete(id);
 					list.remove(list.getSelectedItem());
 				}
 				
@@ -196,5 +216,5 @@ private RolFuncion rolfun;
 		}
 		return false;
 	}
-	*/
+	
 }

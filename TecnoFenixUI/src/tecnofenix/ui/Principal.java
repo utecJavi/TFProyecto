@@ -170,8 +170,24 @@ public class Principal {
 				uiFuncionalidad.frame.setVisible(true);
 			}
 		});
-		
-		
+		JMenuItem rolAdministrar= new JMenuItem("Administrar Rol");
+		rolAdministrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				UIRol uirol = new UIRol();
+				uirol.inicializar(user);
+				uirol.frame.setVisible(true);
+			}
+		});
+		JMenuItem rolAsignarFunARol= new JMenuItem("Asignar funcionalidades a Rol");
+		rolAsignarFunARol.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				UIRolHasFuncionalidad uiRolHasFun = new UIRolHasFuncionalidad();
+				uiRolHasFun.inicializar(user);
+				uiRolHasFun.frame.setVisible(true);
+			}
+		});
 		usuario.add(adminDocentes);
 		usuario.add(adminAnalista);
 		usuario.add(adminEstudiantes);
@@ -199,8 +215,16 @@ public class Principal {
 		
 		if (user instanceof Analista) {
 			funcionalidad.add(funAdministracion);
+			funcionalidad.add(rolAdministrar);
+			funcionalidad.add(rolAsignarFunARol);
+			
 			menuBar.add(funcionalidad);
+			
+			
 		}
+		
+		
+		
 		escolaridad.add(escoAlta);
 		escolaridad.add(escoMod);
 		escolaridad.add(escoDelete);
