@@ -190,11 +190,12 @@ public class Principal {
 		menuBar.add(usuario);
 		
 		
-		 
-		constancia.add(constAlta);
-		constancia.add(constModa);
-		constancia.add(constDeletea);
+//		 
+//		constancia.add(constAlta);
+//		constancia.add(constModa);
+//		constancia.add(constDeletea);
 		constancia.add(constListado);
+		
 		menuBar.add(constancia);
 		
 		

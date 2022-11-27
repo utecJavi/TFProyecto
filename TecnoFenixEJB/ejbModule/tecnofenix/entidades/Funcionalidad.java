@@ -78,10 +78,6 @@ public class Funcionalidad implements Serializable {
 	}
     @Override
     public String toString() {
-        return "Funcionalidad{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                '}';
+        return this.nombre;
     }
 }
