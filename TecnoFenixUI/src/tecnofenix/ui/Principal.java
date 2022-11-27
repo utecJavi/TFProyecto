@@ -160,7 +160,16 @@ public class Principal {
 		JMenuItem escoMod= new JMenuItem("Modificacion Escolaridad");
 		JMenuItem escoDelete= new JMenuItem("Borrar Escolaridad");
 		
-		
+		JMenu funcionalidad= new JMenu("Funcionalidad");
+		JMenuItem funAdministracion= new JMenuItem("Administrar Funcionalidades");
+		funAdministracion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				UIFuncionalidad uiFuncionalidad = new UIFuncionalidad();
+				uiFuncionalidad.inicializar(user);
+				uiFuncionalidad.frame.setVisible(true);
+			}
+		});
 		
 		
 		usuario.add(adminDocentes);
@@ -188,11 +197,16 @@ public class Principal {
 		itr.add(itrAdministracion);
 		menuBar.add(itr);
 		
-		
+		if (user instanceof Analista) {
+			funcionalidad.add(funAdministracion);
+			menuBar.add(funcionalidad);
+		}
 		escolaridad.add(escoAlta);
 		escolaridad.add(escoMod);
 		escolaridad.add(escoDelete);
 		menuBar.add(escolaridad);
+		
+		
 
 		
 		frame.setJMenuBar(menuBar);
