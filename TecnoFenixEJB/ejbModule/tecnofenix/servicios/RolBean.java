@@ -40,7 +40,10 @@ public class RolBean implements RolBeanRemote{
 
 	@Override
 	public Rol borrarRol(Rol rol) throws ServiciosException {
-		// TODO Auto-generated method stub
+		rol.setActivo(false);
+		rol = em.merge(rol);
+		em.flush();
+		
 		return null;
 	}
 

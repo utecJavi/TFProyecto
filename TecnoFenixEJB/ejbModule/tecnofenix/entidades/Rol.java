@@ -33,6 +33,10 @@ public class Rol implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
+    @Basic(optional = false)
+    @Column(name = "activo")
+    private Boolean activo;
+    
     @ManyToMany()
     @JoinTable(name = "rol_funcion",
             joinColumns = @JoinColumn(name = "id_rol"),
@@ -51,7 +55,9 @@ public class Rol implements Serializable {
     public Long getId() {
         return id;
     }
-
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getNombre() {
         return nombre;
     }
@@ -68,7 +74,15 @@ public class Rol implements Serializable {
         this.descripcion = descripcion;
     }
 
-   
+
+    public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+	
     public Collection<Funcionalidad> getFuncionalidades() {
 		return funcionalidades;
 	}
