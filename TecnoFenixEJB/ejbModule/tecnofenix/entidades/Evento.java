@@ -15,6 +15,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,11 +62,11 @@ public class Evento implements Serializable {
     @NotNull
     private String titulo;
     
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @NotNull
     private TipoEvento tipo;
     
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @NotNull
     private ModalidadEvento modalidad;
     
@@ -82,6 +83,9 @@ public class Evento implements Serializable {
     @Column(nullable = true)
     @Basic(optional = true)
     private String localizacion;
+    
+    @Column(name = "baja_logica", nullable = false)
+    private Boolean bajaLogica;
     
     @ManyToOne
     @JoinColumn(name = "id_itr", nullable = false)
@@ -108,7 +112,55 @@ public class Evento implements Serializable {
     public Evento() {
     }
 
-    public Evento(Integer id) {
+    public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public TipoEvento getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoEvento tipo) {
+		this.tipo = tipo;
+	}
+
+	public ModalidadEvento getModalidad() {
+		return modalidad;
+	}
+
+	public void setModalidad(ModalidadEvento modalidad) {
+		this.modalidad = modalidad;
+	}
+
+	public String getLocalizacion() {
+		return localizacion;
+	}
+
+	public void setLocalizacion(String localizacion) {
+		this.localizacion = localizacion;
+	}
+
+	public Boolean getBajaLogica() {
+		return bajaLogica;
+	}
+
+	public void setBajaLogica(Boolean bajaLogica) {
+		this.bajaLogica = bajaLogica;
+	}
+
+	public Itr getItr() {
+		return itr;
+	}
+
+	public void setItr(Itr itr) {
+		this.itr = itr;
+	}
+
+	public Evento(Integer id) {
         this.id = id;
     }
 
