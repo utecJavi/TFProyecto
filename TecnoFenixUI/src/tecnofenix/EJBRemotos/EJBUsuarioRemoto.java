@@ -8,10 +8,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import tecnofenix.entidades.*;
-import tecnofenix.entidades.Analista;
-import tecnofenix.entidades.Estudiante;
-import tecnofenix.entidades.Tutor;
-import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.*;
@@ -37,6 +33,7 @@ public class EJBUsuarioRemoto {
 	private static String RUTA_RECLAMO_EJB = "ejb:/TecnoFenixEJB/ReclamoBean!tecnofenix.interfaces.ReclamoBeanRemote";
 	private static String RUTA_TUTOR_RESPONSABLE_EVENTO_EJB = "ejb:/TecnoFenixEJB/TutorResponsableEventoBean!tecnofenix.interfaces.TutorResponsableEventoBeanRemote";
 	private static String RUTA_ROL_EJB = "ejb:/TecnoFenixEJB/RolBean!tecnofenix.interfaces.RolBeanRemote";
+	private static String RUTA_FUNCIONALIDAD_EJB = "ejb:/TecnoFenixEJB/FuncionalidadBean!tecnofenix.interfaces.FuncionalidadBeanRemote";
 
 	
 	@EJB
@@ -73,7 +70,9 @@ public class EJBUsuarioRemoto {
 	TutorResponsableEventoBeanRemote tutorResponsableEventoBeanRemote;
 	@EJB
 	RolBeanRemote rolBeanRemote;
-
+	@EJB
+	FuncionalidadBeanRemote funcionalidadBeanRemote;
+	
 	public EJBUsuarioRemoto() {
 		try {
 			InitialContext ctx = new InitialContext();
@@ -95,6 +94,7 @@ public class EJBUsuarioRemoto {
 			reclamoBeanRemote = (ReclamoBeanRemote) ctx.lookup(RUTA_RECLAMO_EJB);
 			tutorResponsableEventoBeanRemote = (TutorResponsableEventoBeanRemote) ctx.lookup(RUTA_TUTOR_RESPONSABLE_EVENTO_EJB);
 			rolBeanRemote = (RolBeanRemote) ctx.lookup(RUTA_ROL_EJB);
+			funcionalidadBeanRemote = (FuncionalidadBeanRemote) ctx.lookup(RUTA_FUNCIONALIDAD_EJB);
 			
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
@@ -336,6 +336,33 @@ public class EJBUsuarioRemoto {
 	 * METODOS ANALISTA REMOTOS FIN
 	 */
 	
+	
+
+	/*
+	 * METODOS ROL REMOTOS INICIO
+	 */
+	public Rol crearRol(Rol rol) {
+
+		try {
+			rol = rolBeanRemote.crearRol(rol);
+		} catch (ServiciosException e) {
+
+			e.printStackTrace();
+		}
+		return rol;
+	}
+	
+	public Rol modificarRol(Rol rol) {
+
+		try {
+			rol = rolBeanRemote.modificarRol(rol);
+		} catch (ServiciosException e) {
+
+			e.printStackTrace();
+		}
+		return rol;
+	}
+
 	public List<Rol> listarRoles(){
 		List<Rol> listado = null;
 		try {
@@ -346,14 +373,63 @@ public class EJBUsuarioRemoto {
 		}
 		return listado;
 	}
+	public Rol borrarRol(Rol rol) {
 
-	/*
-	 * METODOS ROL REMOTOS INICIO
-	 */
+		try {
+			rol = rolBeanRemote.borrarRol(rol);
+		} catch (ServiciosException e) {
+
+			e.printStackTrace();
+		}
+		return rol;
+	}
 	
-	
+
 	
 	/*
 	 * METODOS ROL REMOTOS FIN
+	 */
+	
+	/*
+	 * METODOS FUNCIONALIDAD REMOTOS INICIO
+	 */
+	
+	public List<Funcionalidad> listarFuncionalidades(){
+		List<Funcionalidad> listado = null;
+		try {
+			listado = funcionalidadBeanRemote.listarFuncionalidad();
+		} catch (ServiciosException e) {
+			
+			e.printStackTrace();
+		}
+		return listado;
+	}
+	
+	public Funcionalidad borrarFuncionalidad(Funcionalidad funcionalidad){
+		
+		try {
+			funcionalidad = funcionalidadBeanRemote.borrarFuncionalidad(funcionalidad);
+		} catch (ServiciosException e) {
+			
+			e.printStackTrace();
+		}
+		return funcionalidad;
+	}
+	
+	public Funcionalidad crearFuncionalidad(Funcionalidad funcionalidad){
+		
+		try {
+			funcionalidad = funcionalidadBeanRemote.crearFuncionalidad(funcionalidad);
+		} catch (ServiciosException e) {
+			
+			e.printStackTrace();
+		}
+		return funcionalidad;
+	}
+
+
+	
+	/*
+	 * METODOS FUNCIONALIDAD REMOTOS FIN
 	 */
 }

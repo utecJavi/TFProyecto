@@ -5,6 +5,11 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "funcionalidades")
+@NamedQueries({
+    @NamedQuery(name = "Funcionalidad.findAll", query = "SELECT i FROM Funcionalidad i"),
+    @NamedQuery(name = "Funcionalidad.findById", query = "SELECT i FROM Funcionalidad i WHERE i.id = :id"),
+    @NamedQuery(name = "Funcionalidad.findByDescripcion", query = "SELECT i FROM Funcionalidad i WHERE i.descripcion = :descripcion"),
+    @NamedQuery(name = "Funcionalidad.findByNombre", query = "SELECT i FROM Funcionalidad i WHERE i.nombre = :nombre")})
 public class Funcionalidad implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -24,6 +29,10 @@ public class Funcionalidad implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
+    @Basic(optional = false)
+    @Column(name = "activo")
+    private Boolean activo;
+    
     public Funcionalidad() {}
 
     public Funcionalidad(Long id, String nombre, String descripcion) {
@@ -40,7 +49,9 @@ public class Funcionalidad implements Serializable {
     public Long getId() {
         return id;
     }
-
+    public void setId(Long id) {
+        this.id=id;
+    }
     public String getNombre() {
         return nombre;
     }
@@ -57,6 +68,14 @@ public class Funcionalidad implements Serializable {
         this.descripcion = descripcion;
     }
 
+    
+    public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
     @Override
     public String toString() {
         return "Funcionalidad{" +
