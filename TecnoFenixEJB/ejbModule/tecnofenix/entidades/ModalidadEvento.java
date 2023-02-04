@@ -19,4 +19,18 @@ public enum ModalidadEvento {
 		this.modalidad = modalidad;
 		
 	}
+	
+	public static ModalidadEvento fromString(String text) {
+		for (ModalidadEvento me :ModalidadEvento.values()) {
+			if (me.modalidad.equalsIgnoreCase(text)) {
+				return me;
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public String toString() {
+		return this.modalidad;
+	}
 }

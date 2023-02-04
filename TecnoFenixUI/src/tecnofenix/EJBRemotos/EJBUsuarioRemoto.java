@@ -330,6 +330,16 @@ public class EJBUsuarioRemoto {
 		}
 	}
 	
+	public Evento obtenerEvento(Integer id) {
+		try {
+			return eventoBeanRemote.obtenerEvento(id);
+		} catch (Exception e) {
+			System.out.println("Error en obtener eventos: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return new Evento();
+	}	
 	public List<Evento> obtenerEventos() {
 		try {
 			return eventoBeanRemote.obtenerEventos();
@@ -341,13 +351,17 @@ public class EJBUsuarioRemoto {
 		return new ArrayList<Evento>();
 	}
 	
-	public void crearEvento(Evento evento) {
+	public Evento crearEvento(Evento evento) {
+		Evento eventoNew = new Evento();
 		try {
-			eventoBeanRemote.crearEvento(evento);
+			
+			eventoNew=eventoBeanRemote.crearEvento(evento);
 		} catch (ServiciosException e) {
 			System.out.println("Error al crear evento: " + e.getMessage());
 			e.printStackTrace();
+			eventoNew = null;
 		}
+		return eventoNew;
 	}
 	
 	
@@ -452,4 +466,59 @@ public class EJBUsuarioRemoto {
 	/*
 	 * METODOS FUNCIONALIDAD REMOTOS FIN
 	 */
+	
+	/*
+	 * METODOS TUTORES REMOTOS
+	 */
+	public List<Tutor> listarTutores() {
+		List<Tutor> lista = new ArrayList<Tutor>();
+		try {
+			lista = tutorBeanRemote.listarTutores();
+		} catch (ServiciosException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+
+	}
+	
+	public List<Tutor> buscarTutorPor(String id,String ci, String nombre ,String apellido,String tipo ,String area) {
+		List<Tutor> lista = new ArrayList<Tutor>();
+		try {
+			lista = tutorBeanRemote.listarTutores();
+		} catch (ServiciosException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+
+	}
+
+	
+	/*
+	 * METODOS TUTORES REMOTOS FIN
+	 */
+	
+	/*
+	 * METODOS TUTORESRESPONSABLEEVENTO REMOTOS
+	 */
+		public TutorResponsableEvento asignarTutorAEvento(TutorResponsableEvento tutResEvent) {
+			TutorResponsableEvento tre = new TutorResponsableEvento();
+			try {
+				tre = tutorResponsableEventoBeanRemote.modificarTutorResponsableEvento(tutResEvent);
+			} catch (ServiciosException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return tre;
+		}
+	
+	/*
+	 * METODOS TUTORESRESPONSABLEEVENTO REMOTOS FIN
+	 */
+	
+	
+	
+	
 }

@@ -1,6 +1,7 @@
 package tecnofenix.servicios;
 
 import tecnofenix.entidades.Tutor;
+import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.TutorBeanRemote;
@@ -9,6 +10,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+
 import java.util.List;
 
 
@@ -58,6 +61,9 @@ public class TutorBean implements TutorBeanRemote  {
 	public Tutor modificarTutorPropio(Tutor tutor) throws ServiciosException, UsuarioNoEncontradoException {
 		if (tutor.getId() == null) {
 			throw new UsuarioNoEncontradoException("Ha ocurrido un error al modificar el usuario.");
+		}else {
+			em.merge(tutor);
+			em.flush();
 		}
 
 //		Tutor tutorDb = (Tutor) usuarioBean.encontrarUsuario(tutor.getId());
@@ -91,6 +97,18 @@ public class TutorBean implements TutorBeanRemote  {
 	public List<Tutor> obtenerTutorPorAtributo(Tutor tutor) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Tutor> listarTutores() throws ServiciosException {
+		TypedQuery<Tutor> query = em.createNamedQuery("Tutor.findAll", Tutor.class);
+		List<Tutor> tutores = query.getResultList();
+
+		if (tutores == null) {
+			throw new UsuarioNoEncontradoException("Tutores no encontrados.");
+		}
+
+		return tutores;
 	}
 
 }

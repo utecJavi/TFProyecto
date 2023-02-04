@@ -22,19 +22,27 @@ public class EventoBean implements EventoBeanRemote {
 	@PersistenceContext
 	private EntityManager em;
 	
+	private ItrBean itrBean;
+	
     /**
      * Default constructor. 
      */
     public EventoBean() {
         // TODO Auto-generated constructor stub
+    	itrBean = new ItrBean();
     }
 
 	@Override
 	public Evento crearEvento(Evento evento) throws ServiciosException {
+		System.out.println("CREAR EVENTO");
+		System.out.println(evento.toString());
+		System.out.println(itrBean);
+		evento.setItr(itrBean.findById2(evento.getItr().getId(), em));
 		em.persist(evento);
 		em.flush();
+		System.out.println(evento.toString());
 		// TODO Auto-generated method stub
-		return null;
+		return evento;
 	}
 
 	@Override

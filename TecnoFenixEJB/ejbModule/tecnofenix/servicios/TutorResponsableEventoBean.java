@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 
 import tecnofenix.entidades.TutorResponsableEvento;
 import tecnofenix.exception.ServiciosException;
+import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.TutorResponsableEventoBeanRemote;
 
 
@@ -29,17 +30,22 @@ public class TutorResponsableEventoBean implements TutorResponsableEventoBeanRem
     }
 
 	@Override
-	public TutorResponsableEvento crearTutorResponsableEvento(TutorResponsableEvento tutorRespEve)
-			throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+	public TutorResponsableEvento crearTutorResponsableEvento(TutorResponsableEvento tutorRespEve)throws ServiciosException {
+			
+		em.persist(tutorRespEve);
+		em.flush();
+		return tutorRespEve;
 	}
 
 	@Override
-	public TutorResponsableEvento modificarTutorResponsableEvento(TutorResponsableEvento tutorRespEve)
-			throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+	public TutorResponsableEvento modificarTutorResponsableEvento(TutorResponsableEvento tutorRespEve) throws ServiciosException {
+	if (tutorRespEve.getId() == null) {
+		crearTutorResponsableEvento(tutorRespEve);
+	}else {
+		em.merge(tutorRespEve);
+		em.flush();
+	}
+		return tutorRespEve;
 	}
 
 	@Override

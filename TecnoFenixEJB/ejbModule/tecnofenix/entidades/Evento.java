@@ -112,7 +112,33 @@ public class Evento implements Serializable {
     public Evento() {
     }
 
-    public String getTitulo() {
+
+    public Evento(@NotNull String titulo, @NotNull TipoEvento tipo, @NotNull ModalidadEvento modalidad,
+			@NotNull Date inicio, Date fin, String localizacion, Boolean bajaLogica, Itr itr,
+			Collection<Justificacion> justificacionCollection,
+			Collection<ConvocatoriaAsistenciaEventoEstudiante> convocatoriaAsistenciaEventoEstudianteCollection,
+			Collection<Reclamo> reclamoCollection,
+			Collection<Constancia> constanciaCollection,
+			Collection<TutorResponsableEvento> tutorResponsableEventoCollection,
+			Collection<GestionEventoAnalista> gestionEventoAnalistaCollection) {
+		super();
+		this.titulo = titulo;
+		this.tipo = tipo;
+		this.modalidad = modalidad;
+		this.inicio = inicio;
+		this.fin = fin;
+		this.localizacion = localizacion;
+		this.bajaLogica = bajaLogica;
+		this.itr = itr;
+		this.justificacionCollection = justificacionCollection;
+		this.convocatoriaAsistenciaEventoEstudianteCollection = convocatoriaAsistenciaEventoEstudianteCollection;
+		this.reclamoCollection = reclamoCollection;
+		this.constanciaCollection = constanciaCollection;
+		this.tutorResponsableEventoCollection = tutorResponsableEventoCollection;
+		this.gestionEventoAnalistaCollection = gestionEventoAnalistaCollection;
+	}
+
+	public String getTitulo() {
 		return titulo;
 	}
 
@@ -160,19 +186,8 @@ public class Evento implements Serializable {
 		this.itr = itr;
 	}
 
-	public Evento(Integer id) {
-        this.id = id;
-    }
-
-    public Evento(Integer id, Date inicio) {
-        this.id = id;
-        this.inicio = inicio;
-    }
     
-    public Evento(Integer id, Date inicio, String titulo, TipoEvento tipo, ModalidadEvento modalidad, String localizacion, Itr itr) {
-        this.id = id;
-        this.inicio = inicio;
-    }
+
 
     public Integer getId() {
         return id;

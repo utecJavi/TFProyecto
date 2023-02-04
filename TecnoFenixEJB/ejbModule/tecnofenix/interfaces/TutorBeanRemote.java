@@ -14,5 +14,6 @@ public interface TutorBeanRemote {
 	Tutor modificarTutorAdmin(Tutor tutor) throws ServiciosException, UsuarioNoEncontradoException;
 	Tutor borrarTutor(Tutor tutor) throws ServiciosException;
 	List<Tutor> obtenerTutorPorAtributo(Tutor tutor);
+	List<Tutor> listarTutores() throws ServiciosException;
 	
 }

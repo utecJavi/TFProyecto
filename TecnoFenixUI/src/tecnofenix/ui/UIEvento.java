@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -44,7 +46,7 @@ public class UIEvento {
 	private JDateChooser dateFechaFin;
 	private JTextField textLocalizacion;
 	private JComboBox<Itr> itrEventoComboBox;
-
+	private Evento eventoEditable;
 	private JTextField editarTextId;
 	private JTextField editarTextTitulo;
 	private JComboBox<TipoEvento> editarComboBoxTipoEvento;
@@ -57,21 +59,28 @@ public class UIEvento {
 	private JDateChooser editarDateFechaFin;
 	private JTextField editarTextLocalizacion;
 	private JComboBox<Itr> editarItrEventoComboBox;
-
+	private UIListaTutores uiListaTutores = new UIListaTutores();
+	private List<TutorResponsableEvento> listTutorResEvent = new ArrayList<TutorResponsableEvento>();
+	private java.awt.List listaDeTutores;
+	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
 	public void inicializar() {
-
+		
 
 		ejb = new EJBUsuarioRemoto();
 		frame = new JFrame("Eventos");
 
 		JPanel panel = new JPanel();
-
-		panel.setPreferredSize(new Dimension(800, 800));
+	    eventoEditable =new Evento();
+	    
+		panel.setPreferredSize(new Dimension(1000, 800));
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
-	
+		
+		uiListaTutores.inicializar();
+		uiListaTutores.frame.setVisible(false);
+		
 		panel.setLayout(null);
 		
 		DefaultTableModel tableModel = new DefaultTableModel(new String[] {"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"}, 0) {
@@ -80,7 +89,7 @@ public class UIEvento {
 			        return false;
 			 }
 		};
-//		generateRows(tableModel);
+		generateRows(tableModel);
 		tablaEventos = new JTable();
 		tablaEventos.setModel(tableModel);
 		tablaEventos.setCellSelectionEnabled(false);
@@ -101,33 +110,66 @@ public class UIEvento {
 	        public void valueChanged(ListSelectionEvent event) {
 				if (!event.getValueIsAdjusting() && tablaEventos.getSelectedRow() != -1) {
 				System.out.println("ACTUALIZANDO CLICK");
-//	            textEditarId.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-//	            textEditarNom.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-//	            textEditarDepto.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+				eventoEditable = ejb.obtenerEvento(Integer.valueOf(tablaEventos.getValueAt(tablaEventos.getSelectedRow(), 0).toString()));
+				editarTextId.setText(eventoEditable.getId().toString());
+				editarTextTitulo.setText(eventoEditable.getTitulo());
+				editarItrEventoComboBox.setSelectedItem(eventoEditable.getItr());
+				editarComboBoxTipoEvento.setSelectedItem(TipoEvento.fromString(eventoEditable.getTipo().getTipo()));
+				editarComboBoxModalidadEvento.setSelectedItem(ModalidadEvento.fromString(eventoEditable.getModalidad().getModalidad()));
+				editarTextLocalizacion.setText(eventoEditable.getLocalizacion());
+				editarDateFechaInicio.setDate(eventoEditable.getInicio());
+				editarDateFechaFin.setDate(eventoEditable.getFin());
 				}
 	        }
 	    });
 		// Creamos un JscrollPane y le agregamos la JTable
 		JScrollPane scrollPane = new JScrollPane(tablaEventos);
-		scrollPane.setBounds(10, 103, 780, 299);
-		// definimos un layout
+		scrollPane.setBounds(10, 103, 964, 299);
+		// definimos un layut
 		// Agregamos el JScrollPane al contenedor
 		panel.add(scrollPane);
 
 		JButton crearEventoBtn = new JButton("Crear evento");
 		crearEventoBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Evento evento = new Evento(
+
+				Evento evento =new Evento(textTitulo.getText(),
+						(TipoEvento)comboBoxTipoEvento.getSelectedItem(),
+						(ModalidadEvento)comboBoxModalidadEvento.getSelectedItem(), 
+						dateFechaInicio.getDate(),
+						dateFechaFin.getDate(),
+						textLocalizacion.getText(),
+						false,
+						(Itr)itrEventoComboBox.getSelectedItem(),
 						null,
-						Date.valueOf(LocalDate.now()),
-						textTitulo.getText(),
-						comboBoxTipoEvento.getItemAt(comboBoxTipoEvento.getSelectedIndex()),
-						comboBoxModalidadEvento.getItemAt(comboBoxModalidadEvento.getSelectedIndex()),
-						textLocalizacion.getText(), 
-						ejb.buscarItrPor(((Itr) Objects.requireNonNull(itrEventoComboBox.getSelectedItem())).getId().toString(), null, null).get(0));
-				ejb.crearEvento(evento);
+						null,
+						null,
+						null,
+						null,
+						null);
+				evento =ejb.crearEvento(evento);
+				System.out.println("Evento creado =" +evento.getId());
+				for(TutorResponsableEvento tr : listTutorResEvent) {
+					System.out.println("Seteando evento crado recien a tutores idevento:" +evento.getId());
+					System.out.println("Tutor a setear evento "+tr.getTutorId());
+					tr.setEventoId(evento);
+					ejb.asignarTutorAEvento(tr);
+				}
+				
+				generateRows(tableModel);
 			}
 		});
+		
+		JButton btnSeleccionarTutores = new JButton("Tutores");
+		btnSeleccionarTutores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+		
+				uiListaTutores.frame.setVisible(true);
+				
+			}
+		});
+		btnSeleccionarTutores.setBounds(540, 520, 85, 21);
+		panel.add(btnSeleccionarTutores);
 		crearEventoBtn.setBounds(349, 520, 113, 21);
 		panel.add(crearEventoBtn);
 
@@ -225,12 +267,12 @@ public class UIEvento {
 		panel.add(editarTextTitulo);
 		
 		editarComboBoxTipoEvento = new JComboBox<>();
-		editarComboBoxTipoEvento.setModel(new DefaultComboBoxModel<TipoEvento>());
+		editarComboBoxTipoEvento.setModel(new DefaultComboBoxModel<TipoEvento>(TipoEvento.values() ));
 		editarComboBoxTipoEvento.setBounds(227, 582, 188, 19);
 		panel.add(editarComboBoxTipoEvento);
 
 		editarComboBoxModalidadEvento = new JComboBox<>();
-		editarComboBoxModalidadEvento.setModel(new DefaultComboBoxModel<ModalidadEvento>());
+		editarComboBoxModalidadEvento.setModel(new DefaultComboBoxModel<ModalidadEvento>(ModalidadEvento.values()));
 		editarComboBoxModalidadEvento.setBounds(227, 621, 188, 19);
 		panel.add(editarComboBoxModalidadEvento);
 
@@ -254,6 +296,36 @@ public class UIEvento {
 				
 			}
 		});
+		
+		uiListaTutores.btnSeleccionarTutores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				if(eventoEditable.getTutorResponsableEventoCollection()!=null && eventoEditable.getTutorResponsableEventoCollection().isEmpty()) {
+				System.out.println("Presiono el boton aceptar tutores tamaño lista "+uiListaTutores.getListTutoresSeleccionados().size());
+				listTutorResEvent.clear();
+				
+				for(Tutor tut :uiListaTutores.getListTutoresSeleccionados()) {
+						
+						System.out.println("Entre por el tutor " +tut.getNombres()+" "+tut.getApellidos());
+						TutorResponsableEvento tutResEvent = new TutorResponsableEvento();
+						tutResEvent.setTutorId(tut);
+						listTutorResEvent.add(tutResEvent);
+						
+						listaDeTutores.add(tut.getNombres()+" "+tut.getApellidos());
+					}
+				
+//				}//else {
+//					listTutorResEvent.clear();
+//					for(Tutor tut :uiListaTutores.getListTutores()) {
+//						TutorResponsableEvento tutResEvent = new TutorResponsableEvento();
+//						tutResEvent.setTutorId(tut);
+//						tutResEvent.setEventoId(eventoEditable);
+//						listTutorResEvent.add(tutResEvent);
+//						
+//					}
+//				}
+			}
+		});
+		
 		btnEditar.setBounds(374, 718, 113, 21);
 		panel.add(btnEditar);
 		
@@ -326,6 +398,10 @@ public class UIEvento {
 		JLabel editarItrEventoComboBoxLabel = new JLabel("ITR");
 		editarItrEventoComboBoxLabel.setBounds(425, 569, 45, 13);
 		panel.add(editarItrEventoComboBoxLabel);
+		
+		listaDeTutores = new java.awt.List();
+		listaDeTutores.setBounds(630, 448, 321, 81);
+		panel.add(listaDeTutores);
 
 		frame.pack();
 //		frame.setVisible(true);
@@ -334,12 +410,20 @@ public class UIEvento {
 	
 	private void generateRows(DefaultTableModel tableModel) {
 		List<Evento> eventos = ejb.obtenerEventos();
+		tableModel.getDataVector().removeAllElements();
+		tableModel.fireTableDataChanged();
 		for (Evento evento : eventos) {
-			Vector<String> row = new Vector<String>(3);
+			Vector<String> row = new Vector<String>(6);
 			row.add(evento.getId().toString());
+			row.add(evento.getTitulo());
+			row.add(evento.getTipo().getTipo());
+			row.add(evento.getModalidad().getModalidad());
+			row.add(evento.getLocalizacion());		
 			row.add(evento.getInicio().toString());
 			row.add(evento.getFin().toString());
+
 			tableModel.addRow(row);
+//			"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"
 		}
 	}
 	

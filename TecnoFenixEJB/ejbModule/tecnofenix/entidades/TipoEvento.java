@@ -19,4 +19,18 @@ public enum TipoEvento {
 		this.tipo = tipo;
 		
 	}
+	
+	public static TipoEvento fromString(String text) {
+		for (TipoEvento te : TipoEvento.values()) {
+			if (te.tipo.equalsIgnoreCase(text)) {
+				return te;
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public String toString() {
+		return this.tipo;
+	}
 }
