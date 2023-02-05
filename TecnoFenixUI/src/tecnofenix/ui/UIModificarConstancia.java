@@ -83,7 +83,7 @@ public class UIModificarConstancia {
 		panel.add(txtEvento);
 		
 		JLabel lblModEventos = new JLabel("Modificar evento:");
-		lblModEventos.setBounds(23, 250, 86, 13);
+		lblModEventos.setBounds(23, 250, 150, 13);
 		lblModEventos.setVisible(usuario instanceof Estudiante);
 		panel.add(lblModEventos);
 		

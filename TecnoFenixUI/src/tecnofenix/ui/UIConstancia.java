@@ -38,6 +38,7 @@ import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.entidades.Constancia;
+import tecnofenix.entidades.Constancia.EstadoConstancia;
 import javax.swing.JComboBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
@@ -99,13 +100,26 @@ public class UIConstancia {
         scrollPanel.setBounds(10, 169, 780, 302);
         panel.add(scrollPanel);
         
+        JLabel lblEstado = new JLabel("Estado:");
+        lblEstado.setBounds(20, 507, 90, 13);
+		panel.add(lblEstado);
+		
+		JComboBox<String> comboEstados = new JComboBox<String>();
+		comboEstados.setBounds(20, 520, 360, 21);
+		comboEstados.addItem("");
+		comboEstados.addItem("INGRESADO");
+		comboEstados.addItem("EN_PROCESO");
+		comboEstados.addItem("FINALIZADO");
+		comboEstados.setSelectedItem("");
+		panel.add(comboEstados);
+		
         JLabel lblUsuario = new JLabel("Usuario:");
-        lblUsuario.setBounds(20, 507, 90, 13);
+        lblUsuario.setBounds(20, 560, 90, 13);
 		panel.add(lblUsuario);
 		lblUsuario.setVisible(usuario instanceof Analista);
 
 		JTextField txtUsuario = new JTextField();
-		txtUsuario.setBounds(20, 520, 360, 19);
+		txtUsuario.setBounds(20, 573, 360, 19);
 		panel.add(txtUsuario);
 		txtUsuario.setColumns(10);
 		txtUsuario.setVisible(usuario instanceof Analista);
@@ -125,8 +139,13 @@ public class UIConstancia {
         			user = txtUsuario.getText();
         		}
         		
+        		String estado = null;
+        		if (comboEstados.getSelectedItem() != "") {
+        			estado = (String) comboEstados.getSelectedItem();
+        		}
+        		
         		try {
-        			List<Constancia> constancias = constanciaBeanRemote.listadoConstancias(user);
+        			List<Constancia> constancias = constanciaBeanRemote.listadoConstancias(user, estado);
         			
         			for(Constancia constancia : constancias) {
         				
