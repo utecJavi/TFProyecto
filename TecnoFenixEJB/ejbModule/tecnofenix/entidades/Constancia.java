@@ -79,6 +79,10 @@ public class Constancia implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EstadoConstancia estado;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoConstancias tipoConstancia;
 
 	public Constancia() {
     }
@@ -93,13 +97,14 @@ public class Constancia implements Serializable {
         this.fecha = fecha;
     }
     
-    public Constancia(Integer id, String detalle, Date fecha, Evento eventoId, Estudiante estudianteId, EstadoConstancia estado) {
+    public Constancia(Integer id, String detalle, Date fecha, Evento eventoId, Estudiante estudianteId, EstadoConstancia estado, TipoConstancias tipoConstancia) {
         this.id = id;
         this.detalle = detalle;
         this.fecha = fecha;
         this.eventoId = eventoId;
         this.estudianteId = estudianteId;
         this.estado = estado;
+        this.tipoConstancia = tipoConstancia;
     }
 
     public Integer getId() {
@@ -136,7 +141,7 @@ public class Constancia implements Serializable {
     }
 
     public Evento getEventoId() {
-        return eventoId;
+        return this.eventoId;
     }
 
     public void setEventoId(Evento eventoId) {
@@ -144,7 +149,7 @@ public class Constancia implements Serializable {
     }
 
     public Estudiante getEstudianteId() {
-        return estudianteId;
+        return this.estudianteId;
     }
 
     public void setEstudianteId(Estudiante estudianteId) {
@@ -152,11 +157,19 @@ public class Constancia implements Serializable {
     }
     
     public EstadoConstancia getEstado() {
-		return estado;
+		return this.estado;
 	}
 
 	public void setEstado(EstadoConstancia estado) {
 		this.estado = estado;
+	}
+	
+	public TipoConstancias getTipoConstancia() {
+		return this.tipoConstancia;
+	}
+
+	public void setTipoConstancia(TipoConstancias tipoConstancia) {
+		this.tipoConstancia = tipoConstancia;
 	}
 
     @Override
@@ -181,7 +194,7 @@ public class Constancia implements Serializable {
 
     @Override
     public String toString() {
-        return "tecnofenix.entidades.Constancia[ id=" + id + " ]";
+        return "Constancia id=" + id;
     }
     
     public enum EstadoConstancia {

@@ -28,6 +28,7 @@ import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.entidades.Evento;
 import tecnofenix.entidades.Constancia;
+import tecnofenix.entidades.TipoConstancias;
 
 public class UIAltaConstancia {
 
@@ -79,6 +80,25 @@ public class UIAltaConstancia {
 		}
 		panel.add(comboEventos);
 		
+		JLabel lblTipos = new JLabel("Tipo de constancia:");
+		lblTipos.setBounds(23, 285, 150, 13);
+		panel.add(lblTipos);
+		
+		
+		JComboBox<TipoConstancias> comboTipoConstancias = new JComboBox<TipoConstancias>();
+		comboTipoConstancias.setBounds(23, 213, 360, 21);
+		comboTipoConstancias.addItem(TipoConstancias.SIN_SELECCIONAR);
+		comboTipoConstancias.addItem(TipoConstancias.PRESENCIAL_COMUN);
+		comboTipoConstancias.addItem(TipoConstancias.PRESENCIAL_PRUEBA);
+		comboTipoConstancias.addItem(TipoConstancias.TRANSPORTE);
+		comboTipoConstancias.addItem(TipoConstancias.ESTUDIANTE_ACTIVO);
+		comboTipoConstancias.addItem(TipoConstancias.EXAMENES);
+		comboTipoConstancias.addItem(TipoConstancias.CREDITO_VME);
+		comboTipoConstancias.addItem(TipoConstancias.CREDITO_UTECINNOVA);
+		comboTipoConstancias.addItem(TipoConstancias.CREDITO_OPTATIVAS);
+		panel.add(comboTipoConstancias);
+		
+		
 		JButton btnAltaConstancia = new JButton("Solicitar constancia");
 		btnAltaConstancia.setBounds(23, 481, 189, 19);
 		btnAltaConstancia.addActionListener(new ActionListener() {
@@ -88,12 +108,14 @@ public class UIAltaConstancia {
         		
         		String detalle = txtDetalle.getText();
         		Evento evento = (Evento) comboEventos.getSelectedItem();
+        		TipoConstancias tipoConstancia = (TipoConstancias) comboTipoConstancias.getSelectedItem();
         		
         		constancia.setDetalle(detalle);
         		constancia.setFecha(new Date(System.currentTimeMillis()));
         		constancia.setEventoId(evento);
         		constancia.setEstudianteId((Estudiante) usuario);
         		constancia.setEstado(Constancia.EstadoConstancia.INGRESADO);
+        		constancia.setTipoConstancia(tipoConstancia);
         		
         		try {
         			constanciaBeanRemote.crearConstancia(constancia);

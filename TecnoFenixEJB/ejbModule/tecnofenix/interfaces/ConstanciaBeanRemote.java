@@ -20,6 +20,6 @@ public interface ConstanciaBeanRemote {
 	
 	List<Constancia> obtenerConstanciaPorAtributo(Constancia constancia);
 	
-	List<Constancia> listadoConstancias(String usuario) throws ServiciosException;
+	List<Constancia> listadoConstancias(String usuario, String estado) throws ServiciosException;
 	
 }
