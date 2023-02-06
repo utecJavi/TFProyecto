@@ -59,9 +59,11 @@ public class UIEvento {
 	private JDateChooser editarDateFechaFin;
 	private JTextField editarTextLocalizacion;
 	private JComboBox<Itr> editarItrEventoComboBox;
+	//Ventana extra para traer los tutores responsables
 	private UIListaTutores uiListaTutores = new UIListaTutores();
 	private List<TutorResponsableEvento> listTutorResEvent = new ArrayList<TutorResponsableEvento>();
 	private java.awt.List listaDeTutores;
+	private List<Tutor> editarTutores = new ArrayList<Tutor>();
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -75,11 +77,12 @@ public class UIEvento {
 		JPanel panel = new JPanel();
 	    eventoEditable =new Evento();
 	    
+	    uiListaTutores.inicializar();
+		uiListaTutores.frame.setVisible(false);
+		
 		panel.setPreferredSize(new Dimension(1000, 800));
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		
-		uiListaTutores.inicializar();
-		uiListaTutores.frame.setVisible(false);
 		
 		panel.setLayout(null);
 		
@@ -119,86 +122,106 @@ public class UIEvento {
 				editarTextLocalizacion.setText(eventoEditable.getLocalizacion());
 				editarDateFechaInicio.setDate(eventoEditable.getInicio());
 				editarDateFechaFin.setDate(eventoEditable.getFin());
+				
+				editarTutores.clear();
+//				for(TutorResponsableEvento tr: eventoEditable.getTutorResponsableEventoCollection()) {
+//					editarTutores.add(tr.getTutorId());
+//				}
+//				listTutorResEvent=eventoEditable.getTutorResponsableEventoCollection();
+					listTutorResEvent=ejb.obtenerTutoresDeEvento(eventoEditable.getId());
+					if(listTutorResEvent!=null) {
+						listaDeTutores.removeAll();
+						for(TutorResponsableEvento tre: listTutorResEvent) {
+							editarTutores.add(tre.getTutorId());
+							listaDeTutores.add(tre.getTutorId().getDocumento() +" "+tre.getTutorId().getNombres()+" "+tre.getTutorId().getApellidos());
+						} 
+					}
 				}
 	        }
 	    });
 		// Creamos un JscrollPane y le agregamos la JTable
 		JScrollPane scrollPane = new JScrollPane(tablaEventos);
-		scrollPane.setBounds(10, 103, 964, 299);
+		scrollPane.setBounds(10, 154, 964, 387);
 		// definimos un layut
 		// Agregamos el JScrollPane al contenedor
 		panel.add(scrollPane);
 
-		JButton crearEventoBtn = new JButton("Crear evento");
-		crearEventoBtn.addActionListener(new ActionListener() {
+		JButton filtrarEventosBtn = new JButton("Filtrar");
+		filtrarEventosBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				Evento evento =new Evento(textTitulo.getText(),
-						(TipoEvento)comboBoxTipoEvento.getSelectedItem(),
-						(ModalidadEvento)comboBoxModalidadEvento.getSelectedItem(), 
-						dateFechaInicio.getDate(),
-						dateFechaFin.getDate(),
-						textLocalizacion.getText(),
-						false,
-						(Itr)itrEventoComboBox.getSelectedItem(),
-						null,
-						null,
-						null,
-						null,
-						null,
-						null);
-				evento =ejb.crearEvento(evento);
-				System.out.println("Evento creado =" +evento.getId());
-				for(TutorResponsableEvento tr : listTutorResEvent) {
-					System.out.println("Seteando evento crado recien a tutores idevento:" +evento.getId());
-					System.out.println("Tutor a setear evento "+tr.getTutorId());
-					tr.setEventoId(evento);
-					ejb.asignarTutorAEvento(tr);
-				}
-				
+				//todo logica de filtros
+//				Evento evento =new Evento(textTitulo.getText(),
+//						(TipoEvento)comboBoxTipoEvento.getSelectedItem(),
+//						(ModalidadEvento)comboBoxModalidadEvento.getSelectedItem(), 
+//						dateFechaInicio.getDate(),
+//						dateFechaFin.getDate(),
+//						textLocalizacion.getText(),
+//						false,
+//						(Itr)itrEventoComboBox.getSelectedItem(),
+//						null,
+//						null,
+//						null,
+//						null,
+//						null,
+//						null);
+//				evento =ejb.crearEvento(evento);
+//				System.out.println("Evento creado =" +evento.getId());
+//				for(TutorResponsableEvento tr : listTutorResEvent) {
+//					System.out.println("Seteando evento crado recien a tutores idevento:" +evento.getId());
+//					System.out.println("Tutor a setear evento "+tr.getTutorId());
+//					tr.setEventoId(evento);
+//					ejb.asignarTutorAEvento(tr);
+//				}
+//				
 				generateRows(tableModel);
 			}
 		});
 		
-		JButton btnSeleccionarTutores = new JButton("Tutores");
+		JButton btnSeleccionarTutores = new JButton("Editar Tutores");
 		btnSeleccionarTutores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		
+				System.out.println("Editar tutores click");
+				if(editarTutores!= null && !editarTutores.isEmpty() && eventoEditable!= null && eventoEditable.getId()!=null) {
+				System.out.println("Lista de tutores "+editarTutores.toString());
+				uiListaTutores.setListTutoresSeleccionados(editarTutores);
 				uiListaTutores.frame.setVisible(true);
-				
+				}else {
+					JOptionPane.showMessageDialog(null, "Primero debe seleccionar un evento",
+							"Ya existe", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		});
-		btnSeleccionarTutores.setBounds(540, 520, 85, 21);
+		btnSeleccionarTutores.setBounds(633, 718, 113, 21);
 		panel.add(btnSeleccionarTutores);
-		crearEventoBtn.setBounds(349, 520, 113, 21);
-		panel.add(crearEventoBtn);
+		filtrarEventosBtn.setBounds(633, 111, 113, 21);
+		panel.add(filtrarEventosBtn);
 
 		textTitulo = new JTextField();
-		textTitulo.setBounds(10, 449, 202, 19);
+		textTitulo.setBounds(10, 68, 202, 19);
 		textTitulo.setColumns(10);
 		panel.add(textTitulo);
 
 		textLocalizacion = new JTextField();
-		textLocalizacion.setBounds(425, 449, 188, 19);
+		textLocalizacion.setBounds(425, 68, 188, 19);
 		textLocalizacion.setColumns(10);
 		panel.add(textLocalizacion);
 
 		comboBoxTipoEvento = new JComboBox<>();
 		comboBoxTipoEvento.setModel(new DefaultComboBoxModel<TipoEvento>(TipoEvento.values()));
-		comboBoxTipoEvento.setBounds(227, 449, 188, 19);
+		comboBoxTipoEvento.setBounds(227, 68, 188, 19);
 		panel.add(comboBoxTipoEvento);
 
 		comboBoxModalidadEvento = new JComboBox<>();
 		comboBoxModalidadEvento.setModel(new DefaultComboBoxModel<ModalidadEvento>(ModalidadEvento.values()));
-		comboBoxModalidadEvento.setBounds(227, 493, 188, 19);
+		comboBoxModalidadEvento.setBounds(227, 112, 188, 19);
 		panel.add(comboBoxModalidadEvento);
 
 		dateFechaInicio = new JDateChooser();
-		dateFechaInicio.setBounds(10, 493, 96, 19);
+		dateFechaInicio.setBounds(10, 112, 96, 19);
 		panel.add(dateFechaInicio);
 
 		dateFechaFin = new JDateChooser();
-		dateFechaFin.setBounds(116, 492, 96, 19);
+		dateFechaFin.setBounds(116, 111, 96, 19);
 		panel.add(dateFechaFin);
 
 
@@ -237,16 +260,12 @@ public class UIEvento {
 //		panel.add(btnBuscar);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 91, 790, 2);
+		separator.setBounds(10, 142, 964, 2);
 		panel.add(separator);
 		
 		JLabel lblNewLabel = new JLabel("Filtros de busqueda");
 		lblNewLabel.setBounds(10, 10, 113, 13);
 		panel.add(lblNewLabel);
-		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(10, 426, 780, 2);
-		panel.add(separator_1);
 		
 		JLabel lblNewLabel_1_1_1_1_1 = new JLabel("Id");
 		lblNewLabel_1_1_1_1_1.setBounds(10, 569, 74, 13);
@@ -292,8 +311,32 @@ public class UIEvento {
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				editar(textEditarId.getText() ,textEditarNom.getText(),textEditarDepto.getText());
-				
+				if(eventoEditable!=null && eventoEditable.getId()!=null) {
+					if(validarDatos()) {
+						eventoEditable.setTitulo(editarTextTitulo.getText());
+						eventoEditable.setItr((Itr)editarItrEventoComboBox.getSelectedItem());
+						eventoEditable.setTipo((TipoEvento)editarComboBoxTipoEvento.getSelectedItem());
+						eventoEditable.setModalidad((ModalidadEvento)editarComboBoxModalidadEvento.getSelectedItem());
+						eventoEditable.setLocalizacion(editarTextLocalizacion.getText());
+						eventoEditable.setInicio(editarDateFechaInicio.getDate());
+						eventoEditable.setFin(editarDateFechaFin.getDate());
+						eventoEditable.setTutorResponsableEventoCollection(listTutorResEvent);
+						
+						eventoEditable=ejb.modificarEvento(eventoEditable);
+//						if(eventoEditable!=null)System.out.println("Evento modificado ");
+//						
+//						for(TutorResponsableEvento tr : listTutorResEvent) {
+//							System.out.println("Seteando evento crado recien a tutores idevento:" +evento.getId());
+//							System.out.println("Tutor a setear evento "+tr.getTutorId());
+//							tr.setEventoId(evento);
+//							ejb.asignarTutorAEvento(tr);
+//						}
+//						
+						generateRows(tableModel);
+						
+						
+					}
+				}
 			}
 		});
 		
@@ -301,18 +344,42 @@ public class UIEvento {
 			public void actionPerformed(ActionEvent e) {
 //				if(eventoEditable.getTutorResponsableEventoCollection()!=null && eventoEditable.getTutorResponsableEventoCollection().isEmpty()) {
 				System.out.println("Presiono el boton aceptar tutores tamaño lista "+uiListaTutores.getListTutoresSeleccionados().size());
-				listTutorResEvent.clear();
-				
+//				listTutorResEvent.clear();
+//				listaDeTutores.removeAll();
 				for(Tutor tut :uiListaTutores.getListTutoresSeleccionados()) {
-						
-						System.out.println("Entre por el tutor " +tut.getNombres()+" "+tut.getApellidos());
+					Boolean flag = true;
+					for(TutorResponsableEvento tre: listTutorResEvent) {
+						if(tre.getTutorId().equals(tut)) {
+							System.out.println("El tutor esta marco para que no lo agregue a la lista");
+							flag=false;
+						}
+					}
+					
+					if(flag) {//si es true es xq no estaba en la lista y se manda a guardar es nuevo
 						TutorResponsableEvento tutResEvent = new TutorResponsableEvento();
+						tutResEvent.setEventoId(eventoEditable);
 						tutResEvent.setTutorId(tut);
 						listTutorResEvent.add(tutResEvent);
-						
-						listaDeTutores.add(tut.getNombres()+" "+tut.getApellidos());
+						listaDeTutores.add(tut.getDocumento() +" "+tut.getNombres()+" "+tut.getApellidos());
+						}
 					}
 				
+				if(!uiListaTutores.getListTutoresMarcadosABorrar().isEmpty()) {
+				for(Tutor tut : uiListaTutores.getListTutoresMarcadosABorrar()) {
+					TutorResponsableEvento tutREAEliminar =null;
+					Tutor tutAEliminar=null;
+					for(TutorResponsableEvento tre: listTutorResEvent) {
+						if(tre.getTutorId().equals(tut)) {
+							tutREAEliminar=tre;
+							tutAEliminar=tut;
+						}
+					}
+					if(tutREAEliminar!=null) {
+						listTutorResEvent.remove(tutREAEliminar);
+						listaDeTutores.remove(tutAEliminar.getDocumento() +" "+tutAEliminar.getNombres()+" "+tutAEliminar.getApellidos());
+					}
+				}
+				}
 //				}//else {
 //					listTutorResEvent.clear();
 //					for(Tutor tut :uiListaTutores.getListTutores()) {
@@ -326,35 +393,35 @@ public class UIEvento {
 			}
 		});
 		
-		btnEditar.setBounds(374, 718, 113, 21);
+		btnEditar.setBounds(510, 718, 113, 21);
 		panel.add(btnEditar);
 		
 		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(10, 551, 767, 2);
+		separator_2.setBounds(10, 551, 964, 2);
 		panel.add(separator_2);
 		
 		JLabel tituloEventoLabel = new JLabel("Titulo");
-		tituloEventoLabel.setBounds(10, 438, 87, 13);
+		tituloEventoLabel.setBounds(10, 57, 87, 13);
 		panel.add(tituloEventoLabel);
 		
 		JLabel fechaInicioEventoLabel = new JLabel("Fecha de inicio");
-		fechaInicioEventoLabel.setBounds(10, 478, 96, 13);
+		fechaInicioEventoLabel.setBounds(10, 97, 96, 13);
 		panel.add(fechaInicioEventoLabel);
 		
 		JLabel fechaFinEventoLabel = new JLabel("Fecha de finalizacion");
-		fechaFinEventoLabel.setBounds(117, 478, 95, 13);
+		fechaFinEventoLabel.setBounds(117, 97, 95, 13);
 		panel.add(fechaFinEventoLabel);
 		
 		JLabel tipoEventoLabel = new JLabel("Tipo de evento");
-		tipoEventoLabel.setBounds(227, 438, 188, 13);
+		tipoEventoLabel.setBounds(227, 57, 188, 13);
 		panel.add(tipoEventoLabel);
 		
 		JLabel modalidadEventoLabel = new JLabel("Modalidad del evento");
-		modalidadEventoLabel.setBounds(227, 478, 188, 13);
+		modalidadEventoLabel.setBounds(227, 97, 188, 13);
 		panel.add(modalidadEventoLabel);
 		
 		JLabel localizacionEventoLabel = new JLabel("Localizacion del evento");
-		localizacionEventoLabel.setBounds(425, 438, 188, 13);
+		localizacionEventoLabel.setBounds(425, 57, 188, 13);
 		panel.add(localizacionEventoLabel);
 		
 		JLabel editarTituloLabel = new JLabel("Titulo");
@@ -383,11 +450,11 @@ public class UIEvento {
 		
 		itrEventoComboBox = new JComboBox<Itr>();
 		itrEventoComboBox.setModel(generateItrEventoComboBoxData());
-		itrEventoComboBox.setBounds(425, 492, 188, 21);
+		itrEventoComboBox.setBounds(425, 111, 188, 21);
 		panel.add(itrEventoComboBox);
 		
 		JLabel itrEventoComboBoxLabel = new JLabel("ITR");
-		itrEventoComboBoxLabel.setBounds(425, 478, 45, 13);
+		itrEventoComboBoxLabel.setBounds(425, 97, 45, 13);
 		panel.add(itrEventoComboBoxLabel);
 		
 		editarItrEventoComboBox = new JComboBox<Itr>();
@@ -400,7 +467,7 @@ public class UIEvento {
 		panel.add(editarItrEventoComboBoxLabel);
 		
 		listaDeTutores = new java.awt.List();
-		listaDeTutores.setBounds(630, 448, 321, 81);
+		listaDeTutores.setBounds(425, 611, 321, 81);
 		panel.add(listaDeTutores);
 
 		frame.pack();
@@ -432,4 +499,46 @@ public class UIEvento {
 		ejb.listarITR().forEach(comboBoxModel::addElement);
 		return comboBoxModel;
 	}
+	
+	public Boolean validarDatos() {
+		if(editarTextTitulo.getText()=="" ) {
+			JOptionPane.showMessageDialog(null, "El titulo del evento es un dato obligatorio",
+					"Informacion", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if(editarComboBoxTipoEvento.getSelectedIndex()==0  ) {
+			JOptionPane.showMessageDialog(null, "Seleccione el tipo de evento",
+					"Informacion", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if(editarComboBoxModalidadEvento.getSelectedIndex()==0  ) {
+			JOptionPane.showMessageDialog(null, "Seleccione la modalidad de evento",
+					"Informacion", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if(editarDateFechaInicio.getDate()==null ) {
+			JOptionPane.showMessageDialog(null, "Ingrese la fecha de inicio del evento",
+					"Informacion", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if(editarDateFechaFin.getDate()==null ) {
+			JOptionPane.showMessageDialog(null, "Ingrese la fecha de fin del evento",
+					"Informacion", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if(editarItrEventoComboBox.getSelectedIndex()==0){
+			JOptionPane.showMessageDialog(null, "Seleccione el ITR correspondiente al evento",
+					"Informacion", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+
+
+		return true;
+	}
+	
+	public void limpiarCampos() {
+		listTutorResEvent.clear();
+		listaDeTutores.removeAll();
+	}
+	
 }

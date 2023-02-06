@@ -364,6 +364,19 @@ public class EJBUsuarioRemoto {
 		return eventoNew;
 	}
 	
+	public Evento modificarEvento(Evento evento) {
+		Evento eventoNew = new Evento();
+		try {
+			
+			eventoNew=eventoBeanRemote.modificarEvento(evento);
+		} catch (ServiciosException e) {
+			System.out.println("Error al crear evento: " + e.getMessage());
+			e.printStackTrace();
+			eventoNew = null;
+		}
+		return eventoNew;
+	}
+	
 	
 
 	/*
@@ -514,6 +527,17 @@ public class EJBUsuarioRemoto {
 			return tre;
 		}
 	
+		public List<TutorResponsableEvento> obtenerTutoresDeEvento(Integer eventoId) {
+			List<TutorResponsableEvento> tRECollection = new ArrayList<TutorResponsableEvento>();
+			try {
+				tRECollection = tutorResponsableEventoBeanRemote.obtenerTutorResponsableEventoPorId(eventoId);
+			} catch (ServiciosException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return tRECollection;
+		}
 	/*
 	 * METODOS TUTORESRESPONSABLEEVENTO REMOTOS FIN
 	 */

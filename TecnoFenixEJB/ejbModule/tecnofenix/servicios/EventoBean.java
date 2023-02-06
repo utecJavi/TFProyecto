@@ -23,6 +23,7 @@ public class EventoBean implements EventoBeanRemote {
 	private EntityManager em;
 	
 	private ItrBean itrBean;
+	private TutorResponsableEventoBean treBean;
 	
     /**
      * Default constructor. 
@@ -30,6 +31,7 @@ public class EventoBean implements EventoBeanRemote {
     public EventoBean() {
         // TODO Auto-generated constructor stub
     	itrBean = new ItrBean();
+    	treBean= new TutorResponsableEventoBean();
     }
 
 	@Override
@@ -47,8 +49,13 @@ public class EventoBean implements EventoBeanRemote {
 
 	@Override
 	public Evento modificarEvento(Evento evento) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+		for(TutorResponsableEvento tre : evento.getTutorResponsableEventoCollection()) {
+			treBean.modificarTutorResponsableEvento(tre);
+		}
+		
+		em.merge(evento);
+		em.flush();
+		return evento;
 	}
 
 	@Override

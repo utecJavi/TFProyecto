@@ -13,5 +13,5 @@ public interface TutorResponsableEventoBeanRemote {
 	TutorResponsableEvento modificarTutorResponsableEvento(TutorResponsableEvento tutorRespEve) throws ServiciosException;
 	TutorResponsableEvento borrarTutorResponsableEvento(TutorResponsableEvento tutorRespEve) throws ServiciosException;
 	List<TutorResponsableEvento> obtenerTutorResponsableEventoPorAtributo(TutorResponsableEvento tutorRespEve);
-	
+	List<TutorResponsableEvento> obtenerTutorResponsableEventoPorId(Integer id)throws ServiciosException;
 }

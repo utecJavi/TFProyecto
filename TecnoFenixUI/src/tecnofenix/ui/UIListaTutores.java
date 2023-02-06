@@ -17,6 +17,7 @@ import tecnofenix.entidades.Funcionalidad;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Rol;
 import tecnofenix.entidades.Tutor;
+import tecnofenix.entidades.TutorResponsableEvento;
 import tecnofenix.entidades.Usuario;
 
 import java.awt.Component;
@@ -44,7 +45,7 @@ public class UIListaTutores {
 	private JTextField textBuscarId;
 	private java.awt.List listaDeTutores;
 	private List<Tutor> listTutoresSeleccionados;
-
+	private List<Tutor> listTutoresMarcadosABorrar;
 
 
 	public JButton btnSeleccionarTutores;
@@ -54,9 +55,13 @@ public class UIListaTutores {
 	 */
 	public void inicializar() {
 		usuarioRemote = new EJBUsuarioRemoto();
+		//Para el datatable
 		listTutores = new ArrayList<Tutor>();
+		
 		listTutoresSeleccionados= new ArrayList<Tutor>();
-		frame = new JFrame("ITR");
+		listTutoresMarcadosABorrar= new ArrayList<Tutor>();
+		
+		frame = new JFrame("Listado de tutores");
 
 		JPanel panel = new JPanel();
 		// definimos un layout
@@ -100,7 +105,7 @@ public class UIListaTutores {
 				for (int i = 0; i < listaDeTutores.getItems().length; i++) {
 					System.out.println(i);
 					System.out.println(listaDeTutores.getItems()[i]);
-					String nombre =table.getValueAt(table.getSelectedRow(), 2).toString()+" "+table.getValueAt(table.getSelectedRow(),3 ).toString();
+					String nombre =table.getValueAt(table.getSelectedRow(), 1).toString()+" "+table.getValueAt(table.getSelectedRow(), 2).toString()+" "+table.getValueAt(table.getSelectedRow(),3 ).toString();
 					System.out.println("Nombre lista : "+listaDeTutores.getItems()[i]);
 					System.out.println("Comparar con "+nombre);
 					if(listaDeTutores.getItems()[i].equals(nombre)) {
@@ -109,7 +114,7 @@ public class UIListaTutores {
 					}
 				}
 				if(flag) {
-					String nombre =table.getValueAt(table.getSelectedRow(), 2).toString()+" "+table.getValueAt(table.getSelectedRow(),3 ).toString();
+					String nombre =table.getValueAt(table.getSelectedRow(), 1).toString()+" "+table.getValueAt(table.getSelectedRow(), 2).toString()+" "+table.getValueAt(table.getSelectedRow(),3 ).toString();
 					listaDeTutores.add(nombre);
 					System.out.println("listaDeTutores length"+listaDeTutores.getItems().length);
 					Tutor tut = (Tutor)usuarioRemote.encontrarUsuario(Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString()));
@@ -141,7 +146,7 @@ public class UIListaTutores {
 				frame.setVisible(false);
 			}
 		});
-		btnSeleccionarTutores.setBounds(554, 491, 216, 21);
+		btnSeleccionarTutores.setBounds(561, 692, 216, 21);
 		panel.add(btnSeleccionarTutores);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Nombre");
@@ -195,13 +200,51 @@ public class UIListaTutores {
 		setListaDeTutores(new java.awt.List());
 		getListaDeTutores().setBounds(10, 477, 509, 238);
 		panel.add(getListaDeTutores());
+		
+		JButton btnEliminarSeleccionado = new JButton(">>> Eliminar seleccionado");
+		btnEliminarSeleccionado.setBounds(561, 481, 216, 21);
+		panel.add(btnEliminarSeleccionado);
 
+		btnEliminarSeleccionado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				listaDeTutores.getSelectedItem();
+				if(borrarRow(listaDeTutores.getSelectedItem())) {
+					Tutor tutAEliminar=null;
+					for(Tutor tut : listTutoresSeleccionados) {
+						String nombre =tut.getDocumento() +" "+tut.getNombres()+" "+tut.getApellidos();
+						if(nombre.equals(listaDeTutores.getSelectedItem())) {
+							tutAEliminar=tut;	
+						}
+						
+					}
+					if(tutAEliminar!=null) {
+						listTutoresMarcadosABorrar.add(tutAEliminar);
+						listTutoresSeleccionados.remove(tutAEliminar);
+						listaDeTutores.remove(listaDeTutores.getSelectedItem());
+					}
+					
+				}
+				
+			}
+		});
+		
 		frame.pack();
 		frame.setVisible(true);
 
 	}
 
-	
+
+	public boolean borrarRow(String mensaje) {
+//		msj.mostrarMensaje(Mensajes.BAJA);
+		
+		int dialogButton = JOptionPane.YES_NO_OPTION;
+		int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro quieres borrar: "+mensaje,"Warning",dialogButton);
+		if(dialogResult == JOptionPane.YES_OPTION){
+			return true;
+		}
+		return false;
+	}
 	public void limpiarTabla() {
 		if (listTutores != null || !listTutores.isEmpty() || listTutores.size() > 0) {
 			listTutores.clear();
@@ -295,9 +338,26 @@ public class UIListaTutores {
 
 	public void setListTutoresSeleccionados(List<Tutor> listTutoresSeleccionados) {
 		this.listTutoresSeleccionados = listTutoresSeleccionados;
+		getListaDeTutores().removeAll();
+		for(Tutor tut :listTutoresSeleccionados ) {
+			String nombre =tut.getDocumento() +" "+tut.getNombres()+" "+tut.getApellidos();
+			listaDeTutores.add(nombre);
+		}
+	}
+
+	
+	public List<Tutor> getListTutoresMarcadosABorrar() {
+		return listTutoresMarcadosABorrar;
 	}
 
 
+	public void setListTutoresMarcadosABorrar(List<Tutor> listTutoresMarcadosABorrar) {
+		this.listTutoresMarcadosABorrar = listTutoresMarcadosABorrar;
+	}
+	
+	
+	
+	
 	public java.awt.List getListaDeTutores() {
 		return listaDeTutores;
 		

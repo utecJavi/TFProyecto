@@ -822,7 +822,7 @@ public class UIUsuario {
 		textBuscarMail.setText("");
 		textBuscarUsuario.setText("");
 		comboBuscarITR.setSelectedIndex(0);
-		generacionAnioBuscar.setYear(2022);
+		generacionAnioBuscar.setYear(2023);
 		chckbxValidado.setSelected(false);
 		chckbxActivo.setSelected(false);
 		chckbxNoValidado.setSelected(false);
