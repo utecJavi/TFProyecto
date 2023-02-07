@@ -22,4 +22,5 @@ public interface EstudianteBeanRemote {
 	List<Estudiante> listarJustificaciones(Integer justificacionId)throws ServiciosException;
 	List<Estudiante> lisatEstudiantePorReclamos(Integer reclamoId)throws ServiciosException;
 	List<Estudiante> listarConstancias(Integer constanciaId)throws ServiciosException;
+//	List<Estudiante> buscarEstudiantePor(String ci, String nombre ,String apellido)throws ServiciosException;
 }

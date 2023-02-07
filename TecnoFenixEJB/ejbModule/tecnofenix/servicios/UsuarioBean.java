@@ -145,7 +145,7 @@ public class UsuarioBean implements UsuarioBeanRemote {
 		}
 		if (nombre != null && nombre != "") {
 
-			conditions = conditions + " AND u.nombre LIKE '" + nombre + "'";
+			conditions = conditions + " AND u.nombres LIKE '" + nombre + "'";
 
 		}
 		if (depto != null && depto != "") {

@@ -166,4 +166,10 @@ public class EstudianteBean implements EstudianteBeanRemote {
 
 	}
 
+//	@Override
+//	public List<Estudiante> buscarEstudiantePor(String ci, String nombre, String apellido) throws ServiciosException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
 }

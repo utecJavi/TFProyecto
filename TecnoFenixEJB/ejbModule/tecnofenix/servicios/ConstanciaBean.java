@@ -1,5 +1,6 @@
 package tecnofenix.servicios;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -82,6 +83,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	
 	@Override
 	public	List<Constancia> listadoConstancias(String usuario, String estado) throws ServiciosException {
+		List<Constancia> list = new ArrayList<Constancia>();
 		try {
 			String consulta = "SELECT c FROM Constancia c WHERE 1=1 ";
 			if (usuario != null) {
@@ -99,10 +101,11 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 			if (estado != null) {
 				query.setParameter("estado", estado);
 			}
-			return query.getResultList();
+			list=query.getResultList();
 		} catch (PersistenceException pe) {
-			throw new ServiciosException("Ocurrió un error al consultar constancias: " + pe.getMessage());
+			throw new ServiciosException("Ocurrio un error al consultar constancias: " + pe.getMessage());
 		}
+		return list;
 	}
 
 }

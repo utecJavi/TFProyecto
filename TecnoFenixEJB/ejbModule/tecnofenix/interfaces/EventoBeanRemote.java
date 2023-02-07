@@ -15,7 +15,7 @@ public interface EventoBeanRemote {
 	Evento borrarEvento(Evento evento) throws ServiciosException;
 	Evento obtenerEvento(Integer id);
 	List<Evento> obtenerEventoPorAtributo(Evento evento);
-	List<Evento> obtenerEventos();
+	List<Evento> obtenerEventos()throws ServiciosException;
 	List<Estudiante> obtenerEstudiantesConvocados(Evento evento);
-	
+	List<Evento> buscarEventosPor(String id,String titulo);
 }

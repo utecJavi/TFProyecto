@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.InitialContext;
@@ -89,7 +90,13 @@ public class UIModificarConstancia {
 		
 		JComboBox<Evento> comboEventos = new JComboBox<Evento>();
 		comboEventos.setBounds(23, 263, 360, 21);
-		List<Evento> eventos = eventoBeanRemote.obtenerEventos();
+		List<Evento> eventos = new ArrayList<Evento>();
+		try {
+			eventos = eventoBeanRemote.obtenerEventos();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Hubo un error al intentar traer la lista de eventos.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
 		for(Evento eventoItem: eventos){
 			comboEventos.addItem(eventoItem);
 		}
@@ -131,7 +138,7 @@ public class UIModificarConstancia {
         			JOptionPane.showMessageDialog(null, "Hubo un error al modificar la constancia.", "Error", JOptionPane.ERROR_MESSAGE);
         		}
         		
-        		JOptionPane.showMessageDialog(null, "Se modificó la constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        		JOptionPane.showMessageDialog(null, "Se modifico la constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
         		
 			}
 			

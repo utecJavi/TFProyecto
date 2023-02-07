@@ -541,8 +541,77 @@ public class EJBUsuarioRemoto {
 	/*
 	 * METODOS TUTORESRESPONSABLEEVENTO REMOTOS FIN
 	 */
+		
+	/*
+	 * METODOS ConvocatoriaAsistenciaEventoEstudiante REMOTOS
+	 */
+		
+		public List<ConvocatoriaAsistenciaEventoEstudiante> listarAllConvocAsistenciaEventEstu() {
+			List<ConvocatoriaAsistenciaEventoEstudiante> lista = new ArrayList<ConvocatoriaAsistenciaEventoEstudiante>();
+			try {
+				lista = convocatoriaAsistenciaEventoEstudianteBeanRemote.obtenerTodos();
+			} catch (ServiciosException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return lista;
+
+		}
+		
+		
+		public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,String nombre,String apellido ,Boolean asistencia){
+			List<ConvocatoriaAsistenciaEventoEstudiante> lista = new ArrayList<ConvocatoriaAsistenciaEventoEstudiante>();
+			try {
+				lista = convocatoriaAsistenciaEventoEstudianteBeanRemote.filtrarAsistEstuAEventosPor(id, tituloEvento, nombre, apellido, asistencia);
+			} catch (ServiciosException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return lista;
+			
+			
+		}
+		
+		public List<Evento> buscarEventosPor(String id,String titulo){
+			 List<Evento> list = new ArrayList<Evento>();	
+			try {
+				list= eventoBeanRemote.buscarEventosPor(id,titulo);
+			} catch (Exception e) {
+				System.out.println("Error en obtener eventos: " + e.getMessage());
+				e.printStackTrace();
+			}
+			
+			return list;
+		}
+		
+		public List<Estudiante>  buscarEstudiantePor(String ci, String nombre ,String apellido){
+			List<Estudiante> list = new ArrayList<Estudiante>();	
+			try {
+				List<Usuario> listUsu = new ArrayList<Usuario>();
+				System.out.println("Buscando usuario estudiante");
+				listUsu = usuarioRemote.buscarUsuarioPor("ESTUDIANTE", null, null, ci, nombre, apellido, null, null, null, null,true,true,true,null,null,false,false);
+//				(String tipo, String id, String depto, String doc, String nombre,
+//						String apellido, String mail, String usuario, String itrNombre, String generacion, Boolean validado,
+//						Boolean activo, Boolean todos,String localidad,String telefono, Boolean noValidados ,Boolean noActivos) throws UsuarioNoEncontradoException {
+
+				if(listUsu!=null && !listUsu.isEmpty()) {
+					
+					for(Usuario u : listUsu) {
+						list.add((Estudiante)u);
 	
-	
-	
+					}
+				}
+				
+			} catch (Exception e) {
+				System.out.println("Error al obtener estudiantes: " + e.getMessage());
+				e.printStackTrace();
+			}
+			
+			return list;	
+		}
+		
+		/*
+		 * METODOS ConvocatoriaAsistenciaEventoEstudiante REMOTOS FIN
+		 */
 	
 }

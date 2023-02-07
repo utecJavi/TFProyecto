@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -73,8 +74,13 @@ public class UIAltaConstancia {
 		panel.add(lblEventos);
 		
 		JComboBox<Evento> comboEventos = new JComboBox<Evento>();
-		comboEventos.setBounds(23, 213, 360, 21);
-		List<Evento> eventos = eventoBeanRemote.obtenerEventos();
+		comboEventos.setBounds(23, 223, 360, 21);
+		List<Evento> eventos = new ArrayList<Evento>();
+		try {
+			eventos = eventoBeanRemote.obtenerEventos();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Hubo un error al intentar traer la lista de eventos.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 		for(Evento eventoItem: eventos){
 			comboEventos.addItem(eventoItem);
 		}
@@ -86,7 +92,7 @@ public class UIAltaConstancia {
 		
 		
 		JComboBox<TipoConstancias> comboTipoConstancias = new JComboBox<TipoConstancias>();
-		comboTipoConstancias.setBounds(23, 213, 360, 21);
+		comboTipoConstancias.setBounds(23, 304, 360, 21);
 		comboTipoConstancias.addItem(TipoConstancias.SIN_SELECCIONAR);
 		comboTipoConstancias.addItem(TipoConstancias.PRESENCIAL_COMUN);
 		comboTipoConstancias.addItem(TipoConstancias.PRESENCIAL_PRUEBA);
@@ -100,7 +106,7 @@ public class UIAltaConstancia {
 		
 		
 		JButton btnAltaConstancia = new JButton("Solicitar constancia");
-		btnAltaConstancia.setBounds(23, 481, 189, 19);
+		btnAltaConstancia.setBounds(189, 367, 189, 19);
 		btnAltaConstancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				

@@ -1,5 +1,6 @@
 package tecnofenix.servicios;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -10,6 +11,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import tecnofenix.entidades.*;
+import tecnofenix.exception.ItrNoEncontradoException;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.EventoBeanRemote;
 
@@ -88,8 +90,36 @@ public class EventoBean implements EventoBeanRemote {
 
 	@Override
 	public List<Evento> obtenerEventos() {
+		
+		List<Evento> list = new ArrayList<Evento>();
 		TypedQuery<Evento> query = em.createNamedQuery("Evento.findAll", Evento.class);
-		return query.getResultList();
+		list=query.getResultList();
+		
+		return list;
+	}
+
+	@Override
+	public List<Evento> buscarEventosPor(String id, String titulo) {
+		String conditions = "";
+		
+		if (id != null && id != "") {
+			conditions = conditions + " AND e.id = " + id;
+		}
+		if (titulo != null && titulo != "") {
+
+			conditions = conditions + " AND e.titulo LIKE '" + titulo + "'";
+
+		}
+		
+		String jpql = "SELECT e FROM Evento e WHERE 1=1 " + conditions;
+		TypedQuery<Evento> query = em.createQuery(jpql, Evento.class);
+		System.out.println(jpql);
+		List<Evento> list = query.getResultList();
+		if (list == null) {
+			throw new ItrNoEncontradoException("Eventos no encontrado.");
+		}
+
+		return list;
 	}
 	
 	

@@ -1,5 +1,6 @@
 package tecnofenix.servicios;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -12,6 +13,8 @@ import javax.persistence.TypedQuery;
 import tecnofenix.entidades.ConvocatoriaAsistenciaEventoEstudiante;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Evento;
+import tecnofenix.entidades.Itr;
+import tecnofenix.exception.ItrNoEncontradoException;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ConvocatoriaAsistenciaEventoEstudianteBeanRemote;
 
@@ -60,9 +63,17 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 	}
 
 	@Override
-	public List<ConvocatoriaAsistenciaEventoEstudiante> obtetenerTodos() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ConvocatoriaAsistenciaEventoEstudiante> obtenerTodos() {
+		List<ConvocatoriaAsistenciaEventoEstudiante> list = new ArrayList<ConvocatoriaAsistenciaEventoEstudiante>();
+		TypedQuery<ConvocatoriaAsistenciaEventoEstudiante> query = em.createNamedQuery("ConvocatoriaAsistenciaEventoEstudiante.findAll", ConvocatoriaAsistenciaEventoEstudiante.class);
+		list = query.getResultList();
+
+		if (list == null) {
+			System.out.println("ConvocatoriaAsistenciaEventoEstudiante ... lista vacia");	
+		}
+		System.out.println("ConvocatoriaAsistenciaEventoEstudiante ... retornando lista");
+		
+		return list;
 	}
 
 	@Override
@@ -77,6 +88,13 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 		Query query = em.createQuery("UPDATE ConvocatoriaAsistenciaEventoEstudiante c SET asistencia = 1 WHERE id = :id");
 		query.setParameter("id", id);
 		query.executeUpdate();
+	}
+
+	@Override
+	public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,
+			String nombre, String apellido, Boolean asistencia) throws ServiciosException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

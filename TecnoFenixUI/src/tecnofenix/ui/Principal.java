@@ -115,7 +115,14 @@ public class Principal {
 		
 		JMenu evento = new JMenu("Eventos");
 		JMenuItem evenAlta = new JMenuItem("Alta Eventos");
-		JMenuItem evenMod = new JMenuItem("Modificacion Eventos");
+		JMenuItem evenMod = new JMenuItem("Asistencia a Eventos");
+		evenMod.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UIEventoAsistenciaEstudiante uiEventoAsistenciaEstudiante = new UIEventoAsistenciaEstudiante();
+				uiEventoAsistenciaEstudiante.inicializar();
+				uiEventoAsistenciaEstudiante.frame.setVisible(true);
+			}
+		});
 		JMenuItem evenDelete = new JMenuItem("Borrar Eventos");
 		JMenuItem evenList = new JMenuItem("Listar Eventos");
 		evenList.addActionListener(new ActionListener() {
@@ -226,6 +233,18 @@ public class Principal {
 		escolaridad.add(escoDelete);
 		menuBar.add(escolaridad);
 		
+		JMenu reportes= new JMenu("Reportes");
+		JMenuItem reportesAsistenciaEstudiantes= new JMenuItem("Asistencia de estudiantes a eventos");
+		reportesAsistenciaEstudiantes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				UIReportes uiReporte = new UIReportes();
+				uiReporte.inicializar();
+				uiReporte.frame.setVisible(true);
+			}
+		});
+		reportes.add(reportesAsistenciaEstudiantes);
+		menuBar.add(reportes);
 		
 
 		
