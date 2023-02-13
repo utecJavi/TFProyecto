@@ -145,7 +145,7 @@ public class UsuarioBean implements UsuarioBeanRemote {
 		}
 		if (nombre != null && nombre != "") {
 
-			conditions = conditions + " AND u.nombres LIKE '" + nombre + "'";
+			conditions = conditions + " AND u.nombres LIKE '%" + nombre + "%'";
 
 		}
 		if (depto != null && depto != "") {
@@ -167,19 +167,19 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 		if (doc != null && doc != "") {
 
-			conditions = conditions + " AND u.documento LIKE '" + doc + "'";
+			conditions = conditions + " AND u.documento LIKE '%" + doc + "%'";
 
 		}
 
 		if (apellido != null && apellido != "") {
 
-			conditions = conditions + " AND u.apellidos LIKE '" + apellido + "'";
+			conditions = conditions + " AND u.apellidos LIKE '%" + apellido + "%'";
 
 		}
 
 		if (mail != null && mail != "") {
 
-			conditions = conditions + " AND u.mail LIKE '" + mail + "'";
+			conditions = conditions + " AND u.mail LIKE '%" + mail + "%'";
 
 		}
 

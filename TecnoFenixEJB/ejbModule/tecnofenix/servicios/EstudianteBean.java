@@ -9,6 +9,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 import tecnofenix.entidades.Estudiante;
+import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
@@ -164,6 +165,13 @@ public class EstudianteBean implements EstudianteBeanRemote {
 		System.out.println("ESTUDIANTEBEAN LUEGO DE LA QUERY listarEstudiantes");
 		return query.getResultList();
 
+	}
+
+	@Override
+	public Estudiante buscarEstudiantePorId(Integer id) throws ServiciosException {
+		TypedQuery<Estudiante> query = em.createNamedQuery("Estudiante.findById", Estudiante.class);
+		Estudiante estudiante = query.setParameter("id", id).getSingleResult();
+		return estudiante;
 	}
 
 //	@Override

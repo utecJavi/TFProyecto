@@ -89,7 +89,7 @@ public class EventoBean implements EventoBeanRemote {
 	}
 
 	@Override
-	public List<Evento> obtenerEventos() {
+	public List<Evento> listarEventos() {
 		
 		List<Evento> list = new ArrayList<Evento>();
 		TypedQuery<Evento> query = em.createNamedQuery("Evento.findAll", Evento.class);
@@ -107,7 +107,7 @@ public class EventoBean implements EventoBeanRemote {
 		}
 		if (titulo != null && titulo != "") {
 
-			conditions = conditions + " AND e.titulo LIKE '" + titulo + "'";
+			conditions = conditions + " AND e.titulo LIKE '%" + titulo + "%'";
 
 		}
 		

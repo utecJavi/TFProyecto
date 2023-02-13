@@ -476,7 +476,7 @@ public class UIEvento {
 	}
 	
 	private void generateRows(DefaultTableModel tableModel) {
-		List<Evento> eventos = ejb.obtenerEventos();
+		List<Evento> eventos = ejb.listarEventos();
 		tableModel.getDataVector().removeAllElements();
 		tableModel.fireTableDataChanged();
 		for (Evento evento : eventos) {

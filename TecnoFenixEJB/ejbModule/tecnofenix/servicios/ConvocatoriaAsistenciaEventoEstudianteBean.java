@@ -34,12 +34,6 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
         // TODO Auto-generated constructor stub
     }
 
-	@Override
-	public ConvocatoriaAsistenciaEventoEstudiante crearClase(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu)
-			throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public ConvocatoriaAsistenciaEventoEstudiante modificarClase(
@@ -76,12 +70,6 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 		return list;
 	}
 
-	@Override
-	public void agregarEstudiante(Estudiante estudiante, Evento evento) {
-		ConvocatoriaAsistenciaEventoEstudiante convocatoriaAsistenciaEventoEstudiante = new ConvocatoriaAsistenciaEventoEstudiante(null, evento, estudiante);
-		em.persist(convocatoriaAsistenciaEventoEstudiante);
-		em.flush();
-	}
 
 	@Override
 	public void registrarAsistencia(Integer id) {
@@ -96,5 +84,22 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public ConvocatoriaAsistenciaEventoEstudiante crearClase(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu)
+			throws ServiciosException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ConvocatoriaAsistenciaEventoEstudiante agregarEstudianteAEvento(
+			ConvocatoriaAsistenciaEventoEstudiante convAsistEventEstu) {
+		
+		em.persist(convAsistEventEstu);
+		em.flush();
+		return convAsistEventEstu;
+	}
+
 
 }

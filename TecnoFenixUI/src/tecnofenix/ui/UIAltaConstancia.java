@@ -77,7 +77,7 @@ public class UIAltaConstancia {
 		comboEventos.setBounds(23, 223, 360, 21);
 		List<Evento> eventos = new ArrayList<Evento>();
 		try {
-			eventos = eventoBeanRemote.obtenerEventos();
+			eventos = eventoBeanRemote.listarEventos();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Hubo un error al intentar traer la lista de eventos.", "Error", JOptionPane.ERROR_MESSAGE);
 		}

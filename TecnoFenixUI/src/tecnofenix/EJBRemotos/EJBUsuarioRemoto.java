@@ -198,7 +198,17 @@ public class EJBUsuarioRemoto {
 		return estudiante;
 
 	}
+	public Estudiante buscarEstudiantePorId(Integer id) {
+		Estudiante estudiante = new Estudiante();
+		try {
+			estudiante = estudianteRemote.buscarEstudiantePorId(id);
+		} catch (ServiciosException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return estudiante;
 
+	}
 	public List<Estudiante> listarEstudiantes() {
 		List<Estudiante> lista = new ArrayList<Estudiante>();
 		try {
@@ -310,15 +320,15 @@ public class EJBUsuarioRemoto {
 		return new ArrayList<Estudiante>();
 	}
 	
-	public void agregarEstudianteEvento() {
+	public ConvocatoriaAsistenciaEventoEstudiante agregarEstudianteAEvento(ConvocatoriaAsistenciaEventoEstudiante convAsisEventEstu) {
+		ConvocatoriaAsistenciaEventoEstudiante conv = new ConvocatoriaAsistenciaEventoEstudiante();
 		try {
-			Evento evento = eventoBeanRemote.obtenerEvento(1);
-			Estudiante estudiante = estudianteRemote.obtenerEstudiantePorAtributo(String.valueOf(556664));
-			convocatoriaAsistenciaEventoEstudianteBeanRemote.agregarEstudiante(estudiante, evento);
+			conv=convocatoriaAsistenciaEventoEstudianteBeanRemote.agregarEstudianteAEvento(convAsisEventEstu);
 		} catch (Exception e) {
 			System.out.println("Error en agregar convocatoria estudiante evento: " + e.getMessage());
 			e.printStackTrace();
 		}
+		return conv;
 	}
 	
 	public void registrarAsistencia() {
@@ -340,15 +350,16 @@ public class EJBUsuarioRemoto {
 		
 		return new Evento();
 	}	
-	public List<Evento> obtenerEventos() {
+	public List<Evento> listarEventos() {
+		List<Evento> lista = new ArrayList<Evento>();
 		try {
-			return eventoBeanRemote.obtenerEventos();
+			lista= eventoBeanRemote.listarEventos();
 		} catch (Exception e) {
 			System.out.println("Error en obtener eventos: " + e.getMessage());
 			e.printStackTrace();
 		}
 		
-		return new ArrayList<Evento>();
+		return lista;
 	}
 	
 	public Evento crearEvento(Evento evento) {
