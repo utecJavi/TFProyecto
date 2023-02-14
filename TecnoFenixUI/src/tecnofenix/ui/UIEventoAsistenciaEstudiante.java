@@ -126,8 +126,7 @@ public class UIEventoAsistenciaEstudiante {
 					 Integer selec=Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString());
 					 eventoSeleccionado= usuarioRemote.obtenerEvento(selec);
 					 String datosEvento=new String();
-					 datosEvento="Datos evento: \n"
-					 + "Id: "+ eventoSeleccionado.getId()+"\n"
+					 datosEvento="Id: "+ eventoSeleccionado.getId()+"\n"
 					 + "Titulo: "+ eventoSeleccionado.getTitulo()+"\n"
 					 + "Tipo de evento: "+ eventoSeleccionado.getTipo().getTipo()+"\n"
 					 + "Modalidad del evento: "+ eventoSeleccionado.getModalidad().getModalidad()+"\n"
@@ -177,8 +176,7 @@ public class UIEventoAsistenciaEstudiante {
 							 Integer selec=Integer.valueOf(tableEstudiante.getValueAt(tableEstudiante.getSelectedRow(), 0).toString());
 							 estudianteSeleccionado= usuarioRemote.buscarEstudiantePorId(selec);
 							 String datosEstudiante=new String();
-							 datosEstudiante="Datos estudiante: \n"
-							 + "Id: "+ estudianteSeleccionado.getId()+"\n"
+							 datosEstudiante= "Id: "+ estudianteSeleccionado.getId()+"\n"
 							 + "Nombre: "+ estudianteSeleccionado.getNombres()+ " "+ estudianteSeleccionado.getApellidos()+"\n"
 							 + "Documento: "+ estudianteSeleccionado.getDocumento()+"\n"
 							 + "Mail: "+ estudianteSeleccionado.getMail()+"\n"
@@ -208,7 +206,7 @@ public class UIEventoAsistenciaEstudiante {
 				}
 			}
 		});
-		btnConfirmarAsistencia.setBounds(487, 661, 290, 21);
+		btnConfirmarAsistencia.setBounds(487, 718, 290, 21);
 		panel.add(btnConfirmarAsistencia);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Nombre evento");
@@ -260,44 +258,44 @@ public class UIEventoAsistenciaEstudiante {
 		panel.add(lblNewLabel);
 		
 		JButton btnLimpiarDatos = new JButton("Limpiar Datos");
-		btnLimpiarDatos.setBounds(487, 693, 290, 21);
+		btnLimpiarDatos.setBounds(487, 750, 290, 21);
 		panel.add(btnLimpiarDatos);
 		
 
-		lblDatosEvento = new JTextArea("Datos evento");
+		lblDatosEvento = new JTextArea("...");
 		lblDatosEvento.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblDatosEvento.setEditable(false);
 		lblDatosEvento.setLineWrap(true);
 		lblDatosEvento.setForeground(Color.BLACK);
 		lblDatosEvento.setBackground(SystemColor.control);
-		lblDatosEvento.setBounds(20, 481, 376, 154);
+		lblDatosEvento.setBounds(20, 513, 376, 175);
 		panel.add(lblDatosEvento);
 		
-		lblDatosEstudiante = new JTextArea("Datos estudiante");
+		lblDatosEstudiante = new JTextArea("...");
 		lblDatosEstudiante.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblDatosEstudiante.setEditable(false);
 		lblDatosEstudiante.setLineWrap(true);
 		lblDatosEstudiante.setForeground(Color.BLACK);
 		lblDatosEstudiante.setBackground(SystemColor.control);
-		lblDatosEstudiante.setBounds(406, 481, 371, 154);
+		lblDatosEstudiante.setBounds(406, 513, 371, 175);
 		panel.add(lblDatosEstudiante);
 		
 		comboBoxAsistencia = new JComboBox();
 		comboBoxAsistencia.setModel(new DefaultComboBoxModel(new String[] {"","Si", "No"}));
-		comboBoxAsistencia.setBounds(20, 661, 203, 21);
+		comboBoxAsistencia.setBounds(20, 718, 203, 21);
 		panel.add(comboBoxAsistencia);
 		
 		JLabel lblNewLabel_2 = new JLabel("Asistio evento?");
-		lblNewLabel_2.setBounds(20, 645, 203, 13);
+		lblNewLabel_2.setBounds(20, 702, 203, 13);
 		panel.add(lblNewLabel_2);
 		
 		textNotaEstudiante = new JTextField();
-		textNotaEstudiante.setBounds(233, 662, 244, 19);
+		textNotaEstudiante.setBounds(233, 719, 244, 19);
 		panel.add(textNotaEstudiante);
 		textNotaEstudiante.setColumns(10);
 		
 		JLabel lblNewLabel_3 = new JLabel("Nota");
-		lblNewLabel_3.setBounds(233, 645, 45, 13);
+		lblNewLabel_3.setBounds(233, 702, 45, 13);
 		panel.add(lblNewLabel_3);
 		
 		JButton btnBuscarEventos = new JButton("Buscar");
@@ -328,6 +326,18 @@ public class UIEventoAsistenciaEstudiante {
 		textBuscarApellido.setColumns(10);
 		textBuscarApellido.setBounds(564, 61, 148, 19);
 		panel.add(textBuscarApellido);
+		
+		JLabel lblNewLabel_1 = new JLabel("Datos del evento: ");
+		lblNewLabel_1.setBounds(30, 481, 136, 13);
+		panel.add(lblNewLabel_1);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(20, 504, 780, 2);
+		panel.add(separator_1);
+		
+		JLabel lblNewLabel_2_2 = new JLabel("Datos del Estudiante:");
+		lblNewLabel_2_2.setBounds(416, 481, 113, 13);
+		panel.add(lblNewLabel_2_2);
 		
 		
 
@@ -508,5 +518,4 @@ public class UIEventoAsistenciaEstudiante {
 		        columnModel.getColumn(column).setPreferredWidth(width);
 		    }
 		}
-	
 }

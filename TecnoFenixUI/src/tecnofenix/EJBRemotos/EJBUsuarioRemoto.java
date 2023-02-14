@@ -331,6 +331,23 @@ public class EJBUsuarioRemoto {
 		return conv;
 	}
 	
+	public ConvocatoriaAsistenciaEventoEstudiante obtenerDatosConvPorId(Integer id) {
+		ConvocatoriaAsistenciaEventoEstudiante conv = new ConvocatoriaAsistenciaEventoEstudiante();
+		try {
+			conv=convocatoriaAsistenciaEventoEstudianteBeanRemote.obtenerDatosConvPorId(id);
+		} catch (Exception e) {
+			System.out.println("Error en agregar convocatoria estudiante evento: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return conv;
+		
+		
+		
+	}
+	
+	
+	
+	//???????? este metodo?????
 	public void registrarAsistencia() {
 		try {
 			convocatoriaAsistenciaEventoEstudianteBeanRemote.registrarAsistencia(4);
@@ -570,10 +587,10 @@ public class EJBUsuarioRemoto {
 		}
 		
 		
-		public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,String nombre,String apellido ,Boolean asistencia){
+		public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,String nombre,String apellido ,String documento, String valorLogico,String calificacion,Boolean asistencia){
 			List<ConvocatoriaAsistenciaEventoEstudiante> lista = new ArrayList<ConvocatoriaAsistenciaEventoEstudiante>();
 			try {
-				lista = convocatoriaAsistenciaEventoEstudianteBeanRemote.filtrarAsistEstuAEventosPor(id, tituloEvento, nombre, apellido, asistencia);
+				lista = convocatoriaAsistenciaEventoEstudianteBeanRemote.filtrarAsistEstuAEventosPor(id, tituloEvento, nombre, apellido,documento,valorLogico,calificacion, asistencia);
 			} catch (ServiciosException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

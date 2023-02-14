@@ -22,8 +22,9 @@ public interface ConvocatoriaAsistenciaEventoEstudianteBeanRemote {
 
 	List<ConvocatoriaAsistenciaEventoEstudiante> obtenerClasePorAtributo(
 			ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu);
-	
-	List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,String nombre,String apellido ,Boolean asistencia)throws ServiciosException;
+	ConvocatoriaAsistenciaEventoEstudiante obtenerDatosConvPorId(Integer id)throws ServiciosException;
+	List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,
+			String nombre, String apellido,String documento ,String valorLogico,String calificacion,Boolean asistencia) throws ServiciosException;
 	ConvocatoriaAsistenciaEventoEstudiante agregarEstudianteAEvento(ConvocatoriaAsistenciaEventoEstudiante convAsistEventEstu);
 	void registrarAsistencia(Integer id);
 	
