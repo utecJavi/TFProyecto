@@ -80,9 +80,9 @@ public class Constancia implements Serializable {
     @Column(nullable = false)
     private EstadoConstancia estado;
     
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TipoConstancias tipoConstancia;
+    @JoinColumn(name = "tipo_constancia_id", referencedColumnName = "id")
+    @ManyToOne
+    private TipoConstancia tipoConstancia;
 
 	public Constancia() {
     }
@@ -164,11 +164,11 @@ public class Constancia implements Serializable {
 		this.estado = estado;
 	}
 	
-	public TipoConstancias getTipoConstancia() {
+	public TipoConstancia getTipoConstancia() {
 		return this.tipoConstancia;
 	}
 
-	public void setTipoConstancia(TipoConstancias tipoConstancia) {
+	public void setTipoConstancia(TipoConstancia tipoConstancia) {
 		this.tipoConstancia = tipoConstancia;
 	}
 

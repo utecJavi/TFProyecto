@@ -22,4 +22,12 @@ public interface ConstanciaBeanRemote {
 	
 	List<Constancia> listadoConstancias(String usuario, String estado) throws ServiciosException;
 	
+	TipoConstancia crearTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException;
+	
+	TipoConstancia modificarTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException;
+	
+	void borrarTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException;
+	
+	List<TipoConstancia> listadoTipoConstancia(Boolean baja) throws ServiciosException;
+	
 }

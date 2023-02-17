@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
+import ejbModule.tecnofenix.interfaces.Boolean;
 import tecnofenix.entidades.Constancia;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ConstanciaBeanRemote;
@@ -58,7 +59,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 				em.flush();
 				return constancia;
 			} else {
-				throw new ServiciosException("Se quiere modificar una constancia no existente.");
+				throw new ServiciosException("Se quiere modificar una constancia que no existente.");
 			}
 		} catch (PersistenceException pe) {
 			throw new ServiciosException("Ocurrió un error al modficar constancia: " + pe.getMessage());
@@ -83,7 +84,6 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	
 	@Override
 	public	List<Constancia> listadoConstancias(String usuario, String estado) throws ServiciosException {
-		List<Constancia> list = new ArrayList<Constancia>();
 		try {
 			String consulta = "SELECT c FROM Constancia c WHERE 1=1 ";
 			if (usuario != null) {
@@ -101,11 +101,61 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 			if (estado != null) {
 				query.setParameter("estado", estado);
 			}
-			list=query.getResultList();
+			return query.getResultList();
 		} catch (PersistenceException pe) {
 			throw new ServiciosException("Ocurrio un error al consultar constancias: " + pe.getMessage());
 		}
-		return list;
+	}
+	
+	@Override
+	public TipoConstancia crearTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException {
+		try {
+			tipoConstancia = em.merge(tipoConstancia);
+			em.flush();
+			return tipoConstancia;
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrió un error al crear TipoConstancia: " + pe.getMessage());
+		}
+	}
+
+	@Override
+	public TipoConstancia modificarTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException {
+		try {
+			if (tipoConstancia.getId() != null) {
+				tipoConstancia = em.merge(tipoConstancia);
+				em.flush();
+				return tipoConstancia;
+			} else {
+				throw new ServiciosException("Se quiere modificar un tipo de constancia que no existente.");
+			}
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrió un error al modficar TipoConstancia: " + pe.getMessage());
+		}
+	}
+
+	@Override
+	public void borrarTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException {
+		try {
+			em.remove(tipoConstancia);
+			em.flush();
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrió un error al borrar TipoConstancia: " + pe.getMessage());
+		}
+	}
+	
+	@Override
+	public	List<TipoConstancia> listadoTipoConstancia(Boolean baja) throws ServiciosException {
+		try {
+			String consulta = "SELECT c FROM Constancia c WHERE baja = :baja";
+			TypedQuery<TipoConstancia> query = em.createQuery(consulta, TipoConstancia.class);
+			if (usuario != null) {
+				query.setParameter("baja", baja);
+			}
+			return query.getResultList();
+		} catch (PersistenceException pe) {
+			throw new ServiciosException("Ocurrio un error al consultar constancias: " + pe.getMessage());
+		}
+		
 	}
 
 }
