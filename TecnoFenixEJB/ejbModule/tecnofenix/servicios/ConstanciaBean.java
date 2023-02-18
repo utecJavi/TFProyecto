@@ -134,9 +134,10 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	}
 
 	@Override
-	public void borrarTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException {
+	public void bajaTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException {
 		try {
-			em.remove(tipoConstancia);
+			tipoConstancia.setBaja(true);
+			em.merge(tipoConstancia);
 			em.flush();
 		} catch (PersistenceException pe) {
 			throw new ServiciosException("Ocurrió un error al borrar TipoConstancia: " + pe.getMessage());
