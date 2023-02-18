@@ -237,6 +237,20 @@ public class UIConstancia {
 		});
 		btnBorrarConstancia.setVisible(usuario instanceof Estudiante);
 		panel.add(btnBorrarConstancia);
+		
+		JButton btnGestionTipos = new JButton("Gestionar tipos");
+		btnGestionTipos.setBounds(390, 573, 189, 19);
+		btnGestionTipos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UITipoConstancia tiposConstancia = new UITipoConstancia();
+				tiposConstancia.inicializar();
+				tiposConstancia.frame.setVisible(true);
+			}
+			
+		});
+		btnGestionTipos.setVisible(usuario instanceof Analista);
+		panel.add(btnGestionTipos);
+		
 		frame.pack();
 	}
 	

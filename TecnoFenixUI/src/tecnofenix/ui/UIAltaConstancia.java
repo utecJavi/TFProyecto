@@ -90,18 +90,17 @@ public class UIAltaConstancia {
 		lblTipos.setBounds(23, 285, 150, 13);
 		panel.add(lblTipos);
 		
-		
-		JComboBox<TipoConstancias> comboTipoConstancias = new JComboBox<TipoConstancias>();
+		JComboBox<TipoConstancia> comboTipoConstancias = new JComboBox<TipoConstancia>();
 		comboTipoConstancias.setBounds(23, 304, 360, 21);
-		comboTipoConstancias.addItem(TipoConstancias.SIN_SELECCIONAR);
-		comboTipoConstancias.addItem(TipoConstancias.PRESENCIAL_COMUN);
-		comboTipoConstancias.addItem(TipoConstancias.PRESENCIAL_PRUEBA);
-		comboTipoConstancias.addItem(TipoConstancias.TRANSPORTE);
-		comboTipoConstancias.addItem(TipoConstancias.ESTUDIANTE_ACTIVO);
-		comboTipoConstancias.addItem(TipoConstancias.EXAMENES);
-		comboTipoConstancias.addItem(TipoConstancias.CREDITO_VME);
-		comboTipoConstancias.addItem(TipoConstancias.CREDITO_UTECINNOVA);
-		comboTipoConstancias.addItem(TipoConstancias.CREDITO_OPTATIVAS);
+		List<TipoConstancia> tipoConstancias = new ArrayList<TipoConstancia>();
+		try {
+			tipoConstancias = constanciaBeanRemote.listadoTipoConstancia(false);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Hubo un error al intentar traer la lista de tipo de constancias.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		for(TipoConstancia tipoItem: tipoConstancias){
+			comboTipoConstancias.addItem(tipoItem);
+		}
 		panel.add(comboTipoConstancias);
 		
 		
@@ -114,7 +113,7 @@ public class UIAltaConstancia {
         		
         		String detalle = txtDetalle.getText();
         		Evento evento = (Evento) comboEventos.getSelectedItem();
-        		TipoConstancias tipoConstancia = (TipoConstancias) comboTipoConstancias.getSelectedItem();
+        		TipoConstancia tipoConstancia = (TipoConstancia) comboTipoConstancias.getSelectedItem();
         		
         		constancia.setDetalle(detalle);
         		constancia.setFecha(new Date(System.currentTimeMillis()));
