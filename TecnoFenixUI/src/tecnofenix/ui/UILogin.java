@@ -94,6 +94,7 @@ public class UILogin {
 				if (!txtEmail.getText().equals("") && !String.valueOf(txtPass.getPassword()).equals("")) {
 					Usuario user;
 					user = ejbUsuario.login(txtEmail.getText(), String.valueOf(txtPass.getPassword()));
+					if(user !=null) {
 					if (user.getId() != null) {
 						if (user.getValidado()) {
 							if (user.getActivo()) {
@@ -129,6 +130,10 @@ public class UILogin {
 						txtEmail.setText("");
 						txtPass.setText("");
 					}
+					}else {
+						JOptionPane.showMessageDialog(null, "La clave o el usuario no son validos! ", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					
 				} else {
 					JOptionPane.showMessageDialog(null, "Usuario y contraseña no validos, intente nuevamente",
 							"Intente nuevamente", JOptionPane.INFORMATION_MESSAGE);

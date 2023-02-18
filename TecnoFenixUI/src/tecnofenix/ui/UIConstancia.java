@@ -88,7 +88,7 @@ public class UIConstancia {
 		table.setBackground(Color.BLACK);
 		table.setBounds(93, 215, 100, 100);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		
+		table.setDefaultEditor(Object.class, null);
 		final String[] columnNames = {"Id","Detalle", "Evento", "Estudiante", "Estado"};
 		for (int column = 0; column < columnNames.length; column++) {
 			modelo.addColumn(columnNames[column]);
