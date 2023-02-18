@@ -148,7 +148,7 @@ public class UIUsuario {
 		table = new JTable(modelo);
 		table.setCellSelectionEnabled(false);
 		table.setRowSelectionAllowed(true);
-//		table.setDefaultEditor(Object.class, null);
+		table.setDefaultEditor(Object.class, null);
 //		table.setCellSelectionEnabled(true);
 		table.setForeground(Color.GREEN);
 //		table.setColumnSelectionAllowed(true);
@@ -172,7 +172,7 @@ public class UIUsuario {
 
 		// se define el tamaño de la tabla
 		table.setBounds(93, 215, 100, 100);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); // this is obvius part
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); 
 		// Creamos un JscrollPane y le agregamos la JTable
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(10, 169, 1159, 302);

@@ -74,7 +74,7 @@ public class UIListaTutores {
 
 		// se crea la Tabla con el modelo DefaultTableModel
 		table = new JTable(modelo);
-//		table.setDefaultEditor(Object.class, null);
+		table.setDefaultEditor(Object.class, null);
 		table.setCellSelectionEnabled(false);
 		table.setRowSelectionAllowed(true);
 		table.setForeground(Color.GREEN);

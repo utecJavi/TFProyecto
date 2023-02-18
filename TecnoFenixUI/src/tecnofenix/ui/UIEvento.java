@@ -69,7 +69,8 @@ public class UIEvento {
 	 * @wbp.parser.entryPoint
 	 */
 	public void inicializar() {
-		
+		//Usuario user
+		//pasar el usuario activo para saber si es tutor y filtrar por los datos del tutor
 
 		ejb = new EJBUsuarioRemoto();
 		frame = new JFrame("Eventos");
@@ -100,7 +101,7 @@ public class UIEvento {
 		tablaEventos.setForeground(Color.GREEN);
 		tablaEventos.setColumnSelectionAllowed(false);
 		tablaEventos.setBackground(Color.BLACK);
-	
+		tablaEventos.setDefaultEditor(Object.class, null);
 		tablaEventos.setBounds(93, 215, 100, 100);	
 
 //		panel.add(tablaUsuarios);
