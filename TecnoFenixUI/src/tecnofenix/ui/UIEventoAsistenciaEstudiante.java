@@ -256,7 +256,7 @@ public class UIEventoAsistenciaEstudiante {
 				buscarEstudiantePor(textBuscarCI.getText() ,textBuscarNombre.getText(),textBuscarApellido.getText());
 			}
 		});
-		btnBuscarEstudiantes.setBounds(1127, 60, 63, 21);
+		btnBuscarEstudiantes.setBounds(1116, 60, 74, 21);
 		panel.add(btnBuscarEstudiantes);
 		
 		JSeparator separator = new JSeparator();

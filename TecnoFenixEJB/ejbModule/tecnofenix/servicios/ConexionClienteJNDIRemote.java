@@ -7,4 +7,5 @@ public interface ConexionClienteJNDIRemote {
 
 	
 	public String levantando();
+	public Boolean ping();
 }

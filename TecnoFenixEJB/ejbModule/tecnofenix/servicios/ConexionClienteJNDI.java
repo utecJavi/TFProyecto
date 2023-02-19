@@ -23,4 +23,11 @@ public class ConexionClienteJNDI implements ConexionClienteJNDIRemote {
 		return "Correcto!";
 	}
 
+	@Override
+	public Boolean ping() {
+		
+		return true;
+	}
+
+	
 }

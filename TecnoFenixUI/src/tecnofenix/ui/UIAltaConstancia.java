@@ -29,7 +29,7 @@ import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.entidades.Evento;
 import tecnofenix.entidades.Constancia;
-import tecnofenix.entidades.TipoConstancias;
+import tecnofenix.entidades.TipoConstancia;
 
 public class UIAltaConstancia {
 
