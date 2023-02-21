@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
@@ -51,12 +53,14 @@ public class EventoBean implements EventoBeanRemote {
 
 	@Override
 	public Evento modificarEvento(Evento evento) throws ServiciosException {
-		for(TutorResponsableEvento tre : evento.getTutorResponsableEventoCollection()) {
-			treBean.modificarTutorResponsableEvento(tre);
-		}
-		
+//		System.out.println("Antes de modificar el evento se manda a guardar los tutores responsables");
+//		for(TutorResponsableEvento tre : evento.getTutorResponsableEventoCollection()) {
+//			treBean.modificarTutorResponsableEvento(tre);
+//		}
+//		System.out.println("Se guardaron los tutores responsables, se pasa a guardar el evento");
 		em.merge(evento);
 		em.flush();
+		System.out.println("Se guardo el evento...");
 		return evento;
 	}
 

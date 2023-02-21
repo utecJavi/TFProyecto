@@ -3,10 +3,15 @@ package tecnofenix.servicios;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolationException;
 
 import tecnofenix.entidades.TutorResponsableEvento;
 import tecnofenix.entidades.Usuario;
@@ -28,26 +33,58 @@ public class TutorResponsableEventoBean implements TutorResponsableEventoBeanRem
      * Default constructor. 
      */
     public TutorResponsableEventoBean() {
-        // TODO Auto-generated constructor stub
+//    	EntityManagerFactory emf = Persistence.createEntityManagerFactory("TecnoFenixEJB");
+//    	em = emf.createEntityManager();
     }
 
 	@Override
 	public TutorResponsableEvento crearTutorResponsableEvento(TutorResponsableEvento tutorRespEve)throws ServiciosException {
-			
-		em.persist(tutorRespEve);
-		em.flush();
+		System.out.println("crearTutorResponsableEvento antes del persist");
+		if (tutorRespEve.getId() == null)System.out.println("tutorRespEve.getId() =null");
+		if (tutorRespEve.getEventoId() == null) {
+			System.out.println("tutorRespEve.getEventoId() =null");
+		}else {
+			System.out.println("tutorRespEve.getEventoId() ="+tutorRespEve.getEventoId());
+		}
+		if (tutorRespEve.getTutorId() == null) {
+			System.out.println("tutorRespEve.getTutorId() =null");
+		}else {
+			System.out.println("tutorRespEve.getTutorId() ="+tutorRespEve.getTutorId());
+		}
+		
+		if(em==null) {
+			System.out.println(" ENTITY MANAGER ES NULL");
+			System.out.println(" ENTITY MANAGER ES NULL");
+			System.out.println(" ENTITY MANAGER ES NULL");
+			System.out.println(" ENTITY MANAGER ES NULL");
+			System.out.println(" ENTITY MANAGER ES NULL");
+	    	EntityManagerFactory emf = Persistence.createEntityManagerFactory("TecnoFenixEJB");
+	    	em = emf.createEntityManager();
+		}
+		try {
+			em.merge(tutorRespEve);
+			em.flush();
+		} catch (Exception e ) {
+			if(e instanceof ConstraintViolationException) {
+				System.out.println(e);
+				System.out.println("Todo bien pero no se puede agregar algo que ya esta en la base?");
+			}
+		}
+		
 		System.out.println("Se creo el TutorResponsableEvento nuevo con id " +tutorRespEve.getId());
 		return tutorRespEve;
 	}
 
 	@Override
 	public TutorResponsableEvento modificarTutorResponsableEvento(TutorResponsableEvento tutorRespEve) throws ServiciosException {
-	if (tutorRespEve.getId() == null) {
-		crearTutorResponsableEvento(tutorRespEve);
-	}else {
-		em.merge(tutorRespEve);
-		em.flush();
-	}
+		System.out.println("modificarTutorResponsableEvento ");
+		if (tutorRespEve.getId() == null) {
+			System.out.println("El tutor responsable es nuevo se manda a crear ");
+			crearTutorResponsableEvento(tutorRespEve);
+		}else {
+			em.merge(tutorRespEve);
+			em.flush();
+		}
 		return tutorRespEve;
 	}
 
@@ -86,4 +123,6 @@ public class TutorResponsableEventoBean implements TutorResponsableEventoBeanRem
 		return tre;
 	}
 
+	
+	
 }

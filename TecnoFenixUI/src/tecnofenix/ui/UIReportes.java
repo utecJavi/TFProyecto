@@ -321,13 +321,20 @@ public class UIReportes {
 			fila[0] = cAEE.getId();
 			fila[1] = cAEE.getEventoId().getTitulo();
 			fila[2] = cAEE.getEstudianteId().getNombres()+" "+cAEE.getEstudianteId().getApellidos();
-			if (cAEE.getAsistencia()) {
-				fila[3] = "Si";
-			} else {
-				fila[3] = "No";
+			if(cAEE.getAsistencia()!=null) {
+				if (cAEE.getAsistencia()) {
+					fila[3] = "Si";
+				} else {
+					fila[3] = "No";
+				}
+			}else {
+				fila[3] = "---";
 			}
-			fila[4] = cAEE.getCalificacion();
-			
+			if(cAEE.getCalificacion() != null) {
+				fila[4] = cAEE.getCalificacion();
+			}else {
+				fila[4] ="---";
+			}
 			// Se añade al modelo la fila completa.
 			modelo.addRow(fila);
 

@@ -19,11 +19,16 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author jasuaga
+ * , uniqueConstraints = {
+	    @UniqueConstraint(columnNames = {"evento_id", "tutor_id"})
+})
  */
 @Entity
 @Table(name = "tutor_responsable_evento")
@@ -39,11 +44,15 @@ public class TutorResponsableEvento implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @JoinColumn(name = "tutor_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @NotNull
     private Tutor tutorId;
+    
     @JoinColumn(name = "evento_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @NotNull
     private Evento eventoId;
 
     public TutorResponsableEvento() {

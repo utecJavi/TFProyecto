@@ -60,6 +60,7 @@ public class UIEventoAsistenciaEstudiante {
 	private JTextField textBuscarTitulo;
 	private JTextField textBuscarId;
 	
+	private List<ConvocatoriaAsistenciaEventoEstudiante> listHabilitados;
 	
 	private Evento eventoSeleccionado;
 	private Estudiante estudianteSeleccionado;
@@ -105,7 +106,7 @@ public class UIEventoAsistenciaEstudiante {
 
 		// se crea la Tabla con el modelo DefaultTableModel
 		table = new JTable(modelo);
-		table.setDefaultEditor(Object.class, null);
+		table.setDefaultEditor(Object.class, null);//esto es para que no deje editar las celdas
 		table.setCellSelectionEnabled(false);
 		table.setRowSelectionAllowed(true);
 		table.setForeground(Color.GREEN);
@@ -134,6 +135,8 @@ public class UIEventoAsistenciaEstudiante {
 				if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1) {
 					 Integer selec=Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString());
 					 eventoSeleccionado= usuarioRemote.obtenerEvento(selec);
+					 listHabilitados= usuarioRemote.listarConvocatoriaEventEstuPorEvento(eventoSeleccionado);
+					 listarEstudiantesConvocados(listHabilitados);
 					 String datosEvento=new String();
 					 datosEvento="Id: "+ eventoSeleccionado.getId()+"\n"
 					 + "Titulo: "+ eventoSeleccionado.getTitulo()+"\n"
@@ -157,7 +160,7 @@ public class UIEventoAsistenciaEstudiante {
 // ESTUDIANTE TABLE
 		// se crea la Tabla con el modelo DefaultTableModel
 				tableEstudiante = new JTable(modeloEstudiante);
-				table.setDefaultEditor(Object.class, null);
+				table.setDefaultEditor(Object.class, null);//esto es para que no deje editar las celdas
 				tableEstudiante.setCellSelectionEnabled(false);
 				tableEstudiante.setRowSelectionAllowed(true);
 				tableEstudiante.setForeground(Color.GREEN);
@@ -357,7 +360,7 @@ public class UIEventoAsistenciaEstudiante {
 			}
 		});
 		
-		listEstudiantes = usuarioRemote.buscarEstudiantePor("","","");
+		listEstudiantes = usuarioRemote.buscarEstudiantePor("","","","","");
 		actualizarListaEstudiante();
 		
 		listEventos = usuarioRemote.listarEventos();
@@ -422,7 +425,7 @@ public class UIEventoAsistenciaEstudiante {
 	
 	public void buscarEstudiantePor(String ci, String nombre ,String apellido) {
 		limpiarTablaEstudiantes();
-		listEstudiantes = usuarioRemote.buscarEstudiantePor(ci,nombre,apellido);
+		listEstudiantes = usuarioRemote.buscarEstudiantePor(ci,nombre,apellido,"","");
 		if(listEstudiantes != null) {
 			// Se rellena cada posición del array con una de las columnas de la tabla en
 		// base de datos.
@@ -540,4 +543,16 @@ public class UIEventoAsistenciaEstudiante {
 		        columnModel.getColumn(column).setPreferredWidth(width);
 		    }
 		}
+	 
+	
+	 public void listarEstudiantesConvocados(List<ConvocatoriaAsistenciaEventoEstudiante> listPasada) {
+		 	limpiarTablaEstudiantes();
+			for (ConvocatoriaAsistenciaEventoEstudiante habilitados : listPasada) {
+			
+				listEstudiantes.add(habilitados.getEstudianteId());
+
+			}
+			cargarTablaEstudiante(listEstudiantes);
+			
+	 }
 }

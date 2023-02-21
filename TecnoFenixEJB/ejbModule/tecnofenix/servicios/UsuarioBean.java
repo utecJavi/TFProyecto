@@ -195,10 +195,10 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 			conditions = conditions + " AND u.uTipo LIKE '" + tipo + "'";
 
-			if (tipo == "ESTUDIANTE") {
+			if (tipo.equals("ESTUDIANTE")) {
 				if (generacion != null && generacion != "") {
 
-					conditions = conditions + " AND u.generacion = " + generacion;
+					conditions = conditions + " AND u.generacion = " + Integer.valueOf(generacion);
 
 				}
 			}

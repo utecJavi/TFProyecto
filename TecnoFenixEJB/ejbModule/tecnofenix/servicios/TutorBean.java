@@ -12,6 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,9 +37,7 @@ public class TutorBean implements TutorBeanRemote  {
 
 	@Override
 	public Tutor crearTutor(Tutor tutor) throws ServiciosException {
-		System.out.println("ANALISTA MODIFICADO 1 !");
 		Tutor tutorDb = (Tutor) usuarioBean.encontrarUsuario(tutor.getId());
-		System.out.println("ANALISTA MODIFICADO 2 !");
 		tutorDb.setDocumento(tutor.getDocumento());
 		tutorDb.setContrasenia(tutor.getContrasenia());
 		tutorDb.setApellidos(tutor.getApellidos());
@@ -46,13 +45,8 @@ public class TutorBean implements TutorBeanRemote  {
 		tutorDb.setFechaNacimiento(tutor.getFechaNacimiento());
 		tutorDb.setMail(tutor.getMail());
 		tutorDb.setTelefono(tutor.getTelefono());
-
-		System.out.println("1 MODIFICADO 3 !");
-
 		em.merge(tutorDb);
 		em.flush();
-
-		System.out.println("ANALISTA MODIFICADO 4 !");
 
 		return tutorDb;
 	}
@@ -101,14 +95,32 @@ public class TutorBean implements TutorBeanRemote  {
 
 	@Override
 	public List<Tutor> listarTutores() throws ServiciosException {
+		List<Tutor> tutores = new ArrayList<Tutor>();
+		try {
 		TypedQuery<Tutor> query = em.createNamedQuery("Tutor.findAll", Tutor.class);
-		List<Tutor> tutores = query.getResultList();
-
-		if (tutores == null) {
-			throw new UsuarioNoEncontradoException("Tutores no encontrados.");
+		tutores = query.getResultList();
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-
+		if (tutores == null) {
+			throw new ServiciosException("Tutores no encontrados.");
+		}
 		return tutores;
+	}
+
+	@Override
+	public Tutor obtenerTutorPorId(Integer tutorId) {
+		System.out.println("obtenerTutorPorId id= "+tutorId);
+		TypedQuery<Tutor> query = em.createNamedQuery("Tutor.findById", Tutor.class);
+		Tutor tutor = query.setParameter("id", tutorId).getSingleResult();
+		
+		if (tutor == null) {
+			throw new UsuarioNoEncontradoException("Tutor no encontrados.");
+		}else {
+			System.out.println("Tutor " +tutor.getId());
+			System.out.println("Tutor nombre: " +tutor.getNombres() + " "+ tutor.getApellidos());
+		}
+		return tutor;
 	}
 
 }

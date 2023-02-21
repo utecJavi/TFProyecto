@@ -32,15 +32,29 @@ public class ItrBean implements ItrBeanRemote {
 
 	@Override
 	public Itr crearItr(Itr itr) throws ServiciosException {
-		itr = em.merge(itr);
-		em.flush();
+		try {
+			System.out.println(itr.getDepartamento());
+			System.out.println(itr.getNombre());
+			if(itr.getId()==null)System.out.println("itr.getId()==null");
+			em.merge(itr);
+			em.flush();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
 		return itr;
 	}
 
 	@Override
 	public Itr modificarItr(Itr itr) throws ServiciosException {
-		itr = em.merge(itr);
-		em.flush();
+		try {
+			em.merge(itr);
+			em.flush();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		
 		return itr;
 	}
 
