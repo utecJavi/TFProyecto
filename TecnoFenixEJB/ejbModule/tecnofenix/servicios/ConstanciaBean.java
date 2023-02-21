@@ -148,11 +148,9 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	@Override
 	public	List<TipoConstancia> listadoTipoConstancia(Boolean baja) throws ServiciosException {
 		try {
-			String consulta = "SELECT c FROM Constancia c WHERE baja = :baja";
+			String consulta = "SELECT tc FROM TipoConstancia tc WHERE tc.baja = :baja";
 			TypedQuery<TipoConstancia> query = em.createQuery(consulta, TipoConstancia.class);
-//			if (usuario != null) {
-				query.setParameter("baja", baja);
-//			}
+			query.setParameter("baja", baja);
 			return query.getResultList();
 		} catch (PersistenceException pe) {
 			throw new ServiciosException("Ocurrio un error al consultar constancias: " + pe.getMessage());
