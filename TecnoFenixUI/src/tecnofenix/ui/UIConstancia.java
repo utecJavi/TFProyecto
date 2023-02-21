@@ -27,12 +27,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-//import tecnocanarios.dao.DAOPersona;
-//import tecnocanarios.dao.DAORol;
-//import tecnocanarios.entidades.Persona;
-//import tecnocanarios.entidades.Rol;
-//import tecnocanarios.mensajes.MensajePopUp;
-//import tecnocanarios.mensajes.Mensajes;
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Estudiante;

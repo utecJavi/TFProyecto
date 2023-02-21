@@ -154,13 +154,6 @@ public class Principal {
 			}
 		});
 		
-
-		
-		JMenu escolaridad= new JMenu("Escolaridad");
-		JMenuItem escoAlta= new JMenuItem("Alta Escolaridad");
-		JMenuItem escoMod= new JMenuItem("Modificacion Escolaridad");
-		JMenuItem escoDelete= new JMenuItem("Borrar Escolaridad");
-		
 		JMenu funcionalidad= new JMenu("Funcionalidad");
 		JMenuItem funAdministracion= new JMenuItem("Administrar Funcionalidades");
 		funAdministracion.addActionListener(new ActionListener() {
@@ -195,12 +188,7 @@ public class Principal {
 		usuario.add(pedirConstanciaEstudiante);
 		usuario.add(adminDatosPersonales);
 		menuBar.add(usuario);
-		
-		
-//		 
-//		constancia.add(constAlta);
-//		constancia.add(constModa);
-//		constancia.add(constDeletea);
+
 		constancia.add(constListado);
 		
 		menuBar.add(constancia);
@@ -226,13 +214,6 @@ public class Principal {
 			
 		}
 		
-		
-		
-		escolaridad.add(escoAlta);
-		escolaridad.add(escoMod);
-		escolaridad.add(escoDelete);
-		menuBar.add(escolaridad);
-		
 		JMenu reportes= new JMenu("Reportes");
 		JMenuItem reportesAsistenciaEstudiantes= new JMenuItem("Asistencia de estudiantes a eventos");
 		reportesAsistenciaEstudiantes.addActionListener(new ActionListener() {
@@ -244,6 +225,23 @@ public class Principal {
 			}
 		});
 		reportes.add(reportesAsistenciaEstudiantes);
+		
+		JMenuItem escolaridad = new JMenuItem("Escolaridad");
+		escolaridad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (user instanceof Estudiante) {
+					UIEscolaridad verEscolaridad = new UIEscolaridad();
+					verEscolaridad.inicializar(user);
+					verEscolaridad.frame.setVisible(true);
+				} else {
+					UIListaEstudianteEscolaridad listadoEstudiantesEsc = new UIListaEstudianteEscolaridad();
+					listadoEstudiantesEsc.inicializar();
+					listadoEstudiantesEsc.frame.setVisible(true);
+				}
+			}
+		});
+		reportes.add(escolaridad);
+		
 		menuBar.add(reportes);
 		
 

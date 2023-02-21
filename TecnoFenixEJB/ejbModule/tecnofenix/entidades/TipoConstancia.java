@@ -40,6 +40,7 @@ public class TipoConstancia implements Serializable {
     @Column(name = "baja")
     private Boolean baja;
 
+    public TipoConstancia() {}
     
 	public Integer getId() {
 		return id;

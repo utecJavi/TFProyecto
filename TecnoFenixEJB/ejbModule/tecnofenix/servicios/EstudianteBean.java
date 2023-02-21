@@ -1,19 +1,24 @@
 package tecnofenix.servicios;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
+import javax.persistence.Query;
 
+import tecnofenix.entidades.EscolaridadDTO;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.EstudianteBeanRemote;
+
 /**
  * Session Bean implementation class CarrerasBean
  */
@@ -174,10 +179,28 @@ public class EstudianteBean implements EstudianteBeanRemote {
 		return estudiante;
 	}
 
-//	@Override
-//	public List<Estudiante> buscarEstudiantePor(String ci, String nombre, String apellido) throws ServiciosException {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Override
+	public List<EscolaridadDTO> obtenerEscolaridad(Integer idEstudiante) throws ServiciosException {
+		
+		Query query = em.createQuery("SELECT ce.eventoId.titulo, ce.eventoId.tipo, ce.eventoId.modalidad, ce.eventoId.fin, ce.eventoId.itr.nombre, ce.calificacion "
+				+ "FROM ConvocatoriaAsistenciaEventoEstudiante ce WHERE ce.estudianteId.id = :idEstudiante ");
+		query.setParameter("idEstudiante", idEstudiante);
+		
+		List<Object[]> resultList = query.getResultList();
+		
+		List<EscolaridadDTO> dtos = new ArrayList<>(resultList.size());
+        for (final Object[] row : resultList) {
+            EscolaridadDTO dto = new EscolaridadDTO();
+            dto.setEvento((String) row[0]);
+            dto.setTipo((String) row[1]);
+            dto.setModalidad((String) row[2]);
+            dto.setFecha((Date) row[3]);
+            dto.setItr((String) row[4]);
+            dto.setCalificacion((int) row[5]);
+            dtos.add(dto);
+        }
+		
+		return dtos;
+	}
 
 }
