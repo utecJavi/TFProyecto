@@ -74,6 +74,8 @@ public class UIEventoAsistenciaEstudiante {
 	private JTextArea lblDatosEvento;
 	private JTextArea lblDatosEstudiante;
 	
+	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -121,10 +123,10 @@ public class UIEventoAsistenciaEstudiante {
 			modelo.addColumn(columnNames[column]);
 		}
 
-		// Se crea un array que será una de las filas de la tabla.
+		// Se crea un array que serï¿½ una de las filas de la tabla.
 		fila = new Object[columnNames.length];
 	
-		// se define el tamaño de la tabla
+		// se define el tamaï¿½o de la tabla
 		table.setBounds(93, 215, 100, 100);
 
 			//EVENTOS
@@ -140,9 +142,9 @@ public class UIEventoAsistenciaEstudiante {
 					 + "Tipo de evento: "+ eventoSeleccionado.getTipo().getTipo()+"\n"
 					 + "Modalidad del evento: "+ eventoSeleccionado.getModalidad().getModalidad()+"\n"
 					 + "Localizacion: "+ eventoSeleccionado.getLocalizacion()+"\n"
-					 + "Inicio: "+ eventoSeleccionado.getInicio()+"\n"
-					 + "Fin: "+ eventoSeleccionado.getId()+"\n";
-					 lblDatosEvento.setText(datosEvento);;
+					 + "Inicio: "+ formatter.format(eventoSeleccionado.getInicio())+"\n"
+					 + "Fin: "+ formatter.format(eventoSeleccionado.getFin())+"\n";
+					 lblDatosEvento.setText(datosEvento);
 				}
 	        }
 	    });
@@ -173,10 +175,10 @@ public class UIEventoAsistenciaEstudiante {
 					modeloEstudiante.addColumn(columnNamesEstudiante[column]);
 				}
 
-				// Se crea un array que será una de las filas de la tabla.
+				// Se crea un array que serï¿½ una de las filas de la tabla.
 				filaEstudiante = new Object[columnNamesEstudiante.length];
 
-				// se define el tamaño de la tabla
+				// se define el tamaï¿½o de la tabla
 				tableEstudiante.setBounds(93, 215, 100, 100);
 
 				tableEstudiante.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -190,7 +192,7 @@ public class UIEventoAsistenciaEstudiante {
 							 + "Nombre: "+ estudianteSeleccionado.getNombres()+ " "+ estudianteSeleccionado.getApellidos()+"\n"
 							 + "Documento: "+ estudianteSeleccionado.getDocumento()+"\n"
 							 + "Mail: "+ estudianteSeleccionado.getMail()+"\n"
-							 + "Fecha nacimiento: "+ estudianteSeleccionado.getFechaNacimiento()+"\n"
+							 + "Fecha nacimiento: "+ formatter.format(estudianteSeleccionado.getFechaNacimiento())+"\n"
 							 + "ITR: "+ estudianteSeleccionado.getItr().getNombre()+"\n";
 							 lblDatosEstudiante.setText(datosEstudiante);;
 						}
@@ -349,8 +351,6 @@ public class UIEventoAsistenciaEstudiante {
 		comboBoxNota.setBounds(646, 714, 244, 21);
 		panel.add(comboBoxNota);
 		
-		
-
 		btnLimpiarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 	
@@ -414,7 +414,7 @@ public class UIEventoAsistenciaEstudiante {
 		limpiarTablaEventos();
 		listEventos = usuarioRemote.buscarEventosPor(id,titulo);
 		if(listEventos != null) {
-			// Se rellena cada posición del array con una de las columnas de la tabla en
+			// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 		// base de datos.
 			cargarTablaEvento(listEventos);
 		}
@@ -424,7 +424,7 @@ public class UIEventoAsistenciaEstudiante {
 		limpiarTablaEstudiantes();
 		listEstudiantes = usuarioRemote.buscarEstudiantePor(ci,nombre,apellido);
 		if(listEstudiantes != null) {
-			// Se rellena cada posición del array con una de las columnas de la tabla en
+			// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 		// base de datos.
 		cargarTablaEstudiante(listEstudiantes);
 		
@@ -440,7 +440,7 @@ public class UIEventoAsistenciaEstudiante {
 	}
 	
 	public boolean validar() {
-		if(comboBoxNota.getSelectedItem().toString()=="") {
+		if(comboBoxNota.getSelectedItem().toString()=="" && comboBoxAsistencia.getSelectedItem().toString()=="Si") {
 			JOptionPane.showMessageDialog(null, "Seleccione una calificacion de 1 a 5", "Datos no validos",
 					JOptionPane.INFORMATION_MESSAGE);
 			return false;	
@@ -469,6 +469,7 @@ public class UIEventoAsistenciaEstudiante {
 		
 		return true;
 	}
+	
 	public ConvocatoriaAsistenciaEventoEstudiante confirmarAsistencia() {
 		ConvocatoriaAsistenciaEventoEstudiante conv = new ConvocatoriaAsistenciaEventoEstudiante();
 		conv.setEstudianteId(estudianteSeleccionado);
@@ -484,7 +485,7 @@ public class UIEventoAsistenciaEstudiante {
 		
 		conv = usuarioRemote.agregarEstudianteAEvento(conv);
 		if(conv.getId()!=null) {
-			JOptionPane.showMessageDialog(null, "Su estidiante fue ingresado al evento", "Datos no validos",
+			JOptionPane.showMessageDialog(null, "Su estudiante fue ingresado al evento", "Alta exitosa",
 					JOptionPane.INFORMATION_MESSAGE);
 		}else {
 			JOptionPane.showMessageDialog(null, "Fallo al intentar ingresar el estudiante al evento", "Error",
@@ -495,7 +496,6 @@ public class UIEventoAsistenciaEstudiante {
 	
 	
 	 public void cargarTablaEvento(List<Evento> listPasada) {
-		 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 			for (Evento tutor : listPasada) {
 //				"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"
 				fila[0] = tutor.getId();
@@ -505,7 +505,7 @@ public class UIEventoAsistenciaEstudiante {
 				fila[4] = tutor.getLocalizacion();
 				fila[5] = formatter.format(tutor.getInicio());
 				fila[6] = formatter.format(tutor.getFin());
-				// Se añade al modelo la fila completa.
+				// Se aï¿½ade al modelo la fila completa.
 				modelo.addRow(fila);
 
 			}
@@ -518,7 +518,7 @@ public class UIEventoAsistenciaEstudiante {
 				filaEstudiante[1] = tutor.getDocumento().toString();
 				filaEstudiante[2] = tutor.getNombres();
 				filaEstudiante[3] = tutor.getApellidos();
-				// Se añade al modelo la fila completa.
+				// Se aï¿½ade al modelo la fila completa.
 				modeloEstudiante.addRow(filaEstudiante);
 
 			}

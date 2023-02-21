@@ -100,7 +100,6 @@ public class UIEscolaridad {
         btnExportarEscolaridad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
 				//Exportar a PDF!!!!!!!!!!!!!
 				
 			}
