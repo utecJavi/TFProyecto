@@ -123,6 +123,15 @@ public class Principal {
 				uiEventoAsistenciaEstudiante.frame.setVisible(true);
 			}
 		});
+		
+		JMenuItem evenConvocados = new JMenuItem("Convocados a Eventos");
+		evenConvocados.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UIHabilitarEstudianteEvento uiHabEstEvnt = new UIHabilitarEstudianteEvento();
+				uiHabEstEvnt.inicializar();
+				uiHabEstEvnt.frame.setVisible(true);
+			}
+		});
 		JMenuItem evenDelete = new JMenuItem("Borrar Eventos");
 		JMenuItem evenList = new JMenuItem("Listar Eventos");
 		evenList.addActionListener(new ActionListener() {
@@ -195,6 +204,7 @@ public class Principal {
 		
 		
 		evento.add(evenAlta);
+		evento.add(evenConvocados);
 		evento.add(evenMod);
 		evento.add(evenDelete);
 		evento.add(evenList);

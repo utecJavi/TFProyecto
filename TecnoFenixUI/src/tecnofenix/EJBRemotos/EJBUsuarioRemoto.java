@@ -549,7 +549,17 @@ public class EJBUsuarioRemoto {
 		return lista;
 
 	}
+	public Tutor obtenerTutorPorId(Integer tutorId) {
+		Tutor tutor = new Tutor();
+		try {
+			tutor = tutorBeanRemote.obtenerTutorPorId(tutorId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return tutor;
 
+	}
 	
 	/*
 	 * METODOS TUTORES REMOTOS FIN
@@ -600,6 +610,17 @@ public class EJBUsuarioRemoto {
 			return lista;
 
 		}
+		public List<ConvocatoriaAsistenciaEventoEstudiante> listarConvocatoriaEventEstuPorEvento(Evento eventoId) {
+			List<ConvocatoriaAsistenciaEventoEstudiante> lista = new ArrayList<ConvocatoriaAsistenciaEventoEstudiante>();
+			try {
+				lista = convocatoriaAsistenciaEventoEstudianteBeanRemote.listarConvocatoriaEventEstuPorEvento(eventoId);
+			} catch (ServiciosException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return lista;
+
+		}
 		
 		
 		public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,String nombre,String apellido ,String documento, String valorLogico,String calificacion,Boolean asistencia){
@@ -627,12 +648,12 @@ public class EJBUsuarioRemoto {
 			return list;
 		}
 		
-		public List<Estudiante>  buscarEstudiantePor(String ci, String nombre ,String apellido){
+		public List<Estudiante>  buscarEstudiantePor(String ci, String nombre ,String apellido,String generacion ,String itr){
 			List<Estudiante> list = new ArrayList<Estudiante>();	
 			try {
 				List<Usuario> listUsu = new ArrayList<Usuario>();
 				System.out.println("Buscando usuario estudiante");
-				listUsu = usuarioRemote.buscarUsuarioPor("ESTUDIANTE", null, null, ci, nombre, apellido, null, null, null, null,true,true,true,null,null,false,false);
+				listUsu = usuarioRemote.buscarUsuarioPor("ESTUDIANTE", null, null, ci, nombre, apellido, null, null, itr, generacion,true,true,true,null,null,false,false);
 //				(String tipo, String id, String depto, String doc, String nombre,
 //						String apellido, String mail, String usuario, String itrNombre, String generacion, Boolean validado,
 //						Boolean activo, Boolean todos,String localidad,String telefono, Boolean noValidados ,Boolean noActivos) throws UsuarioNoEncontradoException {

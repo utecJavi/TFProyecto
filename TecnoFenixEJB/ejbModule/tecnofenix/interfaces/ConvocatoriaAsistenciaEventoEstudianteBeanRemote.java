@@ -19,7 +19,8 @@ public interface ConvocatoriaAsistenciaEventoEstudianteBeanRemote {
 	ConvocatoriaAsistenciaEventoEstudiante borrarClase(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu) throws ServiciosException;
 	
 	List<ConvocatoriaAsistenciaEventoEstudiante> obtenerTodos() throws ServiciosException;
-
+	List<ConvocatoriaAsistenciaEventoEstudiante> listarConvocatoriaEventEstuPorEvento(Evento eventoId) throws ServiciosException;
+	
 	List<ConvocatoriaAsistenciaEventoEstudiante> obtenerClasePorAtributo(
 			ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu);
 	ConvocatoriaAsistenciaEventoEstudiante obtenerDatosConvPorId(Integer id)throws ServiciosException;

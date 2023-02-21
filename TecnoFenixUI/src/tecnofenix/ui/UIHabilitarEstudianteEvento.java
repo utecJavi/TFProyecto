@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -18,11 +20,13 @@ import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.ConvocatoriaAsistenciaEventoEstudiante;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Evento;
+import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JLabel;
@@ -41,6 +45,7 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.SystemColor;
 import javax.swing.DefaultComboBoxModel;
+import com.toedter.calendar.JDateChooser;
 
 
 public class UIHabilitarEstudianteEvento {
@@ -59,26 +64,30 @@ public class UIHabilitarEstudianteEvento {
 		private DefaultTableModel modeloEstudiante;
 		private Object[] filaEstudiante;
 		
+		private JTable tableHabilitados;
+		private DefaultTableModel modeloHabilitados;
+		private Object[] filaHabilitados;
+		
 		private List<Evento> listEventos;
 		private List<Estudiante> listEstudiantes;
+		private List<ConvocatoriaAsistenciaEventoEstudiante> listHabilitados;
+		
 		private EJBUsuarioRemoto usuarioRemote;
 		private JTextField textBuscarCI;
 		private JTextField textBuscarTitulo;
 		private JTextField textBuscarId;
 		
+		private JTextArea lblDatosEvento;
+		private JComboBox<Itr> comboBoxITR;
 		
 		private Evento eventoSeleccionado;
 		private Estudiante estudianteSeleccionado;
-		private JComboBox comboBoxAsistencia;
-		private JComboBox comboBoxNota;
 		
-		public JButton btnConfirmarAsistencia;
+		public JButton btnConfirmarConvocados;
 
 		private JTextField textBuscarNombre;
 		private JTextField textBuscarApellido;
-		
-		private JTextArea lblDatosEvento;
-		private JTextArea lblDatosEstudiante;
+		private JTextField textGeneracion;
 		
 		/**
 		 * @wbp.parser.entryPoint
@@ -88,6 +97,7 @@ public class UIHabilitarEstudianteEvento {
 			//Para el datatable
 			listEventos = new ArrayList<Evento>();
 			listEstudiantes= new ArrayList<Estudiante>();
+			listHabilitados= new ArrayList<ConvocatoriaAsistenciaEventoEstudiante>();
 			
 			eventoSeleccionado= new Evento();
 			estudianteSeleccionado= new Estudiante();
@@ -108,14 +118,14 @@ public class UIHabilitarEstudianteEvento {
 			
 			modelo = new DefaultTableModel();
 			modeloEstudiante = new DefaultTableModel();
-
+			modeloHabilitados= new DefaultTableModel();
+			
 			// se crea la Tabla con el modelo DefaultTableModel
 			table = new JTable(modelo);
 			table.setDefaultEditor(Object.class, null);
 			table.setCellSelectionEnabled(false);
 			table.setRowSelectionAllowed(true);
 			table.setForeground(Color.GREEN);
-//			table.setColumnSelectionAllowed(false);
 			table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 			table.setBackground(Color.BLACK);
 			// crea un array que contiene los nombre de las columnas
@@ -141,14 +151,20 @@ public class UIHabilitarEstudianteEvento {
 						 Integer selec=Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString());
 						 eventoSeleccionado= usuarioRemote.obtenerEvento(selec);
 						 String datosEvento=new String();
-						 datosEvento="Id: "+ eventoSeleccionado.getId()+"\n"
-						 + "Titulo: "+ eventoSeleccionado.getTitulo()+"\n"
-						 + "Tipo de evento: "+ eventoSeleccionado.getTipo().getTipo()+"\n"
-						 + "Modalidad del evento: "+ eventoSeleccionado.getModalidad().getModalidad()+"\n"
-						 + "Localizacion: "+ eventoSeleccionado.getLocalizacion()+"\n"
-						 + "Inicio: "+ eventoSeleccionado.getInicio()+"\n"
-						 + "Fin: "+ eventoSeleccionado.getId()+"\n";
-						 lblDatosEvento.setText(datosEvento);;
+						 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+						 datosEvento="Id: "+ eventoSeleccionado.getId()+" "
+						 + "Titulo: "+ eventoSeleccionado.getTitulo()+"        "
+						 + "Tipo: "+ eventoSeleccionado.getTipo().getTipo()+"        "
+						 + "Modalidad: "+ eventoSeleccionado.getModalidad().getModalidad()+"\n"
+						 + "Localizacion: "+ eventoSeleccionado.getLocalizacion()+"        "
+						 + "Inicio: "+ formatter.format(eventoSeleccionado.getInicio()) +"        "
+						 + "Fin: "+ formatter.format(eventoSeleccionado.getFin())+" ";
+						 lblDatosEvento.setText(datosEvento);
+						 listHabilitados.clear();
+						 cargarTablaHabilitados(listHabilitados);
+						 listHabilitados= usuarioRemote.listarConvocatoriaEventEstuPorEvento(eventoSeleccionado);
+						 cargarTablaHabilitados(listHabilitados);
+						 
 					}
 		        }
 		    });
@@ -163,11 +179,11 @@ public class UIHabilitarEstudianteEvento {
 	// ESTUDIANTE TABLE
 			// se crea la Tabla con el modelo DefaultTableModel
 					tableEstudiante = new JTable(modeloEstudiante);
-					table.setDefaultEditor(Object.class, null);
+					tableEstudiante.setDefaultEditor(Object.class, null);
 					tableEstudiante.setCellSelectionEnabled(false);
 					tableEstudiante.setRowSelectionAllowed(true);
 					tableEstudiante.setForeground(Color.GREEN);
-//					tableEstudiante.setColumnSelectionAllowed(false);
+					tableEstudiante.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 					tableEstudiante.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 					tableEstudiante.setBackground(Color.BLACK);
 					// crea un array que contiene los nombre de las columnas
@@ -189,77 +205,110 @@ public class UIHabilitarEstudianteEvento {
 						@Override
 				        public void valueChanged(ListSelectionEvent event) {
 							if (!event.getValueIsAdjusting() && tableEstudiante.getSelectedRow() != -1) {
-								 Integer selec=Integer.valueOf(tableEstudiante.getValueAt(tableEstudiante.getSelectedRow(), 0).toString());
-								 estudianteSeleccionado= usuarioRemote.buscarEstudiantePorId(selec);
-								 String datosEstudiante=new String();
-								 datosEstudiante= "Id: "+ estudianteSeleccionado.getId()+"\n"
-								 + "Nombre: "+ estudianteSeleccionado.getNombres()+ " "+ estudianteSeleccionado.getApellidos()+"\n"
-								 + "Documento: "+ estudianteSeleccionado.getDocumento()+"\n"
-								 + "Mail: "+ estudianteSeleccionado.getMail()+"\n"
-								 + "Fecha nacimiento: "+ estudianteSeleccionado.getFechaNacimiento()+"\n"
-								 + "ITR: "+ estudianteSeleccionado.getItr().getNombre()+"\n";
-								 lblDatosEstudiante.setText(datosEstudiante);;
+								System.out.println("CLICK TABLA ESTUDIANTES");
 							}
 				        }
 				    });
 					// Creamos un JscrollPane y le agregamos la JTable
 					JScrollPane scrollPaneEstudiante = new JScrollPane(tableEstudiante);
 					scrollPaneEstudiante.setBounds(707, 103, 483, 368);
-					// definimos un layout
-					// Agregamos el JScrollPane al contenedor
-//					JScrollPane scrollPaneEstudiante = new JScrollPane((Component) null);
-//					scrollPaneEstudiante.setBounds(406, 103, 371, 368);
-//					panel.add(scrollPaneEstudiante);
 					panel.add(scrollPaneEstudiante);
 			///FINNNNNNNNNNNNNNN
 			
+					
+					//HABILITADOOOS
+					tableHabilitados = new JTable(modeloHabilitados);
+					tableHabilitados.setDefaultEditor(Object.class, null);
+					tableHabilitados.setCellSelectionEnabled(false);
+					tableHabilitados.setRowSelectionAllowed(true);
+					tableHabilitados.setForeground(Color.GREEN);
+//					tableHabilitados.setColumnSelectionAllowed(false);
+					tableHabilitados.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+					tableHabilitados.setBackground(Color.BLACK);
+					// crea un array que contiene los nombre de las columnas
+					final String[] columnNamesHabilitados = { "Id", "Evento","Nombre", "Asistencia","Calificacion" };
+
+					// insertamos las columnas
+					for (int column = 0; column < columnNamesHabilitados.length; column++) {
+						// agrega las columnas a la tabla
+						modeloHabilitados.addColumn(columnNamesHabilitados[column]);
+					}
+
+					// Se crea un array que será una de las filas de la tabla.
+					filaHabilitados = new Object[columnNamesHabilitados.length];
+
+					// se define el tamaño de la tabla
+					tableHabilitados.setBounds(93, 215, 100, 100);
+
+					tableHabilitados.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+						@Override
+				        public void valueChanged(ListSelectionEvent event) {
+							if (!event.getValueIsAdjusting() && tableHabilitados.getSelectedRow() != -1) {
+//								 Integer selec=Integer.valueOf(tableEstudiante.getValueAt(tableEstudiante.getSelectedRow(), 0).toString());
+//								 estudianteSeleccionado= usuarioRemote.buscarEstudiantePorId(selec);
+//								 String datosEstudiante=new String();
+								System.out.println("CLICK EN TABLA HABILITADOS");
+							}
+				        }
+				    });
+					// Creamos un JscrollPane y le agregamos la JTable
+					JScrollPane scrollPaneHabilitados = new JScrollPane(tableHabilitados);
+					scrollPaneHabilitados.setBounds(10, 520, 1180, 224);
+					panel.add(scrollPaneHabilitados);
+					
+					//FIN HABILITADOS
 			
-			btnConfirmarAsistencia = new JButton("Confirmar asistencia");
-			btnConfirmarAsistencia.addActionListener(new ActionListener() {
+			btnConfirmarConvocados = new JButton("Confirmar convocados");
+			btnConfirmarConvocados.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(validar()) {
-						confirmarAsistencia();
+						confirmarConvocados(listHabilitados);
+						JOptionPane.showMessageDialog(null, "Su solicitud fue procesada", "Ok",
+								JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			});
-			btnConfirmarAsistencia.setBounds(900, 714, 290, 21);
-			panel.add(btnConfirmarAsistencia);
+			btnConfirmarConvocados.setBounds(910, 754, 290, 21);
+			panel.add(btnConfirmarConvocados);
 			
 			JLabel lblNewLabel_1_1 = new JLabel("Nombre evento");
-			lblNewLabel_1_1.setBounds(373, 48, 102, 13);
+			lblNewLabel_1_1.setBounds(72, 49, 102, 13);
 			panel.add(lblNewLabel_1_1);
 			
 			JLabel lblNewLabel_2_1 = new JLabel("Documento");
-			lblNewLabel_2_1.setBounds(806, 10, 113, 13);
+			lblNewLabel_2_1.setBounds(707, 10, 113, 13);
 			panel.add(lblNewLabel_2_1);
 			
 			textBuscarCI = new JTextField();
 			textBuscarCI.setColumns(10);
-			textBuscarCI.setBounds(806, 23, 188, 19);
+			textBuscarCI.setBounds(707, 23, 188, 19);
 			textBuscarCI.setText("");
 			panel.add(textBuscarCI);
 			
 			textBuscarTitulo = new JTextField();
 			textBuscarTitulo.setColumns(10);
-			textBuscarTitulo.setBounds(373, 61, 188, 19);
+			textBuscarTitulo.setBounds(72, 62, 188, 19);
 			textBuscarCI.setText("");
 			panel.add(textBuscarTitulo);
 			
 			JLabel lblNewLabel_1_1_1 = new JLabel("Id");
-			lblNewLabel_1_1_1.setBounds(311, 48, 74, 13);
+			lblNewLabel_1_1_1.setBounds(10, 49, 74, 13);
 			panel.add(lblNewLabel_1_1_1);
 			
 			textBuscarId = new JTextField();
 			textBuscarId.setColumns(10);
-			textBuscarId.setBounds(311, 61, 52, 19);
+			textBuscarId.setBounds(10, 62, 52, 19);
 			textBuscarId.setText("");
 			panel.add(textBuscarId);
 			
 			JButton btnBuscarEstudiantes = new JButton("Buscar");
 			btnBuscarEstudiantes.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
-					buscarEstudiantePor(textBuscarCI.getText() ,textBuscarNombre.getText(),textBuscarApellido.getText());
+					String itr="";
+					if(comboBoxITR.getSelectedItem()!=null ||comboBoxITR.getSelectedIndex()!= -1  ) {
+						itr =comboBoxITR.getSelectedItem().toString();
+					}
+					buscarEstudiantePor(textBuscarCI.getText() ,textBuscarNombre.getText(),textBuscarApellido.getText(),textGeneracion.getText(),itr);
 				}
 			});
 			btnBuscarEstudiantes.setBounds(1116, 60, 74, 21);
@@ -274,40 +323,8 @@ public class UIHabilitarEstudianteEvento {
 			panel.add(lblNewLabel);
 			
 			JButton btnLimpiarDatos = new JButton("Limpiar Datos");
-			btnLimpiarDatos.setBounds(900, 746, 290, 21);
+			btnLimpiarDatos.setBounds(569, 754, 290, 21);
 			panel.add(btnLimpiarDatos);
-			
-
-			lblDatosEvento = new JTextArea("...");
-			lblDatosEvento.setFont(new Font("Tahoma", Font.BOLD, 14));
-			lblDatosEvento.setEditable(false);
-			lblDatosEvento.setLineWrap(true);
-			lblDatosEvento.setForeground(Color.BLACK);
-			lblDatosEvento.setBackground(SystemColor.control);
-			lblDatosEvento.setBounds(20, 513, 376, 175);
-			panel.add(lblDatosEvento);
-			
-			lblDatosEstudiante = new JTextArea("...");
-			lblDatosEstudiante.setFont(new Font("Tahoma", Font.BOLD, 14));
-			lblDatosEstudiante.setEditable(false);
-			lblDatosEstudiante.setLineWrap(true);
-			lblDatosEstudiante.setForeground(Color.BLACK);
-			lblDatosEstudiante.setBackground(SystemColor.control);
-			lblDatosEstudiante.setBounds(706, 513, 371, 175);
-			panel.add(lblDatosEstudiante);
-			
-			comboBoxAsistencia = new JComboBox();
-			comboBoxAsistencia.setModel(new DefaultComboBoxModel(new String[] {"","Si", "No"}));
-			comboBoxAsistencia.setBounds(433, 714, 203, 21);
-			panel.add(comboBoxAsistencia);
-			
-			JLabel lblNewLabel_2 = new JLabel("Asistio evento?");
-			lblNewLabel_2.setBounds(433, 698, 203, 13);
-			panel.add(lblNewLabel_2);
-			
-			JLabel lblNewLabel_3 = new JLabel("Nota");
-			lblNewLabel_3.setBounds(646, 698, 45, 13);
-			panel.add(lblNewLabel_3);
 			
 			JButton btnBuscarEventos = new JButton("Buscar");
 			btnBuscarEventos.addActionListener(new ActionListener() {
@@ -315,45 +332,138 @@ public class UIHabilitarEstudianteEvento {
 					buscarEventosPor(textBuscarId.getText(), textBuscarTitulo.getText());
 				}
 			});
-			btnBuscarEventos.setBounds(584, 60, 113, 21);
+			btnBuscarEventos.setBounds(512, 61, 113, 21);
 			panel.add(btnBuscarEventos);
 			
 			JLabel lblNewLabel_2_1_1 = new JLabel("Nombre");
-			lblNewLabel_2_1_1.setBounds(806, 48, 113, 13);
+			lblNewLabel_2_1_1.setBounds(707, 48, 113, 13);
 			panel.add(lblNewLabel_2_1_1);
 			
 			textBuscarNombre = new JTextField();
 			textBuscarNombre.setText("");
 			textBuscarNombre.setColumns(10);
-			textBuscarNombre.setBounds(806, 61, 148, 19);
+			textBuscarNombre.setBounds(707, 61, 148, 19);
 			panel.add(textBuscarNombre);
 			
 			JLabel lblNewLabel_2_1_1_1 = new JLabel("Apellido");
-			lblNewLabel_2_1_1_1.setBounds(964, 48, 113, 13);
+			lblNewLabel_2_1_1_1.setBounds(865, 48, 113, 13);
 			panel.add(lblNewLabel_2_1_1_1);
 			
 			textBuscarApellido = new JTextField();
 			textBuscarApellido.setText("");
 			textBuscarApellido.setColumns(10);
-			textBuscarApellido.setBounds(964, 61, 148, 19);
+			textBuscarApellido.setBounds(865, 61, 148, 19);
 			panel.add(textBuscarApellido);
 			
-			JLabel lblNewLabel_1 = new JLabel("Datos del evento: ");
-			lblNewLabel_1.setBounds(30, 481, 136, 13);
+			JLabel lblHabilitados = new JLabel("Estudiantes Habilitados: ");
+			lblHabilitados.setBounds(10, 481, 156, 13);
+			panel.add(lblHabilitados);
+			
+			lblDatosEvento = new JTextArea("------");
+			lblDatosEvento.setLineWrap(true);
+			lblDatosEvento.setForeground(Color.BLACK);
+			lblDatosEvento.setFont(new Font("Tahoma", Font.BOLD, 14));
+			lblDatosEvento.setEditable(false);
+			lblDatosEvento.setBackground(SystemColor.menu);
+			lblDatosEvento.setBounds(176, 470, 714, 50);
+			panel.add(lblDatosEvento);
+			
+
+			
+			JButton btnNewButton = new JButton("\u25BC\u25BC\u25BC");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					//tiene que estar seleccionado el evento!
+					if(eventoSeleccionado!= null && eventoSeleccionado.getId()!=null) {
+						if(validarEventoParaAgregarEstudiantes()) {
+							int[] selectedRows=tableEstudiante.getSelectedRows();
+							if(selectedRows.length>0) {
+							for (int i = 0; i < selectedRows.length; i++) {
+								Integer selec=Integer.valueOf(tableEstudiante.getValueAt(selectedRows[i], 0).toString());
+								ConvocatoriaAsistenciaEventoEstudiante conv = new ConvocatoriaAsistenciaEventoEstudiante();
+								Estudiante estu = usuarioRemote.buscarEstudiantePorId(selec);
+								conv.setEventoId(eventoSeleccionado);
+								conv.setEstudianteId(estu);
+								Boolean cargar=true;
+								for (ConvocatoriaAsistenciaEventoEstudiante habilitados : listHabilitados) {
+									if(habilitados.getEstudianteId().equals(estu)) {
+										//el estudiante ya se encuentra en la lista no lo debo cargar
+										cargar=false;
+									}
+								}
+								if(cargar)listHabilitados.add(conv);	
+							}
+							
+							cargarTablaHabilitados(listHabilitados);
+							}else {
+								JOptionPane.showMessageDialog(null, "Primero debe seleccionar como minimo 1 estudiante, haciendo click en el estudiante deseado",
+										"Informacion", JOptionPane.INFORMATION_MESSAGE);
+							}
+						}
+					}else {
+						JOptionPane.showMessageDialog(null, "Primero debe seleccionar un evento de la tabla de eventos, haciendo click en el evento deseado",
+								"Informacion", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			});
+			btnNewButton.setBounds(910, 481, 86, 21);
+			panel.add(btnNewButton);
+			
+			JDateChooser dateChooser = new JDateChooser();
+			dateChooser.setBounds(270, 62, 98, 19);
+			panel.add(dateChooser);
+			
+			JDateChooser dateChooser_1 = new JDateChooser();
+			dateChooser_1.setBounds(378, 62, 102, 19);
+			panel.add(dateChooser_1);
+			
+			JLabel lblNewLabel_1 = new JLabel("Inicio");
+			lblNewLabel_1.setBounds(268, 49, 45, 13);
 			panel.add(lblNewLabel_1);
 			
-			JSeparator separator_1 = new JSeparator();
-			separator_1.setBounds(20, 503, 1170, 3);
-			panel.add(separator_1);
+			JLabel lblNewLabel_2 = new JLabel("Fin");
+			lblNewLabel_2.setBounds(378, 49, 45, 13);
+			panel.add(lblNewLabel_2);
 			
-			JLabel lblNewLabel_2_2 = new JLabel("Datos del Estudiante:");
-			lblNewLabel_2_2.setBounds(716, 481, 113, 13);
-			panel.add(lblNewLabel_2_2);
+			comboBoxITR = new JComboBox<Itr>();
+			comboBoxITR.setBounds(910, 22, 174, 21);
+			List<Itr> listItr = usuarioRemote.listarITR();
+			for (Itr itrItem : listItr) {
+				comboBoxITR.addItem(itrItem);
+			}
+			comboBoxITR.setEnabled(true);
+			comboBoxITR.setSelectedIndex(-1);
+			panel.add(comboBoxITR);
 			
-			comboBoxNota = new JComboBox();
-			comboBoxNota.setModel(new DefaultComboBoxModel(new String[] {"", "1", "2", "3", "4", "5"}));
-			comboBoxNota.setBounds(646, 714, 244, 21);
-			panel.add(comboBoxNota);
+			
+			JLabel lblNewLabel_3 = new JLabel("ITR");
+			lblNewLabel_3.setBounds(910, 10, 45, 13);
+			panel.add(lblNewLabel_3);
+			
+			textGeneracion = new JTextField();
+			textGeneracion.addKeyListener(new KeyAdapter() {
+			    public void keyTyped(KeyEvent e) {
+			        char c = e.getKeyChar();
+			        if (!((c >= '0') && (c <= '9') ||
+			           (c == KeyEvent.VK_BACK_SPACE) ||
+			           (c == KeyEvent.VK_DELETE))) {
+			         
+			          e.consume();
+			        }
+			        if(textGeneracion.getText().length()>=3) {
+			        	String texto=textGeneracion.getText();
+			        	textGeneracion.setText(texto.substring(0,3));
+			        }
+			      }
+			    });
+			textGeneracion.setBounds(1094, 23, 96, 19);
+			textGeneracion.setColumns(10);
+			panel.add(textGeneracion);
+			
+			
+			JLabel lblNewLabel_4 = new JLabel("Generacion");
+			lblNewLabel_4.setBounds(1092, 10, 98, 13);
+			panel.add(lblNewLabel_4);
 			
 			
 
@@ -363,11 +473,15 @@ public class UIHabilitarEstudianteEvento {
 				}
 			});
 			
-			listEstudiantes = usuarioRemote.buscarEstudiantePor("","","");
+			listEstudiantes = usuarioRemote.buscarEstudiantePor("","","","","");
 			actualizarListaEstudiante();
 			
 			listEventos = usuarioRemote.listarEventos();
 			actualizarListaEvento();
+			
+			
+//			listHabilitados = usuarioRemote.listarEventos();
+//			actualizarListaHabilitados();
 			
 			frame.pack();
 			frame.setVisible(true);
@@ -394,13 +508,24 @@ public class UIHabilitarEstudianteEvento {
 			modelo.fireTableDataChanged();
 		}
 		public void limpiarTablaEstudiantes() {
-			if (listEstudiantes != null || !listEstudiantes.isEmpty() || listEstudiantes.size() > 0) {
-				listEstudiantes.clear();
-				
-			}
+//			if (listEstudiantes != null || !listEstudiantes.isEmpty() || listEstudiantes.size() > 0) {
+//				listEstudiantes.clear();
+//				
+//			}
 			modeloEstudiante.getDataVector().removeAllElements();
 			modeloEstudiante.fireTableDataChanged();
 		}
+		
+		public void limpiarTablaHabilitados() {
+//			if (listHabilitados != null || !listHabilitados.isEmpty() || listHabilitados.size() > 0) {
+//				listHabilitados.clear();
+//				
+//			}
+			modeloHabilitados.getDataVector().removeAllElements();
+			modeloHabilitados.fireTableDataChanged();
+		}
+		
+		
 		
 		public void actualizarListaEvento() {
 			limpiarTablaEventos();
@@ -415,6 +540,13 @@ public class UIHabilitarEstudianteEvento {
 			listEstudiantes = usuarioRemote.listarEstudiantes();
 			cargarTablaEstudiante(listEstudiantes);
 		}
+		
+		public void actualizarListaHabilitados() {
+			limpiarTablaHabilitados();
+			
+//			listHabilitados= usuarioRemote.listarEventos();
+			cargarTablaHabilitados(listHabilitados);
+		}
 
 		public void buscarEventosPor(String id,String titulo) {
 			limpiarTablaEventos();
@@ -426,9 +558,9 @@ public class UIHabilitarEstudianteEvento {
 			}
 		}
 		
-		public void buscarEstudiantePor(String ci, String nombre ,String apellido) {
+		public void buscarEstudiantePor(String ci, String nombre ,String apellido,String generacion,String itr ) {
 			limpiarTablaEstudiantes();
-			listEstudiantes = usuarioRemote.buscarEstudiantePor(ci,nombre,apellido);
+			listEstudiantes = usuarioRemote.buscarEstudiantePor(ci,nombre,apellido,generacion,itr);
 			if(listEstudiantes != null) {
 				// Se rellena cada posición del array con una de las columnas de la tabla en
 			// base de datos.
@@ -446,71 +578,62 @@ public class UIHabilitarEstudianteEvento {
 		}
 		
 		public boolean validar() {
-			if(comboBoxNota.getSelectedItem().toString()=="") {
-				JOptionPane.showMessageDialog(null, "Seleccione una calificacion de 1 a 5", "Datos no validos",
-						JOptionPane.INFORMATION_MESSAGE);
-				return false;	
-			}
-			if(estudianteSeleccionado==null || estudianteSeleccionado.getId()==null) {
-				JOptionPane.showMessageDialog(null, "Seleccione un Estudiante", "Datos no validos",
-						JOptionPane.INFORMATION_MESSAGE);
-				return false;
-			}
-			if(eventoSeleccionado==null || eventoSeleccionado.getId()==null) {
-				JOptionPane.showMessageDialog(null, "Seleccione un Evento", "Datos no validos",
-						JOptionPane.INFORMATION_MESSAGE);
-				return false;
-			}
-
-			if(comboBoxAsistencia.getSelectedItem().toString()=="") {
-				JOptionPane.showMessageDialog(null, "Seleccione asistencia si no", "Datos no validos",
-						JOptionPane.INFORMATION_MESSAGE);
-				return false;
-			}
-			if(comboBoxAsistencia.getSelectedItem().toString()=="No" && (Integer.valueOf(comboBoxNota.getSelectedItem().toString())>=1) ) {
-				JOptionPane.showMessageDialog(null, "Si el estudiante no concurrio al evento, la nota debe estar 'vacia', no puede ser mayor a 0", "Datos no validos",
-						JOptionPane.INFORMATION_MESSAGE);
-				return false;
-			}
-			
+//			if(comboBoxNota.getSelectedItem().toString()=="") {
+//				JOptionPane.showMessageDialog(null, "Seleccione una calificacion de 1 a 5", "Datos no validos",
+//						JOptionPane.INFORMATION_MESSAGE);
+//				return false;	
+//			}
+//			if(estudianteSeleccionado==null || estudianteSeleccionado.getId()==null) {
+//				JOptionPane.showMessageDialog(null, "Seleccione un Estudiante", "Datos no validos",
+//						JOptionPane.INFORMATION_MESSAGE);
+//				return false;
+//			}
+//			if(eventoSeleccionado==null || eventoSeleccionado.getId()==null) {
+//				JOptionPane.showMessageDialog(null, "Seleccione un Evento", "Datos no validos",
+//						JOptionPane.INFORMATION_MESSAGE);
+//				return false;
+//			}
+//
+//			if(comboBoxAsistencia.getSelectedItem().toString()=="") {
+//				JOptionPane.showMessageDialog(null, "Seleccione asistencia si no", "Datos no validos",
+//						JOptionPane.INFORMATION_MESSAGE);
+//				return false;
+//			}
+//			if(comboBoxAsistencia.getSelectedItem().toString()=="No" && (Integer.valueOf(comboBoxNota.getSelectedItem().toString())>=1) ) {
+//				JOptionPane.showMessageDialog(null, "Si el estudiante no concurrio al evento, la nota debe estar 'vacia', no puede ser mayor a 0", "Datos no validos",
+//						JOptionPane.INFORMATION_MESSAGE);
+//				return false;
+//			}
+//			
 			return true;
 		}
-		public ConvocatoriaAsistenciaEventoEstudiante confirmarAsistencia() {
-			ConvocatoriaAsistenciaEventoEstudiante conv = new ConvocatoriaAsistenciaEventoEstudiante();
-			conv.setEstudianteId(estudianteSeleccionado);
-			conv.setEventoId(eventoSeleccionado);
-			if(comboBoxAsistencia.getSelectedItem().toString()=="Si") {
-				conv.setAsistencia(true);
-				conv.setCalificacion(Integer.valueOf(comboBoxNota.getSelectedItem().toString()));
+		public Boolean confirmarConvocados(List<ConvocatoriaAsistenciaEventoEstudiante> convList) {
+			for (ConvocatoriaAsistenciaEventoEstudiante conv:convList) {
+				if(conv.getId()==null) {
+					conv = usuarioRemote.agregarEstudianteAEvento(conv);
+					if(conv.getId()!=null) {
+					System.out.println("Se ingreso el estudiante "+conv.getEstudianteId().getNombres() +" " +conv.getEstudianteId().getApellidos() );
+					}
+				}
+				
 			}
-			if(comboBoxAsistencia.getSelectedItem().toString()=="No") {
-				conv.setAsistencia(false);
-				conv.setCalificacion(0);
-			}
-			
-			conv = usuarioRemote.agregarEstudianteAEvento(conv);
-			if(conv.getId()!=null) {
-				JOptionPane.showMessageDialog(null, "Su estidiante fue ingresado al evento", "Datos no validos",
-						JOptionPane.INFORMATION_MESSAGE);
-			}else {
-				JOptionPane.showMessageDialog(null, "Fallo al intentar ingresar el estudiante al evento", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-			return conv;
+			listHabilitados= usuarioRemote.listarConvocatoriaEventEstuPorEvento(eventoSeleccionado);
+			cargarTablaHabilitados(listHabilitados);
+			return true;
 		}
 		
 		
 		 public void cargarTablaEvento(List<Evento> listPasada) {
 			 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-				for (Evento tutor : listPasada) {
+				for (Evento evt : listPasada) {
 //					"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"
-					fila[0] = tutor.getId();
-					fila[1] = tutor.getTitulo();
-					fila[2] = tutor.getTipo().getTipo();
-					fila[3] = tutor.getModalidad().getModalidad();
-					fila[4] = tutor.getLocalizacion();
-					fila[5] = formatter.format(tutor.getInicio());
-					fila[6] = formatter.format(tutor.getFin());
+					fila[0] = evt.getId();
+					fila[1] = evt.getTitulo();
+					fila[2] = evt.getTipo().getTipo();
+					fila[3] = evt.getModalidad().getModalidad();
+					fila[4] = evt.getLocalizacion();
+					fila[5] = formatter.format(evt.getInicio());
+					fila[6] = formatter.format(evt.getFin());
 					// Se añade al modelo la fila completa.
 					modelo.addRow(fila);
 
@@ -518,12 +641,12 @@ public class UIHabilitarEstudianteEvento {
 				autoAjustarTabla(table);
 		 }
 		 public void cargarTablaEstudiante(List<Estudiante> listPasada) {
-				for (Estudiante tutor : listPasada) {
+				for (Estudiante est : listPasada) {
 //					"Id", "CI","Nombre", "Apellido"
-					filaEstudiante[0] = tutor.getId();
-					filaEstudiante[1] = tutor.getDocumento().toString();
-					filaEstudiante[2] = tutor.getNombres();
-					filaEstudiante[3] = tutor.getApellidos();
+					filaEstudiante[0] = est.getId();
+					filaEstudiante[1] = est.getDocumento().toString();
+					filaEstudiante[2] = est.getNombres();
+					filaEstudiante[3] = est.getApellidos();
 					// Se añade al modelo la fila completa.
 					modeloEstudiante.addRow(filaEstudiante);
 
@@ -531,7 +654,37 @@ public class UIHabilitarEstudianteEvento {
 				autoAjustarTabla(tableEstudiante);
 		 }
 		
-		
+		 public void cargarTablaHabilitados(List<ConvocatoriaAsistenciaEventoEstudiante> listPasada) {
+			 limpiarTablaHabilitados();
+				for (ConvocatoriaAsistenciaEventoEstudiante habilitados : listPasada) {
+//					
+					filaHabilitados[0] = habilitados.getId();
+					filaHabilitados[1] = habilitados.getEventoId().getTitulo();
+					filaHabilitados[2] = habilitados.getEstudianteId().getNombres()+" "+habilitados.getEstudianteId().getApellidos();
+					
+					if(habilitados.getAsistencia()!=null) {
+						if (habilitados.getAsistencia()) {
+							filaHabilitados[3] = "Si";
+						} else {
+							filaHabilitados[3] = "No";
+						}
+					}else {
+						filaHabilitados[3] = "---";
+					}
+					if(habilitados.getCalificacion() != null) {
+						filaHabilitados[4] = habilitados.getCalificacion();
+					}else {
+						filaHabilitados[4] ="---";
+					}
+					// Se añade al modelo la fila completa.
+					modeloHabilitados.addRow(filaHabilitados);
+
+				}
+				autoAjustarTabla(tableHabilitados);
+		 }
+		 
+		 
+		 
 		 public void autoAjustarTabla(JTable table) {
 			    final TableColumnModel columnModel = table.getColumnModel();
 			    for (int column = 0; column < table.getColumnCount(); column++) {
@@ -546,4 +699,29 @@ public class UIHabilitarEstudianteEvento {
 			        columnModel.getColumn(column).setPreferredWidth(width);
 			    }
 			}
+		 
+		 
+		public boolean validarEventoParaAgregarEstudiantes() {
+			Date fechaActual =new Date(System.currentTimeMillis());
+			if(eventoSeleccionado.getInicio().before(fechaActual)) {
+				JOptionPane.showMessageDialog(null, "No es posible ingresar Estudiantes a un evento ya iniciado",
+						"Informacion", JOptionPane.INFORMATION_MESSAGE);
+				return false;
+			}
+			
+			
+			return true;
+		}
+		
+		public boolean validarEventoParaQuitarEstudiantes() {
+			Date fechaActual =new Date(System.currentTimeMillis());
+			if(eventoSeleccionado.getInicio().before(fechaActual)) {
+				JOptionPane.showMessageDialog(null, "No es posible quitar Estudiantes de un evento ya iniciado",
+						"Informacion", JOptionPane.INFORMATION_MESSAGE);
+				return false;
+			}
+			
+			
+			return true;
+		} 
 	}

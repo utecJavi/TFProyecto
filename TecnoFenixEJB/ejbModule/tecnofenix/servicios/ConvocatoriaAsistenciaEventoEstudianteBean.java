@@ -149,9 +149,13 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 	@Override
 	public ConvocatoriaAsistenciaEventoEstudiante agregarEstudianteAEvento(
 			ConvocatoriaAsistenciaEventoEstudiante convAsistEventEstu) {
+		try {
+			em.merge(convAsistEventEstu);
+			em.flush();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		
-		em.persist(convAsistEventEstu);
-		em.flush();
 		return convAsistEventEstu;
 	}
 
@@ -168,6 +172,23 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 		return conv;
 		
 
+	}
+
+
+	@Override
+	public List<ConvocatoriaAsistenciaEventoEstudiante> listarConvocatoriaEventEstuPorEvento(Evento eventoId)
+			throws ServiciosException {
+		
+		String jpql = "SELECT conv FROM ConvocatoriaAsistenciaEventoEstudiante conv INNER JOIN conv.eventoId event WHERE event.id ="+eventoId.getId();
+		TypedQuery<ConvocatoriaAsistenciaEventoEstudiante> query = em.createQuery(jpql, ConvocatoriaAsistenciaEventoEstudiante.class);
+		System.out.println(jpql);
+		List<ConvocatoriaAsistenciaEventoEstudiante> list = null;
+		list = query.getResultList();
+		if (list == null) {
+			throw new ServiciosException("ConvocatoriaAsistenciaEventoEstudiante no encontrado.");
+		}
+
+		return list;
 	}
 
 

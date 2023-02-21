@@ -26,6 +26,7 @@ import com.toedter.calendar.JDateChooser;
 
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.*;
+import java.awt.Component;
 
 public class UIEvento {
 
@@ -34,6 +35,11 @@ public class UIEvento {
 	private JTable tablaEventos;
 	private EJBUsuarioRemoto ejb;
 
+	private JTable tableTutoEditable;
+	private DefaultTableModel modeloTutoEditable;
+	private Object[] filaTutoEditable;
+	
+	
 	private JTextField textId;
 	private JTextField textTitulo;
 	private JComboBox<TipoEvento> comboBoxTipoEvento;
@@ -59,11 +65,10 @@ public class UIEvento {
 	private JDateChooser editarDateFechaFin;
 	private JTextField editarTextLocalizacion;
 	private JComboBox<Itr> editarItrEventoComboBox;
-	//Ventana extra para traer los tutores responsables
-	private UIListaTutores uiListaTutores = new UIListaTutores();
+	
 	private List<TutorResponsableEvento> listTutorResEvent = new ArrayList<TutorResponsableEvento>();
-	private java.awt.List listaDeTutores;
-	private List<Tutor> editarTutores = new ArrayList<Tutor>();
+	public List<Tutor> listTutores= new ArrayList<Tutor>();
+//	private List<Tutor> editarTutores = new ArrayList<Tutor>();
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -77,10 +82,7 @@ public class UIEvento {
 
 		JPanel panel = new JPanel();
 	    eventoEditable =new Evento();
-	    
-	    uiListaTutores.inicializar();
-		uiListaTutores.frame.setVisible(false);
-		
+
 		panel.setPreferredSize(new Dimension(1000, 800));
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		
@@ -124,18 +126,19 @@ public class UIEvento {
 				editarDateFechaInicio.setDate(eventoEditable.getInicio());
 				editarDateFechaFin.setDate(eventoEditable.getFin());
 				
-				editarTutores.clear();
+//				editarTutores.clear();
 //				for(TutorResponsableEvento tr: eventoEditable.getTutorResponsableEventoCollection()) {
 //					editarTutores.add(tr.getTutorId());
 //				}
 //				listTutorResEvent=eventoEditable.getTutorResponsableEventoCollection();
 					listTutorResEvent=ejb.obtenerTutoresDeEvento(eventoEditable.getId());
 					if(listTutorResEvent!=null) {
-						listaDeTutores.removeAll();
+						listTutores.clear();
 						for(TutorResponsableEvento tre: listTutorResEvent) {
-							editarTutores.add(tre.getTutorId());
-							listaDeTutores.add(tre.getTutorId().getDocumento() +" "+tre.getTutorId().getNombres()+" "+tre.getTutorId().getApellidos());
+//							editarTutores.add(tre.getTutorId());
+							listTutores.add(tre.getTutorId());
 						} 
+						actualizarLista(listTutores);
 					}
 				}
 	        }
@@ -147,6 +150,53 @@ public class UIEvento {
 		// Agregamos el JScrollPane al contenedor
 		panel.add(scrollPane);
 
+		//TABLA DE TUTORES EDITABLE DE SELECCION
+		
+		
+		
+		
+		
+
+		modeloTutoEditable = new DefaultTableModel();
+
+		// se crea la Tabla con el modelo DefaultTableModel
+		tableTutoEditable = new JTable(modeloTutoEditable);
+		tableTutoEditable.setDefaultEditor(Object.class, null);
+		tableTutoEditable.setCellSelectionEnabled(false);
+		tableTutoEditable.setRowSelectionAllowed(true);
+		tableTutoEditable.setForeground(Color.GREEN);
+		tableTutoEditable.setColumnSelectionAllowed(false);
+		tableTutoEditable.setBackground(Color.BLACK);
+		// crea un array que contiene los nombre de las columnas
+		final String[] columnNames = { "Id", "CI","Nombre", "Apellido","Tipo","Area" };
+
+		// insertamos las columnas
+		for (int column = 0; column < columnNames.length; column++) {
+			// agrega las columnas a la tabla
+			modeloTutoEditable.addColumn(columnNames[column]);
+		}
+
+		// Se crea un array que será una de las filas de la tabla.
+		filaTutoEditable = new Object[columnNames.length];
+
+		// se define el tamaño de la tabla
+		tableTutoEditable.setBounds(93, 215, 100, 100);
+		tableTutoEditable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			@Override
+	        public void valueChanged(ListSelectionEvent event) {
+				if (!event.getValueIsAdjusting() && tableTutoEditable.getSelectedRow() != -1) {
+				
+				}
+	        }
+	    });
+		
+		JScrollPane scrollPaneTutSeleccionados = new JScrollPane(tableTutoEditable);
+		scrollPaneTutSeleccionados.setBounds(628, 582, 335, 186);
+		panel.add(scrollPaneTutSeleccionados);
+		
+		
+		
+		
 		JButton filtrarEventosBtn = new JButton("Filtrar");
 		filtrarEventosBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -182,9 +232,10 @@ public class UIEvento {
 		btnSeleccionarTutores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Editar tutores click");
-				if(editarTutores!= null && !editarTutores.isEmpty() && eventoEditable!= null && eventoEditable.getId()!=null) {
-				System.out.println("Lista de tutores "+editarTutores.toString());
-				uiListaTutores.setListTutoresSeleccionados(editarTutores);
+				if(listTutores!= null && !listTutores.isEmpty() && eventoEditable!= null && eventoEditable.getId()!=null) {
+				System.out.println("Lista de tutores "+listTutores.toString());
+				UIListaTutores uiListaTutores = new UIListaTutores();
+				uiListaTutores.inicializar(UIEvento.this);
 				uiListaTutores.frame.setVisible(true);
 				}else {
 					JOptionPane.showMessageDialog(null, "Primero debe seleccionar un evento",
@@ -192,7 +243,7 @@ public class UIEvento {
 				}
 			}
 		});
-		btnSeleccionarTutores.setBounds(633, 718, 113, 21);
+		btnSeleccionarTutores.setBounds(850, 769, 113, 21);
 		panel.add(btnSeleccionarTutores);
 		filtrarEventosBtn.setBounds(633, 111, 113, 21);
 		panel.add(filtrarEventosBtn);
@@ -322,16 +373,17 @@ public class UIEvento {
 						eventoEditable.setInicio(editarDateFechaInicio.getDate());
 						eventoEditable.setFin(editarDateFechaFin.getDate());
 						eventoEditable.setTutorResponsableEventoCollection(listTutorResEvent);
+//						for(TutorResponsableEvento tr : listTutorResEvent) {
+//							System.out.println("Seteando evento crado recien a tutores idevento:" +eventoEditable.getId());
+//							System.out.println("Tutor a setear evento "+tr.getTutorId());
+//							tr.setEventoId(eventoEditable);
+//							ejb.asignarTutorAEvento(tr);
+//						}
 						
 						eventoEditable=ejb.modificarEvento(eventoEditable);
 //						if(eventoEditable!=null)System.out.println("Evento modificado ");
-//						
-//						for(TutorResponsableEvento tr : listTutorResEvent) {
-//							System.out.println("Seteando evento crado recien a tutores idevento:" +evento.getId());
-//							System.out.println("Tutor a setear evento "+tr.getTutorId());
-//							tr.setEventoId(evento);
-//							ejb.asignarTutorAEvento(tr);
-//						}
+						
+						
 //						
 						generateRows(tableModel);
 						
@@ -341,60 +393,60 @@ public class UIEvento {
 			}
 		});
 		
-		uiListaTutores.btnSeleccionarTutores.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-//				if(eventoEditable.getTutorResponsableEventoCollection()!=null && eventoEditable.getTutorResponsableEventoCollection().isEmpty()) {
-				System.out.println("Presiono el boton aceptar tutores tamaño lista "+uiListaTutores.getListTutoresSeleccionados().size());
-//				listTutorResEvent.clear();
-//				listaDeTutores.removeAll();
-				for(Tutor tut :uiListaTutores.getListTutoresSeleccionados()) {
-					Boolean flag = true;
-					for(TutorResponsableEvento tre: listTutorResEvent) {
-						if(tre.getTutorId().equals(tut)) {
-							System.out.println("El tutor esta marco para que no lo agregue a la lista");
-							flag=false;
-						}
-					}
-					
-					if(flag) {//si es true es xq no estaba en la lista y se manda a guardar es nuevo
-						TutorResponsableEvento tutResEvent = new TutorResponsableEvento();
-						tutResEvent.setEventoId(eventoEditable);
-						tutResEvent.setTutorId(tut);
-						listTutorResEvent.add(tutResEvent);
-						listaDeTutores.add(tut.getDocumento() +" "+tut.getNombres()+" "+tut.getApellidos());
-						}
-					}
-				
-				if(!uiListaTutores.getListTutoresMarcadosABorrar().isEmpty()) {
-				for(Tutor tut : uiListaTutores.getListTutoresMarcadosABorrar()) {
-					TutorResponsableEvento tutREAEliminar =null;
-					Tutor tutAEliminar=null;
-					for(TutorResponsableEvento tre: listTutorResEvent) {
-						if(tre.getTutorId().equals(tut)) {
-							tutREAEliminar=tre;
-							tutAEliminar=tut;
-						}
-					}
-					if(tutREAEliminar!=null) {
-						listTutorResEvent.remove(tutREAEliminar);
-						listaDeTutores.remove(tutAEliminar.getDocumento() +" "+tutAEliminar.getNombres()+" "+tutAEliminar.getApellidos());
-					}
-				}
-				}
-//				}//else {
-//					listTutorResEvent.clear();
-//					for(Tutor tut :uiListaTutores.getListTutores()) {
+//		uiListaTutores.btnSeleccionarTutores.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+////				if(eventoEditable.getTutorResponsableEventoCollection()!=null && eventoEditable.getTutorResponsableEventoCollection().isEmpty()) {
+//				System.out.println("Presiono el boton aceptar tutores tamaño lista "+uiListaTutores.getListTutoresSeleccionados().size());
+////				listTutorResEvent.clear();
+////				listaDeTutores.removeAll();
+//				for(Tutor tut :uiListaTutores.getListTutoresSeleccionados()) {
+//					Boolean flag = true;
+//					for(TutorResponsableEvento tre: listTutorResEvent) {
+//						if(tre.getTutorId().equals(tut)) {
+//							System.out.println("El tutor esta marco para que no lo agregue a la lista");
+//							flag=false;
+//						}
+//					}
+//					
+//					if(flag) {//si es true es xq no estaba en la lista y se manda a guardar es nuevo
 //						TutorResponsableEvento tutResEvent = new TutorResponsableEvento();
-//						tutResEvent.setTutorId(tut);
 //						tutResEvent.setEventoId(eventoEditable);
+//						tutResEvent.setTutorId(tut);
 //						listTutorResEvent.add(tutResEvent);
-//						
+//						listaDeTutores.add(tut.getDocumento() +" "+tut.getNombres()+" "+tut.getApellidos());
+//						}
+//					}
+//				
+//				if(!uiListaTutores.getListTutoresMarcadosABorrar().isEmpty()) {
+//				for(Tutor tut : uiListaTutores.getListTutoresMarcadosABorrar()) {
+//					TutorResponsableEvento tutREAEliminar =null;
+//					Tutor tutAEliminar=null;
+//					for(TutorResponsableEvento tre: listTutorResEvent) {
+//						if(tre.getTutorId().equals(tut)) {
+//							tutREAEliminar=tre;
+//							tutAEliminar=tut;
+//						}
+//					}
+//					if(tutREAEliminar!=null) {
+//						listTutorResEvent.remove(tutREAEliminar);
+//						listaDeTutores.remove(tutAEliminar.getDocumento() +" "+tutAEliminar.getNombres()+" "+tutAEliminar.getApellidos());
 //					}
 //				}
-			}
-		});
+//				}
+////				}//else {
+////					listTutorResEvent.clear();
+////					for(Tutor tut :uiListaTutores.getListTutores()) {
+////						TutorResponsableEvento tutResEvent = new TutorResponsableEvento();
+////						tutResEvent.setTutorId(tut);
+////						tutResEvent.setEventoId(eventoEditable);
+////						listTutorResEvent.add(tutResEvent);
+////						
+////					}
+////				}
+//			}
+//		});
 		
-		btnEditar.setBounds(510, 718, 113, 21);
+		btnEditar.setBounds(500, 620, 113, 21);
 		panel.add(btnEditar);
 		
 		JSeparator separator_2 = new JSeparator();
@@ -467,9 +519,12 @@ public class UIEvento {
 		editarItrEventoComboBoxLabel.setBounds(425, 569, 45, 13);
 		panel.add(editarItrEventoComboBoxLabel);
 		
-		listaDeTutores = new java.awt.List();
-		listaDeTutores.setBounds(425, 611, 321, 81);
-		panel.add(listaDeTutores);
+		
+
+		
+		JLabel lblNewLabel_1 = new JLabel("Tutores del evento");
+		lblNewLabel_1.setBounds(633, 569, 113, 13);
+		panel.add(lblNewLabel_1);
 
 		frame.pack();
 //		frame.setVisible(true);
@@ -494,6 +549,38 @@ public class UIEvento {
 //			"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"
 		}
 	}
+	
+	
+	public void limpiarTabla() {
+//		if (listTutores != null || !listTutores.isEmpty() || listTutores.size() > 0) {
+//			listTutores.clear();
+//			
+//		}
+		modeloTutoEditable.getDataVector().removeAllElements();
+		modeloTutoEditable.fireTableDataChanged();
+
+	}
+	
+	public void actualizarLista(List<Tutor> listarTutSel) {
+		System.out.println("Entrando a cargar la tabla de TUTORES");
+		limpiarTabla();
+		this.listTutores = listarTutSel;
+		// Se rellena cada posición del array con una de las columnas de la tabla en
+		// base de datos.
+		for (Tutor tutor : listTutores) {
+//			"Id", "CI","Nombre", "Apellido","Tipo","Area"
+			filaTutoEditable[0] = tutor.getId();
+			filaTutoEditable[1] = tutor.getDocumento().toString();
+			filaTutoEditable[2] = tutor.getNombres();
+			filaTutoEditable[3] = tutor.getApellidos();
+			filaTutoEditable[4] = tutor.getTipo().toString();
+			filaTutoEditable[5] = tutor.getArea().toString();
+			// Se añade al modelo la fila completa.
+			modeloTutoEditable.addRow(filaTutoEditable);
+
+		}
+	} 
+	
 	
 	private DefaultComboBoxModel<Itr> generateItrEventoComboBoxData() {
 		DefaultComboBoxModel<Itr> comboBoxModel = new DefaultComboBoxModel<>();
@@ -539,7 +626,28 @@ public class UIEvento {
 	
 	public void limpiarCampos() {
 		listTutorResEvent.clear();
-		listaDeTutores.removeAll();
+	}
+	
+	public void obtenerListaDeTutores(List<Tutor> lista) {
+		System.out.println("Presiono el boton aceptar tutores tamaño lista "+lista.size());
+
+		for(Tutor tut :lista) {
+			Boolean agregar=true;
+			for(TutorResponsableEvento tutRE :listTutorResEvent) {
+				if(tutRE.getTutorId().getId().equals(tut.getId())) {
+					agregar = false;
+					System.out.println("EL tutor"+ tut.getNombres() +" "+tut.getApellidos() 
+					+"  ya se encuentra en la lista no se agregara");
+				}
+			}
+			if(agregar) {
+				TutorResponsableEvento tutResEvent = new TutorResponsableEvento();
+				tutResEvent.setTutorId(tut);
+				tutResEvent.setEventoId(eventoEditable);
+				listTutorResEvent.add(tutResEvent);
+			}
+			}
+		actualizarLista(lista);
 	}
 	
 }

@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -27,7 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author jasuaga
  */
 @Entity
-@Table(name = "convocatoria_asistencia_evento_estudiante")
+@Table(name = "convocatoria_asistencia_evento_estudiante", uniqueConstraints = {
+	    @UniqueConstraint(columnNames = {"evento_id", "estudiante_id"})
+})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ConvocatoriaAsistenciaEventoEstudiante.findAll", query = "SELECT c FROM ConvocatoriaAsistenciaEventoEstudiante c"),
@@ -36,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ConvocatoriaAsistenciaEventoEstudiante.findByAsistencia", query = "SELECT c FROM ConvocatoriaAsistenciaEventoEstudiante c WHERE c.asistencia = :asistencia")})
 public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
     private static final long serialVersionUID = 1L;
-
+ 
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="conv_asist_even_estu_seq")
     @SequenceGenerator(name="conv_asist_even_estu_seq", sequenceName="conv_asist_even_estu_seq", allocationSize=1)
@@ -45,21 +48,21 @@ public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
     private Integer id;
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "calificacion")
-    private int calificacion;
+    private Integer calificacion;
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "asistencia")
     private Boolean asistencia;
 
     @JoinColumn(name = "evento_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @NotNull
     private Evento eventoId;
 
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @NotNull
     private Estudiante estudianteId;
 
     public ConvocatoriaAsistenciaEventoEstudiante() {
@@ -89,11 +92,11 @@ public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
         this.id = id;
     }
 
-    public int getCalificacion() {
+    public Integer getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(int calificacion) {
+    public void setCalificacion(Integer calificacion) {
         this.calificacion = calificacion;
     }
 
