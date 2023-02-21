@@ -29,6 +29,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
 import java.awt.Component;
@@ -61,8 +64,8 @@ public class UIEventoAsistenciaEstudiante {
 	private Evento eventoSeleccionado;
 	private Estudiante estudianteSeleccionado;
 	private JComboBox comboBoxAsistencia;
-	private JTextField textNotaEstudiante;
-
+	private JComboBox comboBoxNota;
+	
 	public JButton btnConfirmarAsistencia;
 
 	private JTextField textBuscarNombre;
@@ -83,25 +86,31 @@ public class UIEventoAsistenciaEstudiante {
 		eventoSeleccionado= new Evento();
 		estudianteSeleccionado= new Estudiante();
 		
-		frame = new JFrame("Listado de tutores");
+		frame = new JFrame("Asistencia de estudiantes a eventos");
 
 		JPanel panel = new JPanel();
 		// definimos un layout
 
-		panel.setPreferredSize(new Dimension(800, 800));
+		panel.setPreferredSize(new Dimension(1200, 800));
 		frame.getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(null);
-
+//		frame.getContentPane().add(panel, BorderLayout.SOUTH);
+//		frame.getContentPane().setLayout(new BorderLayout());
+//		frame.getContentPane().add(panel, BorderLayout.CENTER);
+//		frame.pack();
+//		frame.setVisible(true);
+		
 		modelo = new DefaultTableModel();
 		modeloEstudiante = new DefaultTableModel();
 
 		// se crea la Tabla con el modelo DefaultTableModel
 		table = new JTable(modelo);
-//		table.setDefaultEditor(Object.class, null);
+		table.setDefaultEditor(Object.class, null);
 		table.setCellSelectionEnabled(false);
 		table.setRowSelectionAllowed(true);
 		table.setForeground(Color.GREEN);
-		table.setColumnSelectionAllowed(false);
+//		table.setColumnSelectionAllowed(false);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table.setBackground(Color.BLACK);
 		// crea un array que contiene los nombre de las columnas
 		final String[] columnNames = {"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin" };
@@ -139,7 +148,7 @@ public class UIEventoAsistenciaEstudiante {
 	    });
 		// Creamos un JscrollPane y le agregamos la JTable
 		JScrollPane scrollPaneEvento = new JScrollPane(table);
-		scrollPaneEvento.setBounds(10, 103, 386, 368);
+		scrollPaneEvento.setBounds(10, 103, 687, 368);
 		// definimos un layout
 		// Agregamos el JScrollPane al contenedor
 		panel.add(scrollPaneEvento);
@@ -148,11 +157,12 @@ public class UIEventoAsistenciaEstudiante {
 // ESTUDIANTE TABLE
 		// se crea la Tabla con el modelo DefaultTableModel
 				tableEstudiante = new JTable(modeloEstudiante);
-//				table.setDefaultEditor(Object.class, null);
+				table.setDefaultEditor(Object.class, null);
 				tableEstudiante.setCellSelectionEnabled(false);
 				tableEstudiante.setRowSelectionAllowed(true);
 				tableEstudiante.setForeground(Color.GREEN);
-				tableEstudiante.setColumnSelectionAllowed(false);
+//				tableEstudiante.setColumnSelectionAllowed(false);
+				tableEstudiante.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 				tableEstudiante.setBackground(Color.BLACK);
 				// crea un array que contiene los nombre de las columnas
 				final String[] columnNamesEstudiante = { "Id", "CI","Nombre", "Apellido"};
@@ -188,7 +198,7 @@ public class UIEventoAsistenciaEstudiante {
 			    });
 				// Creamos un JscrollPane y le agregamos la JTable
 				JScrollPane scrollPaneEstudiante = new JScrollPane(tableEstudiante);
-				scrollPaneEstudiante.setBounds(406, 103, 371, 368);
+				scrollPaneEstudiante.setBounds(707, 103, 483, 368);
 				// definimos un layout
 				// Agregamos el JScrollPane al contenedor
 //				JScrollPane scrollPaneEstudiante = new JScrollPane((Component) null);
@@ -206,36 +216,36 @@ public class UIEventoAsistenciaEstudiante {
 				}
 			}
 		});
-		btnConfirmarAsistencia.setBounds(487, 718, 290, 21);
+		btnConfirmarAsistencia.setBounds(900, 714, 290, 21);
 		panel.add(btnConfirmarAsistencia);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Nombre evento");
-		lblNewLabel_1_1.setBounds(72, 48, 102, 13);
+		lblNewLabel_1_1.setBounds(373, 48, 102, 13);
 		panel.add(lblNewLabel_1_1);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("Documento");
-		lblNewLabel_2_1.setBounds(406, 10, 113, 13);
+		lblNewLabel_2_1.setBounds(806, 10, 113, 13);
 		panel.add(lblNewLabel_2_1);
 		
 		textBuscarCI = new JTextField();
 		textBuscarCI.setColumns(10);
-		textBuscarCI.setBounds(406, 23, 188, 19);
+		textBuscarCI.setBounds(806, 23, 188, 19);
 		textBuscarCI.setText("");
 		panel.add(textBuscarCI);
 		
 		textBuscarTitulo = new JTextField();
 		textBuscarTitulo.setColumns(10);
-		textBuscarTitulo.setBounds(72, 61, 188, 19);
+		textBuscarTitulo.setBounds(373, 61, 188, 19);
 		textBuscarCI.setText("");
 		panel.add(textBuscarTitulo);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("Id");
-		lblNewLabel_1_1_1.setBounds(10, 48, 74, 13);
+		lblNewLabel_1_1_1.setBounds(311, 48, 74, 13);
 		panel.add(lblNewLabel_1_1_1);
 		
 		textBuscarId = new JTextField();
 		textBuscarId.setColumns(10);
-		textBuscarId.setBounds(10, 61, 52, 19);
+		textBuscarId.setBounds(311, 61, 52, 19);
 		textBuscarId.setText("");
 		panel.add(textBuscarId);
 		
@@ -246,11 +256,11 @@ public class UIEventoAsistenciaEstudiante {
 				buscarEstudiantePor(textBuscarCI.getText() ,textBuscarNombre.getText(),textBuscarApellido.getText());
 			}
 		});
-		btnBuscarEstudiantes.setBounds(727, 60, 63, 21);
+		btnBuscarEstudiantes.setBounds(1116, 60, 74, 21);
 		panel.add(btnBuscarEstudiantes);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 91, 790, 2);
+		separator.setBounds(10, 90, 1180, 3);
 		panel.add(separator);
 		
 		JLabel lblNewLabel = new JLabel("Filtros de busqueda");
@@ -258,7 +268,7 @@ public class UIEventoAsistenciaEstudiante {
 		panel.add(lblNewLabel);
 		
 		JButton btnLimpiarDatos = new JButton("Limpiar Datos");
-		btnLimpiarDatos.setBounds(487, 750, 290, 21);
+		btnLimpiarDatos.setBounds(900, 746, 290, 21);
 		panel.add(btnLimpiarDatos);
 		
 
@@ -277,25 +287,20 @@ public class UIEventoAsistenciaEstudiante {
 		lblDatosEstudiante.setLineWrap(true);
 		lblDatosEstudiante.setForeground(Color.BLACK);
 		lblDatosEstudiante.setBackground(SystemColor.control);
-		lblDatosEstudiante.setBounds(406, 513, 371, 175);
+		lblDatosEstudiante.setBounds(706, 513, 371, 175);
 		panel.add(lblDatosEstudiante);
 		
 		comboBoxAsistencia = new JComboBox();
 		comboBoxAsistencia.setModel(new DefaultComboBoxModel(new String[] {"","Si", "No"}));
-		comboBoxAsistencia.setBounds(20, 718, 203, 21);
+		comboBoxAsistencia.setBounds(433, 714, 203, 21);
 		panel.add(comboBoxAsistencia);
 		
 		JLabel lblNewLabel_2 = new JLabel("Asistio evento?");
-		lblNewLabel_2.setBounds(20, 702, 203, 13);
+		lblNewLabel_2.setBounds(433, 698, 203, 13);
 		panel.add(lblNewLabel_2);
 		
-		textNotaEstudiante = new JTextField();
-		textNotaEstudiante.setBounds(233, 719, 244, 19);
-		panel.add(textNotaEstudiante);
-		textNotaEstudiante.setColumns(10);
-		
 		JLabel lblNewLabel_3 = new JLabel("Nota");
-		lblNewLabel_3.setBounds(233, 702, 45, 13);
+		lblNewLabel_3.setBounds(646, 698, 45, 13);
 		panel.add(lblNewLabel_3);
 		
 		JButton btnBuscarEventos = new JButton("Buscar");
@@ -304,27 +309,27 @@ public class UIEventoAsistenciaEstudiante {
 				buscarEventosPor(textBuscarId.getText(), textBuscarTitulo.getText());
 			}
 		});
-		btnBuscarEventos.setBounds(283, 60, 113, 21);
+		btnBuscarEventos.setBounds(584, 60, 113, 21);
 		panel.add(btnBuscarEventos);
 		
 		JLabel lblNewLabel_2_1_1 = new JLabel("Nombre");
-		lblNewLabel_2_1_1.setBounds(406, 48, 113, 13);
+		lblNewLabel_2_1_1.setBounds(806, 48, 113, 13);
 		panel.add(lblNewLabel_2_1_1);
 		
 		textBuscarNombre = new JTextField();
 		textBuscarNombre.setText("");
 		textBuscarNombre.setColumns(10);
-		textBuscarNombre.setBounds(406, 61, 148, 19);
+		textBuscarNombre.setBounds(806, 61, 148, 19);
 		panel.add(textBuscarNombre);
 		
 		JLabel lblNewLabel_2_1_1_1 = new JLabel("Apellido");
-		lblNewLabel_2_1_1_1.setBounds(564, 48, 113, 13);
+		lblNewLabel_2_1_1_1.setBounds(964, 48, 113, 13);
 		panel.add(lblNewLabel_2_1_1_1);
 		
 		textBuscarApellido = new JTextField();
 		textBuscarApellido.setText("");
 		textBuscarApellido.setColumns(10);
-		textBuscarApellido.setBounds(564, 61, 148, 19);
+		textBuscarApellido.setBounds(964, 61, 148, 19);
 		panel.add(textBuscarApellido);
 		
 		JLabel lblNewLabel_1 = new JLabel("Datos del evento: ");
@@ -332,12 +337,17 @@ public class UIEventoAsistenciaEstudiante {
 		panel.add(lblNewLabel_1);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(20, 504, 780, 2);
+		separator_1.setBounds(20, 503, 1170, 3);
 		panel.add(separator_1);
 		
 		JLabel lblNewLabel_2_2 = new JLabel("Datos del Estudiante:");
-		lblNewLabel_2_2.setBounds(416, 481, 113, 13);
+		lblNewLabel_2_2.setBounds(716, 481, 113, 13);
 		panel.add(lblNewLabel_2_2);
+		
+		comboBoxNota = new JComboBox();
+		comboBoxNota.setModel(new DefaultComboBoxModel(new String[] {"", "1", "2", "3", "4", "5"}));
+		comboBoxNota.setBounds(646, 714, 244, 21);
+		panel.add(comboBoxNota);
 		
 		
 
@@ -430,6 +440,11 @@ public class UIEventoAsistenciaEstudiante {
 	}
 	
 	public boolean validar() {
+		if(comboBoxNota.getSelectedItem().toString()=="") {
+			JOptionPane.showMessageDialog(null, "Seleccione una calificacion de 1 a 5", "Datos no validos",
+					JOptionPane.INFORMATION_MESSAGE);
+			return false;	
+		}
 		if(estudianteSeleccionado==null || estudianteSeleccionado.getId()==null) {
 			JOptionPane.showMessageDialog(null, "Seleccione un Estudiante", "Datos no validos",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -440,14 +455,14 @@ public class UIEventoAsistenciaEstudiante {
 					JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		if(textNotaEstudiante.getText()==null || textNotaEstudiante.getText()=="") {
-			JOptionPane.showMessageDialog(null, "Ingrese una nota", "Datos no validos",
+
+		if(comboBoxAsistencia.getSelectedItem().toString()=="") {
+			JOptionPane.showMessageDialog(null, "Seleccione asistencia si no", "Datos no validos",
 					JOptionPane.INFORMATION_MESSAGE);
 			return false;
-			
 		}
-		if(comboBoxAsistencia.getSelectedItem()=="") {
-			JOptionPane.showMessageDialog(null, "Seleccione asistencia si no", "Datos no validos",
+		if(comboBoxAsistencia.getSelectedItem().toString()=="No" && (Integer.valueOf(comboBoxNota.getSelectedItem().toString())>=1) ) {
+			JOptionPane.showMessageDialog(null, "Si el estudiante no concurrio al evento, la nota debe estar 'vacia', no puede ser mayor a 0", "Datos no validos",
 					JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
@@ -458,9 +473,15 @@ public class UIEventoAsistenciaEstudiante {
 		ConvocatoriaAsistenciaEventoEstudiante conv = new ConvocatoriaAsistenciaEventoEstudiante();
 		conv.setEstudianteId(estudianteSeleccionado);
 		conv.setEventoId(eventoSeleccionado);
-		if(comboBoxAsistencia.getSelectedItem()=="Si")conv.setAsistencia(true);
-		if(comboBoxAsistencia.getSelectedItem()=="No")conv.setAsistencia(false);
-		conv.setCalificacion(Integer.valueOf(textNotaEstudiante.getText()));
+		if(comboBoxAsistencia.getSelectedItem().toString()=="Si") {
+			conv.setAsistencia(true);
+			conv.setCalificacion(Integer.valueOf(comboBoxNota.getSelectedItem().toString()));
+		}
+		if(comboBoxAsistencia.getSelectedItem().toString()=="No") {
+			conv.setAsistencia(false);
+			conv.setCalificacion(0);
+		}
+		
 		conv = usuarioRemote.agregarEstudianteAEvento(conv);
 		if(conv.getId()!=null) {
 			JOptionPane.showMessageDialog(null, "Su estidiante fue ingresado al evento", "Datos no validos",
@@ -474,6 +495,7 @@ public class UIEventoAsistenciaEstudiante {
 	
 	
 	 public void cargarTablaEvento(List<Evento> listPasada) {
+		 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 			for (Evento tutor : listPasada) {
 //				"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"
 				fila[0] = tutor.getId();
@@ -481,8 +503,8 @@ public class UIEventoAsistenciaEstudiante {
 				fila[2] = tutor.getTipo().getTipo();
 				fila[3] = tutor.getModalidad().getModalidad();
 				fila[4] = tutor.getLocalizacion();
-				fila[5] = tutor.getInicio().toString();
-				fila[6] = tutor.getFin().toString();
+				fila[5] = formatter.format(tutor.getInicio());
+				fila[6] = formatter.format(tutor.getFin());
 				// Se añade al modelo la fila completa.
 				modelo.addRow(fila);
 

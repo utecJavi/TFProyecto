@@ -209,7 +209,7 @@ public class UIUsuarioNuevo {
 				if (rdbtnTutor.isSelected()) {
 					addTutor();
 				}
-				if (rdbtnTutor.isSelected()) {
+				if (rdbtnAnalista.isSelected()) {
 					addAnalista();
 				}
 			}

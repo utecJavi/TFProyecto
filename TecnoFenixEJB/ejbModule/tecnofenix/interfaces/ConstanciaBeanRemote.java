@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import tecnofenix.entidades.Constancia;
+import tecnofenix.entidades.TipoConstancia;
 import tecnofenix.exception.ServiciosException;
 
 @Remote

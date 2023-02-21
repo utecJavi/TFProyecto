@@ -106,7 +106,22 @@ public class EJBUsuarioRemoto {
 		System.out.println(claseRemota.levantando());
 
 	}
-
+	public Boolean ping() {
+		Boolean status = false;
+		try {
+			status=claseRemota.ping();
+		} catch (Exception e) {
+			System.out.println("Server sin conexion...");
+		}
+		
+		if(status) {
+			System.out.println("Server status [ON]");
+		}else {
+			System.out.println("Server status [OFF]");
+		}
+		return status;
+	}
+	
 	public Usuario login(String usu, String pass) {
 		Usuario logeado = null;
 		System.out.println("Verificando Login");

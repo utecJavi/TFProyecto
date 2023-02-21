@@ -9,8 +9,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
-import ejbModule.tecnofenix.interfaces.Boolean;
+//import ejbModule.tecnofenix.interfaces.Boolean;
 import tecnofenix.entidades.Constancia;
+import tecnofenix.entidades.TipoConstancia;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ConstanciaBeanRemote;
 
@@ -149,9 +150,9 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 		try {
 			String consulta = "SELECT c FROM Constancia c WHERE baja = :baja";
 			TypedQuery<TipoConstancia> query = em.createQuery(consulta, TipoConstancia.class);
-			if (usuario != null) {
+//			if (usuario != null) {
 				query.setParameter("baja", baja);
-			}
+//			}
 			return query.getResultList();
 		} catch (PersistenceException pe) {
 			throw new ServiciosException("Ocurrio un error al consultar constancias: " + pe.getMessage());

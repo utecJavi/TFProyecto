@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+
 import java.util.List;
 
 /**
@@ -33,32 +34,16 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 	@Override
 	public Usuario crearUsuario(Usuario usuario) throws ServiciosException {
-//		if(usuario.getIdItr().getId() == null) {
-//			Itr itr =usuario.getIdItr();
-//			itr=itrBean.crearItr(itr);
-//			usuario.setIdItr(itr);
-//		}
-		System.out.println("COSITAS PA");
-		System.out.println("HERNAN USUARIOOOO 2: " + usuario);
 		System.out.println(itrBean);
 		usuario.setItr(itrBean.findById2(usuario.getItr().getId(), em));
-		System.out.println("TEST1");
 		em.merge(usuario);
-		System.out.println("TEST2");
 		em.flush();
-		System.out.println("TEST3");
 		return usuario;
 	}
 
 	@Override
 	public Usuario modificarUsuario( Usuario usuario)
 			throws ServiciosException, UsuarioNoEncontradoException {
-//		usuarioDb.setDocumento(usuario.getDocumento());
-//		usuarioDb.setApellidos(usuario.getApellidos());
-//		usuarioDb.setNombres(usuario.getNombres());
-//		usuarioDb.setFechaNacimiento(usuario.getFechaNacimiento());
-//		usuarioDb.setMail(usuario.getMail());
-//		usuarioDb.setTelefono(usuario.getTelefono());
 
 		em.merge(usuario);
 		em.flush();
@@ -85,27 +70,19 @@ public class UsuarioBean implements UsuarioBeanRemote {
 
 	@Override
 	public Usuario login(String usuario, String pass) {
-
+		System.out.println("Verificando Login:");
+		Usuario usuarioRet =null;
 		TypedQuery<Usuario> query = em
 				.createQuery("SELECT e FROM Usuario e WHERE e.usuario = :usu AND e.contrasenia = :pass", Usuario.class)
 				.setParameter("usu", usuario).setParameter("pass", pass);
-		for (int i = 0; i < query.getResultList().size(); i++) {
-			System.out.println(query.getResultList().get(0).toString());
+		try {
+			usuarioRet = query.getSingleResult();
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-		System.out.println(query.getResultList().get(0).getId());
-		System.out.println(query.getResultList().get(0).getNombres());
-		System.out.println(query.getResultList().get(0).getApellidos());
-		System.out.println(query.getResultList().get(0).getDocumento());
-		System.out.println(query.getResultList().get(0).getDepartamento());
-		System.out.println(query.getResultList().get(0).getMail());
-		System.out.println(query.getResultList().get(0).getTelefono());
-		System.out.println(query.getResultList().get(0).toString());
-		em.flush();
-		System.out.println("USUARIOSBEAN LUEGO DE LA QUERY");
-//		Estudiante estu = new Estudiante();
-//		estu =query.getResultList().get(0);
-//		System.out.println(query.getResultList().toString());
-		return query.getResultList().get(0);
+		
+		
+		return usuarioRet;
 	}
 
 	@Override

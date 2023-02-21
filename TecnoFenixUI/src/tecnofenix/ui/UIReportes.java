@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -69,7 +70,7 @@ public class UIReportes {
 		convEESeleccionada= new ConvocatoriaAsistenciaEventoEstudiante();
 		consultaNota= new String(" >= ");
 		frame = new JFrame("Reportes");
-
+		
 		JPanel panel = new JPanel();
 		// definimos un layout
 
@@ -81,7 +82,7 @@ public class UIReportes {
 
 		// se crea la Tabla con el modelo DefaultTableModel
 		table = new JTable(modelo);
-//		table.setDefaultEditor(Object.class, null);
+		table.setDefaultEditor(Object.class, null);
 		table.setCellSelectionEnabled(false);
 		table.setRowSelectionAllowed(true);
 		table.setForeground(Color.GREEN);
@@ -376,15 +377,16 @@ public class UIReportes {
 	}
 	
 	public void mostrarDatos() {
-
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		
 		String datosEvento=new String();
 		 datosEvento="Id: "+ convEESeleccionada.getEventoId().getId()+"\n"
 		 + "Titulo: "+ convEESeleccionada.getEventoId().getTitulo()+"\n"
 		 + "Tipo de evento: "+ convEESeleccionada.getEventoId().getTipo().getTipo()+"\n"
 		 + "Modalidad del evento: "+ convEESeleccionada.getEventoId().getModalidad().getModalidad()+"\n"
 		 + "Localizacion: "+ convEESeleccionada.getEventoId().getLocalizacion()+"\n"
-		 + "Inicio: "+ convEESeleccionada.getEventoId().getInicio()+"\n"
-		 + "Fin: "+ convEESeleccionada.getEventoId().getId()+"\n";
+		 + "Inicio: "+ formatter.format(convEESeleccionada.getEventoId().getInicio()) +"\n"
+		 + "Fin: "+ formatter.format(convEESeleccionada.getEventoId().getId())+"\n";
 		 lblDatosEvento.setText(datosEvento);;
 		 
 		 String datosEstudiante=new String();
@@ -392,7 +394,7 @@ public class UIReportes {
 		 + "Nombre: "+ convEESeleccionada.getEstudianteId().getNombres()+ " "+ convEESeleccionada.getEstudianteId().getApellidos()+"\n"
 		 + "Documento: "+ convEESeleccionada.getEstudianteId().getDocumento()+"\n"
 		 + "Mail: "+ convEESeleccionada.getEstudianteId().getMail()+"\n"
-		 + "Fecha nacimiento: "+ convEESeleccionada.getEstudianteId().getFechaNacimiento()+"\n"
+		 + "Fecha nacimiento: "+ formatter.format(convEESeleccionada.getEstudianteId().getFechaNacimiento())+"\n"
 		 + "ITR: "+ convEESeleccionada.getEstudianteId().getItr().getNombre()+"\n";
 		 lblDatosEstudiante.setText(datosEstudiante);;
 	}

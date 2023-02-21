@@ -97,7 +97,7 @@ public class Constancia implements Serializable {
         this.fecha = fecha;
     }
     
-    public Constancia(Integer id, String detalle, Date fecha, Evento eventoId, Estudiante estudianteId, EstadoConstancia estado, TipoConstancias tipoConstancia) {
+    public Constancia(Integer id, String detalle, Date fecha, Evento eventoId, Estudiante estudianteId, EstadoConstancia estado, TipoConstancia tipoConstancia) {
         this.id = id;
         this.detalle = detalle;
         this.fecha = fecha;
