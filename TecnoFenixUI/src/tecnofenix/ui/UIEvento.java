@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,6 +51,8 @@ public class UIEvento {
 	private JComboBox<Set<Analista>> comboBoxAnalistas;
 	private JDateChooser dateFechaInicio;
 	private JDateChooser dateFechaFin;
+	private JDateChooser dateFechaInicioFIN;
+	private JDateChooser dateFechaFinFIN;
 	private JTextField textLocalizacion;
 	private JComboBox<Itr> itrEventoComboBox;
 	private Evento eventoEditable;
@@ -68,7 +71,8 @@ public class UIEvento {
 	
 	private List<TutorResponsableEvento> listTutorResEvent = new ArrayList<TutorResponsableEvento>();
 	public List<Tutor> listTutores= new ArrayList<Tutor>();
-//	private List<Tutor> editarTutores = new ArrayList<Tutor>();
+	private DefaultTableModel tableModel;
+	private JTextField textIdEvento;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -88,14 +92,15 @@ public class UIEvento {
 		
 		
 		panel.setLayout(null);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
-		DefaultTableModel tableModel = new DefaultTableModel(new String[] {"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"}, 0) {
+		tableModel = new DefaultTableModel(new String[] {"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"}, 0) {
 			 @Override
 			    public boolean isCellEditable(int row, int column) {
 			        return false;
 			 }
 		};
-		generateRows(tableModel);
+		generateRows(ejb.listarEventos());
 		tablaEventos = new JTable();
 		tablaEventos.setModel(tableModel);
 		tablaEventos.setCellSelectionEnabled(false);
@@ -197,36 +202,7 @@ public class UIEvento {
 		
 		
 		
-		JButton filtrarEventosBtn = new JButton("Filtrar");
-		filtrarEventosBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//todo logica de filtros
-//				Evento evento =new Evento(textTitulo.getText(),
-//						(TipoEvento)comboBoxTipoEvento.getSelectedItem(),
-//						(ModalidadEvento)comboBoxModalidadEvento.getSelectedItem(), 
-//						dateFechaInicio.getDate(),
-//						dateFechaFin.getDate(),
-//						textLocalizacion.getText(),
-//						false,
-//						(Itr)itrEventoComboBox.getSelectedItem(),
-//						null,
-//						null,
-//						null,
-//						null,
-//						null,
-//						null);
-//				evento =ejb.crearEvento(evento);
-//				System.out.println("Evento creado =" +evento.getId());
-//				for(TutorResponsableEvento tr : listTutorResEvent) {
-//					System.out.println("Seteando evento crado recien a tutores idevento:" +evento.getId());
-//					System.out.println("Tutor a setear evento "+tr.getTutorId());
-//					tr.setEventoId(evento);
-//					ejb.asignarTutorAEvento(tr);
-//				}
-//				
-				generateRows(tableModel);
-			}
-		});
+		
 		
 		JButton btnSeleccionarTutores = new JButton("Editar Tutores");
 		btnSeleccionarTutores.addActionListener(new ActionListener() {
@@ -243,24 +219,26 @@ public class UIEvento {
 				}
 			}
 		});
-		btnSeleccionarTutores.setBounds(850, 769, 113, 21);
+		btnSeleccionarTutores.setBounds(505, 611, 113, 21);
 		panel.add(btnSeleccionarTutores);
-		filtrarEventosBtn.setBounds(633, 111, 113, 21);
-		panel.add(filtrarEventosBtn);
+		
+		
 
 		textTitulo = new JTextField();
-		textTitulo.setBounds(10, 68, 202, 19);
+		textTitulo.setText("");
+		textTitulo.setBounds(116, 68, 202, 19);
 		textTitulo.setColumns(10);
 		panel.add(textTitulo);
 
 		textLocalizacion = new JTextField();
-		textLocalizacion.setBounds(425, 68, 188, 19);
+		textLocalizacion.setText("");
+		textLocalizacion.setBounds(333, 68, 188, 19);
 		textLocalizacion.setColumns(10);
 		panel.add(textLocalizacion);
 
 		comboBoxTipoEvento = new JComboBox<>();
 		comboBoxTipoEvento.setModel(new DefaultComboBoxModel<TipoEvento>(TipoEvento.values()));
-		comboBoxTipoEvento.setBounds(227, 68, 188, 19);
+		comboBoxTipoEvento.setBounds(10, 112, 202, 19);
 		panel.add(comboBoxTipoEvento);
 
 		comboBoxModalidadEvento = new JComboBox<>();
@@ -269,48 +247,14 @@ public class UIEvento {
 		panel.add(comboBoxModalidadEvento);
 
 		dateFechaInicio = new JDateChooser();
-		dateFechaInicio.setBounds(10, 112, 96, 19);
+		dateFechaInicio.setBounds(531, 68, 96, 19);
 		panel.add(dateFechaInicio);
 
 		dateFechaFin = new JDateChooser();
-		dateFechaFin.setBounds(116, 111, 96, 19);
+		dateFechaFin.setBounds(637, 68, 96, 19);
 		panel.add(dateFechaFin);
 
-
-
-		// todo: rehacer esto de buscar
-//		textBuscarDept = new JTextField();
-//		textBuscarDept.setColumns(10);
-//		textBuscarDept.setBounds(406, 61, 188, 19);
-//		textBuscarDept.setText("");
-//		panel.add(textBuscarDept);
-//
-//		textBuscarNomb = new JTextField();
-//		textBuscarNomb.setColumns(10);
-//		textBuscarNomb.setBounds(208, 61, 188, 19);
-//		textBuscarDept.setText("");
-//		panel.add(textBuscarNomb);
-//
-//		JLabel lblNewLabel_1_1_1 = new JLabel("Id");
-//		lblNewLabel_1_1_1.setBounds(10, 48, 74, 13);
-//		panel.add(lblNewLabel_1_1_1);
-//
-//		textBuscarId = new JTextField();
-//		textBuscarId.setColumns(10);
-//		textBuscarId.setBounds(10, 61, 188, 19);
-//		textBuscarId.setText("");
-//		panel.add(textBuscarId);
-//
-//		JButton btnBuscar = new JButton("Buscar");
-//		btnBuscar.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//
-//				buscarPor(textBuscarId.getText() ,textBuscarNomb.getText(),textBuscarDept.getText());
-//			}
-//		});
-//		btnBuscar.setBounds(677, 60, 113, 21);
-//		panel.add(btnBuscar);
-		
+	
 		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 142, 964, 2);
 		panel.add(separator);
@@ -360,7 +304,7 @@ public class UIEvento {
 		editarDateFechaFin.setBounds(116, 657, 96, 19);
 		panel.add(editarDateFechaFin);
 		
-		JButton btnEditar = new JButton("Editar");
+		JButton btnEditar = new JButton("Editar evento");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(eventoEditable!=null && eventoEditable.getId()!=null) {
@@ -373,19 +317,10 @@ public class UIEvento {
 						eventoEditable.setInicio(editarDateFechaInicio.getDate());
 						eventoEditable.setFin(editarDateFechaFin.getDate());
 						eventoEditable.setTutorResponsableEventoCollection(listTutorResEvent);
-//						for(TutorResponsableEvento tr : listTutorResEvent) {
-//							System.out.println("Seteando evento crado recien a tutores idevento:" +eventoEditable.getId());
-//							System.out.println("Tutor a setear evento "+tr.getTutorId());
-//							tr.setEventoId(eventoEditable);
-//							ejb.asignarTutorAEvento(tr);
-//						}
-						
+		
 						eventoEditable=ejb.modificarEvento(eventoEditable);
-//						if(eventoEditable!=null)System.out.println("Evento modificado ");
 						
-						
-//						
-						generateRows(tableModel);
+						generateRows(ejb.listarEventos());
 						
 						
 					}
@@ -393,60 +328,8 @@ public class UIEvento {
 			}
 		});
 		
-//		uiListaTutores.btnSeleccionarTutores.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-////				if(eventoEditable.getTutorResponsableEventoCollection()!=null && eventoEditable.getTutorResponsableEventoCollection().isEmpty()) {
-//				System.out.println("Presiono el boton aceptar tutores tamaño lista "+uiListaTutores.getListTutoresSeleccionados().size());
-////				listTutorResEvent.clear();
-////				listaDeTutores.removeAll();
-//				for(Tutor tut :uiListaTutores.getListTutoresSeleccionados()) {
-//					Boolean flag = true;
-//					for(TutorResponsableEvento tre: listTutorResEvent) {
-//						if(tre.getTutorId().equals(tut)) {
-//							System.out.println("El tutor esta marco para que no lo agregue a la lista");
-//							flag=false;
-//						}
-//					}
-//					
-//					if(flag) {//si es true es xq no estaba en la lista y se manda a guardar es nuevo
-//						TutorResponsableEvento tutResEvent = new TutorResponsableEvento();
-//						tutResEvent.setEventoId(eventoEditable);
-//						tutResEvent.setTutorId(tut);
-//						listTutorResEvent.add(tutResEvent);
-//						listaDeTutores.add(tut.getDocumento() +" "+tut.getNombres()+" "+tut.getApellidos());
-//						}
-//					}
-//				
-//				if(!uiListaTutores.getListTutoresMarcadosABorrar().isEmpty()) {
-//				for(Tutor tut : uiListaTutores.getListTutoresMarcadosABorrar()) {
-//					TutorResponsableEvento tutREAEliminar =null;
-//					Tutor tutAEliminar=null;
-//					for(TutorResponsableEvento tre: listTutorResEvent) {
-//						if(tre.getTutorId().equals(tut)) {
-//							tutREAEliminar=tre;
-//							tutAEliminar=tut;
-//						}
-//					}
-//					if(tutREAEliminar!=null) {
-//						listTutorResEvent.remove(tutREAEliminar);
-//						listaDeTutores.remove(tutAEliminar.getDocumento() +" "+tutAEliminar.getNombres()+" "+tutAEliminar.getApellidos());
-//					}
-//				}
-//				}
-////				}//else {
-////					listTutorResEvent.clear();
-////					for(Tutor tut :uiListaTutores.getListTutores()) {
-////						TutorResponsableEvento tutResEvent = new TutorResponsableEvento();
-////						tutResEvent.setTutorId(tut);
-////						tutResEvent.setEventoId(eventoEditable);
-////						listTutorResEvent.add(tutResEvent);
-////						
-////					}
-////				}
-//			}
-//		});
 		
-		btnEditar.setBounds(500, 620, 113, 21);
+		btnEditar.setBounds(505, 642, 113, 21);
 		panel.add(btnEditar);
 		
 		JSeparator separator_2 = new JSeparator();
@@ -454,19 +337,19 @@ public class UIEvento {
 		panel.add(separator_2);
 		
 		JLabel tituloEventoLabel = new JLabel("Titulo");
-		tituloEventoLabel.setBounds(10, 57, 87, 13);
+		tituloEventoLabel.setBounds(116, 53, 87, 13);
 		panel.add(tituloEventoLabel);
 		
-		JLabel fechaInicioEventoLabel = new JLabel("Fecha de inicio");
-		fechaInicioEventoLabel.setBounds(10, 97, 96, 13);
+		JLabel fechaInicioEventoLabel = new JLabel("Fecha inicio entre");
+		fechaInicioEventoLabel.setBounds(531, 53, 113, 13);
 		panel.add(fechaInicioEventoLabel);
 		
-		JLabel fechaFinEventoLabel = new JLabel("Fecha de finalizacion");
-		fechaFinEventoLabel.setBounds(117, 97, 95, 13);
+		JLabel fechaFinEventoLabel = new JLabel("finalizacion inicio");
+		fechaFinEventoLabel.setBounds(638, 54, 95, 13);
 		panel.add(fechaFinEventoLabel);
 		
 		JLabel tipoEventoLabel = new JLabel("Tipo de evento");
-		tipoEventoLabel.setBounds(227, 57, 188, 13);
+		tipoEventoLabel.setBounds(10, 97, 188, 13);
 		panel.add(tipoEventoLabel);
 		
 		JLabel modalidadEventoLabel = new JLabel("Modalidad del evento");
@@ -474,7 +357,7 @@ public class UIEvento {
 		panel.add(modalidadEventoLabel);
 		
 		JLabel localizacionEventoLabel = new JLabel("Localizacion del evento");
-		localizacionEventoLabel.setBounds(425, 57, 188, 13);
+		localizacionEventoLabel.setBounds(333, 53, 188, 13);
 		panel.add(localizacionEventoLabel);
 		
 		JLabel editarTituloLabel = new JLabel("Titulo");
@@ -525,14 +408,120 @@ public class UIEvento {
 		JLabel lblNewLabel_1 = new JLabel("Tutores del evento");
 		lblNewLabel_1.setBounds(633, 569, 113, 13);
 		panel.add(lblNewLabel_1);
+		
+		JButton btnBorrarEvento = new JButton("Borrar evento");
+		btnBorrarEvento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(eventoEditable!=null) {
+					if(borrarRow(eventoEditable.getTitulo())) {
+						eventoEditable.setBajaLogica(true);
+						eventoEditable=ejb.modificarEvento(eventoEditable);			
+						generateRows(ejb.listarEventos());
+					}
+				}
+			}
+		});
+		btnBorrarEvento.setBounds(505, 673, 113, 21);
+		panel.add(btnBorrarEvento);
+		
+		JLabel lblFechaDeFin = new JLabel("Fecha de fin entre");
+		lblFechaDeFin.setBounds(755, 53, 96, 13);
+		panel.add(lblFechaDeFin);
 
+		dateFechaInicioFIN = new JDateChooser();
+		dateFechaInicioFIN.setBounds(755, 68, 96, 19);
+		panel.add(dateFechaInicioFIN);
+		
+		JLabel lblFinalizacionFin = new JLabel("finalizacion fin");
+		lblFinalizacionFin.setBounds(862, 54, 95, 13);
+		panel.add(lblFinalizacionFin);
+		
+		dateFechaFinFIN = new JDateChooser();
+		dateFechaFinFIN.setBounds(861, 68, 96, 19);
+		panel.add(dateFechaFinFIN);
+		
+		textIdEvento = new JTextField();
+		textIdEvento.setText("");
+		textIdEvento.setColumns(10);
+		textIdEvento.setBounds(10, 68, 87, 19);
+		panel.add(textIdEvento);
+		
+		JLabel lblId = new JLabel("Id");
+		lblId.setBounds(10, 53, 87, 13);
+		panel.add(lblId);
+
+		
+		
+
+		JButton filtrarEventosBtn = new JButton("Filtrar");
+		filtrarEventosBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//todo logica de filtros
+				List<Evento> listEventos=new ArrayList<Evento>();
+				String modalidad="";
+				String tipoEvento="";
+				String itrNombre="";
+				if(comboBoxModalidadEvento.getSelectedIndex()!=0) {
+					modalidad=((ModalidadEvento)comboBoxModalidadEvento.getSelectedItem()).name();
+				}
+				if(comboBoxTipoEvento.getSelectedIndex()!=0) {
+					tipoEvento=((TipoEvento)comboBoxTipoEvento.getSelectedItem()).name();
+				}
+				if(itrEventoComboBox.getSelectedIndex()!=0) {
+					itrNombre=itrEventoComboBox.getSelectedItem().toString();
+				}
+				
+				String fechaInicioInicio="";
+				String fechaFinInicio="";
+				String fechaInicioFin="";
+				String fechaFinFIN="";
+				
+//				if(dateFechaInicio.getDate()!=null) {
+//					fechaInicioInicio=formatter.format(dateFechaInicio.getDate());
+//				}
+//				if(dateFechaInicioFIN.getDate()!=null) {
+//					fechaFinInicio=formatter.format(dateFechaInicioFIN.getDate());
+//				}
+//				if(dateFechaFin.getDate()!=null) {
+//					fechaInicioFin=formatter.format(dateFechaFin.getDate());
+//				}
+//				if(dateFechaFinFIN.getDate()!=null) {
+//					fechaFinFIN=formatter.format(dateFechaFinFIN.getDate());
+//				}
+				if(dateFechaInicio.getDate()!=null) {
+					fechaInicioInicio=dateFechaInicio.getDate().toString();
+				}
+				if(dateFechaInicioFIN.getDate()!=null) {
+					fechaFinInicio=dateFechaInicioFIN.getDate().toString();
+				}
+				if(dateFechaFin.getDate()!=null) {
+					fechaInicioFin=dateFechaFin.getDate().toString();
+				}
+				if(dateFechaFinFIN.getDate()!=null) {
+					fechaFinFIN=dateFechaFinFIN.getDate().toString();
+				}
+				 
+				 try {
+						listEventos=ejb.buscarEventosPor(textIdEvento.getText(), textTitulo.getText(),textLocalizacion.getText(),
+								modalidad, tipoEvento, itrNombre, fechaInicioInicio,  fechaFinInicio, fechaInicioFin,  fechaFinFIN, false);
+				
+				} catch (Exception e2) {
+					System.out.println(e2);
+				}
+				 generateRows(listEventos);
+			}
+		});
+		filtrarEventosBtn.setBounds(633, 111, 113, 21);
+		panel.add(filtrarEventosBtn);
+		
+		
+		
 		frame.pack();
 //		frame.setVisible(true);
 		
 	}
 	
-	private void generateRows(DefaultTableModel tableModel) {
-		List<Evento> eventos = ejb.listarEventos();
+	private void generateRows(List<Evento> eventos) {
 		tableModel.getDataVector().removeAllElements();
 		tableModel.fireTableDataChanged();
 		for (Evento evento : eventos) {
@@ -573,8 +562,8 @@ public class UIEvento {
 			filaTutoEditable[1] = tutor.getDocumento().toString();
 			filaTutoEditable[2] = tutor.getNombres();
 			filaTutoEditable[3] = tutor.getApellidos();
-			filaTutoEditable[4] = tutor.getTipo().toString();
-			filaTutoEditable[5] = tutor.getArea().toString();
+			filaTutoEditable[4] = TipoTutorEncargado.getIdTipo(tutor.getTipo());
+			filaTutoEditable[5] = TipoTutorArea.getIdArea(tutor.getArea());
 			// Se añade al modelo la fila completa.
 			modeloTutoEditable.addRow(filaTutoEditable);
 
@@ -584,6 +573,9 @@ public class UIEvento {
 	
 	private DefaultComboBoxModel<Itr> generateItrEventoComboBoxData() {
 		DefaultComboBoxModel<Itr> comboBoxModel = new DefaultComboBoxModel<>();
+		Itr itrVacio =new Itr();
+		itrVacio.setNombre("");
+		comboBoxModel.addElement(itrVacio);
 		ejb.listarITR().forEach(comboBoxModel::addElement);
 		return comboBoxModel;
 	}
@@ -650,4 +642,14 @@ public class UIEvento {
 		actualizarLista(lista);
 	}
 	
+	public boolean borrarRow(String mensaje) {
+//msj.mostrarMensaje(Mensajes.BAJA);
+
+int dialogButton = JOptionPane.YES_NO_OPTION;
+int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro quieres borrar: "+mensaje,"Warning",dialogButton);
+if(dialogResult == JOptionPane.YES_OPTION){
+	return true;
+}
+return false;
+}
 }

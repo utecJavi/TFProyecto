@@ -623,10 +623,10 @@ public class EJBUsuarioRemoto {
 		}
 		
 		
-		public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,String nombre,String apellido ,String documento, String valorLogico,String calificacion,Boolean asistencia){
+		public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,String nombre,String apellido ,String documento, String valorLogico,String calificacion,Boolean asistio,Boolean noAsistio){
 			List<ConvocatoriaAsistenciaEventoEstudiante> lista = new ArrayList<ConvocatoriaAsistenciaEventoEstudiante>();
 			try {
-				lista = convocatoriaAsistenciaEventoEstudianteBeanRemote.filtrarAsistEstuAEventosPor(id, tituloEvento, nombre, apellido,documento,valorLogico,calificacion, asistencia);
+				lista = convocatoriaAsistenciaEventoEstudianteBeanRemote.filtrarAsistEstuAEventosPor(id, tituloEvento, nombre, apellido,documento,valorLogico,calificacion, asistio ,noAsistio);
 			} catch (ServiciosException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -647,6 +647,20 @@ public class EJBUsuarioRemoto {
 			
 			return list;
 		}
+		
+		public List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,String inicioInicio, String finInicio,String inicioFin, String finFin,Boolean activo) {
+			
+			 List<Evento> list = new ArrayList<Evento>();	
+			try {
+				list= eventoBeanRemote.buscarEventosPor(id,titulo,localizacion,modalidad, tipoEvento, itrNombre, inicioInicio,  finInicio, inicioFin,  finFin, activo);
+			} catch (Exception e) {
+				System.out.println("Error en obtener eventos: " + e.getMessage());
+				e.printStackTrace();
+			}
+			
+			return list;
+		}
+			
 		
 		public List<Estudiante>  buscarEstudiantePor(String ci, String nombre ,String apellido,String generacion ,String itr){
 			List<Estudiante> list = new ArrayList<Estudiante>();	

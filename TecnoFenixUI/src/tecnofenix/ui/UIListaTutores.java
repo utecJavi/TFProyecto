@@ -12,7 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
-
+import tecnofenix.entidades.TipoTutorArea;
+import tecnofenix.entidades.TipoTutorEncargado;
 import tecnofenix.entidades.Tutor;
 
 import javax.swing.JButton;
@@ -383,8 +384,10 @@ public class UIListaTutores {
 			fila[1] = tutor.getDocumento().toString();
 			fila[2] = tutor.getNombres();
 			fila[3] = tutor.getApellidos();
-			fila[4] = tutor.getTipo().toString();
-			fila[5] = tutor.getArea().toString();
+			fila[4] = TipoTutorEncargado.getIdTipo(tutor.getTipo());
+			fila[5] = TipoTutorArea.getIdArea(tutor.getArea());
+			
+		
 			// Se añade al modelo la fila completa.
 			modelo.addRow(fila);
 
@@ -411,8 +414,8 @@ public class UIListaTutores {
 			filaTutSeleccionados[1] = tutor.getDocumento().toString();
 			filaTutSeleccionados[2] = tutor.getNombres();
 			filaTutSeleccionados[3] = tutor.getApellidos();
-			filaTutSeleccionados[4] = tutor.getTipo().toString();
-			filaTutSeleccionados[5] = tutor.getArea().toString();
+			filaTutSeleccionados[4] = TipoTutorEncargado.getIdTipo(tutor.getTipo());
+			filaTutSeleccionados[5] = TipoTutorArea.getIdArea(tutor.getArea());
 			// Se añade al modelo la fila completa.
 			modeloTutSeleccionados.addRow(filaTutSeleccionados);
 

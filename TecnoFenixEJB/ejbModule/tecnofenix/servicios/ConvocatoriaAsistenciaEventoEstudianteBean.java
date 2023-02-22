@@ -82,14 +82,11 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 	
 	@Override
 	public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,
-			String nombre, String apellido,String documento ,String valorLogico,String calificacion,Boolean asistencia) throws ServiciosException {
+			String nombre, String apellido,String documento ,String valorLogico,String calificacion,Boolean asistio,Boolean noAsistio) throws ServiciosException {
 
 		String conditions = "";
 		String joinJPQL = "";
-		if (id != null && id != "") {
-			conditions = conditions + " AND conv.id = " + id;
-		}
-		
+				
 		if (calificacion != null && calificacion != "") {
 			//valorLogico es iguala (>,<,=)
 			conditions = conditions + " AND conv.calificacion " +valorLogico+" "+  calificacion;
@@ -115,14 +112,26 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 
 		}
 		}
-		if (asistencia != null ) {
+		if (asistio == true ) {
 
-			conditions = conditions + " AND conv.asistencia LIKE " + asistencia ;
+			conditions = conditions + " AND conv.asistencia LIKE " + true ;
 
 		}
+		if (noAsistio == true ) {
 
-		if (tituloEvento != null && tituloEvento != "") {
+			conditions = conditions + " AND conv.asistencia LIKE " + false ;
+
+		}
+		if ((id != null && id != "")||(tituloEvento != null && tituloEvento != "")) {
 			joinJPQL =joinJPQL+ " INNER JOIN conv.eventoId event ";
+		}
+		
+		if (id != null && id != "") {
+			conditions = conditions + " AND event.id = " + id;
+		}
+		
+		if (tituloEvento != null && tituloEvento != "") {
+			
 			conditions = conditions + " AND event.titulo LIKE '%" + tituloEvento + "%'";
 
 		}

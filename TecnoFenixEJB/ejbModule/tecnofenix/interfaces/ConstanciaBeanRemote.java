@@ -27,7 +27,7 @@ public interface ConstanciaBeanRemote {
 	
 	TipoConstancia modificarTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException;
 	
-	void borrarTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException;
+	void bajaTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException;
 	
 	List<TipoConstancia> listadoTipoConstancia(Boolean baja) throws ServiciosException;
 	

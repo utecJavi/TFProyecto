@@ -33,6 +33,7 @@ import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Rol;
 import tecnofenix.entidades.TipoGenero;
+import tecnofenix.entidades.TipoTutorArea;
 import tecnofenix.entidades.TipoTutorEncargado;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
@@ -110,7 +111,7 @@ public class UIUsuario {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public void inicializar() {
+	public void inicializar(Usuario user) {
 
 		usuarioRemote = new EJBUsuarioRemoto();
 		allUsuarios = new ArrayList<Usuario>();
@@ -589,7 +590,7 @@ public class UIUsuario {
 		cmbBoxGenero.setBounds(20, 646, 202, 21);
 		panel.add(cmbBoxGenero);
 		
-		cmbArea = new JComboBox();
+		cmbArea = new JComboBox(TipoTutorArea.values());
 		cmbArea.setBounds(777, 603, 225, 21);
 		panel.add(cmbArea);
 		
@@ -681,6 +682,7 @@ public class UIUsuario {
         }
         if(usuarioEditable instanceof Tutor) {
         	((Tutor)usuarioEditable).setTipo(TipoTutorEncargado.getIdTipo(cmbTipoTutor.getSelectedItem().toString()));
+        	((Tutor)usuarioEditable).setTipo(TipoTutorArea.getIdArea(cmbArea.getSelectedItem().toString()));
         }
         
         usuarioEditable=usuarioRemote.modificarUsuario(usuarioEditable);

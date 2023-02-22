@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import tecnofenix.entidades.Estudiante;
+import tecnofenix.entidades.EscolaridadDTO;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
 
@@ -23,5 +24,6 @@ public interface EstudianteBeanRemote {
 	List<Estudiante> listarJustificaciones(Integer justificacionId)throws ServiciosException;
 	List<Estudiante> lisatEstudiantePorReclamos(Integer reclamoId)throws ServiciosException;
 	List<Estudiante> listarConstancias(Integer constanciaId)throws ServiciosException;
+	List<EscolaridadDTO> obtenerEscolaridad(Integer idEstudiante) throws ServiciosException;
 //	List<Estudiante> buscarEstudiantePor(String ci, String nombre ,String apellido)throws ServiciosException;
 }

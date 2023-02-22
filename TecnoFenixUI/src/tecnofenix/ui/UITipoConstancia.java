@@ -15,6 +15,7 @@ import java.util.List;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -108,6 +109,9 @@ public class UITipoConstancia {
 		panel.add(txtNuevoTipo);
 		txtNuevoTipo.setColumns(10);
 		
+		JCheckBox chckbxListarBorrados = new JCheckBox("Listar borrados");
+		chckbxListarBorrados.setBounds(20, 546, 300, 21);
+		panel.add(chckbxListarBorrados);
 		
 		JButton btnListarTipoConstancias = new JButton("Listar tipos");
 		btnListarTipoConstancias.setBounds(87, 481, 189, 19);
@@ -118,7 +122,7 @@ public class UITipoConstancia {
 				modelo.fireTableDataChanged();
 				
         		try {
-        			List<TipoConstancia> tipoConstancias = constanciaBeanRemote.listadoTipoConstancia(false);
+        			List<TipoConstancia> tipoConstancias = constanciaBeanRemote.listadoTipoConstancia(chckbxListarBorrados.isSelected());
         			
         			for(TipoConstancia tipo : tipoConstancias) {
         				
@@ -183,7 +187,7 @@ public class UITipoConstancia {
 						tipoConstancia.setId(id);
 						tipoConstancia.setTipo(tipo);
 						
-						constanciaBeanRemote.borrarTipoConstancia(tipoConstancia);
+						constanciaBeanRemote.bajaTipoConstancia(tipoConstancia);
 						
 					} catch (ServiciosException | NumberFormatException se) {
 	        			System.out.println("Error al borrar tipo de constancia: " + se.getMessage());

@@ -87,19 +87,19 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	public	List<Constancia> listadoConstancias(String usuario, String estado) throws ServiciosException {
 		try {
 			String consulta = "SELECT c FROM Constancia c WHERE 1=1 ";
-			if (usuario != null) {
+			if (usuario != null && usuario != "") {
 				consulta = consulta + " AND c.estudianteId.usuario = :usuario";
 			}
 			
-			if (estado != null) {
+			if (estado != null && estado != "") {
 				consulta = consulta + " AND c.estado = :estado";
 			}
 			
 			TypedQuery<Constancia> query = em.createQuery(consulta, Constancia.class);
-			if (usuario != null) {
+			if (usuario != null && usuario != "") {
 				query.setParameter("usuario", usuario);
 			}
-			if (estado != null) {
+			if (estado != null && estado != "") {
 				query.setParameter("estado", estado);
 			}
 			return query.getResultList();
@@ -135,9 +135,10 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	}
 
 	@Override
-	public void borrarTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException {
+	public void bajaTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException {
 		try {
-			em.remove(tipoConstancia);
+			tipoConstancia.setBaja(true);
+			em.merge(tipoConstancia);
 			em.flush();
 		} catch (PersistenceException pe) {
 			throw new ServiciosException("Ocurrió un error al borrar TipoConstancia: " + pe.getMessage());
@@ -147,11 +148,9 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	@Override
 	public	List<TipoConstancia> listadoTipoConstancia(Boolean baja) throws ServiciosException {
 		try {
-			String consulta = "SELECT c FROM Constancia c WHERE baja = :baja";
+			String consulta = "SELECT tc FROM TipoConstancia tc WHERE tc.baja = :baja";
 			TypedQuery<TipoConstancia> query = em.createQuery(consulta, TipoConstancia.class);
-//			if (usuario != null) {
-				query.setParameter("baja", baja);
-//			}
+			query.setParameter("baja", baja);
 			return query.getResultList();
 		} catch (PersistenceException pe) {
 			throw new ServiciosException("Ocurrio un error al consultar constancias: " + pe.getMessage());

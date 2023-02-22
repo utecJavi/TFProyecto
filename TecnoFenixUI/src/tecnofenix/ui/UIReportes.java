@@ -60,6 +60,7 @@ public class UIReportes {
 	private JTextField textCalificacion;
 	private JTextField textTituloEvento;
 	private JCheckBox chckbxAsistio;
+	private JCheckBox chckbxNoAsistio;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -89,7 +90,7 @@ public class UIReportes {
 		table.setColumnSelectionAllowed(false);
 		table.setBackground(Color.BLACK);
 		// crea un array que contiene los nombre de las columnas
-		final String[] columnNames = { "Id", "Evento","Nombre", "Asistencia","Calificacion" };
+		final String[] columnNames = { "Id","Id Evento", "Titulo Evento","Nombre Estudiante", "Asistencia","Calificacion" };
 
 		// insertamos las columnas
 		for (int column = 0; column < columnNames.length; column++) {
@@ -134,32 +135,32 @@ public class UIReportes {
 		panel.add(lblNewLabel_2);
 		
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(207, 10, 74, 13);
+		lblNombre.setBounds(243, 10, 74, 13);
 		panel.add(lblNombre);
 		
 		JLabel lblApellido = new JLabel("Apellido");
-		lblApellido.setBounds(207, 49, 113, 13);
+		lblApellido.setBounds(243, 49, 113, 13);
 		panel.add(lblApellido);
 		
 		textApellido = new JTextField();
 		textApellido.setColumns(10);
-		textApellido.setBounds(207, 62, 188, 19);
+		textApellido.setBounds(243, 62, 188, 19);
 		textApellido.setText("");
 		panel.add(textApellido);
 		
 		textNombre = new JTextField();
 		textNombre.setColumns(10);
-		textNombre.setBounds(207, 23, 188, 19);
+		textNombre.setBounds(243, 23, 188, 19);
 		textApellido.setText("");
 		panel.add(textNombre);
 		
-		JLabel lblNewLabel_1_1_1 = new JLabel("Id");
+		JLabel lblNewLabel_1_1_1 = new JLabel("Id Evento");
 		lblNewLabel_1_1_1.setBounds(10, 10, 74, 13);
 		panel.add(lblNewLabel_1_1_1);
 		
 		textBuscarId = new JTextField();
 		textBuscarId.setColumns(10);
-		textBuscarId.setBounds(10, 23, 39, 19);
+		textBuscarId.setBounds(10, 23, 74, 19);
 		textBuscarId.setText("");
 		panel.add(textBuscarId);
 		
@@ -173,10 +174,11 @@ public class UIReportes {
 					textDocumento.getText(),
 					consultaNota,
 					textCalificacion.getText(),
-					chckbxAsistio.isSelected());
+					chckbxAsistio.isSelected(),
+					chckbxNoAsistio.isSelected());
 			}
 		});
-		btnBuscar.setBounds(677, 60, 113, 21);
+		btnBuscar.setBounds(704, 61, 86, 21);
 		panel.add(btnBuscar);
 		
 		JSeparator separator = new JSeparator();
@@ -206,24 +208,28 @@ public class UIReportes {
 		panel.add(lblDatosEstudiante);
 		
 		JLabel lblDocumento = new JLabel("Documento");
-		lblDocumento.setBounds(10, 48, 74, 13);
+		lblDocumento.setBounds(45, 49, 74, 13);
 		panel.add(lblDocumento);
 		
 		textDocumento = new JTextField();
 		textDocumento.setColumns(10);
-		textDocumento.setBounds(10, 61, 188, 19);
+		textDocumento.setBounds(45, 62, 188, 19);
 		panel.add(textDocumento);
 		
 		chckbxAsistio = new JCheckBox("Asistio");
-		chckbxAsistio.setSelected(true);
-		chckbxAsistio.setBounds(416, 61, 74, 21);
+		chckbxAsistio.setSelected(false);
+		chckbxAsistio.setBounds(539, 61, 74, 21);
 		panel.add(chckbxAsistio);
 
+		chckbxNoAsistio = new JCheckBox("No Asistio");
+		chckbxNoAsistio.setSelected(false);
+		chckbxNoAsistio.setBounds(436, 61, 101, 21);
+		panel.add(chckbxNoAsistio);
 		
 		ButtonGroup butonGroup = new ButtonGroup();
 
 		rdbtnmMayorQue = new JRadioButton("Mayor igual");
-		rdbtnmMayorQue.setBounds(493, 21, 86, 21);
+		rdbtnmMayorQue.setBounds(525, 20, 86, 21);
 		rdbtnmMayorQue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnmMayorQue.isSelected()) {
@@ -235,7 +241,7 @@ public class UIReportes {
 		panel.add(rdbtnmMayorQue);
 
 		rdbtnMenorQue = new JRadioButton("Menor igual");
-		rdbtnMenorQue.setBounds(581, 22, 91, 21);
+		rdbtnMenorQue.setBounds(613, 21, 91, 21);
 		rdbtnMenorQue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnMenorQue.isSelected()) {
@@ -246,7 +252,7 @@ public class UIReportes {
 		panel.add(rdbtnMenorQue);
 
 		rdbtnIgualQue = new JRadioButton("Igual");
-		rdbtnIgualQue.setBounds(672, 22, 86, 21);
+		rdbtnIgualQue.setBounds(704, 21, 86, 21);
 		rdbtnIgualQue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnIgualQue.isSelected()) {
@@ -261,23 +267,22 @@ public class UIReportes {
 		butonGroup.add(rdbtnIgualQue);
 		
 		textCalificacion = new JTextField();
-		textCalificacion.setText("0");
 		textCalificacion.setColumns(10);
-		textCalificacion.setBounds(416, 23, 74, 19);
+		textCalificacion.setBounds(441, 23, 74, 19);
 		panel.add(textCalificacion);
 		
 		JLabel lblCalificacion = new JLabel("Calificacion");
-		lblCalificacion.setBounds(416, 10, 96, 13);
+		lblCalificacion.setBounds(441, 10, 96, 13);
 		panel.add(lblCalificacion);
 		
 		textTituloEvento = new JTextField();
 		textTituloEvento.setText("");
 		textTituloEvento.setColumns(10);
-		textTituloEvento.setBounds(59, 23, 138, 19);
+		textTituloEvento.setBounds(95, 23, 138, 19);
 		panel.add(textTituloEvento);
 		
 		JLabel lblTItuloEvento = new JLabel("Titulo Evento");
-		lblTItuloEvento.setBounds(59, 10, 138, 13);
+		lblTItuloEvento.setBounds(95, 10, 138, 13);
 		panel.add(lblTItuloEvento);
 		
 		JButton btnLimpiaar = new JButton("Limpiar");
@@ -286,7 +291,7 @@ public class UIReportes {
 				limpiar();
 			}
 		});
-		btnLimpiaar.setBounds(551, 61, 113, 21);
+		btnLimpiaar.setBounds(613, 61, 87, 21);
 		panel.add(btnLimpiaar);
 		
 		
@@ -317,23 +322,23 @@ public class UIReportes {
 		// base de datos.
 		if(allAsisEstuAEvento!=null) {
 		for (ConvocatoriaAsistenciaEventoEstudiante cAEE : allAsisEstuAEvento) {
-
 			fila[0] = cAEE.getId();
-			fila[1] = cAEE.getEventoId().getTitulo();
-			fila[2] = cAEE.getEstudianteId().getNombres()+" "+cAEE.getEstudianteId().getApellidos();
+			fila[1] = cAEE.getEventoId().getId();
+			fila[2] = cAEE.getEventoId().getTitulo();
+			fila[3] = cAEE.getEstudianteId().getNombres()+" "+cAEE.getEstudianteId().getApellidos();
 			if(cAEE.getAsistencia()!=null) {
 				if (cAEE.getAsistencia()) {
-					fila[3] = "Si";
+					fila[4] = "Si";
 				} else {
-					fila[3] = "No";
+					fila[4] = "No";
 				}
 			}else {
-				fila[3] = "---";
+				fila[4] = "---";
 			}
 			if(cAEE.getCalificacion() != null) {
-				fila[4] = cAEE.getCalificacion();
+				fila[5] = cAEE.getCalificacion();
 			}else {
-				fila[4] ="---";
+				fila[5] ="---";
 			}
 			// Se añade al modelo la fila completa.
 			modelo.addRow(fila);
@@ -342,9 +347,9 @@ public class UIReportes {
 		}
 	}
 	
-	public void buscarPor(String id, String tituloEvento,String nombre,String apellido,String documento,String valorLogico,String calificacion,Boolean asistencia) {
+	public void buscarPor(String id, String tituloEvento,String nombre,String apellido,String documento,String valorLogico,String calificacion,Boolean asistio,Boolean noAsistio) {
 		limpiarTabla();
-		allAsisEstuAEvento = usuarioRemote.filtrarAsistEstuAEventosPor( id,  tituloEvento, nombre, apellido ,documento,valorLogico,calificacion, asistencia);
+		allAsisEstuAEvento = usuarioRemote.filtrarAsistEstuAEventosPor( id,  tituloEvento, nombre, apellido ,documento,valorLogico,calificacion, asistio,noAsistio);
 		if(allAsisEstuAEvento != null) {
 		System.out.println(allAsisEstuAEvento.toString());
 		// Se rellena cada posición del array con una de las columnas de la tabla en
@@ -352,15 +357,23 @@ public class UIReportes {
 		for (ConvocatoriaAsistenciaEventoEstudiante cAEE : allAsisEstuAEvento) {
 
 			fila[0] = cAEE.getId();
-			fila[1] = cAEE.getEventoId().getTitulo();
-			fila[2] = cAEE.getEstudianteId().getNombres()+" "+cAEE.getEstudianteId().getApellidos();
-			if (cAEE.getAsistencia()) {
-				fila[3] = "Si";
-			} else {
-				fila[3] = "No";
+			fila[1] = cAEE.getEventoId().getId();
+			fila[2] = cAEE.getEventoId().getTitulo();
+			fila[3] = cAEE.getEstudianteId().getNombres()+" "+cAEE.getEstudianteId().getApellidos();
+			if(cAEE.getAsistencia()!=null) {
+				if (cAEE.getAsistencia()) {
+					fila[4] = "Si";
+				} else {
+					fila[4] = "No";
+				}
+			}else {
+				fila[4] = "---";
 			}
-			fila[4] = cAEE.getCalificacion();
-			
+			if(cAEE.getCalificacion() != null) {
+				fila[5] = cAEE.getCalificacion();
+			}else {
+				fila[5] ="---";
+			}
 			// Se añade al modelo la fila completa.
 			modelo.addRow(fila);
 
@@ -373,7 +386,7 @@ public class UIReportes {
 		textBuscarId.setText("");
 		textNombre.setText("");
 		textTituloEvento.setText("");
-		textCalificacion.setText("0");
+		textCalificacion.setText("");
 		chckbxAsistio.setSelected(true);
 		rdbtnmMayorQue.setSelected(true);
 		consultaNota=" >= ";

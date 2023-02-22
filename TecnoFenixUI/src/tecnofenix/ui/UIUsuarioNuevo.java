@@ -24,6 +24,7 @@ import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Rol;
 import tecnofenix.entidades.TipoGenero;
+import tecnofenix.entidades.TipoTutorArea;
 import tecnofenix.entidades.TipoTutorEncargado;
 import tecnofenix.entidades.Tutor;
 
@@ -408,7 +409,7 @@ public class UIUsuarioNuevo {
 		txtRepetirPass.setColumns(10);
 		panel.add(txtRepetirPass);
 		
-		cmbArea = new JComboBox();
+		cmbArea = new JComboBox(TipoTutorArea.values());
 		cmbArea.setBounds(158, 620, 225, 21);
 		panel.add(cmbArea);
 		
@@ -583,7 +584,7 @@ public class UIUsuarioNuevo {
 				txtTelefono.getText(),
 				(Itr) comboBoxITR.getSelectedItem(),
 				TipoTutorEncargado.getIdTipo(cmbTipoTutor.getSelectedItem().toString()),
-				cmbArea.getSelectedIndex(),
+				TipoTutorArea.getIdArea(cmbArea.getSelectedItem().toString()),
 				setRolNuevoUsuario("TUTOR"));
 				
 		tutor.setValidado(false);

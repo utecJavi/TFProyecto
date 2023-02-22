@@ -102,7 +102,7 @@ public class UIHabilitarEstudianteEvento {
 			eventoSeleccionado= new Evento();
 			estudianteSeleccionado= new Estudiante();
 			
-			frame = new JFrame("Asistencia de estudiantes a eventos");
+			frame = new JFrame("Convocatoria de estudiantes a eventos");
 
 			JPanel panel = new JPanel();
 			// definimos un layout

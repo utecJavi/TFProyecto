@@ -2,7 +2,7 @@ package tecnofenix.entidades;
 
 public enum ModalidadEvento {
 	
-	VIRTUAL("Virtual"), PRESENCIAL("Presencial"), SEMI_PRESENCIAL("Semipresencial");
+	SIN_SELECCIONAR(""),VIRTUAL("Virtual"), PRESENCIAL("Presencial"), SEMI_PRESENCIAL("Semipresencial");
 	
 	private String modalidad;
 	

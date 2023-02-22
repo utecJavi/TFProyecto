@@ -31,6 +31,8 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import tecnofenix.entidades.TipoEvento;
 import tecnofenix.entidades.TipoGenero;
+import tecnofenix.entidades.TipoTutorArea;
+import tecnofenix.entidades.TipoTutorEncargado;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.TutorResponsableEvento;
 import tecnofenix.entidades.ModalidadEvento;
@@ -87,7 +89,7 @@ public class UIEventoNuevo {
 		
 	
 		txtTituloEvento = new JTextField();
-		txtTituloEvento.setBounds(33, 46, 145, 19);
+		txtTituloEvento.setBounds(33, 46, 217, 19);
 		panel.add(txtTituloEvento);
 		txtTituloEvento.setColumns(10);
 		
@@ -97,7 +99,7 @@ public class UIEventoNuevo {
 		
 		cmbTipoEvento = new JComboBox();
 		cmbTipoEvento.setModel(new DefaultComboBoxModel(TipoEvento.values()));
-		cmbTipoEvento.setBounds(33, 86, 145, 21);
+		cmbTipoEvento.setBounds(33, 86, 217, 21);
 		panel.add(cmbTipoEvento);
 		
 		JLabel tipoEventoLabel = new JLabel("Tipo de evento");
@@ -106,7 +108,7 @@ public class UIEventoNuevo {
 		
 		cmbModalidadEvento = new JComboBox();
 		cmbModalidadEvento.setModel(new DefaultComboBoxModel(ModalidadEvento.values()));
-		cmbModalidadEvento.setBounds(33, 133, 145, 21);
+		cmbModalidadEvento.setBounds(33, 133, 217, 21);
 		panel.add(cmbModalidadEvento);
 		
 		JLabel modalidadEventoLabel = new JLabel("Modalidad de evento");
@@ -122,15 +124,15 @@ public class UIEventoNuevo {
 		panel.add(fechaInicioLabel);
 		
 		fechaFinDateChooser = new JDateChooser();
-		fechaFinDateChooser.setBounds(33, 223, 96, 19);
+		fechaFinDateChooser.setBounds(293, 179, 96, 19);
 		panel.add(fechaFinDateChooser);
 		
 		JLabel fechaFinLabel = new JLabel("Fecha de finalizacion");
-		fechaFinLabel.setBounds(33, 208, 145, 13);
+		fechaFinLabel.setBounds(293, 164, 145, 13);
 		panel.add(fechaFinLabel);
 		
 		cmbItr = new JComboBox();
-		cmbItr.setBounds(211, 45, 167, 21);
+		cmbItr.setBounds(293, 45, 167, 21);
 				
 		List<Itr>listItr = usuarioRemote.listarITR();
 		for(Itr itrItem: listItr){
@@ -140,7 +142,7 @@ public class UIEventoNuevo {
 		panel.add(cmbItr);
 
 		JLabel itrLabel = new JLabel("ITR");
-		itrLabel.setBounds(211, 29, 45, 13);
+		itrLabel.setBounds(293, 29, 45, 13);
 		panel.add(itrLabel);
 		
 		JButton crearEventoBtn = new JButton("Aceptar");
@@ -152,7 +154,7 @@ public class UIEventoNuevo {
 				
 			}
 		});
-		crearEventoBtn.setBounds(266, 377, 85, 21);
+		crearEventoBtn.setBounds(293, 377, 85, 21);
 		panel.add(crearEventoBtn);
 		
 		JButton cancelarEventoBtn = new JButton("Cancelar");
@@ -162,11 +164,11 @@ public class UIEventoNuevo {
 				
 			}
 		});
-		cancelarEventoBtn.setBounds(361, 377, 85, 21);
+		cancelarEventoBtn.setBounds(389, 377, 85, 21);
 		panel.add(cancelarEventoBtn);
 		
 		JLabel lblNewLabel = new JLabel("Tutores seleccionados");
-		lblNewLabel.setBounds(211, 141, 167, 13);
+		lblNewLabel.setBounds(33, 208, 167, 13);
 		panel.add(lblNewLabel);
 		
 		JButton btnSeleccionarTutores = new JButton("Seleccionar Tutores");
@@ -213,15 +215,15 @@ public class UIEventoNuevo {
 		
 //		});
 		
-		btnSeleccionarTutores.setBounds(211, 113, 167, 21);
+		btnSeleccionarTutores.setBounds(33, 377, 167, 21);
 		panel.add(btnSeleccionarTutores);
 		
 		JLabel lblNewLabel_1 = new JLabel("Localizacion del evento");
-		lblNewLabel_1.setBounds(211, 73, 217, 13);
+		lblNewLabel_1.setBounds(293, 73, 217, 13);
 		panel.add(lblNewLabel_1);
 		
 		textLocalizacion = new JTextField();
-		textLocalizacion.setBounds(211, 87, 167, 19);
+		textLocalizacion.setBounds(293, 87, 167, 19);
 		panel.add(textLocalizacion);
 		textLocalizacion.setColumns(10);
 		
@@ -261,7 +263,7 @@ public class UIEventoNuevo {
 	        }
 	    });
 		JScrollPane scrollPaneTutSeleccionados = new JScrollPane(table);
-		scrollPaneTutSeleccionados.setBounds(211, 162, 279, 198);
+		scrollPaneTutSeleccionados.setBounds(33, 223, 457, 137);
 		panel.add(scrollPaneTutSeleccionados);
 		
 		
@@ -376,8 +378,8 @@ public class UIEventoNuevo {
 			fila[1] = tutor.getDocumento().toString();
 			fila[2] = tutor.getNombres();
 			fila[3] = tutor.getApellidos();
-			fila[4] = tutor.getTipo().toString();
-			fila[5] = tutor.getArea().toString();
+			fila[4] = TipoTutorEncargado.getIdTipo(tutor.getTipo());
+			fila[5] = TipoTutorArea.getIdArea(tutor.getArea());
 			// Se añade al modelo la fila completa.
 			modelo.addRow(fila);
 

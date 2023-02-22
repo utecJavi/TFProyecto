@@ -1,6 +1,7 @@
 package tecnofenix.servicios;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -126,6 +127,79 @@ public class EventoBean implements EventoBeanRemote {
 		return list;
 	}
 	
+	
+	@Override
+	public List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,String inicioInicio, String finInicio,String inicioFin, String finFin,Boolean activo) {
+		System.out.println("----------------------------------------");
+		System.out.println("----------------------------------------");
+		System.out.println("----------------------------------------");
+		System.out.println("----------------------------------------");
+		System.out.println("----------------------------------------");
+		System.out.println("----------------------------------------");
+		String conditions = "";
+		String joinJPQL = "";
+		
+		if (id != null && id != "") {
+			conditions = conditions + " AND e.id = " + id;
+		}
+		if (titulo != null && titulo != "") {
+
+			conditions = conditions + " AND e.titulo LIKE '%" + titulo + "%'";
+
+		}
+		if (localizacion != null && localizacion != "") {
+
+			conditions = conditions + " AND e.localizacion LIKE '%" + localizacion + "%'";
+
+		}
+		
+		if (tipoEvento != null && tipoEvento != "") {
+
+			conditions = conditions + " AND e.tipo LIKE '%" + tipoEvento + "%'";
+
+		}
+		
+		if (modalidad != null && modalidad != "") {
+
+			conditions = conditions + " AND e.modalidad LIKE '%" + modalidad + "%'";
+
+		}
+		
+		if ((inicioInicio != null && inicioInicio != "")&&(finInicio != null && finInicio != "")) {
+
+			conditions = conditions + " AND e.inicio BETWEEN  '" + inicioInicio + "' AND '" + finInicio +"'";
+
+		}
+		
+		if ((inicioFin != null && inicioFin != "")&&(finFin != null && finFin != "")) {
+
+			conditions = conditions + " AND e.fin BETWEEN  '" + inicioFin + "' AND '" + finFin +"'";
+
+		}
+		
+		if (itrNombre != null && itrNombre != "") {
+
+			joinJPQL = " INNER JOIN e.itr i ";
+			conditions = conditions + " AND i.nombre LIKE '" + itrNombre + "'";
+
+		}
+		
+		List<Evento> list =null;
+		try {
+			String jpql = "SELECT e FROM Evento e  " + joinJPQL + " WHERE 1=1 " + conditions;
+			TypedQuery<Evento> query = em.createQuery(jpql, Evento.class);
+			System.out.println(jpql);
+			list = query.getResultList();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		if (list == null) {
+			throw new ItrNoEncontradoException("Eventos no encontrado.");
+		}
+
+		return list;
+	}
 	
 
 }

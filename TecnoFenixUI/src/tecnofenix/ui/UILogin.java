@@ -76,7 +76,7 @@ public class UILogin {
 		panel.add(lblUsuario);
 
 		txtEmail = new JTextField();
-		txtEmail.setText("admin");
+		txtEmail.setText("admin");//admin
 		txtEmail.setBounds(90, 147, 249, 19);
 		panel.add(txtEmail);
 		txtEmail.setColumns(10);
@@ -85,7 +85,7 @@ public class UILogin {
 		lblPswd.setBounds(10, 187, 97, 13);
 		panel.add(lblPswd);
 
-		txtPass = new JPasswordField("123456Admin@");
+		txtPass = new JPasswordField("123456Admin@");//123456Admin@
 		txtPass.setBounds(90, 184, 249, 19);
 		panel.add(txtPass);
 		txtPass.setColumns(10);

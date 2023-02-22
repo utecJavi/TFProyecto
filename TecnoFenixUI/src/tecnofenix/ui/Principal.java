@@ -65,18 +65,14 @@ public class Principal {
 		JMenu usuario = new JMenu("Administracion Usuarios");
 		
 		
-		JMenuItem adminDocentes= new JMenuItem("Administracion usuarios Docentes");
-		
+			
 
-		JMenuItem adminAnalista= new JMenuItem("Administracion usuarios Analistas");
-		
-
-		JMenuItem adminEstudiantes= new JMenuItem("Administracion usuarios Estudiantes");
-		adminEstudiantes.addActionListener(new ActionListener() {
+		JMenuItem adminUsuarios= new JMenuItem("Administracion de usuarios");
+		adminUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UIUsuario windowsUsuario = new UIUsuario();
-				if(user instanceof Analista) {
-					windowsUsuario.inicializar();
+				if(user instanceof Analista ||user instanceof Tutor) {
+					windowsUsuario.inicializar(user);
 					windowsUsuario.frame.setVisible(true);
 				}else {
 					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
@@ -164,12 +160,12 @@ public class Principal {
 		});
 		
 
-		
+		/*
 		JMenu escolaridad= new JMenu("Escolaridad");
 		JMenuItem escoAlta= new JMenuItem("Alta Escolaridad");
 		JMenuItem escoMod= new JMenuItem("Modificacion Escolaridad");
 		JMenuItem escoDelete= new JMenuItem("Borrar Escolaridad");
-		
+		*/
 		JMenu funcionalidad= new JMenu("Funcionalidad");
 		JMenuItem funAdministracion= new JMenuItem("Administrar Funcionalidades");
 		funAdministracion.addActionListener(new ActionListener() {
@@ -198,9 +194,9 @@ public class Principal {
 				uiRolHasFun.frame.setVisible(true);
 			}
 		});
-		usuario.add(adminDocentes);
-		usuario.add(adminAnalista);
-		usuario.add(adminEstudiantes);
+//		usuario.add(adminDocentes);
+//		usuario.add(adminAnalista);
+		usuario.add(adminUsuarios);
 		usuario.add(pedirConstanciaEstudiante);
 		usuario.add(adminDatosPersonales);
 		menuBar.add(usuario);
@@ -237,12 +233,12 @@ public class Principal {
 		}
 		
 		
-		
+		/*
 		escolaridad.add(escoAlta);
 		escolaridad.add(escoMod);
 		escolaridad.add(escoDelete);
 		menuBar.add(escolaridad);
-		
+		*/
 		JMenu reportes= new JMenu("Reportes");
 		JMenuItem reportesAsistenciaEstudiantes= new JMenuItem("Asistencia de estudiantes a eventos");
 		reportesAsistenciaEstudiantes.addActionListener(new ActionListener() {
@@ -254,6 +250,23 @@ public class Principal {
 			}
 		});
 		reportes.add(reportesAsistenciaEstudiantes);
+		
+		JMenuItem escolaridad = new JMenuItem("Escolaridad");
+		escolaridad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (user instanceof Estudiante) {
+					UIEscolaridad verEscolaridad = new UIEscolaridad();
+					verEscolaridad.inicializar((Estudiante)user);
+					verEscolaridad.frame.setVisible(true);
+				} else {
+//					UIListaEstudianteEscolaridad listadoEstudiantesEsc = new UIListaEstudianteEscolaridad();
+//					listadoEstudiantesEsc.inicializar();
+//					listadoEstudiantesEsc.frame.setVisible(true);
+				}
+			}
+		});
+		reportes.add(escolaridad);
+		
 		menuBar.add(reportes);
 		
 

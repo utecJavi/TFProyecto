@@ -21,11 +21,13 @@ public interface ConvocatoriaAsistenciaEventoEstudianteBeanRemote {
 	List<ConvocatoriaAsistenciaEventoEstudiante> obtenerTodos() throws ServiciosException;
 	List<ConvocatoriaAsistenciaEventoEstudiante> listarConvocatoriaEventEstuPorEvento(Evento eventoId) throws ServiciosException;
 	
-	List<ConvocatoriaAsistenciaEventoEstudiante> obtenerClasePorAtributo(
-			ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu);
+	List<ConvocatoriaAsistenciaEventoEstudiante> obtenerClasePorAtributo(ConvocatoriaAsistenciaEventoEstudiante conAsisEventEstu);
+	
 	ConvocatoriaAsistenciaEventoEstudiante obtenerDatosConvPorId(Integer id)throws ServiciosException;
+	
 	List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,
-			String nombre, String apellido,String documento ,String valorLogico,String calificacion,Boolean asistencia) throws ServiciosException;
+			String nombre, String apellido,String documento ,String valorLogico,String calificacion,Boolean asistio,Boolean noAsistio) throws ServiciosException;
+	
 	ConvocatoriaAsistenciaEventoEstudiante agregarEstudianteAEvento(ConvocatoriaAsistenciaEventoEstudiante convAsistEventEstu);
 	void registrarAsistencia(Integer id);
 	
