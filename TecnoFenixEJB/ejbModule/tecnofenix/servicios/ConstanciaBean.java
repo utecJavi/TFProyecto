@@ -87,19 +87,19 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	public	List<Constancia> listadoConstancias(String usuario, String estado) throws ServiciosException {
 		try {
 			String consulta = "SELECT c FROM Constancia c WHERE 1=1 ";
-			if (usuario != null) {
+			if (usuario != null && usuario != "") {
 				consulta = consulta + " AND c.estudianteId.usuario = :usuario";
 			}
 			
-			if (estado != null) {
+			if (estado != null && estado != "") {
 				consulta = consulta + " AND c.estado = :estado";
 			}
 			
 			TypedQuery<Constancia> query = em.createQuery(consulta, Constancia.class);
-			if (usuario != null) {
+			if (usuario != null && usuario != "") {
 				query.setParameter("usuario", usuario);
 			}
-			if (estado != null) {
+			if (estado != null && estado != "") {
 				query.setParameter("estado", estado);
 			}
 			return query.getResultList();

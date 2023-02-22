@@ -134,8 +134,8 @@ public class UIConstancia {
         		}
         		
         		String estado = null;
-        		if (comboEstados.getSelectedItem() != "") {
-        			estado = (String) comboEstados.getSelectedItem();
+        		if (comboEstados.getSelectedItem().toString() != "") {
+        			estado = comboEstados.getSelectedItem().toString();
         		}
         		
         		try {

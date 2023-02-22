@@ -96,7 +96,7 @@ public class UIAltaConstancia {
 		try {
 			tipoConstancias = constanciaBeanRemote.listadoTipoConstancia(false);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Hubo un error al intentar traer la lista de tipo de constancias.", "Error", JOptionPane.ERROR_MESSAGE);
+			System.out.println("Hubo un error al intentar traer la lista de tipo de constancias.: " + e.getMessage());
 		}
 		for(TipoConstancia tipoItem: tipoConstancias){
 			comboTipoConstancias.addItem(tipoItem);
@@ -129,7 +129,7 @@ public class UIAltaConstancia {
         			JOptionPane.showMessageDialog(null, "Hubo un error al ingresar constancia.", "Error", JOptionPane.ERROR_MESSAGE);
         		}
         		
-        		JOptionPane.showMessageDialog(null, "Se ingresó la constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        		JOptionPane.showMessageDialog(null, "Se ingreso la constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
         		
 			}
 			
