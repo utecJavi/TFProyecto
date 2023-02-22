@@ -1,7 +1,5 @@
 package tecnofenix.ui;
 
-
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -9,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +49,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
+//import com.itextpdf.text.List;
 import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -65,6 +65,19 @@ public class UIEscolaridad {
 
 	public JFrame frame;
 	
+	private JTable table;
+	private DefaultTableModel modelo;
+	
+	private static final Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 26, Font.BOLDITALIC);
+    private static final Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
+         
+    private static final Font categoryFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+    private static final Font subcategoryFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
+    private static final Font blueFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.RED);    
+    private static final Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+	
+    private List<tecnofenix.entidades.EscolaridadDTO> escolaridadDTOs; 
+    
 	@EJB
 	EstudianteBeanRemote estudianteBeanRemote;
 
@@ -93,9 +106,9 @@ public class UIEscolaridad {
 		lblNombreEstudiante.setBounds(150, 50, 500, 20);
 		panel.add(lblNombreEstudiante);
 		
-		DefaultTableModel modelo = new DefaultTableModel();
+		modelo = new DefaultTableModel();
 
-		JTable table = new JTable(modelo);
+		table = new JTable(modelo);
 		table.setCellSelectionEnabled(false);
 		table.setRowSelectionAllowed(true);
 		table.setForeground(Color.GREEN);
@@ -114,34 +127,49 @@ public class UIEscolaridad {
         scrollPanel.setBounds(10, 169, 780, 302);
         panel.add(scrollPanel);
         
-        cargarTabla(modelo, estudiante, filas);
+        cargarTabla(estudiante, filas);
         
-        autoAjustarTabla(table);
+        autoAjustarTabla();
+        
+        JLabel lblDestino = new JLabel("Destino:");
+        lblDestino.setBounds(20, 507, 90, 13);
+		panel.add(lblDestino);
+		
+		JTextField txtDestino = new JTextField();
+		txtDestino.setBounds(20, 520, 720, 21);
+		panel.add(txtDestino);
+		txtDestino.setColumns(100);
 		
         JButton btnExportarEscolaridad = new JButton("Exportar escolaridad a PDF");
         btnExportarEscolaridad.setBounds(286, 481, 250, 19);
         btnExportarEscolaridad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//Exportar a PDF!!!!!!!!!!!!!
-				
-				
-				
+				if (txtDestino.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Debe ingresar la ruta destino del PDF", "Exportar a PDF", JOptionPane.ERROR_MESSAGE);
+				} else {
+					
+					String ruta = txtDestino.getText() + "EscolaridadEstudiante.pdf";
+					
+					// Llamada a la creación del PDF
+					// como parámetro pasar la ruta donde se guarda el PDF
+			        createPDF(new File(ruta), estudiante);
+				}
 			}
 			
 		});
-        btnExportarEscolaridad.setVisible(false);
+        //btnExportarEscolaridad.setVisible(false);
 		panel.add(btnExportarEscolaridad);        
 		
 	}
 	
-	private void cargarTabla(DefaultTableModel modelo, Estudiante estudiante, Object[] filas) {
+	private void cargarTabla(Estudiante estudiante, Object[] filas) {
 		//Borro lo previamente cargado en la tabla
 		modelo.getDataVector().removeAllElements();
 		modelo.fireTableDataChanged();
 		
 		try {
-			List<EscolaridadDTO> escolaridadDTOs = estudianteBeanRemote.obtenerEscolaridad(estudiante.getId());
+			escolaridadDTOs = estudianteBeanRemote.obtenerEscolaridad(estudiante.getId());
 			
 			for(EscolaridadDTO escolaridadDTO : escolaridadDTOs) {
 				
@@ -160,7 +188,7 @@ public class UIEscolaridad {
 		}
 	}
 	
-	private void autoAjustarTabla(JTable table) {
+	private void autoAjustarTabla() {
 	    final TableColumnModel columnModel = table.getColumnModel();
 	    for (int column = 0; column < table.getColumnCount(); column++) {
 	        int width = 15;
@@ -174,6 +202,74 @@ public class UIEscolaridad {
 	            width=300;
 	        columnModel.getColumn(column).setPreferredWidth(width);
 	    }
+	}
+	
+	private void createPDF(File pdfNewFile, Estudiante estudiante) {
+		try {
+            Document document = new Document();
+            try {
+                PdfWriter.getInstance(document, new FileOutputStream(pdfNewFile));
+            } catch (FileNotFoundException fileNotFoundException) {
+                System.out.println("No se encontró el fichero para generar el pdf " + fileNotFoundException);
+            }
+            
+            document.open();
+            document.addTitle("Escolaridad PDF");
+            document.addSubject("Escolaridad estudiante");
+            
+            Anchor anchor = new Anchor("Escolaridad del estudiante " + estudiante.getNombres() + " " + estudiante.getApellidos(), categoryFont);
+            anchor.setName("Escolaridad del estudiante " + estudiante.getNombres() + " " + estudiante.getApellidos());            
+            Chapter chapTitle = new Chapter(new Paragraph(anchor), 1);
+            Paragraph paragraph = new Paragraph("Documento: " + estudiante.getDocumento(), subcategoryFont);
+            Section paragraphMore = chapTitle.addSection(paragraph);
+            
+            Integer numColumns = 6;
+            
+            PdfPTable table = new PdfPTable(numColumns); 
+            
+            PdfPCell columnHeader1 = new PdfPCell(new Phrase("Evento"));
+            columnHeader1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(columnHeader1);
+            
+            PdfPCell columnHeader2 = new PdfPCell(new Phrase("Tipo"));
+            columnHeader2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(columnHeader2);
+            
+            PdfPCell columnHeader3 = new PdfPCell(new Phrase("Modalidad"));
+            columnHeader3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(columnHeader3);
+            
+            PdfPCell columnHeader4 = new PdfPCell(new Phrase("Fecha"));
+            columnHeader4.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(columnHeader4);
+            
+            PdfPCell columnHeader5 = new PdfPCell(new Phrase("ITR"));
+            columnHeader5.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(columnHeader5);
+            
+            PdfPCell columnHeader6 = new PdfPCell(new Phrase("Calificacion"));
+            columnHeader6.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(columnHeader6);
+            
+            table.setHeaderRows(1);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            
+            for(EscolaridadDTO escolaridadDTO : escolaridadDTOs) {
+            	table.addCell(escolaridadDTO.getEvento());
+            	table.addCell(escolaridadDTO.getTipo());
+            	table.addCell(escolaridadDTO.getModalidad());
+            	table.addCell(formatter.format(escolaridadDTO.getFecha()));
+            	table.addCell(escolaridadDTO.getItr());
+            	table.addCell(formatter.format(escolaridadDTO.getCalificacion()));
+			}
+
+            paragraphMore.add(table);
+            document.add(chapTitle);
+            document.close();
+            
+		} catch (DocumentException documentException) {
+            System.out.println("Se ha producido un error al generar un documento: " + documentException);
+        }
 	}
 	
 }

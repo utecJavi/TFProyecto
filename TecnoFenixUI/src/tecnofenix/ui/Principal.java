@@ -259,9 +259,9 @@ public class Principal {
 					verEscolaridad.inicializar((Estudiante)user);
 					verEscolaridad.frame.setVisible(true);
 				} else {
-//					UIListaEstudianteEscolaridad listadoEstudiantesEsc = new UIListaEstudianteEscolaridad();
-//					listadoEstudiantesEsc.inicializar();
-//					listadoEstudiantesEsc.frame.setVisible(true);
+					UIListaEstudianteEscolaridad listadoEstudiantesEsc = new UIListaEstudianteEscolaridad();
+					listadoEstudiantesEsc.inicializar();
+					listadoEstudiantesEsc.frame.setVisible(true);
 				}
 			}
 		});
