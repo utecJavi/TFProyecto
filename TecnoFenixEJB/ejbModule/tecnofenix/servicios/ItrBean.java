@@ -36,7 +36,7 @@ public class ItrBean implements ItrBeanRemote {
 			System.out.println(itr.getDepartamento());
 			System.out.println(itr.getNombre());
 			if(itr.getId()==null)System.out.println("itr.getId()==null");
-			em.merge(itr);
+			itr = em.merge(itr);
 			em.flush();
 		} catch (Exception e) {
 			System.out.println(e);
