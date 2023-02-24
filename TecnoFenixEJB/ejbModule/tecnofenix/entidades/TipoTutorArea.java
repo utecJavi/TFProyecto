@@ -9,7 +9,7 @@ public enum TipoTutorArea {
 	CIENCIAS_DE_LA_SALUD("Ciencias de la salud",5),
 	EDUCACION("Educación",6),
 	NEGOCIOS_Y_ADMINISTRACION("Negocios y administración",7),
-	CIENCIAS_DE_LA_COMPUTACIÓN_E_INFORMATICA("Ciencias de la computación e informática",8),
+	CIENCIAS_DE_LA_COMPUTACION_E_INFORMATICA("Ciencias de la computación e informática",8),
 	DERECHO("Derecho",9),
 	AGRICULTURA_Y_CIENCIAS_AMBIENTALES("Agricultura y ciencias ambientales",10);
 

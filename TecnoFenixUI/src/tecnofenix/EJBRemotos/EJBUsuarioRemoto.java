@@ -1,6 +1,7 @@
 package tecnofenix.EJBRemotos;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -361,16 +362,7 @@ public class EJBUsuarioRemoto {
 	}
 	
 	
-	
-	//???????? este metodo?????
-	public void registrarAsistencia() {
-		try {
-			convocatoriaAsistenciaEventoEstudianteBeanRemote.registrarAsistencia(4);
-		} catch (Exception e) {
-			System.out.println("Error en registrar asistencia: " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
+
 	
 	public Evento obtenerEvento(Integer id) {
 		try {
@@ -452,6 +444,17 @@ public class EJBUsuarioRemoto {
 		}
 		return rol;
 	}
+	
+	public Rol obtenerRolPorId(Integer rolId) {
+		Rol rol = new Rol();
+		try {
+			rol = rolBeanRemote.findById(rolId);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return rol;
+	}
 
 	public List<Rol> listarRoles(){
 		List<Rol> listado = null;
@@ -516,7 +519,17 @@ public class EJBUsuarioRemoto {
 		}
 		return funcionalidad;
 	}
-
+	
+	public Funcionalidad obtenerFuncionalidadPorId(Integer idFuncionalidad){
+		Funcionalidad funcionalidad = new Funcionalidad();
+		try {
+			funcionalidad = funcionalidadBeanRemote.findById(idFuncionalidad);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		return funcionalidad;
+	}
 
 	
 	/*
@@ -648,7 +661,7 @@ public class EJBUsuarioRemoto {
 			return list;
 		}
 		
-		public List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,String inicioInicio, String finInicio,String inicioFin, String finFin,Boolean activo) {
+		public List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,Date inicioInicio, Date finInicio,Date inicioFin, Date finFin,Boolean activo) {
 			
 			 List<Evento> list = new ArrayList<Evento>();	
 			try {

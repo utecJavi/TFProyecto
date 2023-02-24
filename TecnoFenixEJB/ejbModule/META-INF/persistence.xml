@@ -25,6 +25,8 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 		<class>tecnofenix.entidades.Funcionalidad</class>
 		<class>tecnofenix.entidades.Rol</class>
 		<class>tecnofenix.entidades.TipoConstancia</class>
+		<class>tecnofenix.entidades.TipoArea</class>
+		<class>tecnofenix.entidades.TipoTutorTipo</class>
 		<properties>
 		    <!-- Configuring The Database Connection Details oracle.jdbc.driver.OracleDriver
             <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />

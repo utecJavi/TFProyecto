@@ -6,7 +6,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "funcionalidades")
 @NamedQueries({
-    @NamedQuery(name = "Funcionalidad.findAll", query = "SELECT i FROM Funcionalidad i"),
+    @NamedQuery(name = "Funcionalidad.findAll", query = "SELECT i FROM Funcionalidad i WHERE i.activo = true"),
     @NamedQuery(name = "Funcionalidad.findById", query = "SELECT i FROM Funcionalidad i WHERE i.id = :id"),
     @NamedQuery(name = "Funcionalidad.findByDescripcion", query = "SELECT i FROM Funcionalidad i WHERE i.descripcion = :descripcion"),
     @NamedQuery(name = "Funcionalidad.findByNombre", query = "SELECT i FROM Funcionalidad i WHERE i.nombre = :nombre")})
@@ -19,7 +19,7 @@ public class Funcionalidad implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "funcionalidades_seq")
     @Basic(optional = false)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Basic(optional = false)
     @Column(name = "nombre")
@@ -35,7 +35,7 @@ public class Funcionalidad implements Serializable {
     
     public Funcionalidad() {}
 
-    public Funcionalidad(Long id, String nombre, String descripcion) {
+    public Funcionalidad(Integer id, String nombre, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -46,10 +46,10 @@ public class Funcionalidad implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id=id;
     }
     public String getNombre() {
@@ -80,4 +80,22 @@ public class Funcionalidad implements Serializable {
     public String toString() {
         return this.nombre;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+       
+    	 if(this.getId()!= null && (this.getId().equals(((Funcionalidad)obj).getId()))) {
+         	return true;
+         }else {
+        	 return false;
+         }
+
+    }
+    
 }

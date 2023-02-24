@@ -134,6 +134,10 @@ public class UIRol {
 		scrollPane.setLocation(10, 10);
 		// definimos un layout
 		// Agregamos el JScrollPane al contenedor
+		table.getColumnModel().getColumn(0).setPreferredWidth(20); // Define el ancho preferido de la columna 0
+		table.getColumnModel().getColumn(1).setPreferredWidth(360); // Define el ancho preferido de la columna 1
+		table.getColumnModel().getColumn(2).setPreferredWidth(400); 
+		
 		panel.add(scrollPane);
 
 		JButton btnGuardar = new JButton("Limpiar");
@@ -215,7 +219,7 @@ public class UIRol {
 
 				Rol rolTemp = new Rol();
 				if(txtId.getText()!= null && txtId.getText()!="" ) {
-					rolTemp.setId(Long.valueOf(txtId.getText()));
+					rolTemp.setId(Integer.valueOf(txtId.getText()));
 				}
 				rolTemp.setNombre(txtNombre.getText());
 				rolTemp.setDescripcion(txtDesc.getText());

@@ -15,6 +15,7 @@ public interface RolBeanRemote {
 	Rol modificarRol(Rol rol) throws ServiciosException;
 
 	Rol borrarRol(Rol rol) throws ServiciosException;
-	Rol findById(Integer id);
+	Rol findById(Integer id)throws ServiciosException;
 	List<Rol> listarRoles()throws ServiciosException;
+	
 }

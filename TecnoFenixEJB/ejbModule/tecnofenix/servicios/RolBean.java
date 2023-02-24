@@ -49,16 +49,22 @@ public class RolBean implements RolBeanRemote{
 
 
 	@Override
-	public Rol findById(Integer id) {
-		TypedQuery<Rol> query = em.createNamedQuery("Rol.findById", Rol.class);
-		Rol rol = query.setParameter("id", id).getSingleResult();
+	public Rol findById(Integer id)throws ServiciosException {
+		Rol rol = new Rol();
+		try {
+			TypedQuery<Rol> query = em.createNamedQuery("Rol.findById", Rol.class);
+			rol = query.setParameter("id", id).getSingleResult();
 
-		if (rol == null) {
-			System.out.println("rol no encontrado.");
-			System.out.println("rol no encontrado.");
-			System.out.println("rol no encontrado.");
-			System.out.println("rol no encontrado.");
+			if (rol == null) {
+				System.out.println("rol no encontrado.");
+				System.out.println("rol no encontrado.");
+				System.out.println("rol no encontrado.");
+				System.out.println("rol no encontrado.");
+			}	
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
+		
 
 		return rol;
 		

@@ -4,9 +4,8 @@ package tecnofenix.entidades;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
 
 
 @Entity
@@ -23,7 +22,7 @@ public class Rol implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_seq")
     @Basic(optional = false)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Basic(optional = false)
     @Column(name = "nombre")
@@ -40,22 +39,23 @@ public class Rol implements Serializable {
     @ManyToMany(fetch =FetchType.EAGER)
     @JoinTable(name = "rol_funcion",
             joinColumns = @JoinColumn(name = "id_rol"),
-            inverseJoinColumns = @JoinColumn(name = "id_funcionalidad")
+            inverseJoinColumns = @JoinColumn(name = "id_funcionalidad"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"id_rol", "id_funcionalidad"})
     )
-    Collection<Funcionalidad> funcionalidades = new ArrayList<Funcionalidad>();
+    List<Funcionalidad> funcionalidades = new ArrayList<Funcionalidad>();
 
     public Rol() {}
 
-    public Rol(Long id, String nombre, String descripcion) {
+    public Rol(Integer id, String nombre, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getNombre() {
@@ -83,11 +83,11 @@ public class Rol implements Serializable {
 		this.activo = activo;
 	}
 	
-    public Collection<Funcionalidad> getFuncionalidades() {
+    public List<Funcionalidad> getFuncionalidades() {
 		return funcionalidades;
 	}
 
-	public void setFuncionalidades(Collection<Funcionalidad> funcionalidades) {
+	public void setFuncionalidades(List<Funcionalidad> funcionalidades) {
 		this.funcionalidades = funcionalidades;
 	}
 

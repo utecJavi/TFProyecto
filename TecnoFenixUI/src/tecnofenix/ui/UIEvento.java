@@ -8,10 +8,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
+import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +29,7 @@ import com.toedter.calendar.JDateChooser;
 import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.*;
 import java.awt.Component;
+import java.awt.Font;
 
 public class UIEvento {
 
@@ -41,18 +43,18 @@ public class UIEvento {
 	private Object[] filaTutoEditable;
 	
 	
-	private JTextField textId;
+//	private JTextField textId;
 	private JTextField textTitulo;
 	private JComboBox<TipoEvento> comboBoxTipoEvento;
 	private JComboBox<ModalidadEvento> comboBoxModalidadEvento;
 	// este quizas sea un JList
-	private JComboBox<Set<Tutor>> comboBoxTutores;
-	// este quizas sea un JList
-	private JComboBox<Set<Analista>> comboBoxAnalistas;
-	private JDateChooser dateFechaInicio;
-	private JDateChooser dateFechaFin;
-	private JDateChooser dateFechaInicioFIN;
-	private JDateChooser dateFechaFinFIN;
+//	private JComboBox<Set<Tutor>> comboBoxTutores;
+//	// este quizas sea un JList
+//	private JComboBox<Set<Analista>> comboBoxAnalistas;
+	private JDateChooser dateFechafechaInicioInicio;
+	private JDateChooser dateFechafechaFinInicio;
+	private JDateChooser dateFechafechaInicioFin;
+	private JDateChooser dateFechafechaFinFIN;
 	private JTextField textLocalizacion;
 	private JComboBox<Itr> itrEventoComboBox;
 	private Evento eventoEditable;
@@ -60,10 +62,10 @@ public class UIEvento {
 	private JTextField editarTextTitulo;
 	private JComboBox<TipoEvento> editarComboBoxTipoEvento;
 	private JComboBox<ModalidadEvento> editarComboBoxModalidadEvento;
-	// este quizas sea un JList
-	private JComboBox<Set<Tutor>> editarComboBoxTutores;
-	// este quizas sea un JList
-	private JComboBox<Set<Analista>> editarComboBoxAnalistas;
+//	// este quizas sea un JList
+//	private JComboBox<Set<Tutor>> editarComboBoxTutores;
+//	// este quizas sea un JList
+//	private JComboBox<Set<Analista>> editarComboBoxAnalistas;
 	private JDateChooser editarDateFechaInicio;
 	private JDateChooser editarDateFechaFin;
 	private JTextField editarTextLocalizacion;
@@ -73,6 +75,9 @@ public class UIEvento {
 	public List<Tutor> listTutores= new ArrayList<Tutor>();
 	private DefaultTableModel tableModel;
 	private JTextField textIdEvento;
+	private Date hoy;
+	private SimpleDateFormat formatter;
+	private JCheckBox chckbxEventoBorrado;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -92,9 +97,11 @@ public class UIEvento {
 		
 		
 		panel.setLayout(null);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		hoy = new Date(System.currentTimeMillis());
 		
-		tableModel = new DefaultTableModel(new String[] {"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"}, 0) {
+		formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		tableModel = new DefaultTableModel(new String[] {"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin","Borrado"}, 0) {
 			 @Override
 			    public boolean isCellEditable(int row, int column) {
 			        return false;
@@ -130,7 +137,7 @@ public class UIEvento {
 				editarTextLocalizacion.setText(eventoEditable.getLocalizacion());
 				editarDateFechaInicio.setDate(eventoEditable.getInicio());
 				editarDateFechaFin.setDate(eventoEditable.getFin());
-				
+				chckbxEventoBorrado.setSelected(eventoEditable.getBajaLogica());
 //				editarTutores.clear();
 //				for(TutorResponsableEvento tr: eventoEditable.getTutorResponsableEventoCollection()) {
 //					editarTutores.add(tr.getTutorId());
@@ -156,10 +163,6 @@ public class UIEvento {
 		panel.add(scrollPane);
 
 		//TABLA DE TUTORES EDITABLE DE SELECCION
-		
-		
-		
-		
 		
 
 		modeloTutoEditable = new DefaultTableModel();
@@ -246,13 +249,15 @@ public class UIEvento {
 		comboBoxModalidadEvento.setBounds(227, 112, 188, 19);
 		panel.add(comboBoxModalidadEvento);
 
-		dateFechaInicio = new JDateChooser();
-		dateFechaInicio.setBounds(531, 68, 96, 19);
-		panel.add(dateFechaInicio);
+		dateFechafechaInicioInicio = new JDateChooser();
+//		dateFechafechaInicioInicio.setCalendar(Calendar.getInstance());
+		dateFechafechaInicioInicio.setBounds(531, 68, 96, 19);
+		panel.add(dateFechafechaInicioInicio);
 
-		dateFechaFin = new JDateChooser();
-		dateFechaFin.setBounds(637, 68, 96, 19);
-		panel.add(dateFechaFin);
+		dateFechafechaFinInicio = new JDateChooser();
+//		dateFechafechaFinInicio.setCalendar(Calendar.getInstance());
+		dateFechafechaFinInicio.setBounds(637, 68, 96, 19);
+		panel.add(dateFechafechaFinInicio);
 
 	
 		JSeparator separator = new JSeparator();
@@ -414,9 +419,11 @@ public class UIEvento {
 			public void actionPerformed(ActionEvent e) {
 				if(eventoEditable!=null) {
 					if(borrarRow(eventoEditable.getTitulo())) {
+						if(validarBajaLogica()) {
 						eventoEditable.setBajaLogica(true);
 						eventoEditable=ejb.modificarEvento(eventoEditable);			
 						generateRows(ejb.listarEventos());
+						}
 					}
 				}
 			}
@@ -428,17 +435,19 @@ public class UIEvento {
 		lblFechaDeFin.setBounds(755, 53, 96, 13);
 		panel.add(lblFechaDeFin);
 
-		dateFechaInicioFIN = new JDateChooser();
-		dateFechaInicioFIN.setBounds(755, 68, 96, 19);
-		panel.add(dateFechaInicioFIN);
+		dateFechafechaInicioFin = new JDateChooser();
+//		dateFechafechaInicioFin.setCalendar(Calendar.getInstance());
+		dateFechafechaInicioFin.setBounds(755, 68, 96, 19);
+		panel.add(dateFechafechaInicioFin);
 		
 		JLabel lblFinalizacionFin = new JLabel("finalizacion fin");
 		lblFinalizacionFin.setBounds(862, 54, 95, 13);
 		panel.add(lblFinalizacionFin);
 		
-		dateFechaFinFIN = new JDateChooser();
-		dateFechaFinFIN.setBounds(861, 68, 96, 19);
-		panel.add(dateFechaFinFIN);
+		dateFechafechaFinFIN = new JDateChooser();
+//		dateFechafechaFinFIN.setCalendar(Calendar.getInstance());
+		dateFechafechaFinFIN.setBounds(861, 68, 96, 19);
+		panel.add(dateFechafechaFinFIN);
 		
 		textIdEvento = new JTextField();
 		textIdEvento.setText("");
@@ -471,10 +480,10 @@ public class UIEvento {
 					itrNombre=itrEventoComboBox.getSelectedItem().toString();
 				}
 				
-				String fechaInicioInicio="";
-				String fechaFinInicio="";
-				String fechaInicioFin="";
-				String fechaFinFIN="";
+				Date fechaInicioInicio=null;
+				Date fechaFinInicio=null;
+				Date fechaInicioFin=null;
+				Date fechaFinFIN=null;
 				
 //				if(dateFechaInicio.getDate()!=null) {
 //					fechaInicioInicio=formatter.format(dateFechaInicio.getDate());
@@ -488,17 +497,23 @@ public class UIEvento {
 //				if(dateFechaFinFIN.getDate()!=null) {
 //					fechaFinFIN=formatter.format(dateFechaFinFIN.getDate());
 //				}
-				if(dateFechaInicio.getDate()!=null) {
-					fechaInicioInicio=dateFechaInicio.getDate().toString();
+				if(dateFechafechaInicioInicio.getDate()!=null) {
+					fechaInicioInicio=dateFechafechaInicioInicio.getDate();
+					System.out.println("fechaInicioInicio "+fechaInicioInicio.toString());
 				}
-				if(dateFechaInicioFIN.getDate()!=null) {
-					fechaFinInicio=dateFechaInicioFIN.getDate().toString();
+				if(dateFechafechaFinInicio.getDate()!=null) {
+					fechaFinInicio=dateFechafechaFinInicio.getDate();
+					System.out.println("fechaFinInicio "+fechaFinInicio.toString());
 				}
-				if(dateFechaFin.getDate()!=null) {
-					fechaInicioFin=dateFechaFin.getDate().toString();
+				
+				if(dateFechafechaInicioFin.getDate()!=null) {
+					fechaInicioFin= dateFechafechaInicioFin.getDate();
+					System.out.println("fechaInicioFin "+fechaInicioFin.toString());
 				}
-				if(dateFechaFinFIN.getDate()!=null) {
-					fechaFinFIN=dateFechaFinFIN.getDate().toString();
+				
+				if(dateFechafechaFinFIN.getDate()!=null) {
+					fechaFinFIN=dateFechafechaFinFIN.getDate();
+					System.out.println("fechaFinFIN "+fechaFinFIN.toString());
 				}
 				 
 				 try {
@@ -513,6 +528,12 @@ public class UIEvento {
 		});
 		filtrarEventosBtn.setBounds(633, 111, 113, 21);
 		panel.add(filtrarEventosBtn);
+		
+		chckbxEventoBorrado = new JCheckBox("Evento borrado");
+		chckbxEventoBorrado.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		chckbxEventoBorrado.setEnabled(false);
+		chckbxEventoBorrado.setBounds(227, 689, 188, 21);
+		panel.add(chckbxEventoBorrado);
 		
 		
 		
@@ -531,8 +552,14 @@ public class UIEvento {
 			row.add(evento.getTipo().getTipo());
 			row.add(evento.getModalidad().getModalidad());
 			row.add(evento.getLocalizacion());		
-			row.add(evento.getInicio().toString());
-			row.add(evento.getFin().toString());
+			row.add(formatter.format(evento.getInicio()));
+			row.add(formatter.format(evento.getFin()));
+			if(evento.getBajaLogica()) {
+				row.add("Si");
+			}else {
+				row.add("No");
+			}
+			
 
 			tableModel.addRow(row);
 //			"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"
@@ -652,4 +679,26 @@ if(dialogResult == JOptionPane.YES_OPTION){
 }
 return false;
 }
+	public Boolean validarBajaLogica(){
+		if(eventoEditable.getInicio().before(hoy)) {
+			List<ConvocatoriaAsistenciaEventoEstudiante> list = new ArrayList<ConvocatoriaAsistenciaEventoEstudiante>();
+			
+			list=ejb.listarConvocatoriaEventEstuPorEvento(eventoEditable);
+			for(ConvocatoriaAsistenciaEventoEstudiante conv :list) {
+				if(conv.getAsistencia()) {
+					JOptionPane.showMessageDialog(null, "No es posible eliminar un evento con asistentes",
+							"Informacion", JOptionPane.INFORMATION_MESSAGE);
+					return false;
+				}
+			}
+			System.out.println("Termine de corroborar no hay asistentes al evento se puede borrar");
+			return true;
+		}else {
+			JOptionPane.showMessageDialog(null, "No es posible eliminar un evento todavia no empezo",
+					"Informacion", JOptionPane.INFORMATION_MESSAGE);
+		}
+		
+		
+		return false;
+	}
 }

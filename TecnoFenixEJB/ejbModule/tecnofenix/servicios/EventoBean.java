@@ -129,7 +129,7 @@ public class EventoBean implements EventoBeanRemote {
 	
 	
 	@Override
-	public List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,String inicioInicio, String finInicio,String inicioFin, String finFin,Boolean activo) {
+	public List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,Date inicioInicio, Date finInicio,Date inicioFin, Date finFin,Boolean activo) {
 		System.out.println("----------------------------------------");
 		System.out.println("----------------------------------------");
 		System.out.println("----------------------------------------");
@@ -165,15 +165,15 @@ public class EventoBean implements EventoBeanRemote {
 
 		}
 		
-		if ((inicioInicio != null && inicioInicio != "")&&(finInicio != null && finInicio != "")) {
+		if (inicioInicio != null && finInicio != null) {
 
-			conditions = conditions + " AND e.inicio BETWEEN  '" + inicioInicio + "' AND '" + finInicio +"'";
+			conditions = conditions + " AND (e.inicio BETWEEN :inicioInicio AND :finInicio) ";
 
 		}
 		
-		if ((inicioFin != null && inicioFin != "")&&(finFin != null && finFin != "")) {
+		if (inicioFin != null && finFin != null ) {
 
-			conditions = conditions + " AND e.fin BETWEEN  '" + inicioFin + "' AND '" + finFin +"'";
+			conditions = conditions + " AND (e.fin BETWEEN  :inicioFin AND :finFin) ";
 
 		}
 		
@@ -188,6 +188,17 @@ public class EventoBean implements EventoBeanRemote {
 		try {
 			String jpql = "SELECT e FROM Evento e  " + joinJPQL + " WHERE 1=1 " + conditions;
 			TypedQuery<Evento> query = em.createQuery(jpql, Evento.class);
+			if (inicioInicio != null && finInicio != null) {
+				query.setParameter("inicioInicio", inicioInicio);
+				query.setParameter("finInicio", finInicio);
+			}
+			
+			if (inicioFin != null && finFin != null) {
+				query.setParameter("inicioFin", inicioFin);
+				query.setParameter("finFin", inicioFin);
+			}
+			
+			
 			System.out.println(jpql);
 			list = query.getResultList();
 		} catch (Exception e) {

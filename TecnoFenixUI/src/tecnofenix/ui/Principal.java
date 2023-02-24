@@ -81,6 +81,33 @@ public class Principal {
 			}
 		});
 		
+		JMenuItem adminTiposTutores= new JMenuItem("Administracion tipos de tutores");
+		adminUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UITipoTutor uiTipoTutor = new UITipoTutor();
+				if(user instanceof Analista) {
+					uiTipoTutor.inicializar(user);
+					uiTipoTutor.frame.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}	
+			}
+		});
+		JMenuItem adminTiposAreas= new JMenuItem("Administracion tipos de areas tutores");
+		adminUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UITipoTutorArea uiTipoTutorArea = new UITipoTutorArea();
+				if(user instanceof Analista) {
+					uiTipoTutorArea.inicializar(user);
+					uiTipoTutorArea.frame.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}	
+			}
+		});
+		
 		JMenuItem pedirConstanciaEstudiante= new JMenuItem("Solicitar constancias");
 		
 		
@@ -195,17 +222,15 @@ public class Principal {
 			}
 		});
 //		usuario.add(adminDocentes);
-//		usuario.add(adminAnalista);
+		
 		usuario.add(adminUsuarios);
+		usuario.add(adminTiposTutores);
+		usuario.add(adminTiposAreas);
 		usuario.add(pedirConstanciaEstudiante);
 		usuario.add(adminDatosPersonales);
 		menuBar.add(usuario);
 		
 		
-//		 
-//		constancia.add(constAlta);
-//		constancia.add(constModa);
-//		constancia.add(constDeletea);
 		constancia.add(constListado);
 		
 		menuBar.add(constancia);

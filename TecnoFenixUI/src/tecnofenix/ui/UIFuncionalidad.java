@@ -129,6 +129,10 @@ public class UIFuncionalidad {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setSize(780, 302);
 		scrollPane.setLocation(10, 10);
+		
+		table.getColumnModel().getColumn(0).setPreferredWidth(20); // Define el ancho preferido de la columna 0
+		table.getColumnModel().getColumn(1).setPreferredWidth(300); // Define el ancho preferido de la columna 1
+		table.getColumnModel().getColumn(2).setPreferredWidth(460);
 		// definimos un layout
 		// Agregamos el JScrollPane al contenedor
 		panel.add(scrollPane);
@@ -226,7 +230,7 @@ public class UIFuncionalidad {
 
 		Funcionalidad funTemp = new Funcionalidad();
 		if(txtId.getText()!= null && txtId.getText()!="" ) {
-			funTemp.setId(Long.valueOf(txtId.getText()));
+			funTemp.setId(Integer.valueOf(txtId.getText()));
 		}
 		funTemp.setNombre(txtNombre.getText());
 		funTemp.setDescripcion(txtDesc.getText());

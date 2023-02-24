@@ -46,10 +46,15 @@ public class FuncionalidadBean implements FuncionalidadBeanRemote {
 
 	@Override
 	public Funcionalidad borrarFuncionalidad(Funcionalidad func) throws ServiciosException {
-		func.setActivo(false);
-		func = em.merge(func);
-		em.flush();
-		return null;
+		try {
+			func.setActivo(false);
+			em.merge(func);
+			em.flush();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return func;
 	}
 
 	@Override
@@ -91,7 +96,7 @@ public class FuncionalidadBean implements FuncionalidadBeanRemote {
 		if (func == null) {
 			throw new FuncionalidadNoEncontradoException("Funcionalidads no encontrados.");
 		}
-		System.out.println("ESTUDIANTEBEAN LUEGO DE LA QUERY listarFuncionalidad");
+		System.out.println("FUNCIONALIDAD LUEGO DE LA QUERY listarFuncionalidad");
 		return query.getResultList();
 	}
 

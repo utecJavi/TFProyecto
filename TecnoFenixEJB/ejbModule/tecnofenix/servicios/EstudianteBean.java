@@ -182,8 +182,8 @@ public class EstudianteBean implements EstudianteBeanRemote {
 	@Override
 	public List<EscolaridadDTO> obtenerEscolaridad(Integer idEstudiante) throws ServiciosException {
 		
-		Query query = em.createQuery("SELECT ce.eventoId.titulo, ce.eventoId.tipo, ce.eventoId.modalidad, ce.eventoId.fin, ce.eventoId.itr.nombre, ce.calificacion "
-				+ "FROM ConvocatoriaAsistenciaEventoEstudiante ce WHERE ce.estudianteId.id = :idEstudiante ");
+		Query query = em.createQuery("SELECT evt.titulo, evt.tipo, evt.modalidad, evt.fin, ce.eventoId.itr.nombre, ce.calificacion "
+				+ "FROM ConvocatoriaAsistenciaEventoEstudiante ce INNER JOIN ce.estudianteId est INNER JOIN ce.eventoId evt  WHERE est.id = :idEstudiante ");
 		query.setParameter("idEstudiante", idEstudiante);
 		
 		List<Object[]> resultList = query.getResultList();

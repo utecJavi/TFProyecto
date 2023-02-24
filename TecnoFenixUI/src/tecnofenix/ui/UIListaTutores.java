@@ -53,6 +53,7 @@ public class UIListaTutores {
 	public JButton btnSeleccionarTutores;
 	private UIEventoNuevo eventoNuevo;
 	private UIEvento evento;
+	
 	/**
 	 * @wbp.parser.entryPoint
 	 */

@@ -1,5 +1,6 @@
 package tecnofenix.interfaces;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Remote;
@@ -18,6 +19,6 @@ public interface EventoBeanRemote {
 	List<Evento> listarEventos()throws ServiciosException;
 	List<Estudiante> obtenerEstudiantesConvocados(Evento evento);
 	List<Evento> buscarEventosPor(String id,String titulo);
-	List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,String inicioInicio, String finInicio,String inicioFin, String finFin,Boolean activo);
+	List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,Date inicioInicio, Date finInicio,Date inicioFin, Date finFin,Boolean activo);
 
 }
