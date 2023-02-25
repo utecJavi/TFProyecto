@@ -14,6 +14,8 @@ import javax.persistence.Query;
 import tecnofenix.entidades.EscolaridadDTO;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
+import tecnofenix.entidades.TipoEvento;
+import tecnofenix.entidades.ModalidadEvento;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
@@ -192,11 +194,11 @@ public class EstudianteBean implements EstudianteBeanRemote {
         for (final Object[] row : resultList) {
             EscolaridadDTO dto = new EscolaridadDTO();
             dto.setEvento((String) row[0]);
-            dto.setTipo((String) row[1]);
-            dto.setModalidad((String) row[2]);
+            dto.setTipo(((TipoEvento)(row[1])).getTipo());
+            dto.setModalidad(((ModalidadEvento)(row[2])).getModalidad());
             dto.setFecha((Date) row[3]);
             dto.setItr((String) row[4]);
-            dto.setCalificacion((int) row[5]);
+            dto.setCalificacion((Integer) row[5]);
             dtos.add(dto);
         }
 		

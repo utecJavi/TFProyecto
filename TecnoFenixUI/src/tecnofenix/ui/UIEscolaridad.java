@@ -25,17 +25,24 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+import javax.swing.text.TableView.TableCell;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
 import tecnofenix.entidades.Estudiante;
+import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
+import tecnofenix.entidades.ConvocatoriaAsistenciaEventoEstudiante;
 import tecnofenix.entidades.EscolaridadDTO;
 
 import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import tecnofenix.interfaces.EstudianteBeanRemote;
+import tecnofenix.interfaces.UsuarioBeanRemote;
 import tecnofenix.exception.ServiciosException;
 
 import com.itextpdf.text.Anchor;
@@ -67,7 +74,7 @@ public class UIEscolaridad {
 	
 	private JTable table;
 	private DefaultTableModel modelo;
-	
+	private Object[] fila;
 	private static final Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 26, Font.BOLDITALIC);
     private static final Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
          
@@ -76,22 +83,23 @@ public class UIEscolaridad {
     private static final Font blueFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.RED);    
     private static final Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
 	
-    private List<tecnofenix.entidades.EscolaridadDTO> escolaridadDTOs; 
+    private List<ConvocatoriaAsistenciaEventoEstudiante> escolaridadDTOs; 
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private EJBUsuarioRemoto usuarioRemote;
+    private Estudiante estudiante;
     
-	@EJB
-	EstudianteBeanRemote estudianteBeanRemote;
-
+    private final JFileChooser fileChooser= new JFileChooser();
+    
+    
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public void inicializar(Estudiante estudiante) {
-		
-		try {
-			InitialContext ctx = new InitialContext();
-			estudianteBeanRemote = (EstudianteBeanRemote) ctx.lookup("ejb:/TecnoFenixEJB/EstudianteBean!tecnofenix.interfaces.EstudianteBeanRemote");
-		} catch (NamingException ne) {
-			ne.printStackTrace();
-		}
+	public void inicializar(Estudiante est) {
+		estudiante=est;
+         
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+		usuarioRemote = new EJBUsuarioRemoto();
 		
 		frame = new JFrame("Escolaridad");
 
@@ -103,7 +111,7 @@ public class UIEscolaridad {
 		panel.setLayout(null);
 		
 		JLabel lblNombreEstudiante = new JLabel("Escolaridad del estudiante " + estudiante.getNombres() + " " + estudiante.getApellidos());
-		lblNombreEstudiante.setBounds(150, 50, 500, 20);
+		lblNombreEstudiante.setBounds(10, 10, 500, 20);
 		panel.add(lblNombreEstudiante);
 		
 		modelo = new DefaultTableModel();
@@ -121,71 +129,131 @@ public class UIEscolaridad {
 			modelo.addColumn(columnNames[column]);
 		}
 
-		Object[] filas = new Object[columnNames.length];
+		fila = new Object[columnNames.length];
 		
 		JScrollPane scrollPanel = new JScrollPane(table);
-        scrollPanel.setBounds(10, 169, 780, 302);
+        scrollPanel.setBounds(10, 40, 780, 704);
         panel.add(scrollPanel);
         
-        cargarTabla(estudiante, filas);
+//        cargarTabla(estudiante, filas);
+        cargarTabla();
         
         autoAjustarTabla();
-        
-        JLabel lblDestino = new JLabel("Destino:");
-        lblDestino.setBounds(20, 507, 90, 13);
-		panel.add(lblDestino);
-		
-		JTextField txtDestino = new JTextField();
-		txtDestino.setBounds(20, 520, 720, 21);
-		panel.add(txtDestino);
-		txtDestino.setColumns(100);
 		
         JButton btnExportarEscolaridad = new JButton("Exportar escolaridad a PDF");
-        btnExportarEscolaridad.setBounds(286, 481, 250, 19);
+        btnExportarEscolaridad.setBounds(540, 754, 250, 19);
         btnExportarEscolaridad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if (txtDestino.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Debe ingresar la ruta destino del PDF", "Exportar a PDF", JOptionPane.ERROR_MESSAGE);
-				} else {
-					
-					String ruta = txtDestino.getText() + "EscolaridadEstudiante.pdf";
-					
+//				JFrame parentFrame = new JFrame();
+//		        int returnVal = fileChooser.showSaveDialog(parentFrame);
+				int returnVal = fileChooser.showSaveDialog(frame);
+			        if (returnVal == JFileChooser.APPROVE_OPTION) {
+			            File directoryToSave = fileChooser.getSelectedFile();
+			            String fileName = "Escolaridad-" + formatter.format(new Date(System.currentTimeMillis())) + ".pdf";
+			            File fileToSave = new File(directoryToSave, fileName);
+			            // Aquí es donde deberías guardar el archivo PDF con el nombre y en la ubicación seleccionados
+			            System.out.println("Archivo seleccionado: " + fileToSave.getAbsolutePath());
+
 					// Llamada a la creaciÃ³n del PDF
 					// como parÃ¡metro pasar la ruta donde se guarda el PDF
-			        createPDF(new File(ruta), estudiante);
-				}
+			        createPDF(fileToSave, estudiante);
+			        }
+				
 			}
 			
 		});
         //btnExportarEscolaridad.setVisible(false);
 		panel.add(btnExportarEscolaridad);        
 		
+		frame.pack();
 	}
 	
-	private void cargarTabla(Estudiante estudiante, Object[] filas) {
-		//Borro lo previamente cargado en la tabla
-		modelo.getDataVector().removeAllElements();
-		modelo.fireTableDataChanged();
-		
-		try {
-			escolaridadDTOs = estudianteBeanRemote.obtenerEscolaridad(estudiante.getId());
-			
-			for(EscolaridadDTO escolaridadDTO : escolaridadDTOs) {
-				
-				filas[0] = escolaridadDTO.getEvento();
-				filas[1] = escolaridadDTO.getTipo();
-				filas[2] = escolaridadDTO.getModalidad();
-				filas[3] = escolaridadDTO.getFecha();
-				filas[4] = escolaridadDTO.getItr();
-				filas[5] = escolaridadDTO.getCalificacion();
-				
-				modelo.addRow(filas);
-			}
-			
-		} catch (ServiciosException se) {
-			System.out.println("Error al consultar escolaridad: " + se.getMessage());
+//	private void cargarTabla(Estudiante estudiante, Object[] filas) {
+//		//Borro lo previamente cargado en la tabla
+//		modelo.getDataVector().removeAllElements();
+//		modelo.fireTableDataChanged();
+//		
+//		try {
+//			escolaridadDTOs = estudianteBeanRemote.obtenerEscolaridad(estudiante.getId());
+//			
+//			for(EscolaridadDTO escolaridadDTO : escolaridadDTOs) {
+//				
+//				filas[0] = escolaridadDTO.getEvento();
+//				filas[1] = escolaridadDTO.getTipo();
+//				filas[2] = escolaridadDTO.getModalidad();
+//				filas[3] = escolaridadDTO.getFecha();
+//				filas[4] = escolaridadDTO.getItr();
+//				filas[5] = escolaridadDTO.getCalificacion();
+//				
+//				modelo.addRow(filas);
+//			}
+//			
+//		} catch (ServiciosException se) {
+//			System.out.println("Error al consultar escolaridad: " + se.getMessage());
+//		}
+//	}
+	
+	public void limpiarTabla() {
+			modelo.getDataVector().removeAllElements();
+			modelo.fireTableDataChanged();
+	}
+
+	
+	
+	public void cargarTabla() {
+		limpiarTabla();
+		escolaridadDTOs = usuarioRemote.filtrarAsistEstuAEventosPor(null, null, null, null, estudiante.getDocumento().toString(), null, null, true, false);
+		if(escolaridadDTOs != null) {
+		System.out.println(escolaridadDTOs.toString());
+		// Se rellena cada posición del array con una de las columnas de la tabla en
+		// base de datos.
+		for (ConvocatoriaAsistenciaEventoEstudiante cAEE : escolaridadDTOs) {
+
+			fila[0] = cAEE.getEventoId().getTitulo();
+			fila[1] = cAEE.getEventoId().getTipo().getTipo();
+			fila[2] = cAEE.getEventoId().getModalidad().getModalidad();
+
+			fila[3] = formatter.format(cAEE.getEventoId().getFin());
+			fila[4] = cAEE.getEventoId().getItr().getNombre();
+			fila[5] = cAEE.getCalificacion();
+			// Se añade al modelo la fila completa.
+			modelo.addRow(fila);
+
 		}
+		crearFilaTotal();
+	}
+	
+	}
+	
+	public void crearFilaTotal() {
+		// Obtén el modelo de tabla
+//		TableModel model = table.getModel();
+
+		// Crea la fila total y establece los valores de las columnas
+		int numRows = modelo.getRowCount();
+		double sum = 0.0;
+		int count = 0;
+		double prom=0.0;
+		for (int i = 0; i < numRows; i++) {
+		    Object value = modelo.getValueAt(i, 5);
+		    if (value instanceof Number) {
+		        sum += ((Number) value).doubleValue();
+		        count++;
+		    }
+		}
+		prom = sum/count;
+		Object[] empty = new Object[] { "","","", "","", "" };
+		Object[] cantRow = new Object[] { "Cantidad ","","", "","", count };
+		Object[] totalRow = new Object[] { "Promedio ","","", "","", prom };
+
+		// Agrega la fila total al modelo de tabla
+		modelo.addRow(empty);
+		modelo.addRow(cantRow);
+		modelo.addRow(totalRow);
+
+		// Actualiza la vista del JTable
+		table.repaint();
+
 	}
 	
 	private void autoAjustarTabla() {
@@ -210,7 +278,7 @@ public class UIEscolaridad {
             try {
                 PdfWriter.getInstance(document, new FileOutputStream(pdfNewFile));
             } catch (FileNotFoundException fileNotFoundException) {
-                System.out.println("No se encontrÃ³ el fichero para generar el pdf " + fileNotFoundException);
+                System.out.println("No se encontro el fichero para generar el pdf " + fileNotFoundException);
             }
             
             document.open();
@@ -252,16 +320,17 @@ public class UIEscolaridad {
             table.addCell(columnHeader6);
             
             table.setHeaderRows(1);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+          
+            for (ConvocatoriaAsistenciaEventoEstudiante cAEE : escolaridadDTOs) {
+
+            	table.addCell(cAEE.getEventoId().getTitulo());
+            	table.addCell(cAEE.getEventoId().getTipo().getTipo());
+            	table.addCell(cAEE.getEventoId().getModalidad().getModalidad());
+            	table.addCell(formatter.format(cAEE.getEventoId().getFin()));
+            	table.addCell(cAEE.getEventoId().getItr().getNombre());
+            	table.addCell(cAEE.getCalificacion().toString());
+            }
             
-            for(EscolaridadDTO escolaridadDTO : escolaridadDTOs) {
-            	table.addCell(escolaridadDTO.getEvento());
-            	table.addCell(escolaridadDTO.getTipo());
-            	table.addCell(escolaridadDTO.getModalidad());
-            	table.addCell(formatter.format(escolaridadDTO.getFecha()));
-            	table.addCell(escolaridadDTO.getItr());
-            	table.addCell(formatter.format(escolaridadDTO.getCalificacion()));
-			}
 
             paragraphMore.add(table);
             document.add(chapTitle);
@@ -270,6 +339,9 @@ public class UIEscolaridad {
 		} catch (DocumentException documentException) {
             System.out.println("Se ha producido un error al generar un documento: " + documentException);
         }
+		
+		JOptionPane.showMessageDialog(null, "Se creo el documento escolaridad en la ruta seleccinada", "Exportar a PDF", JOptionPane.INFORMATION_MESSAGE);
+	
 	}
 	
 }

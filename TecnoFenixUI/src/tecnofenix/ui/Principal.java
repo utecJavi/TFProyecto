@@ -82,7 +82,7 @@ public class Principal {
 		});
 		
 		JMenuItem adminTiposTutores= new JMenuItem("Administracion tipos de tutores");
-		adminUsuarios.addActionListener(new ActionListener() {
+		adminTiposTutores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UITipoTutor uiTipoTutor = new UITipoTutor();
 				if(user instanceof Analista) {
@@ -95,7 +95,7 @@ public class Principal {
 			}
 		});
 		JMenuItem adminTiposAreas= new JMenuItem("Administracion tipos de areas tutores");
-		adminUsuarios.addActionListener(new ActionListener() {
+		adminTiposAreas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UITipoTutorArea uiTipoTutorArea = new UITipoTutorArea();
 				if(user instanceof Analista) {

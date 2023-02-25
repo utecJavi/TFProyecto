@@ -218,6 +218,7 @@ public class UIUsuario {
 	            	lblArea.setVisible(true);
 	            	lbltipoTutor.setVisible(true);
 	            	cmbTipoTutor.setSelectedItem(TipoTutorEncargado.getIdTipo(((Tutor)usuarioEditable).getTipo()));
+	            	cmbArea.setSelectedItem(TipoTutorArea.getIdArea(((Tutor)usuarioEditable).getTipo()));
 	            }else {
 	            	lblArea.setVisible(false);
 	            	lbltipoTutor.setVisible(false);
@@ -655,7 +656,7 @@ public class UIUsuario {
 			System.out.println("FALTAN DATOS");
 		} else {
 
-			System.out.println("AGREGANDO USUARIO ESTUDIANTE");
+			System.out.println("AGREGANDO USUARIO ");
 			modificarUsuario();
 		}
 	}
