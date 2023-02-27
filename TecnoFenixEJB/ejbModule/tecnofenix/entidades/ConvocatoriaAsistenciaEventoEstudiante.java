@@ -10,6 +10,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,6 +56,9 @@ public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
     @Basic(optional = false)
     @Column(name = "asistencia")
     private Boolean asistencia;
+    
+    @Enumerated(EnumType.STRING)
+    private RegistroAsistencia registroAsistencia;
 
     @JoinColumn(name = "evento_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -124,6 +129,15 @@ public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
         this.estudianteId = estudianteId;
     }
 
+	public RegistroAsistencia getRegistroAsistencia() {
+		return registroAsistencia;
+	}
+
+
+	public void setRegistroAsistencia(RegistroAsistencia registroAsistencia) {
+		this.registroAsistencia = registroAsistencia;
+	}
+    
     @Override
     public int hashCode() {
         int hash = 0;

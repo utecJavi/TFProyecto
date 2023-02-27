@@ -108,7 +108,7 @@ public class Principal {
 			}
 		});
 		
-		JMenuItem pedirConstanciaEstudiante= new JMenuItem("Solicitar constancias");
+//		JMenuItem pedirConstanciaEstudiante= new JMenuItem("Solicitar constancias");
 		
 		
 		JMenuItem adminDatosPersonales= new JMenuItem("Editar datos cuenta");
@@ -155,7 +155,7 @@ public class Principal {
 				uiHabEstEvnt.frame.setVisible(true);
 			}
 		});
-		JMenuItem evenDelete = new JMenuItem("Borrar Eventos");
+//		JMenuItem evenDelete = new JMenuItem("Borrar Eventos");
 		JMenuItem evenList = new JMenuItem("Listar Eventos");
 		evenList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -226,7 +226,7 @@ public class Principal {
 		usuario.add(adminUsuarios);
 		usuario.add(adminTiposTutores);
 		usuario.add(adminTiposAreas);
-		usuario.add(pedirConstanciaEstudiante);
+//		usuario.add(pedirConstanciaEstudiante);
 		usuario.add(adminDatosPersonales);
 		menuBar.add(usuario);
 		
@@ -239,7 +239,7 @@ public class Principal {
 		evento.add(evenAlta);
 		evento.add(evenConvocados);
 		evento.add(evenMod);
-		evento.add(evenDelete);
+//		evento.add(evenDelete);
 		evento.add(evenList);
 		menuBar.add(evento);
 		

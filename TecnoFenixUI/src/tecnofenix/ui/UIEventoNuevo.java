@@ -36,6 +36,8 @@ import tecnofenix.entidades.TipoTutorEncargado;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.TutorResponsableEvento;
 import tecnofenix.entidades.ModalidadEvento;
+import tecnofenix.entidades.RegistroAsistencia;
+
 import com.toedter.calendar.JCalendar;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -131,10 +133,15 @@ public class UIEventoNuevo {
 		fechaFinLabel.setBounds(293, 164, 145, 13);
 		panel.add(fechaFinLabel);
 		
-		cmbItr = new JComboBox();
+		cmbItr= new JComboBox<Itr>();
 		cmbItr.setBounds(293, 45, 167, 21);
 				
 		List<Itr>listItr = usuarioRemote.listarITR();
+		Itr vacio = new Itr();
+		vacio.setActivo(true);
+		vacio.setDepartamento("");
+		vacio.setNombre("");
+		cmbItr.addItem(vacio);
 		for(Itr itrItem: listItr){
 			cmbItr.addItem(itrItem);
 			System.out.println(itrItem.toString());
@@ -289,7 +296,7 @@ public class UIEventoNuevo {
 		if(validarDatos()) { //todo
 		Evento evento =new Evento(txtTituloEvento.getText(),
 				(TipoEvento)cmbTipoEvento.getSelectedItem(),
-				(ModalidadEvento)cmbModalidadEvento.getSelectedItem(), 
+				(ModalidadEvento)cmbModalidadEvento.getSelectedItem(),
 				fechaInicioDateChooser.getDate(),
 				fechaFinDateChooser.getDate(),
 				textLocalizacion.getText(),
@@ -355,10 +362,7 @@ public class UIEventoNuevo {
 	}
 	
 	public void limpiarTabla() {
-//		if (listTutores != null || !listTutores.isEmpty() || listTutores.size() > 0) {
-//			listTutores.clear();
-//			
-//		}
+
 		modelo.getDataVector().removeAllElements();
 		modelo.fireTableDataChanged();
 
@@ -396,5 +400,6 @@ public class UIEventoNuevo {
 		cmbItr.setSelectedIndex(0);
 		listTutorResEvent.clear();
 		listTutores.clear();
+		limpiarTabla();
 	}
 }

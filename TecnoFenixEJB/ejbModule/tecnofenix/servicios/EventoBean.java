@@ -133,9 +133,6 @@ public class EventoBean implements EventoBeanRemote {
 		System.out.println("----------------------------------------");
 		System.out.println("----------------------------------------");
 		System.out.println("----------------------------------------");
-		System.out.println("----------------------------------------");
-		System.out.println("----------------------------------------");
-		System.out.println("----------------------------------------");
 		String conditions = "";
 		String joinJPQL = "";
 		

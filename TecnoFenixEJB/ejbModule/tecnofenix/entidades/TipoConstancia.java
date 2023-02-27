@@ -66,4 +66,8 @@ public class TipoConstancia implements Serializable {
 		this.baja = baja;
 	}
 	
+	@Override
+	public String toString() {
+		return this.tipo;
+	}
 }

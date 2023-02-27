@@ -1,5 +1,8 @@
 package tecnofenix.interfaces;
 
+
+import tecnofenix.entidades.TipoArea;
+import tecnofenix.entidades.TipoTutorTipo;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
@@ -17,4 +20,19 @@ public interface TutorBeanRemote {
 	Tutor obtenerTutorPorId(Integer tutorId);
 	List<Tutor> listarTutores() throws ServiciosException;
 	
+    TipoTutorTipo crearTipoTutorTipo(TipoTutorTipo tipoConstancia) throws ServiciosException;
+	
+	TipoTutorTipo modificarTipoTutorTipo(TipoTutorTipo tipoConstancia) throws ServiciosException;
+	
+	void bajaTipoTutorTipo(TipoTutorTipo tipoConstancia) throws ServiciosException;
+	
+	List<TipoTutorTipo> listadoTipoTutorTipo(Boolean baja) throws ServiciosException;
+
+	TipoArea crearTipoArea(TipoArea tipoConstancia) throws ServiciosException;
+	
+	TipoArea modificarTipoArea(TipoArea tipoConstancia) throws ServiciosException;
+	
+	void bajaTipoArea(TipoArea tipoConstancia) throws ServiciosException;
+	
+	List<TipoArea> listadoTipoArea(Boolean baja) throws ServiciosException;
 }

@@ -69,7 +69,7 @@ public class Evento implements Serializable {
     @Enumerated(EnumType.STRING)
     @NotNull
     private ModalidadEvento modalidad;
-    
+       
     @Basic(optional = false)
     @NotNull
     @Column(name = "inicio")
@@ -113,7 +113,7 @@ public class Evento implements Serializable {
     }
 
 
-    public Evento(@NotNull String titulo, @NotNull TipoEvento tipo, @NotNull ModalidadEvento modalidad,
+    public Evento(@NotNull String titulo, @NotNull TipoEvento tipo, @NotNull ModalidadEvento modalidad, 
 			@NotNull Date inicio, Date fin, String localizacion, Boolean bajaLogica, Itr itr,
 			Collection<Justificacion> justificacionCollection,
 			Collection<ConvocatoriaAsistenciaEventoEstudiante> convocatoriaAsistenciaEventoEstudianteCollection,
@@ -161,6 +161,7 @@ public class Evento implements Serializable {
 	public void setModalidad(ModalidadEvento modalidad) {
 		this.modalidad = modalidad;
 	}
+
 
 	public String getLocalizacion() {
 		return localizacion;

@@ -33,10 +33,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "itr")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Itr.findAll", query = "SELECT i FROM Itr i"),
+    @NamedQuery(name = "Itr.findAll", query = "SELECT i FROM Itr i "),
     @NamedQuery(name = "Itr.findById", query = "SELECT i FROM Itr i WHERE i.id = :id"),
     @NamedQuery(name = "Itr.findByDepartamento", query = "SELECT i FROM Itr i WHERE i.departamento = :departamento"),
-    @NamedQuery(name = "Itr.findByNombre", query = "SELECT i FROM Itr i WHERE i.nombre = :nombre")})
+    @NamedQuery(name = "Itr.findByNombre", query = "SELECT i FROM Itr i WHERE i.nombre = :nombre"),
+    @NamedQuery(name = "Itr.findByActivo", query = "SELECT i FROM Itr i WHERE i.activo = :activo")})
 public class Itr implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -59,9 +60,11 @@ public class Itr implements Serializable {
     @Column(name = "nombre")
     private String nombre;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itr")
-//    private Collection<Usuario> usuarioCollection;
-
+    @Basic(optional = false)
+    @NotNull
+	@Column(name = "activo" )
+	private Boolean activo;
+    
     public Itr() {
     }
 
@@ -95,16 +98,15 @@ public class Itr implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    
+    public Boolean getActivo() {
+		return activo;
+	}
 
-//    @XmlTransient
-//    public Collection<Usuario> getUsuarioCollection() {
-//        return usuarioCollection;
-//    }
-//
-//    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-//        this.usuarioCollection = usuarioCollection;
-//    }
-
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+	
     @Override
     public int hashCode() {
         int hash = 0;

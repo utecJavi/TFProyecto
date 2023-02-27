@@ -18,6 +18,8 @@ import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
 import tecnofenix.entidades.ConvocatoriaAsistenciaEventoEstudiante;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Evento;
+import tecnofenix.entidades.RegistroAsistencia;
+import tecnofenix.entidades.TipoEvento;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
 
@@ -67,8 +69,8 @@ public class UIEventoAsistenciaEstudiante {
 	private ConvocatoriaAsistenciaEventoEstudiante convSeleccionada;
 	private Evento eventoSeleccionado;
 	private Estudiante estudianteSeleccionado;
-	private JComboBox comboBoxAsistencia;
 	private JComboBox comboBoxNota;
+	private JComboBox<RegistroAsistencia> comboBoxRegAsistencia;
 	
 	public JButton btnConfirmarAsistencia;
 	
@@ -319,15 +321,6 @@ public class UIEventoAsistenciaEstudiante {
 		lblDatosEstudiante.setBounds(752, 275, 359, 142);
 		panel.add(lblDatosEstudiante);
 		
-		comboBoxAsistencia = new JComboBox();
-		comboBoxAsistencia.setModel(new DefaultComboBoxModel(new String[] {"","Si", "No"}));
-		comboBoxAsistencia.setBounds(433, 714, 203, 21);
-		panel.add(comboBoxAsistencia);
-		
-		JLabel lblNewLabel_2 = new JLabel("Asistio evento?");
-		lblNewLabel_2.setBounds(433, 698, 203, 13);
-		panel.add(lblNewLabel_2);
-		
 		JLabel lblNewLabel_3 = new JLabel("Nota");
 		lblNewLabel_3.setBounds(646, 698, 45, 13);
 		panel.add(lblNewLabel_3);
@@ -362,6 +355,15 @@ public class UIEventoAsistenciaEstudiante {
 		lblNewLabel_4.setBounds(10, 494, 221, 13);
 		panel.add(lblNewLabel_4);
 		
+		comboBoxRegAsistencia = new JComboBox<>();
+		comboBoxRegAsistencia.setModel(new DefaultComboBoxModel<RegistroAsistencia>(RegistroAsistencia.values() ));
+		comboBoxRegAsistencia.setBounds(433, 715, 203, 21);
+		panel.add(comboBoxRegAsistencia);
+		
+		JLabel lblNewLabel_2_1 = new JLabel("Asistio evento?");
+		lblNewLabel_2_1.setBounds(433, 699, 203, 13);
+		panel.add(lblNewLabel_2_1);
+		
 		
 
 		btnLimpiarDatos.addActionListener(new ActionListener() {
@@ -381,17 +383,16 @@ public class UIEventoAsistenciaEstudiante {
 
 	}
 
-//
-//	public boolean borrarRow(String mensaje) {
-////		msj.mostrarMensaje(Mensajes.BAJA);
-//		
-//		int dialogButton = JOptionPane.YES_NO_OPTION;
-//		int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro quieres borrar: "+mensaje,"Warning",dialogButton);
-//		if(dialogResult == JOptionPane.YES_OPTION){
-//			return true;
-//		}
-//		return false;
-//	}
+
+	public boolean confirmarSiNo(String mensaje) {
+	
+		int dialogButton = JOptionPane.YES_NO_OPTION;
+		int dialogResult = JOptionPane.showConfirmDialog (null,mensaje,"Warning",dialogButton);
+		if(dialogResult == JOptionPane.YES_OPTION){
+			return true;
+		}
+		return false;
+	}
 	public void limpiarTablaEventos() {
 		if (listEventos != null || !listEventos.isEmpty() || listEventos.size() > 0) {
 			listEventos.clear();
@@ -454,12 +455,13 @@ public class UIEventoAsistenciaEstudiante {
 			return false;
 		}
 
-		if(comboBoxAsistencia.getSelectedItem().toString()=="") {
+		if(comboBoxRegAsistencia.getSelectedItem().toString()=="") {
 			JOptionPane.showMessageDialog(null, "Seleccione asistencia si no", "Datos no validos",
 					JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		if(comboBoxAsistencia.getSelectedItem().toString()=="No"  ) {
+		if(comboBoxRegAsistencia.getSelectedItem().toString()=="Ausencia" ||
+				comboBoxRegAsistencia.getSelectedItem().toString()=="Ausencia justificada") {
 			if(comboBoxNota.getSelectedItem()!=null && comboBoxNota.getSelectedItem().toString()!="") {
 			if(Integer.valueOf(comboBoxNota.getSelectedItem().toString())>=1) {
 				JOptionPane.showMessageDialog(null, "Si el estudiante no concurrio al evento, la nota debe estar 'vacia', no puede ser mayor a 0", "Datos no validos",
@@ -469,22 +471,36 @@ public class UIEventoAsistenciaEstudiante {
 			}
 			
 		}
-		if(comboBoxAsistencia.getSelectedItem().toString()=="Si" && comboBoxNota.getSelectedItem().toString()=="") {
-			JOptionPane.showMessageDialog(null, "Seleccione una calificacion de 1 a 5", "Datos no validos",
-					JOptionPane.INFORMATION_MESSAGE);
-			return false;	
+		if((comboBoxRegAsistencia.getSelectedItem().toString()=="Asistencia" ||
+				comboBoxRegAsistencia.getSelectedItem().toString()=="Media asistencia")
+				&& comboBoxNota.getSelectedItem().toString()=="") {
+			if(confirmarSiNo("Esta seguro que quiere ingresar al estudiante sin calificacion?")) {
+				System.out.println("El usuario ingresa al estudiante sin calificacion");
+			}else {
+				JOptionPane.showMessageDialog(null, "Seleccione una calificacion de 1 a 5", "Datos no validos",
+						JOptionPane.INFORMATION_MESSAGE);
+				return false;	
+			}
+			
+			
 		}
 		
 		return true;
 	}
 	public void confirmarAsistencia() {
-
-		if(comboBoxAsistencia.getSelectedItem().toString()=="Si") {
-			confirmarAsistenciaEstudianteConvocados(true,Integer.valueOf(comboBoxNota.getSelectedItem().toString()));
+		Integer cali = null;
+		try {
+			cali=Integer.valueOf(comboBoxNota.getSelectedItem().toString());
+		} catch (Exception e) {
+			System.out.println("Entro aqui exception de calificacion, deberia estar bien que salte la excepcion si no hay una nota seleccionada");
 		}
-		if(comboBoxAsistencia.getSelectedItem().toString()=="No") {
-			confirmarAsistenciaEstudianteConvocados(false,0);
-		}
+		confirmarAsistenciaEstudianteConvocados((RegistroAsistencia)comboBoxRegAsistencia.getSelectedItem(), cali);
+//		if(comboBoxRegAsistencia.getSelectedItem().toString()=="Si") {
+//			confirmarAsistenciaEstudianteConvocados(true,Integer.valueOf(comboBoxNota.getSelectedItem().toString()));
+//		}
+//		if(comboBoxAsistencia.getSelectedItem().toString()=="No") {
+//			confirmarAsistenciaEstudianteConvocados(false,0);
+//		}
 		
 	}
 	
@@ -555,9 +571,9 @@ public class UIEventoAsistenciaEstudiante {
 //			}
 //	 }
 	 
-	 public void confirmarAsistenciaEstudianteConvocados(Boolean asistencia, Integer calificacion) {
+	 public void confirmarAsistenciaEstudianteConvocados(RegistroAsistencia registroAsistencia, Integer calificacion) {
 		 	
-		convSeleccionada.setAsistencia(asistencia);
+		convSeleccionada.setRegistroAsistencia(registroAsistencia);
 		convSeleccionada.setCalificacion(calificacion);
 		try {
 			usuarioRemote.agregarEstudianteAEvento(convSeleccionada);
@@ -587,12 +603,8 @@ public class UIEventoAsistenciaEstudiante {
 				filaHabilitados[2] = habilitados.getEstudianteId().getId();
 				filaHabilitados[3] = habilitados.getEstudianteId().getNombres()+" "+habilitados.getEstudianteId().getApellidos();
 				
-				if(habilitados.getAsistencia()!=null) {
-					if (habilitados.getAsistencia()) {
-						filaHabilitados[4] = "Si";
-					} else {
-						filaHabilitados[4] = "No";
-					}
+				if(habilitados.getRegistroAsistencia()!=null) {
+					filaHabilitados[4] = habilitados.getRegistroAsistencia().toString();
 				}else {
 					filaHabilitados[4] = "---";
 				}
@@ -609,16 +621,12 @@ public class UIEventoAsistenciaEstudiante {
 	 }
 	 
 	 public void cargarDatosParaEditarConvocatoria(){
-		 if(convSeleccionada.getAsistencia()== null) {
-			 comboBoxAsistencia.setSelectedIndex(0);//Vacio
-		 }else if (convSeleccionada.getAsistencia()) {
-			 comboBoxAsistencia.setSelectedIndex(1);//Si
+		 if(convSeleccionada.getRegistroAsistencia()== null) {
+			 comboBoxRegAsistencia.setSelectedIndex(0);//Vacio
 		 }else {
-			 comboBoxAsistencia.setSelectedIndex(2);//No
+			 comboBoxRegAsistencia.setSelectedItem(convSeleccionada.getRegistroAsistencia());
 		 }
-		 if(convSeleccionada.getCalificacion()== null) {
-			 comboBoxNota.setSelectedIndex(0);//Vacio
-		 }else {
+		 if(convSeleccionada.getCalificacion()!= null) {
 			 comboBoxNota.setSelectedIndex(convSeleccionada.getCalificacion()+1);//
 		 }
 		

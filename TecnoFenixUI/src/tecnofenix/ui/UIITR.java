@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
+import javax.swing.JCheckBox;
 
 public class UIITR {
 
@@ -45,6 +46,7 @@ public class UIITR {
 	private JTextField textEditarId;
 	private JTextField textEditarNom;
 	private JTextField textEditarDepto;
+	private JCheckBox chckbxActivos;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -53,11 +55,11 @@ public class UIITR {
 		usuarioRemote = new EJBUsuarioRemoto();
 		allITR = new ArrayList<Itr>();
 		frame = new JFrame("ITR");
-
+		
 		JPanel panel = new JPanel();
 		// definimos un layout
 
-		panel.setPreferredSize(new Dimension(800, 800));
+		panel.setPreferredSize(new Dimension(900, 800));
 		frame.getContentPane().add(panel, BorderLayout.WEST);
 		panel.setLayout(null);
 
@@ -73,7 +75,7 @@ public class UIITR {
 		table.setBackground(Color.BLACK);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		// crea un array que contiene los nombre de las columnas
-		final String[] columnNames = { "Id", "Nombre", "Departamento" };
+		final String[] columnNames = { "Id", "Nombre", "Departamento" ,"Activo"};
 
 		// insertamos las columnas
 		for (int column = 0; column < columnNames.length; column++) {
@@ -101,7 +103,7 @@ public class UIITR {
 	    });
 		// Creamos un JscrollPane y le agregamos la JTable
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 103, 780, 368);
+		scrollPane.setBounds(10, 103, 863, 368);
 		// definimos un layout
 		// Agregamos el JScrollPane al contenedor
 		panel.add(scrollPane);
@@ -112,7 +114,7 @@ public class UIITR {
 				nuevoItr();
 			}
 		});
-		btnAddItr.setBounds(677, 495, 113, 21);
+		btnAddItr.setBounds(760, 495, 113, 21);
 		panel.add(btnAddItr);
 
 		textNombre = new JTextField();
@@ -170,11 +172,11 @@ public class UIITR {
 				buscarPor(textBuscarId.getText() ,textBuscarNomb.getText(),textBuscarDept.getText());
 			}
 		});
-		btnBuscar.setBounds(677, 60, 113, 21);
+		btnBuscar.setBounds(760, 60, 113, 21);
 		panel.add(btnBuscar);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 91, 790, 2);
+		separator.setBounds(10, 91, 880, 2);
 		panel.add(separator);
 		
 		JLabel lblNewLabel = new JLabel("Filtros de busqueda");
@@ -182,7 +184,7 @@ public class UIITR {
 		panel.add(lblNewLabel);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(10, 557, 780, 2);
+		separator_1.setBounds(10, 557, 863, 2);
 		panel.add(separator_1);
 		
 		JLabel lblNewLabel_1_1_1_1_1 = new JLabel("Id");
@@ -221,8 +223,34 @@ public class UIITR {
 				
 			}
 		});
-		btnEditar.setBounds(677, 581, 113, 21);
+		btnEditar.setBounds(637, 581, 113, 21);
 		panel.add(btnEditar);
+		
+		JButton btnBorrar = new JButton("Borrar");
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textEditarId.getText()!="") {
+				if(confirmarSiNo("Seguro quiere eliminar el ITR "+textEditarNom.getText())) {
+					limpiarTabla();
+					Itr itr = new Itr(Integer.valueOf(textEditarId.getText()), textEditarDepto.getText(), textEditarNom.getText());
+					itr.setActivo(false);
+					itr = usuarioRemote.editarITR(itr);
+					JOptionPane.showMessageDialog(null, "Itr actualizado",
+							"Itr actualizado", JOptionPane.INFORMATION_MESSAGE);
+					System.out.println(itr.toString());
+					actualizarLista();
+					limpiar();
+				}
+				}
+			}
+		});
+		btnBorrar.setBounds(760, 581, 113, 21);
+		panel.add(btnBorrar);
+		
+		chckbxActivos = new JCheckBox("Activo");
+		chckbxActivos.setSelected(true);
+		chckbxActivos.setBounds(602, 60, 93, 21);
+		panel.add(chckbxActivos);
 
 		frame.pack();
 		frame.setVisible(true);
@@ -235,32 +263,10 @@ public class UIITR {
 			allITR.clear();
 			
 		}
-//		System.out.println("Limpiar tabla "+modelo.getRowCount());
-//		while (modelo.getRowCount()>0){
-//			System.out.println("Limpiar tabla "+modelo.getRowCount());
-//			modelo.removeRow(0);
-//        }
+
 		modelo.getDataVector().removeAllElements();
 		modelo.fireTableDataChanged();
-//		for (int i = 0; i < modelo.getRowCount(); i++) {
-//			try {
-//				modelo.removeRow(i);
-//			} catch (ArrayIndexOutOfBoundsException e) {
-////				System.out.println(e);
-//			}
-//			
-//		}
-//		for (int i = modelo.getRowCount(); i >0 ; i--) {
-//			System.out.print("RowCount ");
-//			System.out.print(modelo.getRowCount());
-//			System.out.print(" Contador for "+i);
-//			try {
-//				modelo.removeRow(i);
-//			} catch (ArrayIndexOutOfBoundsException e) {
-//				System.out.println(e);
-//			}
-//			
-//		}
+
 	}
 	
 	public void actualizarLista() {
@@ -276,6 +282,12 @@ public class UIITR {
 			fila[0] = itr.getId();
 			fila[1] = itr.getNombre();
 			fila[2] = itr.getDepartamento();
+			if(itr.getActivo()) {
+				fila[3] = "Si";	
+			}else {
+				fila[3] = "No";	
+			}		
+			
 			// Se añade al modelo la fila completa.
 			modelo.addRow(fila);
 
@@ -314,13 +326,31 @@ public class UIITR {
 		// Se rellena cada posición del array con una de las columnas de la tabla en
 		// base de datos.
 		for (Itr itr : allITR) {
-
-			fila[0] = itr.getId();
-			fila[1] = itr.getNombre();
-			fila[2] = itr.getDepartamento();
-			// Se añade al modelo la fila completa.
-			modelo.addRow(fila);
-
+			if(chckbxActivos.isSelected() && itr.getActivo()) {
+				fila[0] = itr.getId();
+				fila[1] = itr.getNombre();
+				fila[2] = itr.getDepartamento();
+				if(itr.getActivo()) {
+					fila[3] = "Si";	
+				}else {
+					fila[3] = "No";	
+				}	
+				// Se añade al modelo la fila completa.
+				modelo.addRow(fila);
+			}
+			if(!chckbxActivos.isSelected() && !itr.getActivo()) {
+				fila[0] = itr.getId();
+				fila[1] = itr.getNombre();
+				fila[2] = itr.getDepartamento();
+				if(itr.getActivo()) {
+					fila[3] = "Si";	
+				}else {
+					fila[3] = "No";	
+				}	
+				// Se añade al modelo la fila completa.
+				modelo.addRow(fila);
+			}
+			
 		}
 	}
 	}
@@ -363,5 +393,16 @@ public class UIITR {
 		            width=300;
 		        columnModel.getColumn(column).setPreferredWidth(width);
 		    }
+		}
+	 
+	 
+		public boolean confirmarSiNo(String mensaje) {
+			
+			int dialogButton = JOptionPane.YES_NO_OPTION;
+			int dialogResult = JOptionPane.showConfirmDialog (null,mensaje,"Warning",dialogButton);
+			if(dialogResult == JOptionPane.YES_OPTION){
+				return true;
+			}
+			return false;
 		}
 }

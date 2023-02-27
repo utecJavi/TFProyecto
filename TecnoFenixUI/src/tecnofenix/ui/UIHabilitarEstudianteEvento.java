@@ -322,9 +322,9 @@ public class UIHabilitarEstudianteEvento {
 			lblNewLabel.setBounds(10, 10, 113, 13);
 			panel.add(lblNewLabel);
 			
-			JButton btnLimpiarDatos = new JButton("Limpiar Datos");
-			btnLimpiarDatos.setBounds(569, 754, 290, 21);
-			panel.add(btnLimpiarDatos);
+			JButton btnQuitar = new JButton("Quitar seleccionados");
+			btnQuitar.setBounds(569, 754, 290, 21);
+			panel.add(btnQuitar);
 			
 			JButton btnBuscarEventos = new JButton("Buscar");
 			btnBuscarEventos.addActionListener(new ActionListener() {
@@ -467,9 +467,24 @@ public class UIHabilitarEstudianteEvento {
 			
 			
 
-			btnLimpiarDatos.addActionListener(new ActionListener() {
+			btnQuitar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-		
+
+					if(validarEventoParaQuitarEstudiantes()) {
+						if(confirmarSiNo("Esta seguro que desea eliminar el/los estudiante/s seleccionado/s del evento?")) {
+						int[] selectedRows=tableHabilitados.getSelectedRows();
+						for (int i = 0; i < selectedRows.length; i++) {
+							Integer selec=Integer.valueOf(tableHabilitados.getValueAt(selectedRows[i], 0).toString());
+							System.out.println("Contenido de la seleccion "+selec);
+							ConvocatoriaAsistenciaEventoEstudiante conv = usuarioRemote.obtenerDatosConvPorId(selec);
+							listHabilitados.remove(conv);
+	//						
+						}
+						cargarTablaHabilitados(listHabilitados);
+						JOptionPane.showMessageDialog(null, "Para confirmar la eliminacion debera hacer click en el boton confirmar convocados", "Datos no validos",
+								JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
 				}
 			});
 			
@@ -488,17 +503,17 @@ public class UIHabilitarEstudianteEvento {
 
 		}
 
-	//
-//		public boolean borrarRow(String mensaje) {
-////			msj.mostrarMensaje(Mensajes.BAJA);
-//			
-//			int dialogButton = JOptionPane.YES_NO_OPTION;
-//			int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro quieres borrar: "+mensaje,"Warning",dialogButton);
-//			if(dialogResult == JOptionPane.YES_OPTION){
-//				return true;
-//			}
-//			return false;
-//		}
+		public boolean confirmarSiNo(String mensaje) {
+//			msj.mostrarMensaje(Mensajes.BAJA);
+			
+			int dialogButton = JOptionPane.YES_NO_OPTION;
+			int dialogResult = JOptionPane.showConfirmDialog (null, mensaje,"Warning",dialogButton);
+			if(dialogResult == JOptionPane.YES_OPTION){
+				return true;
+			}
+			return false;
+		}
+		
 		public void limpiarTablaEventos() {
 			if (listEventos != null || !listEventos.isEmpty() || listEventos.size() > 0) {
 				listEventos.clear();
@@ -578,7 +593,8 @@ public class UIHabilitarEstudianteEvento {
 		}
 		
 		public boolean validar() {
-//			if(comboBoxNota.getSelectedItem().toString()=="") {
+//			Date hoy = new Date(System.currentTimeMillis());
+//			if(eventoSeleccionado.getInicio()>=hoy) {
 //				JOptionPane.showMessageDialog(null, "Seleccione una calificacion de 1 a 5", "Datos no validos",
 //						JOptionPane.INFORMATION_MESSAGE);
 //				return false;	
@@ -662,12 +678,8 @@ public class UIHabilitarEstudianteEvento {
 					filaHabilitados[1] = habilitados.getEventoId().getTitulo();
 					filaHabilitados[2] = habilitados.getEstudianteId().getNombres()+" "+habilitados.getEstudianteId().getApellidos();
 					
-					if(habilitados.getAsistencia()!=null) {
-						if (habilitados.getAsistencia()) {
-							filaHabilitados[3] = "Si";
-						} else {
-							filaHabilitados[3] = "No";
-						}
+					if(habilitados.getRegistroAsistencia()!=null) {
+						filaHabilitados[3] = habilitados.getRegistroAsistencia().toString();
 					}else {
 						filaHabilitados[3] = "---";
 					}

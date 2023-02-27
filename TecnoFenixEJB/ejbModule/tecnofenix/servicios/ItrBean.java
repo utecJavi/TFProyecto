@@ -1,5 +1,6 @@
 package tecnofenix.servicios;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -60,8 +61,16 @@ public class ItrBean implements ItrBeanRemote {
 
 	@Override
 	public Itr borrarItr(Itr itr) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			itr.setActivo(false);
+			em.merge(itr);
+			em.flush();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		
+		return itr;
 	}
 
 	@Override
@@ -95,16 +104,22 @@ public class ItrBean implements ItrBeanRemote {
 
 	@Override
 	public List<Itr> listarItr() throws ServiciosException {
-//		TypedQuery<Itr> query = em.createQuery("SELECT i FROM Itr i ",Itr.class);
-		System.out.println("ItrBean listarItr()");
-		TypedQuery<Itr> query = em.createNamedQuery("Itr.findAll", Itr.class);
-		List<Itr> itr = query.getResultList();
-
-		if (itr == null) {
+		List<Itr> list = new ArrayList<Itr>();
+		try {
+		
+			System.out.println("ItrBean listarItr()");
+			TypedQuery<Itr> query = em.createNamedQuery("Itr.findAll", Itr.class);
+//			query.setParameter("activo", activo);
+			list = query.getResultList();
+			
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		if (list == null) {
 			throw new ItrNoEncontradoException("Itrs no encontrados.");
 		}
 		System.out.println("ESTUDIANTEBEAN LUEGO DE LA QUERY listarItr");
-		return query.getResultList();
+		return list;
 	}
 
 	@Override
@@ -115,17 +130,19 @@ public class ItrBean implements ItrBeanRemote {
 		}
 		if (nombre != null && nombre != "") {
 
-			conditions = conditions + " AND i.nombre LIKE '" + nombre + "'";
+			conditions = conditions + " AND i.nombre LIKE '%" + nombre + "%'";
 
 		}
 		if (depto != null && depto != "") {
 
-			conditions = conditions + " AND i.departamento LIKE '" + depto + "'";
+			conditions = conditions + " AND i.departamento LIKE '%" + depto + "%'";
 
 		}
 
+		List<Itr> list = new ArrayList<Itr>();
+		
 		TypedQuery<Itr> query = em.createQuery("SELECT i FROM Itr i WHERE 1=1 " + conditions, Itr.class);
-		List<Itr> list = query.getResultList();
+		list = query.getResultList();
 		if (list == null) {
 			throw new ItrNoEncontradoException("ITR no encontrado.");
 		}

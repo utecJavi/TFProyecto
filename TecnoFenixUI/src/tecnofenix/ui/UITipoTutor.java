@@ -3,13 +3,18 @@ package tecnofenix.ui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import tecnofenix.EJBRemotos.EJBUsuarioRemoto;
+import tecnofenix.entidades.TipoTutorArea;
+import tecnofenix.entidades.TipoTutorEncargado;
 import tecnofenix.entidades.TipoTutorTipo;
+import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UITipoTutor {
 	
@@ -18,20 +23,27 @@ public class UITipoTutor {
     private JTextField nameField;
     private JCheckBox activeCheckBox;
     private JButton createButton;
-    private JTable table;
-    private DefaultTableModel tableModel;
+    
+    private JTable tabla;
+    private DefaultTableModel modelo;
+	private Object[] filaTipoTutoEditable;
+    
+    
     private JTextField editNameField;
     private JCheckBox editActiveCheckBox;
     private JButton editButton;
     private JButton deleteButton;
 
-    private ArrayList<TipoTutorTipo> tipoTutorTipo;
+    private List<TipoTutorTipo> tipoTutorTipo;
+    private EJBUsuarioRemoto usuarioRemoto;
 
 
 	/**
 	 * @wbp.parser.entryPoint
 	 */
     public void inicializar(Usuario user) {
+    	
+    	usuarioRemoto= new EJBUsuarioRemoto();
     	
     	frame = new JFrame("Listado de tutores");
     	frame.setTitle("Administracion de tipo tutores");
@@ -59,10 +71,24 @@ public class UITipoTutor {
         panel.add(inputPanel);
 
         // create the table and set its model
-        table = new JTable();
-        tableModel = new DefaultTableModel(new Object[]{"Name", "Active"}, 0);
-        table.setModel(tableModel);
-        JScrollPane scrollPane = new JScrollPane(table);
+        tabla = new JTable();
+        modelo = new DefaultTableModel(new Object[]{"Id","Nombre", "Activo"}, 0);
+        final String[] columnNames = { "Id", "CI","Nombre", "Apellido","Tipo","Area" };
+
+		// insertamos las columnas
+		for (int column = 0; column < columnNames.length; column++) {
+			// agrega las columnas a la tabla
+			modelo.addColumn(columnNames[column]);
+		}
+
+		// Se crea un array que será una de las filas de la tabla.
+		filaTipoTutoEditable = new Object[columnNames.length];
+		
+        tabla.setModel(modelo);
+        
+        cargarListadoTiposDeTutor();
+        
+        JScrollPane scrollPane = new JScrollPane(tabla);
         scrollPane.setBounds(57, 57, 452, 265);
         panel.add(scrollPane);
 
@@ -70,7 +96,7 @@ public class UITipoTutor {
         editNameField = new JTextField();
         editActiveCheckBox = new JCheckBox();
         editActiveCheckBox.setText("Baja logica");
-        editButton = new JButton("Edit");
+        editButton = new JButton("Editar");
         deleteButton = new JButton("Borrar");
 
         // add the output components to the panel
@@ -93,7 +119,7 @@ public class UITipoTutor {
                 boolean bajaLogica = activeCheckBox.isSelected();
                 TipoTutorTipo item = new TipoTutorTipo(nombre, bajaLogica);
                 tipoTutorTipo.add(item);
-                tableModel.addRow(new Object[]{nombre, bajaLogica});
+                modelo.addRow(new Object[]{"Id",nombre, bajaLogica});
                 nameField.setText("");
                 activeCheckBox.setSelected(false);
             }
@@ -102,29 +128,29 @@ public class UITipoTutor {
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int row = table.getSelectedRow();
-                if (row != -1) {
-                    String nombre = editNameField.getText();
-                    boolean bajaLogica = editActiveCheckBox.isSelected();
-                    TipoTutorTipo tipoTutor = tipoTutorTipo.get(row);
-                    tipoTutor.setNombre(nombre);
-                    tipoTutor.setBajaLogica(bajaLogica);
-                    tableModel.setValueAt(nombre, row, 0);
-                    tableModel.setValueAt(bajaLogica, row, 1);
-                }
+//                int row = table.getSelectedRow();
+//                if (row != -1) {
+//                    String nombre = editNameField.getText();
+//                    boolean bajaLogica = editActiveCheckBox.isSelected();
+//                    TipoTutorTipo tipoTutor = tipoTutorTipo.get(row);
+//                    tipoTutor.setNombre(nombre);
+//                    tipoTutor.setBajaLogica(bajaLogica);
+//                    tableModel.setValueAt(nombre, row, 0);
+//                    tableModel.setValueAt(bajaLogica, row, 1);
+//                }
             }
         });
 
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int row = table.getSelectedRow();
-                if (row != -1) {
-                    tipoTutorTipo.remove(row);
-                    tableModel.removeRow(row);
-                    editNameField.setText("");
-                    editActiveCheckBox.setSelected(false);
-                }
+//                int row = table.getSelectedRow();
+//                if (row != -1) {
+//                    tipoTutorTipo.remove(row);
+//                    tableModel.removeRow(row);
+//                    editNameField.setText("");
+//                    editActiveCheckBox.setSelected(false);
+//                }
             }
         });
         
@@ -133,5 +159,42 @@ public class UITipoTutor {
 		frame.setVisible(true);
     }
 
+    
 
+	public void limpiarTabla() {
+
+		modelo.getDataVector().removeAllElements();
+		modelo.fireTableDataChanged();
+
+	}
+    
+    public void actualizarLista(List<TipoTutorTipo> listarTipoTutSel) {
+		System.out.println("Entrando a cargar la tabla de TipoTutorTipo");
+		limpiarTabla();
+		this.tipoTutorTipo = listarTipoTutSel;
+		// Se rellena cada posición del array con una de las columnas de la tabla en
+		// base de datos.
+		for (TipoTutorTipo tt : tipoTutorTipo) {
+//			"Id", "CI","Nombre", "Apellido","Tipo","Area"
+			filaTipoTutoEditable[0] = tt.getId();
+			filaTipoTutoEditable[1] = tt.getNombre();
+			filaTipoTutoEditable[2] = tt.getBajaLogica();
+
+			// Se añade al modelo la fila completa.
+			modelo.addRow(filaTipoTutoEditable);
+
+		}
+	} 
+    
+    public void cargarListadoTiposDeTutor() {
+    	 try {
+    	tipoTutorTipo = usuarioRemoto.listadoTipoTutorTipo(true);
+    	actualizarLista(tipoTutorTipo);
+	} catch (Exception e) {
+		System.out.println(e);
+	}
+    }
+   
+    
+    
 }

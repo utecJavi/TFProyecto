@@ -265,6 +265,18 @@ public class EJBUsuarioRemoto {
 		return itrDevueto;
 
 	}
+	
+	public Itr borrarItr(Itr itr) {
+		Itr itrDevueto = new Itr();
+		try {
+			itrDevueto = itrRemote.borrarItr(itr);
+		} catch (ServiciosException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return itrDevueto;
+
+	}
 
 	public List<Itr> listarITR() {
 		List<Itr> lista = new ArrayList<Itr>();
@@ -704,5 +716,22 @@ public class EJBUsuarioRemoto {
 		/*
 		 * METODOS ConvocatoriaAsistenciaEventoEstudiante REMOTOS FIN
 		 */
-	
+		/*
+		 * METODOS TipoTutorTipo REMOTOS 
+		 */
+		
+		public List<TipoTutorTipo> listadoTipoTutorTipo(Boolean baja)  {
+			List<TipoTutorTipo> list =new ArrayList<TipoTutorTipo>();
+			try {
+				list =tutorBeanRemote.listadoTipoTutorTipo(baja);
+				
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			return list;
+		}
+		
+		/*
+		 * METODOS TipoTutorTipo REMOTOS  FIN
+		 */
 }

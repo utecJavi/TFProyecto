@@ -345,11 +345,11 @@ public class UIEvento {
 		tituloEventoLabel.setBounds(116, 53, 87, 13);
 		panel.add(tituloEventoLabel);
 		
-		JLabel fechaInicioEventoLabel = new JLabel("Fecha inicio entre");
+		JLabel fechaInicioEventoLabel = new JLabel("Inicio");
 		fechaInicioEventoLabel.setBounds(531, 53, 113, 13);
 		panel.add(fechaInicioEventoLabel);
 		
-		JLabel fechaFinEventoLabel = new JLabel("finalizacion inicio");
+		JLabel fechaFinEventoLabel = new JLabel("Fin");
 		fechaFinEventoLabel.setBounds(638, 54, 95, 13);
 		panel.add(fechaFinEventoLabel);
 		
@@ -431,7 +431,7 @@ public class UIEvento {
 		btnBorrarEvento.setBounds(505, 673, 113, 21);
 		panel.add(btnBorrarEvento);
 		
-		JLabel lblFechaDeFin = new JLabel("Fecha de fin entre");
+		JLabel lblFechaDeFin = new JLabel("Inicio");
 		lblFechaDeFin.setBounds(755, 53, 96, 13);
 		panel.add(lblFechaDeFin);
 
@@ -440,7 +440,7 @@ public class UIEvento {
 		dateFechafechaInicioFin.setBounds(755, 68, 96, 19);
 		panel.add(dateFechafechaInicioFin);
 		
-		JLabel lblFinalizacionFin = new JLabel("finalizacion fin");
+		JLabel lblFinalizacionFin = new JLabel("Fin");
 		lblFinalizacionFin.setBounds(862, 54, 95, 13);
 		panel.add(lblFinalizacionFin);
 		
@@ -534,6 +534,18 @@ public class UIEvento {
 		chckbxEventoBorrado.setEnabled(false);
 		chckbxEventoBorrado.setBounds(227, 689, 188, 21);
 		panel.add(chckbxEventoBorrado);
+		
+		JLabel lblNewLabel_2 = new JLabel("Filtros por periodo de tiempo");
+		lblNewLabel_2.setBounds(628, 10, 202, 13);
+		panel.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("Fecha finalizacion");
+		lblNewLabel_3.setBounds(755, 34, 183, 13);
+		panel.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("Fecha inicio");
+		lblNewLabel_4.setBounds(532, 34, 188, 13);
+		panel.add(lblNewLabel_4);
 		
 		
 		

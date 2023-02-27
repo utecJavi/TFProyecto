@@ -208,7 +208,7 @@ public class UIConstancia {
 		panel.add(btnModificarConstancia);
 		
 		JButton btnBorrarConstancia = new JButton("Borrar constancia");
-		btnBorrarConstancia.setBounds(390, 520, 189, 19);
+		btnBorrarConstancia.setBounds(390, 521, 189, 19);
 		btnBorrarConstancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
