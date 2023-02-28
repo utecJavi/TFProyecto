@@ -398,6 +398,18 @@ public class EJBUsuarioRemoto {
 		return lista;
 	}
 	
+	public List<Evento> listarEventosTutor(Usuario tutor) {
+		List<Evento> lista = new ArrayList<Evento>();
+		try {
+			lista= eventoBeanRemote.listarEventosTutor(tutor);
+		} catch (Exception e) {
+			System.out.println("Error en obtener eventos: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return lista;
+	}
+	
 	public Evento crearEvento(Evento evento) {
 		Evento eventoNew = new Evento();
 		try {

@@ -80,7 +80,7 @@ public class UIEventoAsistenciaEstudiante {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public void inicializar() {
+	public void inicializar(Usuario user) {
 		usuarioRemote = new EJBUsuarioRemoto();
 		//Para el datatable
 		listEventos = new ArrayList<Evento>();

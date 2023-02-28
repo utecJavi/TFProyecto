@@ -71,7 +71,7 @@ public class Principal {
 		adminUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UIUsuario windowsUsuario = new UIUsuario();
-				if(user instanceof Analista ||user instanceof Tutor) {
+				if(user instanceof Analista) {
 					windowsUsuario.inicializar(user);
 					windowsUsuario.frame.setVisible(true);
 				}else {
@@ -141,9 +141,11 @@ public class Principal {
 		JMenuItem evenMod = new JMenuItem("Asistencia a Eventos");
 		evenMod.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(user instanceof Analista||user instanceof Tutor) {
 				UIEventoAsistenciaEstudiante uiEventoAsistenciaEstudiante = new UIEventoAsistenciaEstudiante();
-				uiEventoAsistenciaEstudiante.inicializar();
+				uiEventoAsistenciaEstudiante.inicializar(user);
 				uiEventoAsistenciaEstudiante.frame.setVisible(true);
+				}
 			}
 		});
 		
@@ -159,9 +161,16 @@ public class Principal {
 		JMenuItem evenList = new JMenuItem("Listar Eventos");
 		evenList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(user instanceof Analista) {
 				UIEvento uiEvento = new UIEvento();
 				uiEvento.inicializar();
 				uiEvento.frame.setVisible(true);
+				}
+				if(user instanceof Tutor) {
+				UIEventoTutor uiEventoTutor = new UIEventoTutor();
+				uiEventoTutor.inicializar((Tutor)user);
+				uiEventoTutor.frame.setVisible(true);
+				}
 			}
 		});
 		evenAlta.addActionListener(new ActionListener() {

@@ -1,5 +1,8 @@
 package tecnofenix.servicios;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -102,7 +105,21 @@ public class EventoBean implements EventoBeanRemote {
 		
 		return list;
 	}
-
+	
+	@Override
+	public List<Evento> listarEventosTutor(Usuario tutor) {
+		
+		String jpql = "SELECT e FROM Evento e INNER JOIN e.tutorResponsableEventoCollection c WHERE c.tutorId = :tutorId";
+		TypedQuery<Evento> query = em.createQuery(jpql, Evento.class);
+		query.setParameter("tutorId", tutor);
+		System.out.println(jpql);
+		List<Evento> list = query.getResultList();
+		if (list == null) {
+			throw new ItrNoEncontradoException("Eventos no encontrado.");
+		}
+		return list;
+	}
+	
 	@Override
 	public List<Evento> buscarEventosPor(String id, String titulo) {
 		String conditions = "";
@@ -129,13 +146,28 @@ public class EventoBean implements EventoBeanRemote {
 	
 	
 	@Override
-	public List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,Date inicioInicio, Date finInicio,Date inicioFin, Date finFin,Boolean activo) {
+	public List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,Date inicio1, Date fin1,Date inicio2, Date fin2,Boolean activo) {
+//		 DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH24:MI:SS.FF");
+
+		
+		 
 		System.out.println("----------------------------------------");
+		System.out.println("titulo: " + (titulo != null ? titulo : "null"));
+		System.out.println("localizacion: " + (localizacion != null ? localizacion : "null"));
+		System.out.println("modalidad: " + (modalidad != null ? modalidad : "null"));
+		System.out.println("tipoEvento: " + (tipoEvento != null ? tipoEvento : "null"));
+		System.out.println("itrNombre: " + (itrNombre != null ? itrNombre : "null"));
+		System.out.println("inicioInicio: " + (inicio1 != null ? inicio1.getTime() : "null"));
+		System.out.println("finInicio: " + (fin1 != null ? fin1.getTime() : "null"));
+		System.out.println("inicioFin: " + (inicio2 != null ? inicio2.getTime() : "null"));
+		System.out.println("finFin: " + (fin2 != null ? fin2.getTime() : "null"));
+		System.out.println("activo: " + (activo != null ? activo : "null"));
 		System.out.println("----------------------------------------");
-		System.out.println("----------------------------------------");
+		
 		String conditions = "";
 		String joinJPQL = "";
 		
+//		DD-MON-YYYY HH24:MI:SS
 		if (id != null && id != "") {
 			conditions = conditions + " AND e.id = " + id;
 		}
@@ -162,18 +194,21 @@ public class EventoBean implements EventoBeanRemote {
 
 		}
 		
-		if (inicioInicio != null && finInicio != null) {
-
-			conditions = conditions + " AND (e.inicio BETWEEN :inicioInicio AND :finInicio) ";
-
+		if (inicio1 != null && fin1 != null) {
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+		    String inicio1Str = dateFormat.format(inicio1);
+		    String fin1Str = dateFormat.format(fin1);
+		    conditions = conditions + " AND (e.inicio BETWEEN '"+inicio1Str+"' AND '"+fin1Str+"') ";
 		}
 		
-		if (inicioFin != null && finFin != null ) {
 
-			conditions = conditions + " AND (e.fin BETWEEN  :inicioFin AND :finFin) ";
-
+		if (inicio2 != null && fin2 != null ) {
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+		    String inicio2Str = dateFormat.format(inicio2);
+		    String fin2Str = dateFormat.format(fin2);
+		    conditions = conditions + " AND (e.fin BETWEEN '"+inicio2Str+"' AND '"+fin2Str+"') ";
 		}
-		
+				
 		if (itrNombre != null && itrNombre != "") {
 
 			joinJPQL = " INNER JOIN e.itr i ";
@@ -185,15 +220,15 @@ public class EventoBean implements EventoBeanRemote {
 		try {
 			String jpql = "SELECT e FROM Evento e  " + joinJPQL + " WHERE 1=1 " + conditions;
 			TypedQuery<Evento> query = em.createQuery(jpql, Evento.class);
-			if (inicioInicio != null && finInicio != null) {
-				query.setParameter("inicioInicio", inicioInicio);
-				query.setParameter("finInicio", finInicio);
-			}
-			
-			if (inicioFin != null && finFin != null) {
-				query.setParameter("inicioFin", inicioFin);
-				query.setParameter("finFin", inicioFin);
-			}
+//			if (inicioInicio != null && finInicio != null) {
+//				query.setParameter("inicioInicio", inicioInicio);
+//				query.setParameter("finInicio", finInicio);
+//			}
+//			
+//			if (inicioFin != null && finFin != null) {
+//				query.setParameter("inicioFin", inicioFin);
+//				query.setParameter("finFin", inicioFin);
+//			}
 			
 			
 			System.out.println(jpql);

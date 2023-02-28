@@ -51,10 +51,10 @@ public class UIEvento {
 //	private JComboBox<Set<Tutor>> comboBoxTutores;
 //	// este quizas sea un JList
 //	private JComboBox<Set<Analista>> comboBoxAnalistas;
-	private JDateChooser dateFechafechaInicioInicio;
-	private JDateChooser dateFechafechaFinInicio;
-	private JDateChooser dateFechafechaInicioFin;
-	private JDateChooser dateFechafechaFinFIN;
+	private JDateChooser dateinicio1;
+	private JDateChooser datefin1;
+	private JDateChooser dateinicio2;
+	private JDateChooser datefin2;
 	private JTextField textLocalizacion;
 	private JComboBox<Itr> itrEventoComboBox;
 	private Evento eventoEditable;
@@ -107,7 +107,9 @@ public class UIEvento {
 			        return false;
 			 }
 		};
+		
 		generateRows(ejb.listarEventos());
+			
 		tablaEventos = new JTable();
 		tablaEventos.setModel(tableModel);
 		tablaEventos.setCellSelectionEnabled(false);
@@ -249,15 +251,15 @@ public class UIEvento {
 		comboBoxModalidadEvento.setBounds(227, 112, 188, 19);
 		panel.add(comboBoxModalidadEvento);
 
-		dateFechafechaInicioInicio = new JDateChooser();
+		dateinicio1 = new JDateChooser();
 //		dateFechafechaInicioInicio.setCalendar(Calendar.getInstance());
-		dateFechafechaInicioInicio.setBounds(531, 68, 96, 19);
-		panel.add(dateFechafechaInicioInicio);
+		dateinicio1.setBounds(531, 68, 96, 19);
+		panel.add(dateinicio1);
 
-		dateFechafechaFinInicio = new JDateChooser();
+		datefin1 = new JDateChooser();
 //		dateFechafechaFinInicio.setCalendar(Calendar.getInstance());
-		dateFechafechaFinInicio.setBounds(637, 68, 96, 19);
-		panel.add(dateFechafechaFinInicio);
+		datefin1.setBounds(637, 68, 96, 19);
+		panel.add(datefin1);
 
 	
 		JSeparator separator = new JSeparator();
@@ -435,19 +437,19 @@ public class UIEvento {
 		lblFechaDeFin.setBounds(755, 53, 96, 13);
 		panel.add(lblFechaDeFin);
 
-		dateFechafechaInicioFin = new JDateChooser();
+		dateinicio2 = new JDateChooser();
 //		dateFechafechaInicioFin.setCalendar(Calendar.getInstance());
-		dateFechafechaInicioFin.setBounds(755, 68, 96, 19);
-		panel.add(dateFechafechaInicioFin);
+		dateinicio2.setBounds(755, 68, 96, 19);
+		panel.add(dateinicio2);
 		
 		JLabel lblFinalizacionFin = new JLabel("Fin");
 		lblFinalizacionFin.setBounds(862, 54, 95, 13);
 		panel.add(lblFinalizacionFin);
 		
-		dateFechafechaFinFIN = new JDateChooser();
+		datefin2 = new JDateChooser();
 //		dateFechafechaFinFIN.setCalendar(Calendar.getInstance());
-		dateFechafechaFinFIN.setBounds(861, 68, 96, 19);
-		panel.add(dateFechafechaFinFIN);
+		datefin2.setBounds(861, 68, 96, 19);
+		panel.add(datefin2);
 		
 		textIdEvento = new JTextField();
 		textIdEvento.setText("");
@@ -480,10 +482,10 @@ public class UIEvento {
 					itrNombre=itrEventoComboBox.getSelectedItem().toString();
 				}
 				
-				Date fechaInicioInicio=null;
-				Date fechaFinInicio=null;
-				Date fechaInicioFin=null;
-				Date fechaFinFIN=null;
+				Date inicio1=null;
+				Date fin1=null;
+				Date inicio2=null;
+				Date fin2=null;
 				
 //				if(dateFechaInicio.getDate()!=null) {
 //					fechaInicioInicio=formatter.format(dateFechaInicio.getDate());
@@ -497,28 +499,52 @@ public class UIEvento {
 //				if(dateFechaFinFIN.getDate()!=null) {
 //					fechaFinFIN=formatter.format(dateFechaFinFIN.getDate());
 //				}
-				if(dateFechafechaInicioInicio.getDate()!=null) {
-					fechaInicioInicio=dateFechafechaInicioInicio.getDate();
-					System.out.println("fechaInicioInicio "+fechaInicioInicio.toString());
+				if(dateinicio1.getDate()!=null) {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(dateinicio1.getDate());
+					calendar.set(Calendar.HOUR_OF_DAY, 0); // Establecemos la hora a las 9 de la mañana
+					calendar.set(Calendar.MINUTE, 0); // Establecemos los minutos a 30
+					calendar.set(Calendar.SECOND, 0); // Establecemos los segundos a 0
+					calendar.set(Calendar.MILLISECOND, 0); // Establecemos los milisegundos a 0
+					inicio1=calendar.getTime();
+					System.out.println("fechaInicioInicio "+inicio1.toString());
 				}
-				if(dateFechafechaFinInicio.getDate()!=null) {
-					fechaFinInicio=dateFechafechaFinInicio.getDate();
-					System.out.println("fechaFinInicio "+fechaFinInicio.toString());
+				if(datefin1.getDate()!=null) {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(datefin1.getDate());
+					calendar.set(Calendar.HOUR_OF_DAY, 23); // Establecemos la hora a las 9 de la mañana
+					calendar.set(Calendar.MINUTE, 59); // Establecemos los minutos a 30
+					calendar.set(Calendar.SECOND, 59); // Establecemos los segundos a 0
+					calendar.set(Calendar.MILLISECOND, 0); // Establecemos los milisegundos a 0
+					fin1=calendar.getTime();
+					System.out.println("fechaFinInicio "+fin1.toString());
 				}
 				
-				if(dateFechafechaInicioFin.getDate()!=null) {
-					fechaInicioFin= dateFechafechaInicioFin.getDate();
-					System.out.println("fechaInicioFin "+fechaInicioFin.toString());
+				if(dateinicio2.getDate()!=null) {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(dateinicio2.getDate());
+					calendar.set(Calendar.HOUR_OF_DAY, 0); // Establecemos la hora a las 9 de la mañana
+					calendar.set(Calendar.MINUTE, 0); // Establecemos los minutos a 30
+					calendar.set(Calendar.SECOND, 0); // Establecemos los segundos a 0
+					calendar.set(Calendar.MILLISECOND, 0); // Establecemos los milisegundos a 0
+					inicio2=calendar.getTime();
+					System.out.println("fechaInicioFin "+inicio2.toString());
 				}
 				
-				if(dateFechafechaFinFIN.getDate()!=null) {
-					fechaFinFIN=dateFechafechaFinFIN.getDate();
-					System.out.println("fechaFinFIN "+fechaFinFIN.toString());
+				if(datefin2.getDate()!=null) {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(datefin2.getDate());
+					calendar.set(Calendar.HOUR_OF_DAY, 23); // Establecemos la hora a las 9 de la mañana
+					calendar.set(Calendar.MINUTE, 59); // Establecemos los minutos a 30
+					calendar.set(Calendar.SECOND, 59); // Establecemos los segundos a 0
+					calendar.set(Calendar.MILLISECOND, 0); // Establecemos los milisegundos a 0
+					fin2=calendar.getTime();
+					System.out.println("fechaFinFIN "+fin2.toString());
 				}
 				 
 				 try {
 						listEventos=ejb.buscarEventosPor(textIdEvento.getText(), textTitulo.getText(),textLocalizacion.getText(),
-								modalidad, tipoEvento, itrNombre, fechaInicioInicio,  fechaFinInicio, fechaInicioFin,  fechaFinFIN, false);
+								modalidad, tipoEvento, itrNombre, inicio1,  fin1, inicio2,  fin2, false);
 				
 				} catch (Exception e2) {
 					System.out.println(e2);
