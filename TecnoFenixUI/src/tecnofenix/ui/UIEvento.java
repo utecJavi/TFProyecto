@@ -70,6 +70,7 @@ public class UIEvento {
 	private JDateChooser editarDateFechaFin;
 	private JTextField editarTextLocalizacion;
 	private JComboBox<Itr> editarItrEventoComboBox;
+	private JComboBox<TipoEstadoEvento> editarTipoEstadoEventoComboBox;
 	
 	private List<TutorResponsableEvento> listTutorResEvent = new ArrayList<TutorResponsableEvento>();
 	public List<Tutor> listTutores= new ArrayList<Tutor>();
@@ -101,7 +102,7 @@ public class UIEvento {
 		
 		formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
-		tableModel = new DefaultTableModel(new String[] {"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin","Borrado"}, 0) {
+		tableModel = new DefaultTableModel(new String[] {"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin","Estado","Borrado"}, 0) {
 			 @Override
 			    public boolean isCellEditable(int row, int column) {
 			        return false;
@@ -134,6 +135,12 @@ public class UIEvento {
 				editarTextId.setText(eventoEditable.getId().toString());
 				editarTextTitulo.setText(eventoEditable.getTitulo());
 				editarItrEventoComboBox.setSelectedItem(eventoEditable.getItr());
+				System.out.println("TIPO ESTADO EVENTO"+eventoEditable.getTipoEstadoEvento());
+				if(eventoEditable.getTipoEstadoEvento()!=null) {
+				editarTipoEstadoEventoComboBox.setSelectedItem(eventoEditable.getTipoEstadoEvento());
+				}else {
+					editarTipoEstadoEventoComboBox.setSelectedIndex(0);
+				}
 				editarComboBoxTipoEvento.setSelectedItem(TipoEvento.fromString(eventoEditable.getTipo().getTipo()));
 				editarComboBoxModalidadEvento.setSelectedItem(ModalidadEvento.fromString(eventoEditable.getModalidad().getModalidad()));
 				editarTextLocalizacion.setText(eventoEditable.getLocalizacion());
@@ -212,8 +219,8 @@ public class UIEvento {
 		JButton btnSeleccionarTutores = new JButton("Editar Tutores");
 		btnSeleccionarTutores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Editar tutores click");
-				if(listTutores!= null && !listTutores.isEmpty() && eventoEditable!= null && eventoEditable.getId()!=null) {
+				System.out.println("Editar tutores click");//listTutores!= null && !listTutores.isEmpty() &&
+				if( eventoEditable!= null && eventoEditable.getId()!=null) {
 				System.out.println("Lista de tutores "+listTutores.toString());
 				UIListaTutores uiListaTutores = new UIListaTutores();
 				uiListaTutores.inicializar(UIEvento.this);
@@ -224,7 +231,7 @@ public class UIEvento {
 				}
 			}
 		});
-		btnSeleccionarTutores.setBounds(505, 611, 113, 21);
+		btnSeleccionarTutores.setBounds(487, 685, 131, 21);
 		panel.add(btnSeleccionarTutores);
 		
 		
@@ -285,7 +292,7 @@ public class UIEvento {
 
 		editarTextTitulo = new JTextField();
 		editarTextTitulo.setColumns(10);
-		editarTextTitulo.setBounds(10, 621, 188, 19);
+		editarTextTitulo.setBounds(10, 625, 188, 19);
 		panel.add(editarTextTitulo);
 		
 		editarComboBoxTipoEvento = new JComboBox<>();
@@ -295,20 +302,20 @@ public class UIEvento {
 
 		editarComboBoxModalidadEvento = new JComboBox<>();
 		editarComboBoxModalidadEvento.setModel(new DefaultComboBoxModel<ModalidadEvento>(ModalidadEvento.values()));
-		editarComboBoxModalidadEvento.setBounds(227, 621, 188, 19);
+		editarComboBoxModalidadEvento.setBounds(227, 625, 188, 19);
 		panel.add(editarComboBoxModalidadEvento);
 
 		editarTextLocalizacion = new JTextField();
-		editarTextLocalizacion.setBounds(227, 657, 188, 19);
+		editarTextLocalizacion.setBounds(227, 669, 188, 19);
 		editarTextLocalizacion.setColumns(10);
 		panel.add(editarTextLocalizacion);
 
 		editarDateFechaInicio = new JDateChooser();
-		editarDateFechaInicio.setBounds(10, 657, 96, 19);
+		editarDateFechaInicio.setBounds(10, 669, 96, 19);
 		panel.add(editarDateFechaInicio);
 
 		editarDateFechaFin = new JDateChooser();
-		editarDateFechaFin.setBounds(116, 657, 96, 19);
+		editarDateFechaFin.setBounds(116, 669, 96, 19);
 		panel.add(editarDateFechaFin);
 		
 		JButton btnEditar = new JButton("Editar evento");
@@ -318,6 +325,7 @@ public class UIEvento {
 					if(validarDatos()) {
 						eventoEditable.setTitulo(editarTextTitulo.getText());
 						eventoEditable.setItr((Itr)editarItrEventoComboBox.getSelectedItem());
+						eventoEditable.setTipoEstadoEvento((TipoEstadoEvento)editarTipoEstadoEventoComboBox.getSelectedItem()); 
 						eventoEditable.setTipo((TipoEvento)editarComboBoxTipoEvento.getSelectedItem());
 						eventoEditable.setModalidad((ModalidadEvento)editarComboBoxModalidadEvento.getSelectedItem());
 						eventoEditable.setLocalizacion(editarTextLocalizacion.getText());
@@ -336,7 +344,7 @@ public class UIEvento {
 		});
 		
 		
-		btnEditar.setBounds(505, 642, 113, 21);
+		btnEditar.setBounds(487, 716, 131, 21);
 		panel.add(btnEditar);
 		
 		JSeparator separator_2 = new JSeparator();
@@ -372,11 +380,11 @@ public class UIEvento {
 		panel.add(editarTituloLabel);
 		
 		JLabel editarFechaInicioLabel = new JLabel("Fecha de inicio");
-		editarFechaInicioLabel.setBounds(10, 645, 96, 13);
+		editarFechaInicioLabel.setBounds(10, 657, 96, 13);
 		panel.add(editarFechaInicioLabel);
 		
 		JLabel editarFechaFinLabel = new JLabel("Fecha de finalizacion");
-		editarFechaFinLabel.setBounds(115, 645, 97, 13);
+		editarFechaFinLabel.setBounds(115, 657, 97, 13);
 		panel.add(editarFechaFinLabel);
 		
 		JLabel editarTipoEventoLabel = new JLabel("Tipo de evento");
@@ -388,7 +396,7 @@ public class UIEvento {
 		panel.add(editarModalidadEventoLabel);
 		
 		JLabel editarLocalizacionEventoLabel = new JLabel("Localizacion del evento");
-		editarLocalizacionEventoLabel.setBounds(227, 645, 188, 13);
+		editarLocalizacionEventoLabel.setBounds(227, 657, 188, 13);
 		panel.add(editarLocalizacionEventoLabel);
 		
 		itrEventoComboBox = new JComboBox<Itr>();
@@ -402,14 +410,21 @@ public class UIEvento {
 		
 		editarItrEventoComboBox = new JComboBox<Itr>();
 		editarItrEventoComboBox.setModel(generateItrEventoComboBoxData());
-		editarItrEventoComboBox.setBounds(425, 581, 188, 21);
+		editarItrEventoComboBox.setBounds(425, 580, 188, 21);
 		panel.add(editarItrEventoComboBox);
 		
 		JLabel editarItrEventoComboBoxLabel = new JLabel("ITR");
 		editarItrEventoComboBoxLabel.setBounds(425, 569, 45, 13);
 		panel.add(editarItrEventoComboBoxLabel);
 		
+		editarTipoEstadoEventoComboBox = new JComboBox<TipoEstadoEvento>();
+		editarTipoEstadoEventoComboBox.setModel(generateTipoEstadoEventoComboBoxData());
+		editarTipoEstadoEventoComboBox.setBounds(425, 624, 188, 21);
+		panel.add(editarTipoEstadoEventoComboBox);
 		
+		JLabel editarTipoEstadoEventoComboBoxLabel = new JLabel("Tipo estado evento");
+		editarTipoEstadoEventoComboBoxLabel.setBounds(425, 611, 193, 13);
+		panel.add(editarTipoEstadoEventoComboBoxLabel);
 
 		
 		JLabel lblNewLabel_1 = new JLabel("Tutores del evento");
@@ -430,7 +445,7 @@ public class UIEvento {
 				}
 			}
 		});
-		btnBorrarEvento.setBounds(505, 673, 113, 21);
+		btnBorrarEvento.setBounds(487, 747, 131, 21);
 		panel.add(btnBorrarEvento);
 		
 		JLabel lblFechaDeFin = new JLabel("Inicio");
@@ -558,7 +573,7 @@ public class UIEvento {
 		chckbxEventoBorrado = new JCheckBox("Evento borrado");
 		chckbxEventoBorrado.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		chckbxEventoBorrado.setEnabled(false);
-		chckbxEventoBorrado.setBounds(227, 689, 188, 21);
+		chckbxEventoBorrado.setBounds(227, 701, 188, 21);
 		panel.add(chckbxEventoBorrado);
 		
 		JLabel lblNewLabel_2 = new JLabel("Filtros por periodo de tiempo");
@@ -573,6 +588,22 @@ public class UIEvento {
 		lblNewLabel_4.setBounds(532, 34, 188, 13);
 		panel.add(lblNewLabel_4);
 		
+		JButton btnActivarEvento = new JButton("Activar evento");
+		btnActivarEvento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(eventoEditable!=null) {
+					if(activarEvento(eventoEditable.getTitulo())) {
+						eventoEditable.setBajaLogica(false);
+						eventoEditable=ejb.modificarEvento(eventoEditable);			
+						generateRows(ejb.listarEventos());
+						
+					}
+				}
+			}
+		});
+		btnActivarEvento.setBounds(227, 728, 131, 21);
+		panel.add(btnActivarEvento);
+		
 		
 		
 		frame.pack();
@@ -584,7 +615,7 @@ public class UIEvento {
 		tableModel.getDataVector().removeAllElements();
 		tableModel.fireTableDataChanged();
 		for (Evento evento : eventos) {
-			Vector<String> row = new Vector<String>(6);
+			Vector<String> row = new Vector<String>(7);
 			row.add(evento.getId().toString());
 			row.add(evento.getTitulo());
 			row.add(evento.getTipo().getTipo());
@@ -592,6 +623,12 @@ public class UIEvento {
 			row.add(evento.getLocalizacion());		
 			row.add(formatter.format(evento.getInicio()));
 			row.add(formatter.format(evento.getFin()));
+			if(evento.getTipoEstadoEvento()!=null) {
+				row.add(evento.getTipoEstadoEvento().toString());
+			}else {
+				row.add("---");
+			}
+			
 			if(evento.getBajaLogica()) {
 				row.add("Si");
 			}else {
@@ -645,6 +682,22 @@ public class UIEvento {
 		return comboBoxModel;
 	}
 	
+	private DefaultComboBoxModel<TipoEstadoEvento> generateTipoEstadoEventoComboBoxData() {
+		DefaultComboBoxModel<TipoEstadoEvento> comboBoxModel = new DefaultComboBoxModel<>();
+		TipoEstadoEvento vacioTEE = new TipoEstadoEvento();
+		vacioTEE.setNombre("");
+		comboBoxModel.addElement(vacioTEE);
+		
+		ejb.listarTipoEstadoEvento().forEach(comboBoxModel::addElement);
+//		for(TipoEstadoEvento tEEItem: ejb.listarTipoEstadoEvento()){
+//			if(tEEItem.getActivo()) {
+//				comboBoxModel.addElement(tEEItem);
+//			}
+//		}
+		return comboBoxModel;
+	}
+
+	
 	public Boolean validarDatos() {
 		if(editarTextTitulo.getText()=="" ) {
 			JOptionPane.showMessageDialog(null, "El titulo del evento es un dato obligatorio",
@@ -656,6 +709,13 @@ public class UIEvento {
 					"Informacion", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
+		
+		if(editarTipoEstadoEventoComboBox.getSelectedIndex()==0  ) {
+			JOptionPane.showMessageDialog(null, "Seleccione el tipo de estado del evento",
+					"Informacion", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		
 		if(editarComboBoxModalidadEvento.getSelectedIndex()==0  ) {
 			JOptionPane.showMessageDialog(null, "Seleccione la modalidad de evento",
 					"Informacion", JOptionPane.INFORMATION_MESSAGE);
@@ -708,15 +768,25 @@ public class UIEvento {
 	}
 	
 	public boolean borrarRow(String mensaje) {
-//msj.mostrarMensaje(Mensajes.BAJA);
+		//msj.mostrarMensaje(Mensajes.BAJA);
 
-int dialogButton = JOptionPane.YES_NO_OPTION;
-int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro quieres borrar: "+mensaje,"Warning",dialogButton);
-if(dialogResult == JOptionPane.YES_OPTION){
-	return true;
-}
-return false;
-}
+		int dialogButton = JOptionPane.YES_NO_OPTION;
+		int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro quieres borrar: "+mensaje,"Warning",dialogButton);
+		if(dialogResult == JOptionPane.YES_OPTION){
+			return true;
+		}
+		return false;
+		}
+	public boolean activarEvento(String mensaje) {
+		//msj.mostrarMensaje(Mensajes.BAJA);
+
+		int dialogButton = JOptionPane.YES_NO_OPTION;
+		int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro quieres activar: "+mensaje,"Warning",dialogButton);
+		if(dialogResult == JOptionPane.YES_OPTION){
+			return true;
+		}
+		return false;
+		}
 	public Boolean validarBajaLogica(){
 		if(eventoEditable.getInicio().before(hoy)) {
 			List<ConvocatoriaAsistenciaEventoEstudiante> list = new ArrayList<ConvocatoriaAsistenciaEventoEstudiante>();

@@ -243,6 +243,76 @@ public class EventoBean implements EventoBeanRemote {
 
 		return list;
 	}
+
+	@Override
+	public TipoEstadoEvento crearTipoEstadoEvento(TipoEstadoEvento tEE) {
+		try {
+			tEE=em.merge(tEE);
+			em.flush();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		
+		return tEE;
+	}
+
+	@Override
+	public TipoEstadoEvento editarTipoEstadoEvento(TipoEstadoEvento tEE) {
+		try {
+			tEE=em.merge(tEE);
+			em.flush();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		
+		return tEE;
+	}
+
+	@Override
+	public List<TipoEstadoEvento> listarTipoEstadoEvento() {
+		List<TipoEstadoEvento> list = new ArrayList<TipoEstadoEvento>();
+		try {
+		
+			System.out.println("TipoEstadoEvento listarTipoEstadoEvento()");
+			TypedQuery<TipoEstadoEvento> query = em.createNamedQuery("TipoEstadoEvento.findAll", TipoEstadoEvento.class);
+//			query.setParameter("activo", activo);
+			list = query.getResultList();
+			
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		if (list == null) {
+			throw new ItrNoEncontradoException("Itrs no encontrados.");
+		}
+		System.out.println("ESTUDIANTEBEAN LUEGO DE LA QUERY listarItr");
+		return list;
+	}
+
+	@Override
+	public List<TipoEstadoEvento> buscarTipoEstadoEventoPor(String id, String nombre) {
+		String conditions = "";
+		if (id != null && id != "") {
+			conditions = conditions + " AND i.id = " + id;
+		}
+		if (nombre != null && nombre != "") {
+
+			conditions = conditions + " AND i.nombre LIKE '%" + nombre + "%'";
+
+		}
+
+		List<TipoEstadoEvento> list = new ArrayList<TipoEstadoEvento>();
+		
+		TypedQuery<TipoEstadoEvento> query = em.createQuery("SELECT i FROM TipoEstadoEvento i WHERE 1=1 " + conditions, TipoEstadoEvento.class);
+		list = query.getResultList();
+		if (list == null) {
+			throw new ItrNoEncontradoException("TipoEstadoEvento no encontrado.");
+		}
+
+		return list;
+
+	}
 	
 
 }

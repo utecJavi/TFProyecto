@@ -1,8 +1,9 @@
 package tecnofenix.ui;
 
 import java.awt.Dimension;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -37,6 +38,7 @@ import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.TutorResponsableEvento;
 import tecnofenix.entidades.ModalidadEvento;
 import tecnofenix.entidades.RegistroAsistencia;
+import tecnofenix.entidades.TipoEstadoEvento;
 
 import com.toedter.calendar.JCalendar;
 import java.awt.BorderLayout;
@@ -58,6 +60,7 @@ public class UIEventoNuevo {
 	private JTextField txtTituloEvento;
 	private EJBUsuarioRemoto usuarioRemote;
 	private JComboBox<Itr> cmbItr;
+	private JComboBox<TipoEstadoEvento> cmbEstadoEvento;
 	private JDateChooser fechaInicioDateChooser;
 	private JDateChooser fechaFinDateChooser;
 	private JComboBox cmbTipoEvento;
@@ -92,8 +95,10 @@ public class UIEventoNuevo {
 	
 		txtTituloEvento = new JTextField();
 		txtTituloEvento.setBounds(33, 46, 217, 19);
-		panel.add(txtTituloEvento);
+		txtTituloEvento.setText("");
 		txtTituloEvento.setColumns(10);
+		panel.add(txtTituloEvento);
+		
 		
 		JLabel tituloEventoLabel = new JLabel("Titulo");
 		tituloEventoLabel.setBounds(33, 29, 45, 13);
@@ -105,7 +110,7 @@ public class UIEventoNuevo {
 		panel.add(cmbTipoEvento);
 		
 		JLabel tipoEventoLabel = new JLabel("Tipo de evento");
-		tipoEventoLabel.setBounds(33, 73, 74, 13);
+		tipoEventoLabel.setBounds(33, 73, 217, 13);
 		panel.add(tipoEventoLabel);
 		
 		cmbModalidadEvento = new JComboBox();
@@ -114,7 +119,7 @@ public class UIEventoNuevo {
 		panel.add(cmbModalidadEvento);
 		
 		JLabel modalidadEventoLabel = new JLabel("Modalidad de evento");
-		modalidadEventoLabel.setBounds(33, 117, 96, 13);
+		modalidadEventoLabel.setBounds(33, 117, 217, 13);
 		panel.add(modalidadEventoLabel);
 		
 		fechaInicioDateChooser = new JDateChooser();
@@ -143,7 +148,10 @@ public class UIEventoNuevo {
 		vacio.setNombre("");
 		cmbItr.addItem(vacio);
 		for(Itr itrItem: listItr){
-			cmbItr.addItem(itrItem);
+			if(itrItem.getActivo()) {
+				cmbItr.addItem(itrItem);
+			}
+			
 			System.out.println(itrItem.toString());
 		}
 		panel.add(cmbItr);
@@ -273,6 +281,28 @@ public class UIEventoNuevo {
 		scrollPaneTutSeleccionados.setBounds(33, 223, 457, 137);
 		panel.add(scrollPaneTutSeleccionados);
 		
+		cmbEstadoEvento = new JComboBox<>();
+		cmbEstadoEvento.setBounds(293, 133, 167, 21);
+		panel.add(cmbEstadoEvento);
+		
+		List<TipoEstadoEvento>listTipoEstadoEvento = usuarioRemote.listarTipoEstadoEvento();
+		TipoEstadoEvento vacioTEE = new TipoEstadoEvento();
+		vacioTEE.setActivo(true);
+		vacioTEE.setNombre("");
+		cmbEstadoEvento.addItem(vacioTEE);
+		for(TipoEstadoEvento tEEItem: listTipoEstadoEvento){
+			if(tEEItem.getActivo()) {
+			cmbEstadoEvento.addItem(tEEItem);
+			}
+			System.out.println(tEEItem.toString());
+		}
+		
+		
+		
+		JLabel lblEstadoEvento = new JLabel("Estado evento");
+		lblEstadoEvento.setBounds(293, 117, 167, 13);
+		panel.add(lblEstadoEvento);
+		
 		
 		frame.pack();
 	}
@@ -302,6 +332,7 @@ public class UIEventoNuevo {
 				textLocalizacion.getText(),
 				false,
 				(Itr)cmbItr.getSelectedItem(),
+				(TipoEstadoEvento)cmbEstadoEvento.getSelectedItem(),
 				null,
 				null,
 				null,
@@ -326,7 +357,7 @@ public class UIEventoNuevo {
 	}
 	
 	public Boolean validarDatos() {
-		if(txtTituloEvento.getText()=="" ) {
+		if(txtTituloEvento.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "El titulo del evento es un dato obligatorio",
 					"Informacion", JOptionPane.INFORMATION_MESSAGE);
 			return false;
@@ -341,18 +372,44 @@ public class UIEventoNuevo {
 					"Informacion", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		if(fechaInicioDateChooser.getDate()==null ) {
-			JOptionPane.showMessageDialog(null, "Ingrese la fecha de inicio del evento",
-					"Informacion", JOptionPane.INFORMATION_MESSAGE);
-			return false;
+		
+		if(fechaInicioDateChooser.getDate() == null) {
+		    JOptionPane.showMessageDialog(null, "Ingrese la fecha de inicio del evento", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+		    return false;
+		} else {
+		    Calendar today = Calendar.getInstance();
+		    today.set(Calendar.HOUR_OF_DAY, 0);
+		    today.set(Calendar.MINUTE, 0);
+		    today.set(Calendar.SECOND, 0);
+		    today.set(Calendar.MILLISECOND, 0);
+		    Date selectedDate = fechaInicioDateChooser.getDate();
+
+		    if (selectedDate == null || selectedDate.before(today.getTime())) { 
+		        JOptionPane.showMessageDialog(null, "La fecha de inicio no puede ser anterior a hoy", "Error", JOptionPane.ERROR_MESSAGE);
+		        return false;
+		    }
 		}
-		if(fechaFinDateChooser.getDate()==null ) {
-			JOptionPane.showMessageDialog(null, "Ingrese la fecha de fin del evento",
-					"Informacion", JOptionPane.INFORMATION_MESSAGE);
-			return false;
+
+		if(fechaFinDateChooser.getDate() == null) {
+		    JOptionPane.showMessageDialog(null, "Ingrese la fecha de fin del evento", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+		    return false;
+		} else {
+		    Date fechaInicio = fechaInicioDateChooser.getDate();
+		    Date fechaFin = fechaFinDateChooser.getDate();
+
+		    if (fechaFin.before(fechaInicio)) {
+		        JOptionPane.showMessageDialog(null, "La fecha de finalización no puede ser anterior a la fecha de inicio", "Error", JOptionPane.ERROR_MESSAGE);
+		        return false;
+		    }
 		}
+
 		if(cmbItr.getSelectedIndex()==0){
 			JOptionPane.showMessageDialog(null, "Seleccione el ITR correspondiente al evento",
+					"Informacion", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if(cmbEstadoEvento.getSelectedIndex()==0){
+			JOptionPane.showMessageDialog(null, "Seleccione el tipo de estado correspondiente al evento",
 					"Informacion", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
@@ -398,6 +455,7 @@ public class UIEventoNuevo {
 		fechaFinDateChooser.setDate(null);
 		textLocalizacion.setText("");
 		cmbItr.setSelectedIndex(0);
+		cmbEstadoEvento.setSelectedIndex(0);
 		listTutorResEvent.clear();
 		listTutores.clear();
 		limpiarTabla();

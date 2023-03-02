@@ -96,7 +96,7 @@ public class UIAltaConstancia {
 		try {
 			tipoConstancias = constanciaBeanRemote.listadoTipoConstancia(false);
 		} catch (Exception e) {
-			System.out.println("Hubo un error al intentar traer la lista de tipo de constancias.: " + e.getMessage());
+			System.out.println("Hubo un error al intentar traer la lista de tipo de constancias: " + e.getMessage());
 		}
 		for(TipoConstancia tipoItem: tipoConstancias){
 			comboTipoConstancias.addItem(tipoItem);

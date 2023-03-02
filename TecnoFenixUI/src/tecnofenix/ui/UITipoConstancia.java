@@ -148,6 +148,7 @@ public class UITipoConstancia {
 		btnModificarTipoConstancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				boolean error = false;
 				int row = table.getSelectedRow();
 				if (row >= 0) {
 					try {
@@ -160,11 +161,14 @@ public class UITipoConstancia {
 						constanciaBeanRemote.modificarTipoConstancia(tipoConstancia);
 						
 					} catch (ServiciosException | NumberFormatException se) {
+						error = true;
 	        			System.out.println("Error al modificar tipo de constancia: " + se.getMessage());
 	        			JOptionPane.showMessageDialog(null, "Hubo un error al modificar tipo de constancia.", "Error", JOptionPane.ERROR_MESSAGE);
 	        		}
 					
-					JOptionPane.showMessageDialog(null, "Se modificó el tipo de constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+					if (!error) {
+						JOptionPane.showMessageDialog(null, "Se modificó el tipo de constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+					}
 					
 				}
 				
@@ -178,6 +182,7 @@ public class UITipoConstancia {
 		btnBorrarTipoConstancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
+				boolean error = false;
 				int row = table.getSelectedRow();
 				if (row >= 0) {
 					try {
@@ -190,11 +195,14 @@ public class UITipoConstancia {
 						constanciaBeanRemote.bajaTipoConstancia(tipoConstancia);
 						
 					} catch (ServiciosException | NumberFormatException se) {
+						error = true;
 	        			System.out.println("Error al borrar tipo de constancia: " + se.getMessage());
 	        			JOptionPane.showMessageDialog(null, "Hubo un error al borrar tipo de constancia.", "Error", JOptionPane.ERROR_MESSAGE);
 	        		}
 					
-					JOptionPane.showMessageDialog(null, "Se borró el tipo de constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+					if (!error) {
+						JOptionPane.showMessageDialog(null, "Se borró el tipo de constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+					}
 					
 				}
 			}
@@ -207,6 +215,7 @@ public class UITipoConstancia {
 		btnAltaTipoConstancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
+				boolean error = false;
 				try {
 					
 					String tipo = txtNuevoTipo.getText();
@@ -218,11 +227,14 @@ public class UITipoConstancia {
 					constanciaBeanRemote.crearTipoConstancia(tipoConstancia);
 					
 				} catch (ServiciosException se) {
+					error = true;
         			System.out.println("Error al consultar constancia: " + se.getMessage());
         			JOptionPane.showMessageDialog(null, "Hubo un error al ingresar tipo de constancia.", "Error", JOptionPane.ERROR_MESSAGE);
         		}
 				
-				JOptionPane.showMessageDialog(null, "Se ingresó el tipo de constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+				if (!error) {
+					JOptionPane.showMessageDialog(null, "Se ingresó el tipo de constancia.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+				}
 					
 			}
 			

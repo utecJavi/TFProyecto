@@ -26,7 +26,9 @@ public interface TutorBeanRemote {
 	
 	void bajaTipoTutorTipo(TipoTutorTipo tipoConstancia) throws ServiciosException;
 	
-	List<TipoTutorTipo> listadoTipoTutorTipo(Boolean baja) throws ServiciosException;
+	List<TipoTutorTipo> listadoTipoTutorTipo() throws ServiciosException;
+	
+	List<TipoTutorTipo> buscarTipoTutorTipoPor(String id, String nombre) throws ServiciosException;
 
 	TipoArea crearTipoArea(TipoArea tipoConstancia) throws ServiciosException;
 	
@@ -34,5 +36,7 @@ public interface TutorBeanRemote {
 	
 	void bajaTipoArea(TipoArea tipoConstancia) throws ServiciosException;
 	
-	List<TipoArea> listadoTipoArea(Boolean baja) throws ServiciosException;
+	List<TipoArea> listadoTipoArea() throws ServiciosException;
+	
+	List<TipoArea> buscarTipoAreaPor(String id, String nombre) throws ServiciosException;
 }

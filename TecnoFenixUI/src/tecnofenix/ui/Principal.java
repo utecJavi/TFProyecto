@@ -86,7 +86,7 @@ public class Principal {
 			public void actionPerformed(ActionEvent e) {
 				UITipoTutor uiTipoTutor = new UITipoTutor();
 				if(user instanceof Analista) {
-					uiTipoTutor.inicializar(user);
+					uiTipoTutor.inicializar();
 					uiTipoTutor.frame.setVisible(true);
 				}else {
 					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
@@ -99,7 +99,7 @@ public class Principal {
 			public void actionPerformed(ActionEvent e) {
 				UITipoTutorArea uiTipoTutorArea = new UITipoTutorArea();
 				if(user instanceof Analista) {
-					uiTipoTutorArea.inicializar(user);
+					uiTipoTutorArea.inicializar();
 					uiTipoTutorArea.frame.setVisible(true);
 				}else {
 					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
@@ -107,7 +107,19 @@ public class Principal {
 				}	
 			}
 		});
-		
+		JMenuItem adminTiposEstadoEvento= new JMenuItem("Administracion tipos de estados evento");
+		adminTiposEstadoEvento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UIEstadoDeEventos uiEstadoDeEventos = new UIEstadoDeEventos();
+				if(user instanceof Analista) {
+					uiEstadoDeEventos.inicializar();
+					uiEstadoDeEventos.frame.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}	
+			}
+		});
 //		JMenuItem pedirConstanciaEstudiante= new JMenuItem("Solicitar constancias");
 		
 		
@@ -145,16 +157,24 @@ public class Principal {
 				UIEventoAsistenciaEstudiante uiEventoAsistenciaEstudiante = new UIEventoAsistenciaEstudiante();
 				uiEventoAsistenciaEstudiante.inicializar(user);
 				uiEventoAsistenciaEstudiante.frame.setVisible(true);
-				}
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}	
 			}
 		});
 		
 		JMenuItem evenConvocados = new JMenuItem("Convocados a Eventos");
 		evenConvocados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(user instanceof Analista) {
 				UIHabilitarEstudianteEvento uiHabEstEvnt = new UIHabilitarEstudianteEvento();
 				uiHabEstEvnt.inicializar();
 				uiHabEstEvnt.frame.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 //		JMenuItem evenDelete = new JMenuItem("Borrar Eventos");
@@ -171,13 +191,22 @@ public class Principal {
 				uiEventoTutor.inicializar((Tutor)user);
 				uiEventoTutor.frame.setVisible(true);
 				}
+				if(user instanceof Estudiante)  {
+				JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+						"Error", JOptionPane.ERROR_MESSAGE);
+				}	
 			}
 		});
 		evenAlta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(user instanceof Analista) {
 				UIEventoNuevo uiEventoNuevo = new UIEventoNuevo();
 				uiEventoNuevo.inicializar();
 				uiEventoNuevo.frame.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		
@@ -188,10 +217,14 @@ public class Principal {
 		JMenuItem itrAdministracion= new JMenuItem("Administrar ITR");
 		itrAdministracion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(user instanceof Analista) {
 				UIITR uiItr = new UIITR();
 				uiItr.inicializar();
 				uiItr.frame.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		
@@ -206,28 +239,40 @@ public class Principal {
 		JMenuItem funAdministracion= new JMenuItem("Administrar Funcionalidades");
 		funAdministracion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(user instanceof Analista) {
 				UIFuncionalidad uiFuncionalidad = new UIFuncionalidad();
 				uiFuncionalidad.inicializar(user);
 				uiFuncionalidad.frame.setVisible(true);
+			}else {
+				JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+						"Error", JOptionPane.ERROR_MESSAGE);
+			}
 			}
 		});
 		JMenuItem rolAdministrar= new JMenuItem("Administrar Rol");
 		rolAdministrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(user instanceof Analista) {
 				UIRol uirol = new UIRol();
 				uirol.inicializar(user);
 				uirol.frame.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		JMenuItem rolAsignarFunARol= new JMenuItem("Asignar funcionalidades a Rol");
 		rolAsignarFunARol.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(user instanceof Analista) {
 				UIRolHasFuncionalidad uiRolHasFun = new UIRolHasFuncionalidad();
 				uiRolHasFun.inicializar(user);
 				uiRolHasFun.frame.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 //		usuario.add(adminDocentes);
@@ -235,7 +280,7 @@ public class Principal {
 		usuario.add(adminUsuarios);
 		usuario.add(adminTiposTutores);
 		usuario.add(adminTiposAreas);
-//		usuario.add(pedirConstanciaEstudiante);
+		usuario.add(adminTiposEstadoEvento);
 		usuario.add(adminDatosPersonales);
 		menuBar.add(usuario);
 		
@@ -277,10 +322,14 @@ public class Principal {
 		JMenuItem reportesAsistenciaEstudiantes= new JMenuItem("Asistencia de estudiantes a eventos");
 		reportesAsistenciaEstudiantes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(user instanceof Analista) {
 				UIReportes uiReporte = new UIReportes();
 				uiReporte.inicializar();
 				uiReporte.frame.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Usuario sin permisos para acceder a este apartado",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		reportes.add(reportesAsistenciaEstudiantes);

@@ -1,9 +1,11 @@
 package tecnofenix.servicios;
 
+import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.TipoArea;
 import tecnofenix.entidades.TipoTutorTipo;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
+import tecnofenix.exception.ItrNoEncontradoException;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.TutorBeanRemote;
@@ -132,16 +134,13 @@ public class TutorBean implements TutorBeanRemote  {
 	@Override
 	public TipoTutorTipo crearTipoTutorTipo(TipoTutorTipo tipoTutorTipo) throws ServiciosException {
 		try {
-			if (tipoTutorTipo.getId() != null) {
-				tipoTutorTipo = em.merge(tipoTutorTipo);
+			tipoTutorTipo = em.merge(tipoTutorTipo);
 				em.flush();
-				return tipoTutorTipo;
-			} else {
-				throw new ServiciosException("Se quiere modificar un tipo de constancia que no existente.");
-			}
-		} catch (PersistenceException pe) {
-			throw new ServiciosException("Ocurrio un error al crear TipoArea: " + pe.getMessage());
+
+		} catch (Exception pe) {
+			throw new ServiciosException("Ocurrio un error al crear TipoTutorTipo: " + pe.getMessage());
 		}
+		return tipoTutorTipo;
 	}
 
 	@Override
@@ -151,7 +150,7 @@ public class TutorBean implements TutorBeanRemote  {
 			em.flush();
 			return tipoTutorTipo;
 		} catch (PersistenceException pe) {
-			throw new ServiciosException("Ocurrio³ un error al modficar TipoArea: " + pe.getMessage());
+			throw new ServiciosException("Ocurrio³ un error al modficar TipoTutorTipo: " + pe.getMessage());
 		}
 	}
 
@@ -163,17 +162,17 @@ public class TutorBean implements TutorBeanRemote  {
 			em.flush();
 			
 		} catch (PersistenceException pe) {
-			throw new ServiciosException("Ocurrio³ un error al modficar TipoArea: " + pe.getMessage());
+			throw new ServiciosException("Ocurrio un error al modficar TipoTutorTipo: " + pe.getMessage());
 		}
 		
 	}
 
 	@Override
-	public List<TipoTutorTipo> listadoTipoTutorTipo(Boolean baja) throws ServiciosException {
+	public List<TipoTutorTipo> listadoTipoTutorTipo() throws ServiciosException {
 		List<TipoTutorTipo> list =new ArrayList<TipoTutorTipo>();
 		try {
-			TypedQuery<TipoTutorTipo> query = em.createNamedQuery("TipoTutorTipo.findByBajaLogica", TipoTutorTipo.class);
-			query.setParameter("bajaLogica", baja).executeUpdate();
+			TypedQuery<TipoTutorTipo> query = em.createNamedQuery("TipoTutorTipo.findAll", TipoTutorTipo.class);
+//			query.setParameter("bajaLogica", baja).executeUpdate();
 			list= query.getResultList();
 			
 		} catch (Exception e) {
@@ -185,16 +184,15 @@ public class TutorBean implements TutorBeanRemote  {
 	@Override
 	public TipoArea crearTipoArea(TipoArea tipoArea) throws ServiciosException {
 		try {
-			if (tipoArea.getId() != null) {
+			
 				tipoArea = em.merge(tipoArea);
 				em.flush();
-				return tipoArea;
-			} else {
-				throw new ServiciosException("Se quiere modificar un tipo de constancia que no existente.");
-			}
-		} catch (PersistenceException pe) {
+			
+			
+		} catch (Exception pe) {
 			throw new ServiciosException("Ocurrio un error al crear TipoArea: " + pe.getMessage());
 		}
+		return tipoArea;
 	}
 
 	@Override
@@ -222,11 +220,11 @@ public class TutorBean implements TutorBeanRemote  {
 	}
 
 	@Override
-	public List<TipoArea> listadoTipoArea(Boolean baja) throws ServiciosException {
+	public List<TipoArea> listadoTipoArea() throws ServiciosException {
 		List<TipoArea> list =new ArrayList<TipoArea>();
 		try {
-			TypedQuery<TipoArea> query = em.createNamedQuery("TipoArea.findByBajaLogica", TipoArea.class);
-			query.setParameter("bajaLogica", baja).executeUpdate();
+			TypedQuery<TipoArea> query = em.createNamedQuery("TipoArea.findAll", TipoArea.class);
+//			query.setParameter("bajaLogica", baja).executeUpdate();
 			list= query.getResultList();
 			
 		} catch (Exception e) {
@@ -235,4 +233,50 @@ public class TutorBean implements TutorBeanRemote  {
 		return list;
 	}
 
+	@Override
+	public List<TipoTutorTipo> buscarTipoTutorTipoPor(String id, String nombre) throws ServiciosException {
+		String conditions = "";
+		if (id != null && id != "") {
+			conditions = conditions + " AND i.id = " + id;
+		}
+		if (nombre != null && nombre != "") {
+
+			conditions = conditions + " AND i.nombre LIKE '%" + nombre + "%'";
+
+		}
+
+		List<TipoTutorTipo> list = new ArrayList<TipoTutorTipo>();
+		
+		TypedQuery<TipoTutorTipo> query = em.createQuery("SELECT i FROM TipoTutorTipo i WHERE 1=1 " + conditions, TipoTutorTipo.class);
+		list = query.getResultList();
+		if (list == null) {
+			throw new ItrNoEncontradoException("Tipo Tutor no encontrado.");
+		}
+
+		return list;
+	}
+
+	@Override
+	public List<TipoArea> buscarTipoAreaPor(String id, String nombre) throws ServiciosException {
+		String conditions = "";
+		if (id != null && id != "") {
+			conditions = conditions + " AND i.id = " + id;
+		}
+		if (nombre != null && nombre != "") {
+
+			conditions = conditions + " AND i.nombre LIKE '%" + nombre + "%'";
+
+		}
+		List<TipoArea> list = new ArrayList<TipoArea>();
+		
+		TypedQuery<TipoArea> query = em.createQuery("SELECT i FROM TipoArea i WHERE 1=1 " + conditions, TipoArea.class);
+		list = query.getResultList();
+		if (list == null) {
+			throw new ItrNoEncontradoException("Tipo Area no encontrado.");
+		}
+
+		return list;
+	}
+
+	
 }

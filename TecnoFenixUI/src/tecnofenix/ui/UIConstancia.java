@@ -114,18 +114,18 @@ public class UIConstancia {
 		panel.add(comboEstados);
 		
         JLabel lblUsuario = new JLabel("Usuario:");
-        lblUsuario.setBounds(20, 560, 90, 13);
+        lblUsuario.setBounds(20, 117, 90, 13);
 		panel.add(lblUsuario);
 		lblUsuario.setVisible(usuario instanceof Analista);
 
 		JTextField txtUsuario = new JTextField();
-		txtUsuario.setBounds(20, 573, 360, 19);
+		txtUsuario.setBounds(20, 130, 360, 19);
 		panel.add(txtUsuario);
 		txtUsuario.setColumns(10);
 		txtUsuario.setVisible(usuario instanceof Analista);
 		
 		JButton btnListarConstancias = new JButton("Listar constancias");
-		btnListarConstancias.setBounds(87, 481, 189, 19);
+		btnListarConstancias.setBounds(450, 130, 189, 19);
 		btnListarConstancias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Borro lo previamente cargado en la tabla
@@ -208,7 +208,7 @@ public class UIConstancia {
 		panel.add(btnModificarConstancia);
 		
 		JButton btnBorrarConstancia = new JButton("Borrar constancia");
-		btnBorrarConstancia.setBounds(390, 521, 189, 19);
+		btnBorrarConstancia.setBounds(390, 520, 189, 19);
 		btnBorrarConstancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			

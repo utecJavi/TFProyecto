@@ -57,7 +57,7 @@ public class TipoArea implements Serializable {
         this.nombre = nombre;
     }
     
-    public TipoArea(Integer id, Boolean bajaLogica, String nombre) {
+    public TipoArea(Integer id,String nombre,Boolean bajaLogica) {
         this.id = id;
         this.bajaLogica = bajaLogica;
         this.nombre = nombre;

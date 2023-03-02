@@ -7,6 +7,7 @@ import javax.ejb.Remote;
 
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Evento;
+import tecnofenix.entidades.TipoEstadoEvento;
 import tecnofenix.entidades.Usuario;
 import tecnofenix.exception.ServiciosException;
 
@@ -24,4 +25,12 @@ public interface EventoBeanRemote {
 	List<Evento> buscarEventosPor(String id,String titulo);
 	List<Evento> buscarEventosPor(String id, String titulo,String localizacion,String modalidad,String tipoEvento,String itrNombre,Date inicioInicio, Date finInicio,Date inicioFin, Date finFin,Boolean activo);
 
+	TipoEstadoEvento crearTipoEstadoEvento(TipoEstadoEvento tEE);
+	 TipoEstadoEvento editarTipoEstadoEvento(TipoEstadoEvento tEE);
+	 List<TipoEstadoEvento> listarTipoEstadoEvento();
+	 List<TipoEstadoEvento> buscarTipoEstadoEventoPor(String id, String nombre);
+	
+	
+	
+	
 }

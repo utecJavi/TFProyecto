@@ -47,6 +47,7 @@ public class UIITR {
 	private JTextField textEditarNom;
 	private JTextField textEditarDepto;
 	private JCheckBox chckbxActivos;
+	private JCheckBox chckbxActivosEditable;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -98,6 +99,13 @@ public class UIITR {
 	            textEditarId.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
 	            textEditarNom.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
 	            textEditarDepto.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+	            if(table.getValueAt(table.getSelectedRow(), 2).toString()== "Si") {
+	            	 chckbxActivosEditable.setSelected(true);
+	            }
+	            if(table.getValueAt(table.getSelectedRow(), 2).toString()== "No") {
+	            	 chckbxActivosEditable.setSelected(false);
+	            }
+	           
 				}
 	        }
 	    });
@@ -118,21 +126,21 @@ public class UIITR {
 		panel.add(btnAddItr);
 
 		textNombre = new JTextField();
-		textNombre.setBounds(208, 496, 188, 19);
+		textNombre.setBounds(356, 497, 188, 19);
 		panel.add(textNombre);
 		textNombre.setColumns(10);
 
 		textDepartamento = new JTextField();
-		textDepartamento.setBounds(406, 496, 188, 19);
+		textDepartamento.setBounds(554, 497, 188, 19);
 		panel.add(textDepartamento);
 		textDepartamento.setColumns(10);
 
 		JLabel lblNewLabel_1 = new JLabel("Nombre");
-		lblNewLabel_1.setBounds(208, 483, 74, 13);
+		lblNewLabel_1.setBounds(356, 484, 74, 13);
 		panel.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Departamento");
-		lblNewLabel_2.setBounds(406, 483, 113, 13);
+		lblNewLabel_2.setBounds(554, 484, 113, 13);
 		panel.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Nombre");
@@ -219,17 +227,20 @@ public class UIITR {
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			if(validar()) {
 				editar(textEditarId.getText() ,textEditarNom.getText(),textEditarDepto.getText());
 				
 			}
+				
+			}
 		});
-		btnEditar.setBounds(637, 581, 113, 21);
+		btnEditar.setBounds(760, 581, 113, 21);
 		panel.add(btnEditar);
 		
 		JButton btnBorrar = new JButton("Borrar");
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textEditarId.getText()!="") {
+				if(!textEditarId.getText().equals("")) {
 				if(confirmarSiNo("Seguro quiere eliminar el ITR "+textEditarNom.getText())) {
 					limpiarTabla();
 					Itr itr = new Itr(Integer.valueOf(textEditarId.getText()), textEditarDepto.getText(), textEditarNom.getText());
@@ -244,13 +255,40 @@ public class UIITR {
 				}
 			}
 		});
-		btnBorrar.setBounds(760, 581, 113, 21);
+		btnBorrar.setBounds(760, 612, 113, 21);
 		panel.add(btnBorrar);
 		
 		chckbxActivos = new JCheckBox("Activo");
 		chckbxActivos.setSelected(true);
 		chckbxActivos.setBounds(602, 60, 93, 21);
 		panel.add(chckbxActivos);
+		
+		chckbxActivosEditable = new JCheckBox("Activo");
+		chckbxActivosEditable.setEnabled(false);
+		chckbxActivosEditable.setSelected(true);
+		chckbxActivosEditable.setBounds(612, 581, 93, 21);
+		panel.add(chckbxActivosEditable);
+		
+		JButton btnReActivar = new JButton("Activar");
+		btnReActivar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!textEditarId.getText().equals("")) {
+					if(confirmarSiNo("Seguro quiere activar el ITR "+textEditarNom.getText())) {
+						limpiarTabla();
+						Itr itr = new Itr(Integer.valueOf(textEditarId.getText()), textEditarDepto.getText(), textEditarNom.getText());
+						itr.setActivo(true);
+						itr = usuarioRemote.editarITR(itr);
+						JOptionPane.showMessageDialog(null, "Itr actualizado",
+								"Itr actualizado", JOptionPane.INFORMATION_MESSAGE);
+						System.out.println(itr.toString());
+						actualizarLista();
+						limpiar();
+					}
+					}
+			}
+		});
+		btnReActivar.setBounds(760, 643, 113, 21);
+		panel.add(btnReActivar);
 
 		frame.pack();
 		frame.setVisible(true);
@@ -405,4 +443,20 @@ public class UIITR {
 			}
 			return false;
 		}
+		
+		public Boolean validar() {
+			if(textEditarNom.getText().equals("")){
+				JOptionPane.showMessageDialog(null, "El nombre no puede ser vacio",
+						"Itr error", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			if(textEditarId.getText().equals("")){
+				JOptionPane.showMessageDialog(null, "El id no puede ser vacio",
+						"Itr error", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			
+			return true;
+		}
+		
 }

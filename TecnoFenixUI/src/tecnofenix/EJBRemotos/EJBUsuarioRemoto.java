@@ -728,22 +728,178 @@ public class EJBUsuarioRemoto {
 		/*
 		 * METODOS ConvocatoriaAsistenciaEventoEstudiante REMOTOS FIN
 		 */
-		/*
-		 * METODOS TipoTutorTipo REMOTOS 
-		 */
+
 		
-		public List<TipoTutorTipo> listadoTipoTutorTipo(Boolean baja)  {
-			List<TipoTutorTipo> list =new ArrayList<TipoTutorTipo>();
+		
+		/*
+		 * METODOS TipoEstadoEvento REMOTOS 
+		 */
+		public TipoEstadoEvento crearTipoEstadoEvento(TipoEstadoEvento tEE) {
+			TipoEstadoEvento tEEDevueto = new TipoEstadoEvento();
 			try {
-				list =tutorBeanRemote.listadoTipoTutorTipo(baja);
-				
+				tEEDevueto = eventoBeanRemote.crearTipoEstadoEvento(tEE);
 			} catch (Exception e) {
-				System.out.println(e);
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			return list;
+			return tEEDevueto;
+
+		}
+		public TipoEstadoEvento editarTipoEstadoEvento(TipoEstadoEvento tEE) {
+			TipoEstadoEvento tEEDevueto = new TipoEstadoEvento();
+			try {
+				tEEDevueto = eventoBeanRemote.editarTipoEstadoEvento(tEE);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return tEEDevueto;
+
+		}
+		
+	
+
+		public List<TipoEstadoEvento> listarTipoEstadoEvento() {
+			List<TipoEstadoEvento> lista = new ArrayList<TipoEstadoEvento>();
+			try {
+				lista = eventoBeanRemote.listarTipoEstadoEvento();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return lista;
+
+		}
+		public List<TipoEstadoEvento> buscarTipoEstadoEventoPor(String id, String nombre) {
+			List<TipoEstadoEvento> lista = new ArrayList<TipoEstadoEvento>();
+			try {
+				lista = eventoBeanRemote.buscarTipoEstadoEventoPor(id,nombre);
+			} catch (Exception e) {
+				// TODO Auto-generated catch blocks
+				e.printStackTrace();
+			}
+			return lista;
+			
 		}
 		
 		/*
+		 * METODOS TipoEstadoEvento REMOTOS  FIN
+		 */
+		/*
+		 * METODOS TipoTutorTipo REMOTOS
+		 */
+		
+
+
+		
+				public TipoTutorTipo crearTipoTutorTipo(TipoTutorTipo ttt) {
+					TipoTutorTipo tttDevueto = new TipoTutorTipo();
+					try {
+						tttDevueto = tutorBeanRemote.crearTipoTutorTipo(ttt);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return tttDevueto;
+
+				}
+				public TipoTutorTipo editarTipoTutorTipo(TipoTutorTipo ttt) {
+					TipoTutorTipo tttDevueto = new TipoTutorTipo();
+					try {
+						tttDevueto = tutorBeanRemote.modificarTipoTutorTipo(ttt);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return tttDevueto;
+
+				}
+				
+			
+
+				public List<TipoTutorTipo> listarTipoTutorTipo() {
+					List<TipoTutorTipo> lista = new ArrayList<TipoTutorTipo>();
+					try {
+						lista = tutorBeanRemote.listadoTipoTutorTipo();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return lista;
+
+				}
+				public List<TipoTutorTipo> buscarTipoTutorTipoPor(String id, String nombre) {
+					List<TipoTutorTipo> lista = new ArrayList<TipoTutorTipo>();
+					try {
+						lista = tutorBeanRemote.buscarTipoTutorTipoPor(id,nombre);
+					} catch (Exception e) {
+						// TODO Auto-generated catch blocks
+						e.printStackTrace();
+					}
+					return lista;
+					
+				}
+		
+		/*
 		 * METODOS TipoTutorTipo REMOTOS  FIN
+		 */
+		
+		/*
+		 * METODOS TipoArea REMOTOS
+		 */
+		
+				
+	
+		public TipoArea crearTipoArea(TipoArea ta) {
+			TipoArea taDevueto = new TipoArea();
+			try {
+				taDevueto = tutorBeanRemote.crearTipoArea(ta);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return taDevueto;
+	
+		}
+		public TipoArea editarTipoArea(TipoArea ta) {
+			TipoArea taDevueto = new TipoArea();
+			try {
+				taDevueto = tutorBeanRemote.modificarTipoArea(ta);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return taDevueto;
+	
+		}
+		
+	
+	
+		public List<TipoArea> listarTipoArea() {
+			List<TipoArea> lista = new ArrayList<TipoArea>();
+			try {
+				lista = tutorBeanRemote.listadoTipoArea();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return lista;
+	
+		}
+		public List<TipoArea> buscarTipoAreaPor(String id, String nombre) {
+			List<TipoArea> lista = new ArrayList<TipoArea>();
+			try {
+				lista = tutorBeanRemote.buscarTipoAreaPor(id,nombre);
+			} catch (Exception e) {
+				// TODO Auto-generated catch blocks
+				e.printStackTrace();
+			}
+			return lista;
+			
+		}
+		
+		
+		/*
+		 * METODOS TipoArea REMOTOS  FIN
 		 */
 }

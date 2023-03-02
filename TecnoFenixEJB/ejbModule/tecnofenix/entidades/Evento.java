@@ -91,7 +91,12 @@ public class Evento implements Serializable {
     @JoinColumn(name = "id_itr", nullable = false)
     private Itr itr;
     
-    @OneToMany(mappedBy = "eventoId")
+//    finalizado, corriente, futuro
+    @ManyToOne
+    @JoinColumn(name = "id_estado", nullable = true)
+    private TipoEstadoEvento tipoEstadoEvento;
+    
+	@OneToMany(mappedBy = "eventoId")
     private Collection<Justificacion> justificacionCollection;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
@@ -114,7 +119,7 @@ public class Evento implements Serializable {
 
 
     public Evento(@NotNull String titulo, @NotNull TipoEvento tipo, @NotNull ModalidadEvento modalidad, 
-			@NotNull Date inicio, Date fin, String localizacion, Boolean bajaLogica, Itr itr,
+			@NotNull Date inicio, Date fin, String localizacion, Boolean bajaLogica, Itr itr,TipoEstadoEvento tipoEstadoEvento,
 			Collection<Justificacion> justificacionCollection,
 			Collection<ConvocatoriaAsistenciaEventoEstudiante> convocatoriaAsistenciaEventoEstudianteCollection,
 			Collection<Reclamo> reclamoCollection,
@@ -130,6 +135,7 @@ public class Evento implements Serializable {
 		this.localizacion = localizacion;
 		this.bajaLogica = bajaLogica;
 		this.itr = itr;
+		this.tipoEstadoEvento=tipoEstadoEvento;
 		this.justificacionCollection = justificacionCollection;
 		this.convocatoriaAsistenciaEventoEstudianteCollection = convocatoriaAsistenciaEventoEstudianteCollection;
 		this.reclamoCollection = reclamoCollection;
@@ -268,6 +274,15 @@ public class Evento implements Serializable {
         this.gestionEventoAnalistaCollection = gestionEventoAnalistaCollection;
     }
 
+    public TipoEstadoEvento getTipoEstadoEvento() {
+		return tipoEstadoEvento;
+	}
+
+
+	public void setTipoEstadoEvento(TipoEstadoEvento tipoEstadoEvento) {
+		this.tipoEstadoEvento = tipoEstadoEvento;
+	}
+    
     @Override
     public int hashCode() {
         int hash = 0;

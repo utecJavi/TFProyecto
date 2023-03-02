@@ -111,7 +111,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	@Override
 	public TipoConstancia crearTipoConstancia(TipoConstancia tipoConstancia) throws ServiciosException {
 		try {
-			em.merge(tipoConstancia);
+			tipoConstancia = em.merge(tipoConstancia);
 			em.flush();
 			return tipoConstancia;
 		} catch (PersistenceException pe) {
