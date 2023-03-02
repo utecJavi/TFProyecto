@@ -660,10 +660,10 @@ public class EJBUsuarioRemoto {
 		}
 		
 		
-		public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,String nombre,String apellido ,String documento, String valorLogico,String calificacion,Boolean asistio,Boolean noAsistio){
+		public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,String nombre,String apellido ,String documento, String valorLogico,String calificacion,String registroAsistencia){
 			List<ConvocatoriaAsistenciaEventoEstudiante> lista = new ArrayList<ConvocatoriaAsistenciaEventoEstudiante>();
 			try {
-				lista = convocatoriaAsistenciaEventoEstudianteBeanRemote.filtrarAsistEstuAEventosPor(id, tituloEvento, nombre, apellido,documento,valorLogico,calificacion, asistio ,noAsistio);
+				lista = convocatoriaAsistenciaEventoEstudianteBeanRemote.filtrarAsistEstuAEventosPor(id, tituloEvento, nombre, apellido,documento,valorLogico,calificacion, registroAsistencia);
 			} catch (ServiciosException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

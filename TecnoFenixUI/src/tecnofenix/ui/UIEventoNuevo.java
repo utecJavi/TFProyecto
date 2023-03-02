@@ -439,8 +439,8 @@ public class UIEventoNuevo {
 			fila[1] = tutor.getDocumento().toString();
 			fila[2] = tutor.getNombres();
 			fila[3] = tutor.getApellidos();
-			fila[4] = TipoTutorEncargado.getIdTipo(tutor.getTipo());
-			fila[5] = TipoTutorArea.getIdArea(tutor.getArea());
+			fila[4] = tutor.getTipo().getNombre();
+			fila[5] = tutor.getArea().getNombre();
 			// Se añade al modelo la fila completa.
 			modelo.addRow(fila);
 

@@ -32,9 +32,12 @@ import tecnofenix.entidades.Departamentos;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Rol;
+import tecnofenix.entidades.TipoArea;
+import tecnofenix.entidades.TipoEstadoEvento;
 import tecnofenix.entidades.TipoGenero;
 import tecnofenix.entidades.TipoTutorArea;
 import tecnofenix.entidades.TipoTutorEncargado;
+import tecnofenix.entidades.TipoTutorTipo;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
 import com.toedter.calendar.JYearChooser;
@@ -98,10 +101,10 @@ public class UIUsuario {
 	private JTextField txtLocalidad;
 	private JTextField txtId;
 	private Usuario usuarioEditable;
-	private JComboBox cmbArea;
+	private JComboBox<TipoArea> cmbArea;
 	private JLabel lblArea;
 	private JLabel lbltipoTutor;
-	private JComboBox cmbTipoTutor;
+	private JComboBox<TipoTutorTipo> cmbTipoTutor;
 	private JLabel lblGeneracion;
 	
 	public UIUsuario() {
@@ -217,8 +220,8 @@ public class UIUsuario {
 	            	cmbArea.setVisible(true);
 	            	lblArea.setVisible(true);
 	            	lbltipoTutor.setVisible(true);
-	            	cmbTipoTutor.setSelectedItem(TipoTutorEncargado.getIdTipo(((Tutor)usuarioEditable).getTipo()));
-	            	cmbArea.setSelectedItem(TipoTutorArea.getIdArea(((Tutor)usuarioEditable).getTipo()));
+	            	cmbTipoTutor.setSelectedItem(((Tutor)usuarioEditable).getTipo());
+	            	cmbArea.setSelectedItem(((Tutor)usuarioEditable).getArea());
 	            }else {
 	            	lblArea.setVisible(false);
 	            	lbltipoTutor.setVisible(false);
@@ -591,8 +594,21 @@ public class UIUsuario {
 		cmbBoxGenero.setBounds(20, 646, 202, 21);
 		panel.add(cmbBoxGenero);
 		
-		cmbArea = new JComboBox(TipoTutorArea.values());
+		cmbArea = new JComboBox<TipoArea>();
+
 		cmbArea.setBounds(777, 603, 225, 21);
+		List<TipoArea>listTipoArea = usuarioRemote.listarTipoArea();
+		TipoArea vacioTA = new TipoArea();
+		vacioTA.setBajaLogica(true);
+		vacioTA.setNombre("");
+		cmbArea.addItem(vacioTA);
+		for(TipoArea ta: listTipoArea){
+			if(!ta.getBajaLogica()) {
+				cmbArea.addItem(ta);
+			}
+			System.out.println(ta.toString());
+		}
+		cmbArea.setSelectedIndex(0);
 		panel.add(cmbArea);
 		
 		lblArea = new JLabel("Area:");
@@ -603,9 +619,21 @@ public class UIUsuario {
 		lbltipoTutor.setBounds(777, 634, 45, 13);
 		panel.add(lbltipoTutor);
 		
-		cmbTipoTutor = new JComboBox(TipoTutorEncargado.values());
-		cmbTipoTutor.setSelectedIndex(0);
+		cmbTipoTutor = new JComboBox<TipoTutorTipo>();
+		
 		cmbTipoTutor.setBounds(777, 646, 225, 21);
+		List<TipoTutorTipo>listTipoTutorTipo = usuarioRemote.listarTipoTutorTipo();
+		TipoTutorTipo vacioTT = new TipoTutorTipo();
+		vacioTT.setBajaLogica(true);
+		vacioTT.setNombre("");
+		cmbTipoTutor.addItem(vacioTT);
+		for(TipoTutorTipo tt: listTipoTutorTipo){
+			if(!tt.getBajaLogica()) {
+				cmbTipoTutor.addItem(tt);
+			}
+		
+		}
+		cmbTipoTutor.setSelectedIndex(0);
 		panel.add(cmbTipoTutor);
 		
 		
@@ -682,8 +710,8 @@ public class UIUsuario {
         	((Estudiante)usuarioEditable).setGeneracion(yearBuscarChooser.getYear());
         }
         if(usuarioEditable instanceof Tutor) {
-        	((Tutor)usuarioEditable).setTipo(TipoTutorEncargado.getIdTipo(cmbTipoTutor.getSelectedItem().toString()));
-        	((Tutor)usuarioEditable).setTipo(TipoTutorArea.getIdArea(cmbArea.getSelectedItem().toString()));
+        	((Tutor)usuarioEditable).setTipo((TipoTutorTipo)cmbTipoTutor.getSelectedItem());
+        	((Tutor)usuarioEditable).setArea((TipoArea)cmbArea.getSelectedItem());
         }
         
         usuarioEditable=usuarioRemote.modificarUsuario(usuarioEditable);

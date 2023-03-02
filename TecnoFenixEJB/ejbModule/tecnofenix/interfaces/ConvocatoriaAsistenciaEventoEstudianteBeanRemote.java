@@ -26,8 +26,8 @@ public interface ConvocatoriaAsistenciaEventoEstudianteBeanRemote {
 	ConvocatoriaAsistenciaEventoEstudiante obtenerDatosConvPorId(Integer id)throws ServiciosException;
 	
 	List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,
-			String nombre, String apellido,String documento ,String valorLogico,String calificacion,Boolean asistio,Boolean noAsistio) throws ServiciosException;
-	
+			String nombre, String apellido,String documento ,String valorLogico,String calificacion,String registroAsistencia) throws ServiciosException;
+//	Boolean asistio,Boolean noAsistio
 	ConvocatoriaAsistenciaEventoEstudiante agregarEstudianteAEvento(ConvocatoriaAsistenciaEventoEstudiante convAsistEventEstu);
 	void registrarAsistencia(Integer id);
 	

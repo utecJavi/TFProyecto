@@ -79,10 +79,10 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 		query.setParameter("id", id);
 		query.executeUpdate();
 	}
-	
+//	Boolean asistio,Boolean noAsistio
 	@Override
 	public List<ConvocatoriaAsistenciaEventoEstudiante> filtrarAsistEstuAEventosPor(String id, String tituloEvento,
-			String nombre, String apellido,String documento ,String valorLogico,String calificacion,Boolean asistio,Boolean noAsistio) throws ServiciosException {
+			String nombre, String apellido,String documento ,String valorLogico,String calificacion,String registroAsistencia) throws ServiciosException {
 
 		String conditions = "";
 		String joinJPQL = "";
@@ -112,16 +112,26 @@ public class ConvocatoriaAsistenciaEventoEstudianteBean  implements Convocatoria
 
 		}
 		}
-		if (asistio == true ) {
+		if (registroAsistencia != null && registroAsistencia != "") {
 
-			conditions = conditions + " AND conv.asistencia LIKE " + true ;
-
-		}
-		if (noAsistio == true ) {
-
-			conditions = conditions + " AND conv.asistencia LIKE " + false ;
+			conditions = conditions + " AND conv.registroAsistencia LIKE '" + registroAsistencia + "'";
 
 		}
+		
+		
+		
+		
+		
+//		if (asistio == true ) {
+//
+//			conditions = conditions + " AND conv.asistencia LIKE " + true ;
+//
+//		}
+//		if (noAsistio == true ) {
+//
+//			conditions = conditions + " AND conv.asistencia LIKE " + false ;
+//
+//		}
 		if ((id != null && id != "")||(tituloEvento != null && tituloEvento != "")) {
 			joinJPQL =joinJPQL+ " INNER JOIN conv.eventoId event ";
 		}

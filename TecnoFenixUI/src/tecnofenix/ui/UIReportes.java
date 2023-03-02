@@ -36,6 +36,8 @@ import java.awt.SystemColor;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
+import javax.swing.JComboBox;
+import tecnofenix.entidades.RegistroAsistencia;
 
 public class UIReportes {
 
@@ -61,6 +63,8 @@ public class UIReportes {
 	private JTextField textTituloEvento;
 	private JCheckBox chckbxAsistio;
 	private JCheckBox chckbxNoAsistio;
+	private JComboBox<RegistroAsistencia> comboBoxRegAsistencia;
+	private JLabel lblRegAsist;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -174,8 +178,7 @@ public class UIReportes {
 					textDocumento.getText(),
 					consultaNota,
 					textCalificacion.getText(),
-					chckbxAsistio.isSelected(),
-					chckbxNoAsistio.isSelected());
+					((RegistroAsistencia)comboBoxRegAsistencia.getSelectedItem()).name());
 			}
 		});
 		btnBuscar.setBounds(704, 61, 86, 21);
@@ -218,12 +221,12 @@ public class UIReportes {
 		
 		chckbxAsistio = new JCheckBox("Asistio");
 		chckbxAsistio.setSelected(false);
-		chckbxAsistio.setBounds(539, 61, 74, 21);
+		chckbxAsistio.setBounds(213, 388, 74, 21);
 		panel.add(chckbxAsistio);
 
 		chckbxNoAsistio = new JCheckBox("No Asistio");
 		chckbxNoAsistio.setSelected(false);
-		chckbxNoAsistio.setBounds(436, 61, 101, 21);
+		chckbxNoAsistio.setBounds(110, 388, 101, 21);
 		panel.add(chckbxNoAsistio);
 		
 		ButtonGroup butonGroup = new ButtonGroup();
@@ -294,6 +297,14 @@ public class UIReportes {
 		btnLimpiaar.setBounds(613, 61, 87, 21);
 		panel.add(btnLimpiaar);
 		
+		comboBoxRegAsistencia = new JComboBox<RegistroAsistencia>(RegistroAsistencia.values());
+		comboBoxRegAsistencia.setBounds(440, 61, 157, 21);
+		panel.add(comboBoxRegAsistencia);
+		
+		lblRegAsist = new JLabel("Asistencia");
+		lblRegAsist.setBounds(441, 49, 113, 13);
+		panel.add(lblRegAsist);
+		
 		
 		frame.pack();
 		frame.setVisible(true);
@@ -326,15 +337,16 @@ public class UIReportes {
 			fila[1] = cAEE.getEventoId().getId();
 			fila[2] = cAEE.getEventoId().getTitulo();
 			fila[3] = cAEE.getEstudianteId().getNombres()+" "+cAEE.getEstudianteId().getApellidos();
-			if(cAEE.getAsistencia()!=null) {
-				if (cAEE.getAsistencia()) {
-					fila[4] = "Si";
-				} else {
-					fila[4] = "No";
-				}
-			}else {
-				fila[4] = "---";
-			}
+			fila[4] = cAEE.getRegistroAsistencia().toString();
+//			if(cAEE.getAsistencia()!=null) {
+//				if (cAEE.getAsistencia()) {
+//					fila[4] = "Si";
+//				} else {
+//					fila[4] = "No";
+//				}
+//			}else {
+//				fila[4] = "---";
+//			}
 			if(cAEE.getCalificacion() != null) {
 				fila[5] = cAEE.getCalificacion();
 			}else {
@@ -347,9 +359,9 @@ public class UIReportes {
 		}
 	}
 	
-	public void buscarPor(String id, String tituloEvento,String nombre,String apellido,String documento,String valorLogico,String calificacion,Boolean asistio,Boolean noAsistio) {
+	public void buscarPor(String id, String tituloEvento,String nombre,String apellido,String documento,String valorLogico,String calificacion,String registroAsistencia) {
 		limpiarTabla();
-		allAsisEstuAEvento = usuarioRemote.filtrarAsistEstuAEventosPor( id,  tituloEvento, nombre, apellido ,documento,valorLogico,calificacion, asistio,noAsistio);
+		allAsisEstuAEvento = usuarioRemote.filtrarAsistEstuAEventosPor( id,  tituloEvento, nombre, apellido ,documento,valorLogico,calificacion, registroAsistencia);
 		if(allAsisEstuAEvento != null) {
 		System.out.println(allAsisEstuAEvento.toString());
 		// Se rellena cada posición del array con una de las columnas de la tabla en
@@ -360,15 +372,16 @@ public class UIReportes {
 			fila[1] = cAEE.getEventoId().getId();
 			fila[2] = cAEE.getEventoId().getTitulo();
 			fila[3] = cAEE.getEstudianteId().getNombres()+" "+cAEE.getEstudianteId().getApellidos();
-			if(cAEE.getAsistencia()!=null) {
-				if (cAEE.getAsistencia()) {
-					fila[4] = "Si";
-				} else {
-					fila[4] = "No";
-				}
-			}else {
-				fila[4] = "---";
-			}
+			fila[4] = cAEE.getRegistroAsistencia().toString();
+//			if(cAEE.getRegistroAsistencia()!=null) {
+//				if (cAEE.getAsistencia()) {
+//					fila[4] = "Si";
+//				} else {
+//					fila[4] = "No";
+//				}
+//			}else {
+//				fila[4] = "---";
+//			}
 			if(cAEE.getCalificacion() != null) {
 				fila[5] = cAEE.getCalificacion();
 			}else {

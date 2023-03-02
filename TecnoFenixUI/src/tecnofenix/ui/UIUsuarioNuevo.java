@@ -23,9 +23,11 @@ import tecnofenix.entidades.Departamentos;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Rol;
+import tecnofenix.entidades.TipoArea;
 import tecnofenix.entidades.TipoGenero;
 import tecnofenix.entidades.TipoTutorArea;
 import tecnofenix.entidades.TipoTutorEncargado;
+import tecnofenix.entidades.TipoTutorTipo;
 import tecnofenix.entidades.Tutor;
 
 import javax.swing.ButtonGroup;
@@ -61,8 +63,8 @@ public class UIUsuarioNuevo {
 	private JRadioButton rdbtnAnalista;
 	private JLabel lblArea;
 	private JLabel lbltipoTutor;
-	private JComboBox cmbTipoTutor;
-	private JComboBox cmbArea;
+	private JComboBox<TipoTutorTipo> cmbTipoTutor;
+	private JComboBox<TipoArea> cmbArea;
 	private JComboBox cmbDepto;
 	private JComboBox cmbBoxGenero;
 	private JTextField txtRepetirEmail;
@@ -409,17 +411,41 @@ public class UIUsuarioNuevo {
 		txtRepetirPass.setColumns(10);
 		panel.add(txtRepetirPass);
 		
-		cmbArea = new JComboBox(TipoTutorArea.values());
+		cmbArea = new JComboBox<TipoArea>();
 		cmbArea.setBounds(158, 620, 225, 21);
+		List<TipoArea>listTipoArea = usuarioRemote.listarTipoArea();
+		TipoArea vacioTA = new TipoArea();
+		vacioTA.setBajaLogica(true);
+		vacioTA.setNombre("");
+		cmbArea.addItem(vacioTA);
+		for(TipoArea ta: listTipoArea){
+			if(!ta.getBajaLogica()) {
+				cmbArea.addItem(ta);
+				System.out.println(ta.toString());
+			}
+			
+		}
 		panel.add(cmbArea);
 		
 		lblArea = new JLabel("Area:");
 		lblArea.setBounds(158, 608, 45, 13);
 		panel.add(lblArea);
 		
-		cmbTipoTutor = new JComboBox(TipoTutorEncargado.values());
-		cmbTipoTutor.setSelectedIndex(0);
+		cmbTipoTutor = new JComboBox<>();
 		cmbTipoTutor.setBounds(158, 663, 225, 21);
+		List<TipoTutorTipo>listTipoTutorTipo = usuarioRemote.listarTipoTutorTipo();
+		TipoTutorTipo vacioTT = new TipoTutorTipo();
+		vacioTT.setBajaLogica(true);
+		vacioTT.setNombre("");
+		cmbTipoTutor.addItem(vacioTT);
+		for(TipoTutorTipo tt: listTipoTutorTipo){
+			if(!tt.getBajaLogica()) {
+				cmbTipoTutor.addItem(tt);
+				System.out.println(tt.toString());
+			}
+			
+		}
+		cmbTipoTutor.setSelectedIndex(0);
 		panel.add(cmbTipoTutor);
 		
 		lbltipoTutor = new JLabel("Tipo");
@@ -427,7 +453,7 @@ public class UIUsuarioNuevo {
 		panel.add(lbltipoTutor);
 		
 		JLabel lblLocalidad = new JLabel("Localidad:");
-		lblLocalidad.setBounds(165, 228, 99, 13);
+		lblLocalidad.setBounds(165, 228, 203, 13);
 		panel.add(lblLocalidad);
 		
 		txtLocalidad = new JTextField();
@@ -445,7 +471,7 @@ public class UIUsuarioNuevo {
 		panel.add(cmbDepto);
 		
 		JLabel lblGenero = new JLabel("Genero:");
-		lblGenero.setBounds(166, 186, 45, 13);
+		lblGenero.setBounds(166, 186, 182, 13);
 		panel.add(lblGenero);
 		
 		cmbBoxGenero = new JComboBox(TipoGenero.values());
@@ -566,6 +592,7 @@ public class UIUsuarioNuevo {
 		JOptionPane.showMessageDialog(null, "Se creo el usuario Estudiante ["+txtUsuario.getText()+"] , para iniciar sesion debe esperar a que lo habiliten en el sistema",
 				"Informacion", JOptionPane.INFORMATION_MESSAGE);
 		limpiarDatos();
+		frame.dispose();
 		}
 	}
 	public void addTutor() {
@@ -583,8 +610,8 @@ public class UIUsuarioNuevo {
 				txtEmail.getText(),
 				txtTelefono.getText(),
 				(Itr) comboBoxITR.getSelectedItem(),
-				TipoTutorEncargado.getIdTipo(cmbTipoTutor.getSelectedItem().toString()),
-				TipoTutorArea.getIdArea(cmbArea.getSelectedItem().toString()),
+				(TipoTutorTipo)cmbTipoTutor.getSelectedItem(),
+				(TipoArea)cmbArea.getSelectedItem(),
 				setRolNuevoUsuario("TUTOR"));
 				
 		tutor.setValidado(false);
@@ -593,6 +620,7 @@ public class UIUsuarioNuevo {
 		JOptionPane.showMessageDialog(null, "Se creo el usuario Tutor ["+txtUsuario.getText()+"] , para iniciar sesion debe esperar a que lo habiliten en el sistema",
 				"Informacion", JOptionPane.INFORMATION_MESSAGE);
 		limpiarDatos();
+		frame.dispose();
 		}
 	}
 	public void addAnalista() {
@@ -618,6 +646,7 @@ public class UIUsuarioNuevo {
 		JOptionPane.showMessageDialog(null, "Se creo el usuario Analista ["+txtUsuario.getText()+"] , para iniciar sesion debe esperar a que lo habiliten en el sistema",
 				"Informacion", JOptionPane.INFORMATION_MESSAGE);
 		limpiarDatos();
+		frame.dispose();
 		}
 	}
 
@@ -635,21 +664,21 @@ public class UIUsuarioNuevo {
 			return false;
 		}
 
-		if (txtApellido.getText() == null || txtApellido.getText() == "") {
+		if (txtApellido.getText() == null || txtApellido.getText().equals("")) {
 
 			JOptionPane.showMessageDialog(null,
 					"El apellido es un dato obligatorio, no puede ser vacío",
 					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		if (txtNombre.getText() == null || txtNombre.getText() == "") {
+		if (txtNombre.getText() == null || txtNombre.getText().equals("")) {
 
 			JOptionPane.showMessageDialog(null,
 					"El nombre es un dato obligatorio, no puede ser vacío",
 					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		if (txtTelefono.getText() == null || txtTelefono.getText() == "") {
+		if (txtTelefono.getText() == null || txtTelefono.getText().equals("")) {
 
 			JOptionPane.showMessageDialog(null,
 					"Ingrese su numero de telefono, no puede ser vacío",
@@ -693,7 +722,7 @@ public class UIUsuarioNuevo {
 					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		if (txtEmailInstitucional.getText() == null || txtEmailInstitucional.getText() == "") {
+		if (txtEmailInstitucional.getText() == null || txtEmailInstitucional.getText().equals("")) {
 			JOptionPane.showMessageDialog(null,
 					"El mail institucional es un dato requerido, su formato es usuario@dominio (El dominio se agrega automaticamente cuando ingrese el @)",
 					"Datos no validos", JOptionPane.INFORMATION_MESSAGE);

@@ -38,18 +38,28 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Tutor extends Usuario {
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "tipo")
-    private Integer tipo;
-    @Column(name = "area")
-    private Integer area;
+//    @Column(name = "tipo")
+//    private Integer tipo;
+//    @Column(name = "area")
+//    private Integer area;
+    @ManyToOne
+    @JoinColumn(name = "tipo", nullable = true)
+    private TipoTutorTipo tipo;
+    
 
+
+	@ManyToOne
+    @JoinColumn(name = "area", nullable = true)
+    private TipoArea area;
+    
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tutorId")
     private Collection<TutorResponsableEvento> tutorResponsableEventoCollection;
 
     public Tutor() {
     }
                 
-    public Tutor(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail,String mailPersonal, String telefono, Itr itr, Integer tipo, Integer area ,Rol rol) {
+    public Tutor(Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail,String mailPersonal, String telefono, Itr itr, TipoTutorTipo tipo, TipoArea area ,Rol rol) {
 //        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, mail, telefono, itr,rol);
        super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, departamento, genero, localidad, mail,mailPersonal, telefono, itr,rol);
         this.tipo = tipo;
@@ -62,23 +72,24 @@ public class Tutor extends Usuario {
     }
 
 
-    public Integer getTipo() {
-        return tipo;
-    }
 
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
-    }
+    public TipoTutorTipo getTipo() {
+		return tipo;
+	}
 
-    public Integer getArea() {
-        return area;
-    }
+	public void setTipo(TipoTutorTipo tipo) {
+		this.tipo = tipo;
+	}
 
-    public void setArea(Integer area) {
-        this.area = area;
-    }
+	public TipoArea getArea() {
+		return area;
+	}
 
-    @XmlTransient
+	public void setArea(TipoArea area) {
+		this.area = area;
+	}
+
+	@XmlTransient
     public Collection<TutorResponsableEvento> getTutorResponsableEventoCollection() {
         return tutorResponsableEventoCollection;
     }
@@ -110,8 +121,8 @@ public class Tutor extends Usuario {
     @Override
     public String toString() {
         return "Tutor{" +
-                "tipo=" + tipo +
-                ", area=" + area +
+                "tipo=" + tipo.getNombre() +
+                ", area=" + area.getNombre() +
                 "} " + super.toString();
     }
 

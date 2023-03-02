@@ -50,11 +50,11 @@ public class ConvocatoriaAsistenciaEventoEstudiante implements Serializable {
     private Integer id;
 
     @Basic(optional = false)
-    @Column(name = "calificacion")
+    @Column(name = "calificacion", nullable = true)
     private Integer calificacion;
 
     @Basic(optional = false)
-    @Column(name = "asistencia")
+    @Column(name = "asistencia" , nullable = true)
     private Boolean asistencia;
     
     @Enumerated(EnumType.STRING)

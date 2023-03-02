@@ -223,8 +223,8 @@ public class UIEventoTutor {
 			filaTutoEditable[1] = tutor.getDocumento().toString();
 			filaTutoEditable[2] = tutor.getNombres();
 			filaTutoEditable[3] = tutor.getApellidos();
-			filaTutoEditable[4] = TipoTutorEncargado.getIdTipo(tutor.getTipo());
-			filaTutoEditable[5] = TipoTutorArea.getIdArea(tutor.getArea());
+			filaTutoEditable[4] = tutor.getTipo().getNombre();
+			filaTutoEditable[5] = tutor.getArea().getNombre();
 			// Se añade al modelo la fila completa.
 			modeloTutoEditable.addRow(filaTutoEditable);
 

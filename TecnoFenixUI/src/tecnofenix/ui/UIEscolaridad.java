@@ -202,7 +202,7 @@ public class UIEscolaridad {
 	
 	public void cargarTabla() {
 		limpiarTabla();
-		escolaridadDTOs = usuarioRemote.filtrarAsistEstuAEventosPor(null, null, null, null, estudiante.getDocumento().toString(), null, null, true, false);
+		escolaridadDTOs = usuarioRemote.filtrarAsistEstuAEventosPor(null, null, null, null, estudiante.getDocumento().toString(), null, null, "");
 		if(escolaridadDTOs != null) {
 		System.out.println(escolaridadDTOs.toString());
 		// Se rellena cada posición del array con una de las columnas de la tabla en
