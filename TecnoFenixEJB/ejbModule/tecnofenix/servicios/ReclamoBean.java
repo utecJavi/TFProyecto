@@ -9,6 +9,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 import tecnofenix.entidades.Reclamo;
+import tecnofenix.exception.ReclamoNoEncontradoException;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ReclamoBeanRemote;
 
@@ -36,7 +37,8 @@ public class ReclamoBean implements ReclamoBeanRemote {
 
 	@Override
 	public Reclamo modificarReclamo(Reclamo reclamo) throws ServiciosException {
-		// TODO Auto-generated method stub
+		em.merge(reclamo);
+		em.flush();
 		return null;
 	}
 
@@ -51,5 +53,14 @@ public class ReclamoBean implements ReclamoBeanRemote {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	//Se agrego en esta segunda evolucion
+	public Reclamo buscarReclamoPorId(Integer id) throws ReclamoNoEncontradoException {
+		TypedQuery<Reclamo> query = em.createNamedQuery("Reclamo.findById", Reclamo.class);
+		Reclamo reclamo = query.setParameter("id", id).getSingleResult();
+		if (reclamo == null) {
+			System.out.println("Reclamo no encontrado");;
+		}
 
+		return reclamo;
+	}
 }

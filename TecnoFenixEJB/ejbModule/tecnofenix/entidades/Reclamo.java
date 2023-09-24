@@ -44,27 +44,33 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Reclamo.findByFecha", query = "SELECT r FROM Reclamo r WHERE r.fecha = :fecha")})
 public class Reclamo implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="reclamo_seq")
     @SequenceGenerator(name="reclamo_seq", sequenceName="reclamo_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "detalle")
     private String detalle;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "reclamoId")
     private Collection<AccionReclamo> accionReclamoCollection;
+    
     @JoinColumn(name = "evento_id", referencedColumnName = "id")
     @ManyToOne
     private Evento eventoId;
+    
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     @ManyToOne
     private Estudiante estudianteId;

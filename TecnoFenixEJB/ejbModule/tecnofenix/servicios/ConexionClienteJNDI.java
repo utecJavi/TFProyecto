@@ -25,7 +25,7 @@ public class ConexionClienteJNDI implements ConexionClienteJNDIRemote {
 
 	@Override
 	public Boolean ping() {
-		
+
 		return true;
 	}
 

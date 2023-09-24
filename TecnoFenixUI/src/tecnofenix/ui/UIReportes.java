@@ -337,16 +337,13 @@ public class UIReportes {
 			fila[1] = cAEE.getEventoId().getId();
 			fila[2] = cAEE.getEventoId().getTitulo();
 			fila[3] = cAEE.getEstudianteId().getNombres()+" "+cAEE.getEstudianteId().getApellidos();
-			fila[4] = cAEE.getRegistroAsistencia().toString();
-//			if(cAEE.getAsistencia()!=null) {
-//				if (cAEE.getAsistencia()) {
-//					fila[4] = "Si";
-//				} else {
-//					fila[4] = "No";
-//				}
-//			}else {
-//				fila[4] = "---";
-//			}
+			
+			
+			if(cAEE.getRegistroAsistencia()!=null) {
+				fila[4] = cAEE.getRegistroAsistencia().toString();
+			}else {
+				fila[4] = "---";
+			}
 			if(cAEE.getCalificacion() != null) {
 				fila[5] = cAEE.getCalificacion();
 			}else {
@@ -372,7 +369,12 @@ public class UIReportes {
 			fila[1] = cAEE.getEventoId().getId();
 			fila[2] = cAEE.getEventoId().getTitulo();
 			fila[3] = cAEE.getEstudianteId().getNombres()+" "+cAEE.getEstudianteId().getApellidos();
-			fila[4] = cAEE.getRegistroAsistencia().toString();
+
+			if(cAEE.getRegistroAsistencia()!=null) {
+				fila[4] = cAEE.getRegistroAsistencia().toString();
+			}else {
+				fila[4] = "---";
+			}
 //			if(cAEE.getRegistroAsistencia()!=null) {
 //				if (cAEE.getAsistencia()) {
 //					fila[4] = "Si";

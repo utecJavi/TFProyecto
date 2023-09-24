@@ -184,10 +184,15 @@ public class TutorBean implements TutorBeanRemote  {
 	@Override
 	public TipoArea crearTipoArea(TipoArea tipoArea) throws ServiciosException {
 		try {
-			
+			if(tipoArea.getId()==null) {
+				em.persist(tipoArea);
+				em.flush();
+			}else {
 				tipoArea = em.merge(tipoArea);
 				em.flush();
 			
+			}
+				
 			
 		} catch (Exception pe) {
 			throw new ServiciosException("Ocurrio un error al crear TipoArea: " + pe.getMessage());

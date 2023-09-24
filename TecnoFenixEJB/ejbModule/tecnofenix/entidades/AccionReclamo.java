@@ -40,25 +40,30 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AccionReclamo.findByFecha", query = "SELECT a FROM AccionReclamo a WHERE a.fecha = :fecha")})
 public class AccionReclamo implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="accion_reclamo_seq")
     @SequenceGenerator(name="accion_reclamo_seq", sequenceName="accion_reclamo_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "detalle")
     private String detalle;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    
     @JoinColumn(name = "reclamo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Reclamo reclamoId;
+    
     @JoinColumn(name = "analista_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Analista analistaId;
