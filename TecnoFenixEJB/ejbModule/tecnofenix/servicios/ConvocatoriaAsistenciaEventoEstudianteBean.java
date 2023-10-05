@@ -6,18 +6,16 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import tecnofenix.entidades.ConvocatoriaAsistenciaEventoEstudiante;
-import tecnofenix.entidades.Estudiante;
+
 import tecnofenix.entidades.Evento;
-import tecnofenix.entidades.Itr;
-import tecnofenix.entidades.Usuario;
-import tecnofenix.exception.ItrNoEncontradoException;
+
 import tecnofenix.exception.ServiciosException;
-import tecnofenix.exception.UsuarioNoEncontradoException;
+
 import tecnofenix.interfaces.ConvocatoriaAsistenciaEventoEstudianteBeanRemote;
 
 

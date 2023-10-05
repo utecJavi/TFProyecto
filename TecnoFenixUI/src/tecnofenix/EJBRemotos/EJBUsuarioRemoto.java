@@ -12,7 +12,6 @@ import tecnofenix.entidades.*;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.exception.UsuarioNoEncontradoException;
 import tecnofenix.interfaces.*;
-import tecnofenix.servicios.ConexionClienteJNDIRemote;
 
 
 public class EJBUsuarioRemoto {

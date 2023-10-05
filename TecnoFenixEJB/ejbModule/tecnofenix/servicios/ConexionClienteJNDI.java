@@ -3,6 +3,8 @@ package tecnofenix.servicios;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import tecnofenix.interfaces.ConexionClienteJNDIRemote;
+
 /**
  * Session Bean implementation class ConexionClienteJNDI
  */

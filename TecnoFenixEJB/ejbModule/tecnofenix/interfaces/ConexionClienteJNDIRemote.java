@@ -1,4 +1,4 @@
-package tecnofenix.servicios;
+package tecnofenix.interfaces;
 
 import javax.ejb.Remote;
 

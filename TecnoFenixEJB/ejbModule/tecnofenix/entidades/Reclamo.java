@@ -54,6 +54,12 @@ public class Reclamo implements Serializable {
     
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 40)
+    @Column(name = "titulo")
+    private String titulo;
+    
+	@Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "detalle")
     private String detalle;
@@ -74,8 +80,16 @@ public class Reclamo implements Serializable {
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     @ManyToOne
     private Estudiante estudianteId;
+    
+    @Column(name = "creditos")
+    private Integer creditos;
+    
+    @Column(name = "semestre")
+    private Integer semestre;
 
-    public Reclamo() {
+	
+
+	public Reclamo() {
     }
 
     public Reclamo(Integer id) {
@@ -95,7 +109,14 @@ public class Reclamo implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+    
+    public String getTitulo() {
+		return titulo;
+	}
 
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
     public String getDetalle() {
         return detalle;
     }
@@ -137,6 +158,20 @@ public class Reclamo implements Serializable {
         this.estudianteId = estudianteId;
     }
 
+    public Integer getCreditos() {
+		return creditos;
+	}
+
+	public void setCreditos(Integer creditos) {
+		this.creditos = creditos;
+	}
+	public Integer getSemestre() {
+		return semestre;
+	}
+
+	public void setSemestre(Integer semestre) {
+		this.semestre = semestre;
+	}
     @Override
     public int hashCode() {
         int hash = 0;
