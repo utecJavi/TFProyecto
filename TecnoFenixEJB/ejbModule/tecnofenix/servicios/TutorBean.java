@@ -115,7 +115,21 @@ public class TutorBean implements TutorBeanRemote  {
 		}
 		return tutores;
 	}
-
+	
+	@Override
+	public List<Tutor> listarTutoresActivos() throws ServiciosException {
+		List<Tutor> tutores = new ArrayList<Tutor>();
+		try {
+		TypedQuery<Tutor> query = em.createNamedQuery("Tutor.findAllActivos", Tutor.class);
+		tutores = query.getResultList();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		if (tutores == null) {
+			throw new ServiciosException("Tutores no encontrados.");
+		}
+		return tutores;
+	}
 	@Override
 	public Tutor obtenerTutorPorId(Integer tutorId) {
 		System.out.println("obtenerTutorPorId id= "+tutorId);
@@ -150,7 +164,7 @@ public class TutorBean implements TutorBeanRemote  {
 			em.flush();
 			return tipoTutorTipo;
 		} catch (PersistenceException pe) {
-			throw new ServiciosException("Ocurrio³ un error al modficar TipoTutorTipo: " + pe.getMessage());
+			throw new ServiciosException("Ocurrioï¿½ un error al modficar TipoTutorTipo: " + pe.getMessage());
 		}
 	}
 
@@ -207,7 +221,7 @@ public class TutorBean implements TutorBeanRemote  {
 			em.flush();
 			return tipoArea;
 		} catch (PersistenceException pe) {
-			throw new ServiciosException("Ocurrio³ un error al modficar TipoArea: " + pe.getMessage());
+			throw new ServiciosException("Ocurrioï¿½ un error al modficar TipoArea: " + pe.getMessage());
 		}
 	}
 
@@ -219,7 +233,7 @@ public class TutorBean implements TutorBeanRemote  {
 			em.flush();
 			
 		} catch (PersistenceException pe) {
-			throw new ServiciosException("Ocurrio³ un error al modficar TipoArea: " + pe.getMessage());
+			throw new ServiciosException("Ocurrioï¿½ un error al modficar TipoArea: " + pe.getMessage());
 		}
 		
 	}

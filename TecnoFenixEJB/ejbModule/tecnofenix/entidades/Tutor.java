@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @DiscriminatorValue(value = Usuario.TIPO_TUTOR)
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Tutor.findAll", query = "SELECT t FROM Tutor t"),
+	@NamedQuery(name = "Tutor.findAll", query = "SELECT t FROM Tutor t"),
+	@NamedQuery(name = "Tutor.findAllActivos", query = "SELECT t FROM Tutor t WHERE t.activo = true"),
     @NamedQuery(name = "Tutor.findById", query = "SELECT t FROM Tutor t WHERE t.id = :id"),
     @NamedQuery(name = "Tutor.findByTipo", query = "SELECT t FROM Tutor t WHERE t.tipo = :tipo"),
     @NamedQuery(name = "Tutor.findByArea", query = "SELECT t FROM Tutor t WHERE t.area = :area")})

@@ -1,5 +1,6 @@
 package tecnofenix.servicios;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -31,21 +32,24 @@ public class ReclamoBean implements ReclamoBeanRemote {
 
 	@Override
 	public Reclamo crearReclamo(Reclamo reclamo) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+		em.merge(reclamo);
+		em.flush();
+		return reclamo;
 	}
 
 	@Override
 	public Reclamo modificarReclamo(Reclamo reclamo) throws ServiciosException {
 		em.merge(reclamo);
 		em.flush();
-		return null;
+		return reclamo;
 	}
 
 	@Override
 	public Reclamo borrarReclamo(Reclamo reclamo) throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+		reclamo.setActivo(false);
+		em.merge(reclamo);
+		em.flush();
+		return reclamo;
 	}
 
 	@Override
@@ -53,6 +57,18 @@ public class ReclamoBean implements ReclamoBeanRemote {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public List<Reclamo> listarReclamos() {
+		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
+		TypedQuery<Reclamo> query = em.createNamedQuery("Reclamo.findAll", Reclamo.class);
+		listaReclamos = query.getResultList();
+		if (listaReclamos.isEmpty()) {
+			System.out.println("Reclamo no encontrado");;
+		}
+		return listaReclamos;
+	}
+	
 	//Se agrego en esta segunda evolucion
 	public Reclamo buscarReclamoPorId(Integer id) throws ReclamoNoEncontradoException {
 		TypedQuery<Reclamo> query = em.createNamedQuery("Reclamo.findById", Reclamo.class);

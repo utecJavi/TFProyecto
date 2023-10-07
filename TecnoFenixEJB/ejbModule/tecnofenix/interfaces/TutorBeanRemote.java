@@ -20,6 +20,8 @@ public interface TutorBeanRemote {
 	Tutor obtenerTutorPorId(Integer tutorId);
 	List<Tutor> listarTutores() throws ServiciosException;
 	
+	List<Tutor> listarTutoresActivos() throws ServiciosException;
+	
     TipoTutorTipo crearTipoTutorTipo(TipoTutorTipo tipoConstancia) throws ServiciosException;
 	
 	TipoTutorTipo modificarTipoTutorTipo(TipoTutorTipo tipoConstancia) throws ServiciosException;

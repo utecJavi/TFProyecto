@@ -15,6 +15,7 @@ public interface ReclamoBeanRemote {
 	Reclamo modificarReclamo(Reclamo reclamo) throws ServiciosException;
 	Reclamo borrarReclamo(Reclamo reclamo) throws ServiciosException;
 	List<Reclamo> obtenerReclamoPorAtributo(Reclamo reclamo);
+	List<Reclamo> listarReclamos();
 	//Se agrego en esta segunda evolucion
 	Reclamo buscarReclamoPorId(Integer id) throws ReclamoNoEncontradoException;
 	

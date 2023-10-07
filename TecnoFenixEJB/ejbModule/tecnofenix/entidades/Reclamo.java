@@ -86,9 +86,11 @@ public class Reclamo implements Serializable {
     
     @Column(name = "semestre")
     private Integer semestre;
+    
+    @Column(name = "activo")
+    private Boolean activo;
 
 	
-
 	public Reclamo() {
     }
 
@@ -172,6 +174,17 @@ public class Reclamo implements Serializable {
 	public void setSemestre(Integer semestre) {
 		this.semestre = semestre;
 	}
+	
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+
+	
     @Override
     public int hashCode() {
         int hash = 0;

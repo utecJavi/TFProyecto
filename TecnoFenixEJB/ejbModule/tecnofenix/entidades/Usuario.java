@@ -329,7 +329,7 @@ public abstract class Usuario extends Activo implements Serializable ,BajaLogica
 		return uTipo;
 	}
 
-	public void setUTipoo(String uTipo) {
+	public void setUTipo(String uTipo) {
 		this.uTipo = uTipo;
 	}
 	
