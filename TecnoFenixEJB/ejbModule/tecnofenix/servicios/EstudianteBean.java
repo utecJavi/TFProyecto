@@ -194,8 +194,8 @@ public class EstudianteBean implements EstudianteBeanRemote {
         for (final Object[] row : resultList) {
             EscolaridadDTO dto = new EscolaridadDTO();
             dto.setEvento((String) row[0]);
-            dto.setTipo(((TipoEvento)(row[1])).getTipo());
-            dto.setModalidad(((ModalidadEvento)(row[2])).getModalidad());
+            dto.setTipo((String)row[1]);
+            dto.setModalidad((String)(row[2]));
             dto.setFecha((Date) row[3]);
             dto.setItr((String) row[4]);
             dto.setCalificacion((Integer) row[5]);

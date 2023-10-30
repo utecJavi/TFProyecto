@@ -62,12 +62,13 @@ public class Evento implements Serializable {
     @NotNull
     private String titulo;
     
-    @Enumerated(EnumType.STRING)
-    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_evento", nullable = false)//TODO: ingresar la FK en la tabla evento
     private TipoEvento tipo;
     
-    @Enumerated(EnumType.STRING)
-    @NotNull
+
+    @ManyToOne
+    @JoinColumn(name = "id_modalidad", nullable = false)//TODO: ingresar la FK en la tabla evento
     private ModalidadEvento modalidad;
        
     @Basic(optional = false)

@@ -184,7 +184,7 @@ public class EventoBean implements EventoBeanRemote {
 		
 		if (tipoEvento != null && tipoEvento != "") {
 
-			conditions = conditions + " AND e.tipo LIKE '%" + tipoEvento + "%'";
+			conditions = conditions + " AND e.tipo = " + tipoEvento ;
 
 		}
 		
@@ -313,6 +313,25 @@ public class EventoBean implements EventoBeanRemote {
 		return list;
 
 	}
-	
 
+	@Override
+	public List<ModalidadEvento> listarModalidadEvento() {
+		List<ModalidadEvento> list = new ArrayList<ModalidadEvento>();
+		TypedQuery<ModalidadEvento> query = em.createNamedQuery("ModalidadEvento.findAll", ModalidadEvento.class);
+		list=query.getResultList();
+		
+		return list;
+	}
+
+	@Override
+	public List<TipoEvento> listarTipoEvento() {
+		List<TipoEvento> list = new ArrayList<TipoEvento>();
+		TypedQuery<TipoEvento> query = em.createNamedQuery("TipoEvento.findAll", TipoEvento.class);
+		list=query.getResultList();
+		
+		return list;
+	}
+	
+	
+	
 }
