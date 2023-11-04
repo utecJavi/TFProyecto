@@ -54,10 +54,7 @@ public class TutorResponsableEventoBean implements TutorResponsableEventoBeanRem
 		
 		if(em==null) {
 			System.out.println(" ENTITY MANAGER ES NULL");
-			System.out.println(" ENTITY MANAGER ES NULL");
-			System.out.println(" ENTITY MANAGER ES NULL");
-			System.out.println(" ENTITY MANAGER ES NULL");
-			System.out.println(" ENTITY MANAGER ES NULL");
+
 	    	EntityManagerFactory emf = Persistence.createEntityManagerFactory("TecnoFenixEJB");
 	    	em = emf.createEntityManager();
 		}
@@ -78,22 +75,31 @@ public class TutorResponsableEventoBean implements TutorResponsableEventoBeanRem
 	@Override
 	public TutorResponsableEvento modificarTutorResponsableEvento(TutorResponsableEvento tutorRespEve) throws ServiciosException {
 		System.out.println("modificarTutorResponsableEvento ");
+		 
 		if (tutorRespEve.getId() == null) {
 			System.out.println("El tutor responsable es nuevo se manda a crear ");
-			crearTutorResponsableEvento(tutorRespEve);
+			tutorRespEve=crearTutorResponsableEvento(tutorRespEve);
 		}else {
-			em.merge(tutorRespEve);
+			tutorRespEve=em.merge(tutorRespEve);
 			em.flush();
 		}
 		return tutorRespEve;
 	}
 
 	@Override
-	public TutorResponsableEvento borrarTutorResponsableEvento(TutorResponsableEvento tutorRespEve)
-			throws ServiciosException {
-		// TODO Auto-generated method stub
-		return null;
+	public TutorResponsableEvento borrarTutorResponsableEvento(TutorResponsableEvento tutorRespEve){
+
+	        TutorResponsableEvento tutorResponsableEvento = em.find(TutorResponsableEvento.class, tutorRespEve.getId());
+	        if (tutorResponsableEvento != null) {
+	        	em.remove(tutorResponsableEvento);
+	            em.flush(); // Asegura que la transacción se completa y los cambios se reflejan en la base de datos.
+	        } else {
+	            throw new TutorResponsableEventoException("El TutorResponsableEvento con id " + tutorRespEve.getId()+ " no existe y no puede ser borrado.");
+	        }
+	   return null;
 	}
+
+	
 
 	@Override
 	public List<TutorResponsableEvento> obtenerTutorResponsableEventoPorAtributo(TutorResponsableEvento tutorRespEve) {
