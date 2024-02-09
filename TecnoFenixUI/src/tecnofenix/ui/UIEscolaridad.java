@@ -151,7 +151,7 @@ public class UIEscolaridad {
 			            File directoryToSave = fileChooser.getSelectedFile();
 			            String fileName = "Escolaridad-" + formatter.format(new Date(System.currentTimeMillis())) + ".pdf";
 			            File fileToSave = new File(directoryToSave, fileName);
-			            // Aquí es donde deberías guardar el archivo PDF con el nombre y en la ubicación seleccionados
+			            // Aquï¿½ es donde deberï¿½as guardar el archivo PDF con el nombre y en la ubicaciï¿½n seleccionados
 			            System.out.println("Archivo seleccionado: " + fileToSave.getAbsolutePath());
 
 					// Llamada a la creaciÃ³n del PDF
@@ -205,18 +205,18 @@ public class UIEscolaridad {
 		escolaridadDTOs = usuarioRemote.filtrarAsistEstuAEventosPor(null, null, null, null, estudiante.getDocumento().toString(), null, null, "");
 		if(escolaridadDTOs != null) {
 		System.out.println(escolaridadDTOs.toString());
-		// Se rellena cada posición del array con una de las columnas de la tabla en
+		// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 		// base de datos.
 		for (ConvocatoriaAsistenciaEventoEstudiante cAEE : escolaridadDTOs) {
 
 			fila[0] = cAEE.getEventoId().getTitulo();
-			fila[1] = cAEE.getEventoId().getTipo().getTipo();
-			fila[2] = cAEE.getEventoId().getModalidad().getModalidad();
+			fila[1] = cAEE.getEventoId().getTipo().getNombre();
+			fila[2] = cAEE.getEventoId().getModalidad().getNombre();
 
 			fila[3] = formatter.format(cAEE.getEventoId().getFin());
 			fila[4] = cAEE.getEventoId().getItr().getNombre();
 			fila[5] = cAEE.getCalificacion();
-			// Se añade al modelo la fila completa.
+			// Se aï¿½ade al modelo la fila completa.
 			modelo.addRow(fila);
 
 		}
@@ -226,7 +226,7 @@ public class UIEscolaridad {
 	}
 	
 	public void crearFilaTotal() {
-		// Obtén el modelo de tabla
+		// Obtï¿½n el modelo de tabla
 //		TableModel model = table.getModel();
 
 		// Crea la fila total y establece los valores de las columnas
@@ -324,8 +324,8 @@ public class UIEscolaridad {
             for (ConvocatoriaAsistenciaEventoEstudiante cAEE : escolaridadDTOs) {
 
             	table.addCell(cAEE.getEventoId().getTitulo());
-            	table.addCell(cAEE.getEventoId().getTipo().getTipo());
-            	table.addCell(cAEE.getEventoId().getModalidad().getModalidad());
+            	table.addCell(cAEE.getEventoId().getTipo().getNombre());
+            	table.addCell(cAEE.getEventoId().getModalidad().getNombre());
             	table.addCell(formatter.format(cAEE.getEventoId().getFin()));
             	table.addCell(cAEE.getEventoId().getItr().getNombre());
             	table.addCell(cAEE.getCalificacion().toString());

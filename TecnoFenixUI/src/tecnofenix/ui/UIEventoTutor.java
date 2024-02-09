@@ -139,10 +139,10 @@ public class UIEventoTutor {
 			modeloTutoEditable.addColumn(columnNames[column]);
 		}
 
-		// Se crea un array que será una de las filas de la tabla.
+		// Se crea un array que serï¿½ una de las filas de la tabla.
 		filaTutoEditable = new Object[columnNames.length];
 
-		// se define el tamaño de la tabla
+		// se define el tamaï¿½o de la tabla
 		tableTutoEditable.setBounds(93, 215, 100, 100);
 		tableTutoEditable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			@Override
@@ -183,8 +183,8 @@ public class UIEventoTutor {
 			Vector<String> row = new Vector<String>(6);
 			row.add(evento.getId().toString());
 			row.add(evento.getTitulo());
-			row.add(evento.getTipo().getTipo());
-			row.add(evento.getModalidad().getModalidad());
+			row.add(evento.getTipo().getNombre());
+			row.add(evento.getModalidad().getNombre());
 			row.add(evento.getLocalizacion());		
 			row.add(formatter.format(evento.getInicio()));
 			row.add(formatter.format(evento.getFin()));
@@ -215,7 +215,7 @@ public class UIEventoTutor {
 		System.out.println("Entrando a cargar la tabla de TUTORES");
 		limpiarTabla();
 		this.listTutores = listarTutSel;
-		// Se rellena cada posición del array con una de las columnas de la tabla en
+		// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 		// base de datos.
 		for (Tutor tutor : listTutores) {
 //			"Id", "CI","Nombre", "Apellido","Tipo","Area"
@@ -225,7 +225,7 @@ public class UIEventoTutor {
 			filaTutoEditable[3] = tutor.getApellidos();
 			filaTutoEditable[4] = tutor.getTipo().getNombre();
 			filaTutoEditable[5] = tutor.getArea().getNombre();
-			// Se añade al modelo la fila completa.
+			// Se aï¿½ade al modelo la fila completa.
 			modeloTutoEditable.addRow(filaTutoEditable);
 
 		}
@@ -247,7 +247,7 @@ public class UIEventoTutor {
 	}
 	 
 	public void obtenerListaDeTutores(List<Tutor> lista) {
-		System.out.println("Presiono el boton aceptar tutores tamaño lista "+lista.size());
+		System.out.println("Presiono el boton aceptar tutores tamaï¿½o lista "+lista.size());
 
 		for(Tutor tut :lista) {
 			Boolean agregar=true;

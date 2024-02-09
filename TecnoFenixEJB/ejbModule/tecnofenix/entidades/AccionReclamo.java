@@ -50,7 +50,7 @@ public class AccionReclamo implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 250)
     @Column(name = "detalle")
     private String detalle;
     
@@ -67,6 +67,10 @@ public class AccionReclamo implements Serializable {
     @JoinColumn(name = "analista_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Analista analistaId;
+    
+    @Basic(optional = true)
+    @Column(name = "activo" ,columnDefinition = "boolean default true")
+    private Boolean activo;
 
     public AccionReclamo() {
     }
@@ -121,7 +125,15 @@ public class AccionReclamo implements Serializable {
         this.analistaId = analistaId;
     }
 
-    @Override
+    public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);

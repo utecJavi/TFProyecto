@@ -16,6 +16,8 @@ public interface AccionReclamoBeanRemote {
 	
 	AccionReclamo borrarAccionReclamo(AccionReclamo accionReclamo) throws ServiciosException;
 	
-	List<AccionReclamo> obtenerAccionReclamoPorAtributo(AccionReclamo accionReclamo);
+	List<AccionReclamo> obtenerAccionReclamoPorAtributo(AccionReclamo accionReclamo) throws ServiciosException;
+	
+	List<AccionReclamo> listAllAccionReclamoByReclamo(Integer reclamoID) throws ServiciosException;
 	
 }

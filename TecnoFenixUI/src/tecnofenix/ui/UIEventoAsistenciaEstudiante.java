@@ -122,10 +122,10 @@ public class UIEventoAsistenciaEstudiante {
 			modelo.addColumn(columnNames[column]);
 		}
 
-		// Se crea un array que será una de las filas de la tabla.
+		// Se crea un array que serï¿½ una de las filas de la tabla.
 		fila = new Object[columnNames.length];
 	
-		// se define el tamaño de la tabla
+		// se define el tamaï¿½o de la tabla
 		table.setBounds(93, 215, 100, 100);
 
 			//EVENTOS
@@ -142,8 +142,8 @@ public class UIEventoAsistenciaEstudiante {
 					 String datosEvento=new String();
 					 datosEvento="Id: "+ eventoSeleccionado.getId()+"\n"
 					 + "Titulo: "+ eventoSeleccionado.getTitulo()+"\n"
-					 + "Tipo de evento: "+ eventoSeleccionado.getTipo().getTipo()+"\n"
-					 + "Modalidad del evento: "+ eventoSeleccionado.getModalidad().getModalidad()+"\n"
+					 + "Tipo de evento: "+ eventoSeleccionado.getTipo().getNombre()+"\n"
+					 + "Modalidad del evento: "+ eventoSeleccionado.getModalidad().getNombre()+"\n"
 					 + "Localizacion: "+ eventoSeleccionado.getLocalizacion()+"\n"
 					 + "Inicio: "+ formatter.format(eventoSeleccionado.getInicio())+"\n"
 					 + "Fin: "+ formatter.format(eventoSeleccionado.getFin()) +"\n";
@@ -178,10 +178,10 @@ public class UIEventoAsistenciaEstudiante {
 //					modeloEstudiante.addColumn(columnNamesEstudiante[column]);
 //				}
 //
-//				// Se crea un array que será una de las filas de la tabla.
+//				// Se crea un array que serï¿½ una de las filas de la tabla.
 //				filaEstudiante = new Object[columnNamesEstudiante.length];
 //
-//				// se define el tamaño de la tabla
+//				// se define el tamaï¿½o de la tabla
 //				tableEstudiante.setBounds(93, 215, 100, 100);
 //
 //				tableEstudiante.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -229,10 +229,10 @@ public class UIEventoAsistenciaEstudiante {
 					modeloHabilitados.addColumn(columnNamesHabilitados[column]);
 				}
 
-				// Se crea un array que será una de las filas de la tabla.
+				// Se crea un array que serï¿½ una de las filas de la tabla.
 				filaHabilitados = new Object[columnNamesHabilitados.length];
 
-				// se define el tamaño de la tabla
+				// se define el tamaï¿½o de la tabla
 				tableHabilitados.setBounds(93, 215, 100, 100);
 
 				tableHabilitados.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -428,7 +428,7 @@ public class UIEventoAsistenciaEstudiante {
 		limpiarTablaEventos();
 		listEventos = usuarioRemote.buscarEventosPor(id,titulo);
 		if(listEventos != null) {
-			// Se rellena cada posición del array con una de las columnas de la tabla en
+			// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 		// base de datos.
 			cargarTablaEvento(listEventos);
 		}
@@ -511,12 +511,12 @@ public class UIEventoAsistenciaEstudiante {
 //				"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"
 				fila[0] = tutor.getId();
 				fila[1] = tutor.getTitulo();
-				fila[2] = tutor.getTipo().getTipo();
-				fila[3] = tutor.getModalidad().getModalidad();
+				fila[2] = tutor.getTipo().getNombre();
+				fila[3] = tutor.getModalidad().getNombre();
 				fila[4] = tutor.getLocalizacion();
 				fila[5] = formatter.format(tutor.getInicio());
 				fila[6] = formatter.format(tutor.getFin());
-				// Se añade al modelo la fila completa.
+				// Se aï¿½ade al modelo la fila completa.
 				modelo.addRow(fila);
 
 			}
@@ -529,7 +529,7 @@ public class UIEventoAsistenciaEstudiante {
 //				filaEstudiante[1] = tutor.getDocumento().toString();
 //				filaEstudiante[2] = tutor.getNombres();
 //				filaEstudiante[3] = tutor.getApellidos();
-//				// Se añade al modelo la fila completa.
+//				// Se aï¿½ade al modelo la fila completa.
 //				modeloEstudiante.addRow(filaEstudiante);
 //
 //			}
@@ -613,7 +613,7 @@ public class UIEventoAsistenciaEstudiante {
 				}else {
 					filaHabilitados[5] ="---";
 				}
-				// Se añade al modelo la fila completa.
+				// Se aï¿½ade al modelo la fila completa.
 				modeloHabilitados.addRow(filaHabilitados);
 
 			}

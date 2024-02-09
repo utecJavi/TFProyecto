@@ -48,8 +48,16 @@ public class EventoBean implements EventoBeanRemote {
 		System.out.println(evento.toString());
 		System.out.println(itrBean);
 		evento.setItr(itrBean.findById2(evento.getItr().getId(), em));
+		List<TutorResponsableEvento> treList = new ArrayList<TutorResponsableEvento>();
+		treList.addAll(evento.getTutorResponsableEventoCollection());
+		evento.setTutorResponsableEventoCollection(null);
 		em.persist(evento);
 		em.flush();
+		for(TutorResponsableEvento tre : treList) {
+			tre.setEventoId(evento);
+			treBean.crearTutorResponsableEvento(tre);
+			
+		}
 		System.out.println(evento.toString());
 		// TODO Auto-generated method stub
 		return evento;
@@ -82,10 +90,18 @@ public class EventoBean implements EventoBeanRemote {
 	
 	@Override
 	public Evento obtenerEvento(Integer id) {
-		TypedQuery<Evento> query = em.createNamedQuery("Evento.findById", Evento.class);
-		query.setParameter("id", id);
-		return query.getSingleResult();
+	    TypedQuery<Evento> query = em.createNamedQuery("Evento.findById", Evento.class);
+	    query.setParameter("id", id);
+	    List<Evento> results = query.getResultList();
+	    if (results.isEmpty()) {
+	        // No se encontró el evento
+	        return null;
+	    } else {
+	        // Retorna el primer elemento de la lista
+	        return results.get(0);
+	    }
 	}
+
 
 	@Override
 	public List<Estudiante> obtenerEstudiantesConvocados(Evento evento) {

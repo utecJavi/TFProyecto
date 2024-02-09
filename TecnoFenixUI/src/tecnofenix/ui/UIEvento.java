@@ -141,8 +141,8 @@ public class UIEvento {
 				}else {
 					editarTipoEstadoEventoComboBox.setSelectedIndex(0);
 				}
-				editarComboBoxTipoEvento.setSelectedItem(TipoEvento.fromString(eventoEditable.getTipo().getTipo()));
-				editarComboBoxModalidadEvento.setSelectedItem(ModalidadEvento.fromString(eventoEditable.getModalidad().getModalidad()));
+				editarComboBoxTipoEvento.setSelectedItem(eventoEditable.getTipo().getNombre());
+				editarComboBoxModalidadEvento.setSelectedItem(eventoEditable.getModalidad().getNombre());
 				editarTextLocalizacion.setText(eventoEditable.getLocalizacion());
 				editarDateFechaInicio.setDate(eventoEditable.getInicio());
 				editarDateFechaFin.setDate(eventoEditable.getFin());
@@ -193,10 +193,10 @@ public class UIEvento {
 			modeloTutoEditable.addColumn(columnNames[column]);
 		}
 
-		// Se crea un array que será una de las filas de la tabla.
+		// Se crea un array que serï¿½ una de las filas de la tabla.
 		filaTutoEditable = new Object[columnNames.length];
 
-		// se define el tamaño de la tabla
+		// se define el tamaï¿½o de la tabla
 		tableTutoEditable.setBounds(93, 215, 100, 100);
 		tableTutoEditable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			@Override
@@ -248,13 +248,30 @@ public class UIEvento {
 		textLocalizacion.setColumns(10);
 		panel.add(textLocalizacion);
 
-		comboBoxTipoEvento = new JComboBox<>();
-		comboBoxTipoEvento.setModel(new DefaultComboBoxModel<TipoEvento>(TipoEvento.values()));
+		comboBoxTipoEvento = new JComboBox<TipoEvento>();
+		List<TipoEvento>listTipoEvento = ejb.listarTipoEvento();
+		
+		for(TipoEvento teItem: listTipoEvento){
+			if(teItem.getActivo()) {
+				comboBoxTipoEvento.addItem(teItem);
+			}
+			
+			System.out.println(teItem.toString());
+		}
+	
 		comboBoxTipoEvento.setBounds(10, 112, 202, 19);
 		panel.add(comboBoxTipoEvento);
 
-		comboBoxModalidadEvento = new JComboBox<>();
-		comboBoxModalidadEvento.setModel(new DefaultComboBoxModel<ModalidadEvento>(ModalidadEvento.values()));
+		comboBoxModalidadEvento = new JComboBox<ModalidadEvento>();
+		List<ModalidadEvento>listModalidadEvento = ejb.listarModalidadEvento();
+		
+		for(ModalidadEvento meItem: listModalidadEvento){
+			if(meItem.getActivo()) {
+				comboBoxModalidadEvento.addItem(meItem);
+			}
+			
+			System.out.println(meItem.toString());
+		}
 		comboBoxModalidadEvento.setBounds(227, 112, 188, 19);
 		panel.add(comboBoxModalidadEvento);
 
@@ -295,13 +312,31 @@ public class UIEvento {
 		editarTextTitulo.setBounds(10, 625, 188, 19);
 		panel.add(editarTextTitulo);
 		
-		editarComboBoxTipoEvento = new JComboBox<>();
-		editarComboBoxTipoEvento.setModel(new DefaultComboBoxModel<TipoEvento>(TipoEvento.values() ));
+		editarComboBoxTipoEvento = new JComboBox<TipoEvento>();
+		List<TipoEvento>listEditarTipoEvento = ejb.listarTipoEvento();
+		
+		for(TipoEvento teItem: listEditarTipoEvento){
+			if(teItem.getActivo()) {
+				editarComboBoxTipoEvento.addItem(teItem);
+			}
+			
+			System.out.println(teItem.toString());
+		}
 		editarComboBoxTipoEvento.setBounds(227, 582, 188, 19);
 		panel.add(editarComboBoxTipoEvento);
 
-		editarComboBoxModalidadEvento = new JComboBox<>();
-		editarComboBoxModalidadEvento.setModel(new DefaultComboBoxModel<ModalidadEvento>(ModalidadEvento.values()));
+
+		editarComboBoxModalidadEvento = new JComboBox<ModalidadEvento>();
+		List<ModalidadEvento>listEditarModalidadEvento = ejb.listarModalidadEvento();
+		
+		for(ModalidadEvento meItem: listEditarModalidadEvento){
+			if(meItem.getActivo()) {
+				editarComboBoxModalidadEvento.addItem(meItem);
+			}
+			
+			System.out.println(meItem.toString());
+		}
+
 		editarComboBoxModalidadEvento.setBounds(227, 625, 188, 19);
 		panel.add(editarComboBoxModalidadEvento);
 
@@ -488,10 +523,10 @@ public class UIEvento {
 				String tipoEvento="";
 				String itrNombre="";
 				if(comboBoxModalidadEvento.getSelectedIndex()!=0) {
-					modalidad=((ModalidadEvento)comboBoxModalidadEvento.getSelectedItem()).name();
+					modalidad=comboBoxModalidadEvento.getSelectedItem().toString();
 				}
 				if(comboBoxTipoEvento.getSelectedIndex()!=0) {
-					tipoEvento=((TipoEvento)comboBoxTipoEvento.getSelectedItem()).name();
+					tipoEvento=comboBoxTipoEvento.getSelectedItem().toString();
 				}
 				if(itrEventoComboBox.getSelectedIndex()!=0) {
 					itrNombre=itrEventoComboBox.getSelectedItem().toString();
@@ -517,7 +552,7 @@ public class UIEvento {
 				if(dateinicio1.getDate()!=null) {
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(dateinicio1.getDate());
-					calendar.set(Calendar.HOUR_OF_DAY, 0); // Establecemos la hora a las 9 de la mañana
+					calendar.set(Calendar.HOUR_OF_DAY, 0); // Establecemos la hora a las 9 de la maï¿½ana
 					calendar.set(Calendar.MINUTE, 0); // Establecemos los minutos a 30
 					calendar.set(Calendar.SECOND, 0); // Establecemos los segundos a 0
 					calendar.set(Calendar.MILLISECOND, 0); // Establecemos los milisegundos a 0
@@ -527,7 +562,7 @@ public class UIEvento {
 				if(datefin1.getDate()!=null) {
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(datefin1.getDate());
-					calendar.set(Calendar.HOUR_OF_DAY, 23); // Establecemos la hora a las 9 de la mañana
+					calendar.set(Calendar.HOUR_OF_DAY, 23); // Establecemos la hora a las 9 de la maï¿½ana
 					calendar.set(Calendar.MINUTE, 59); // Establecemos los minutos a 30
 					calendar.set(Calendar.SECOND, 59); // Establecemos los segundos a 0
 					calendar.set(Calendar.MILLISECOND, 0); // Establecemos los milisegundos a 0
@@ -538,7 +573,7 @@ public class UIEvento {
 				if(dateinicio2.getDate()!=null) {
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(dateinicio2.getDate());
-					calendar.set(Calendar.HOUR_OF_DAY, 0); // Establecemos la hora a las 9 de la mañana
+					calendar.set(Calendar.HOUR_OF_DAY, 0); // Establecemos la hora a las 9 de la maï¿½ana
 					calendar.set(Calendar.MINUTE, 0); // Establecemos los minutos a 30
 					calendar.set(Calendar.SECOND, 0); // Establecemos los segundos a 0
 					calendar.set(Calendar.MILLISECOND, 0); // Establecemos los milisegundos a 0
@@ -549,7 +584,7 @@ public class UIEvento {
 				if(datefin2.getDate()!=null) {
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(datefin2.getDate());
-					calendar.set(Calendar.HOUR_OF_DAY, 23); // Establecemos la hora a las 9 de la mañana
+					calendar.set(Calendar.HOUR_OF_DAY, 23); // Establecemos la hora a las 9 de la maï¿½ana
 					calendar.set(Calendar.MINUTE, 59); // Establecemos los minutos a 30
 					calendar.set(Calendar.SECOND, 59); // Establecemos los segundos a 0
 					calendar.set(Calendar.MILLISECOND, 0); // Establecemos los milisegundos a 0
@@ -618,8 +653,8 @@ public class UIEvento {
 			Vector<String> row = new Vector<String>(7);
 			row.add(evento.getId().toString());
 			row.add(evento.getTitulo());
-			row.add(evento.getTipo().getTipo());
-			row.add(evento.getModalidad().getModalidad());
+			row.add(evento.getTipo().getNombre());
+			row.add(evento.getModalidad().getNombre());
 			row.add(evento.getLocalizacion());		
 			row.add(formatter.format(evento.getInicio()));
 			row.add(formatter.format(evento.getFin()));
@@ -656,7 +691,7 @@ public class UIEvento {
 		System.out.println("Entrando a cargar la tabla de TUTORES");
 		limpiarTabla();
 		this.listTutores = listarTutSel;
-		// Se rellena cada posición del array con una de las columnas de la tabla en
+		// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 		// base de datos.
 		for (Tutor tutor : listTutores) {
 //			"Id", "CI","Nombre", "Apellido","Tipo","Area"
@@ -666,7 +701,7 @@ public class UIEvento {
 			filaTutoEditable[3] = tutor.getApellidos();
 			filaTutoEditable[4] = tutor.getTipo().getNombre();
 			filaTutoEditable[5] = tutor.getArea().getNombre();
-			// Se añade al modelo la fila completa.
+			// Se aï¿½ade al modelo la fila completa.
 			modeloTutoEditable.addRow(filaTutoEditable);
 
 		}
@@ -746,7 +781,7 @@ public class UIEvento {
 	}
 	
 	public void obtenerListaDeTutores(List<Tutor> lista) {
-		System.out.println("Presiono el boton aceptar tutores tamaño lista "+lista.size());
+		System.out.println("Presiono el boton aceptar tutores tamaï¿½o lista "+lista.size());
 
 		for(Tutor tut :lista) {
 			Boolean agregar=true;

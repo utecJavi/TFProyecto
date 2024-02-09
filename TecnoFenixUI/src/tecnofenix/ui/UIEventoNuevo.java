@@ -104,8 +104,17 @@ public class UIEventoNuevo {
 		tituloEventoLabel.setBounds(33, 29, 45, 13);
 		panel.add(tituloEventoLabel);
 		
-		cmbTipoEvento = new JComboBox();
-		cmbTipoEvento.setModel(new DefaultComboBoxModel(TipoEvento.values()));
+		cmbTipoEvento = new JComboBox<TipoEvento>();
+		List<TipoEvento>listTipoEvento = usuarioRemote.listarTipoEvento();
+		
+		for(TipoEvento teItem: listTipoEvento){
+			if(teItem.getActivo()) {
+				cmbTipoEvento.addItem(teItem);
+			}
+			
+			System.out.println(teItem.toString());
+		}
+		
 		cmbTipoEvento.setBounds(33, 86, 217, 21);
 		panel.add(cmbTipoEvento);
 		
@@ -113,8 +122,19 @@ public class UIEventoNuevo {
 		tipoEventoLabel.setBounds(33, 73, 217, 13);
 		panel.add(tipoEventoLabel);
 		
-		cmbModalidadEvento = new JComboBox();
-		cmbModalidadEvento.setModel(new DefaultComboBoxModel(ModalidadEvento.values()));
+		cmbModalidadEvento = new JComboBox<ModalidadEvento>();
+		List<ModalidadEvento>listModalidadEvento = usuarioRemote.listarModalidadEvento();
+		
+		for(ModalidadEvento meItem: listModalidadEvento){
+			if(meItem.getActivo()) {
+				cmbModalidadEvento.addItem(meItem);
+			}
+			
+			System.out.println(meItem.toString());
+		}
+
+		
+		
 		cmbModalidadEvento.setBounds(33, 133, 217, 21);
 		panel.add(cmbModalidadEvento);
 		
@@ -199,7 +219,7 @@ public class UIEventoNuevo {
 //		uiListaTutores.btnSeleccionarTutores.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent e) {
 ////				if(eventoEditable.getTutorResponsableEventoCollection()!=null && eventoEditable.getTutorResponsableEventoCollection().isEmpty()) {
-//				System.out.println("Presiono el boton aceptar tutores tamaño lista "+uiListaTutores.getListTutoresSeleccionados().size());
+//				System.out.println("Presiono el boton aceptar tutores tamaï¿½o lista "+uiListaTutores.getListTutoresSeleccionados().size());
 //				listTutorResEvent.clear();
 //				
 //				for(Tutor tut :uiListaTutores.getListTutoresSeleccionados()) {
@@ -264,10 +284,10 @@ public class UIEventoNuevo {
 			modelo.addColumn(columnNames[column]);
 		}
 
-		// Se crea un array que será una de las filas de la tabla.
+		// Se crea un array que serï¿½ una de las filas de la tabla.
 		fila = new Object[columnNames.length];
 
-		// se define el tamaño de la tabla
+		// se define el tamaï¿½o de la tabla
 		table.setBounds(93, 215, 100, 100);
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			@Override
@@ -308,7 +328,7 @@ public class UIEventoNuevo {
 	}
 	
 	public void obtenerListaDeTutores(List<Tutor> lista) {
-		System.out.println("Presiono el boton aceptar tutores tamaño lista "+lista.size());
+		System.out.println("Presiono el boton aceptar tutores tamaï¿½o lista "+lista.size());
 		listTutorResEvent.clear();
 		for(Tutor tut :lista) {
 
@@ -398,7 +418,7 @@ public class UIEventoNuevo {
 		    Date fechaFin = fechaFinDateChooser.getDate();
 
 		    if (fechaFin.before(fechaInicio)) {
-		        JOptionPane.showMessageDialog(null, "La fecha de finalización no puede ser anterior a la fecha de inicio", "Error", JOptionPane.ERROR_MESSAGE);
+		        JOptionPane.showMessageDialog(null, "La fecha de finalizaciï¿½n no puede ser anterior a la fecha de inicio", "Error", JOptionPane.ERROR_MESSAGE);
 		        return false;
 		    }
 		}
@@ -431,7 +451,7 @@ public class UIEventoNuevo {
 		System.out.println("usuarioRemote.listarTutores()");
 		this.listTutores = listarTutSel;
 		System.out.println(listTutores.toString());
-		// Se rellena cada posición del array con una de las columnas de la tabla en
+		// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 		// base de datos.
 		for (Tutor tutor : listTutores) {
 //			"Id", "CI","Nombre", "Apellido","Tipo","Area"
@@ -441,7 +461,7 @@ public class UIEventoNuevo {
 			fila[3] = tutor.getApellidos();
 			fila[4] = tutor.getTipo().getNombre();
 			fila[5] = tutor.getArea().getNombre();
-			// Se añade al modelo la fila completa.
+			// Se aï¿½ade al modelo la fila completa.
 			modelo.addRow(fila);
 
 		}

@@ -10,6 +10,9 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 import tecnofenix.entidades.Reclamo;
+import tecnofenix.entidades.TipoEstadoEvento;
+import tecnofenix.entidades.TipoEstadoReclamo;
+import tecnofenix.exception.ItrNoEncontradoException;
 import tecnofenix.exception.ReclamoNoEncontradoException;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.ReclamoBeanRemote;
@@ -71,12 +74,86 @@ public class ReclamoBean implements ReclamoBeanRemote {
 	
 	//Se agrego en esta segunda evolucion
 	public Reclamo buscarReclamoPorId(Integer id) throws ReclamoNoEncontradoException {
+		if(id !=null) {
 		TypedQuery<Reclamo> query = em.createNamedQuery("Reclamo.findById", Reclamo.class);
 		Reclamo reclamo = query.setParameter("id", id).getSingleResult();
 		if (reclamo == null) {
 			System.out.println("Reclamo no encontrado");;
 		}
-
 		return reclamo;
+		}
+		return null;
+	}
+
+	
+	
+	//TIPO ESTADO RECLAMO
+	@Override
+	public TipoEstadoReclamo crearTipoEstadoReclamo(TipoEstadoReclamo tER) {
+		try {
+			tER=em.merge(tER);
+			em.flush();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		
+		return tER;
+	}
+
+	@Override
+	public TipoEstadoReclamo editarTipoEstadoReclamo(TipoEstadoReclamo tER) {
+		try {
+			tER=em.merge(tER);
+			em.flush();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		
+		return tER;
+	}
+
+	@Override
+	public List<TipoEstadoReclamo> listarTipoEstadoReclamo() {
+		List<TipoEstadoReclamo> list = new ArrayList<TipoEstadoReclamo>();
+		try {
+		
+			System.out.println("TipoEstadoReclamo listarTipoEstadoReclamo()");
+			TypedQuery<TipoEstadoReclamo> query = em.createNamedQuery("TipoEstadoReclamo.findAll", TipoEstadoReclamo.class);
+//			query.setParameter("activo", activo);
+			list = query.getResultList();
+			
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		if (list == null) {
+			throw new ItrNoEncontradoException("TipoEstadoReclamo no encontrados.");
+		}
+		System.out.println("TipoEstadoReclamo LUEGO DE LA QUERY TipoEstadoReclamo");
+		return list;
+	}
+
+	@Override
+	public List<TipoEstadoReclamo> buscarTipoEstadoReclamoPor(String id, String nombre) {
+		String conditions = "";
+		if (id != null && id != "") {
+			conditions = conditions + " AND i.id = " + id;
+		}
+		if (nombre != null && nombre != "") {
+
+			conditions = conditions + " AND i.nombre LIKE '%" + nombre + "%'";
+
+		}
+
+		List<TipoEstadoReclamo> list = new ArrayList<TipoEstadoReclamo>();
+		
+		TypedQuery<TipoEstadoReclamo> query = em.createQuery("SELECT i FROM TipoEstadoReclamo i WHERE 1=1 " + conditions, TipoEstadoReclamo.class);
+		list = query.getResultList();
+		if (list == null) {
+			throw new ItrNoEncontradoException("TipoEstadoReclamo no encontrado.");
+		}
+
+		return list;
 	}
 }

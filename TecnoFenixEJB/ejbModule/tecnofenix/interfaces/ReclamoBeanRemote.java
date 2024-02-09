@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import tecnofenix.entidades.Reclamo;
+import tecnofenix.entidades.TipoEstadoReclamo;
 import tecnofenix.exception.ReclamoNoEncontradoException;
 import tecnofenix.exception.ServiciosException;
 
@@ -18,5 +19,10 @@ public interface ReclamoBeanRemote {
 	List<Reclamo> listarReclamos();
 	//Se agrego en esta segunda evolucion
 	Reclamo buscarReclamoPorId(Integer id) throws ReclamoNoEncontradoException;
+	
+	TipoEstadoReclamo crearTipoEstadoReclamo(TipoEstadoReclamo tEE);
+	TipoEstadoReclamo editarTipoEstadoReclamo(TipoEstadoReclamo tEE);
+	List<TipoEstadoReclamo> listarTipoEstadoReclamo();
+	List<TipoEstadoReclamo> buscarTipoEstadoReclamoPor(String id, String nombre);
 	
 }

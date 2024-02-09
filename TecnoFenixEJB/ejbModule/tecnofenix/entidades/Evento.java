@@ -88,7 +88,7 @@ public class Evento implements Serializable {
     @Column(name = "baja_logica", nullable = false)
     private Boolean bajaLogica;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_itr", nullable = false)
     private Itr itr;
     

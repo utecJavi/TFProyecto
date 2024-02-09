@@ -102,11 +102,11 @@ public class UIReportes {
 			modelo.addColumn(columnNames[column]);
 		}
 
-		// Se crea un array que será una de las filas de la tabla.
+		// Se crea un array que serï¿½ una de las filas de la tabla.
 		fila = new Object[columnNames.length];
 
 		actualizarLista();
-		// se define el tamaño de la tabla
+		// se define el tamaï¿½o de la tabla
 		table.setBounds(93, 215, 100, 100);
 
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -329,7 +329,7 @@ public class UIReportes {
 		System.out.println("usuarioRemote.listarAllConvocAsistenciaEventEstu()");
 		allAsisEstuAEvento = usuarioRemote.listarAllConvocAsistenciaEventEstu();
 		System.out.println(allAsisEstuAEvento.toString());
-		// Se rellena cada posición del array con una de las columnas de la tabla en
+		// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 		// base de datos.
 		if(allAsisEstuAEvento!=null) {
 		for (ConvocatoriaAsistenciaEventoEstudiante cAEE : allAsisEstuAEvento) {
@@ -349,7 +349,7 @@ public class UIReportes {
 			}else {
 				fila[5] ="---";
 			}
-			// Se añade al modelo la fila completa.
+			// Se aï¿½ade al modelo la fila completa.
 			modelo.addRow(fila);
 
 		}
@@ -361,7 +361,7 @@ public class UIReportes {
 		allAsisEstuAEvento = usuarioRemote.filtrarAsistEstuAEventosPor( id,  tituloEvento, nombre, apellido ,documento,valorLogico,calificacion, registroAsistencia);
 		if(allAsisEstuAEvento != null) {
 		System.out.println(allAsisEstuAEvento.toString());
-		// Se rellena cada posición del array con una de las columnas de la tabla en
+		// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 		// base de datos.
 		for (ConvocatoriaAsistenciaEventoEstudiante cAEE : allAsisEstuAEvento) {
 
@@ -389,7 +389,7 @@ public class UIReportes {
 			}else {
 				fila[5] ="---";
 			}
-			// Se añade al modelo la fila completa.
+			// Se aï¿½ade al modelo la fila completa.
 			modelo.addRow(fila);
 
 		}
@@ -417,8 +417,8 @@ public class UIReportes {
 		String datosEvento=new String();
 		 datosEvento="Id: "+ convEESeleccionada.getEventoId().getId()+"\n"
 		 + "Titulo: "+ convEESeleccionada.getEventoId().getTitulo()+"\n"
-		 + "Tipo de evento: "+ convEESeleccionada.getEventoId().getTipo().getTipo()+"\n"
-		 + "Modalidad del evento: "+ convEESeleccionada.getEventoId().getModalidad().getModalidad()+"\n"
+		 + "Tipo de evento: "+ convEESeleccionada.getEventoId().getTipo()+"\n"
+		 + "Modalidad del evento: "+ convEESeleccionada.getEventoId().getModalidad()+"\n"
 		 + "Localizacion: "+ convEESeleccionada.getEventoId().getLocalizacion()+"\n"
 		 + "Inicio: "+ formatter.format(convEESeleccionada.getEventoId().getInicio()) +"\n"
 		 + "Fin: "+ formatter.format(convEESeleccionada.getEventoId().getId())+"\n";

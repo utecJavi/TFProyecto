@@ -16,7 +16,7 @@ import tecnofenix.interfaces.*;
 
 public class EJBUsuarioRemoto {
 
-	private static String CONEXION_CLIENTE_EJB = "ejb:/TecnoFenixEJB/ConexionClienteJNDI!tecnofenix.servicios.ConexionClienteJNDIRemote";
+	private static String CONEXION_CLIENTE_EJB = "ejb:/TecnoFenixEJB/ConexionClienteJNDI!tecnofenix.interfaces.ConexionClienteJNDIRemote";
 	private static String RUTA_USUARIO_EJB = "ejb:/TecnoFenixEJB/UsuarioBean!tecnofenix.interfaces.UsuarioBeanRemote";
 	private static String RUTA_USUARIO_ESTUDIANTE_EJB = "ejb:/TecnoFenixEJB/EstudianteBean!tecnofenix.interfaces.EstudianteBeanRemote";
 	private static String RUTA_USUARIO_TUTOR_EJB = "ejb:/TecnoFenixEJB/TutorBean!tecnofenix.interfaces.TutorBeanRemote";
@@ -901,4 +901,28 @@ public class EJBUsuarioRemoto {
 		/*
 		 * METODOS TipoArea REMOTOS  FIN
 		 */
+		public List<TipoEvento> listarTipoEvento() {
+			List<TipoEvento> lista = new ArrayList<TipoEvento>();
+			try {
+				lista = eventoBeanRemote.listarTipoEvento();
+			} catch (Exception e) {
+				// TODO Auto-generated catch blocks
+				e.printStackTrace();
+			}
+			return lista;
+			
+		}
+		
+		public List<ModalidadEvento> listarModalidadEvento() {
+			List<ModalidadEvento> lista = new ArrayList<ModalidadEvento>();
+			try {
+				lista = eventoBeanRemote.listarModalidadEvento();
+			} catch (Exception e) {
+				// TODO Auto-generated catch blocks
+				e.printStackTrace();
+			}
+			return lista;
+			
+		}
+		
 }

@@ -52,7 +52,7 @@ public class UIHabilitarEstudianteEvento {
 //	Habilitar a un estudiante para un evento
 //	Ver estudiantes habilitados para un evento
 //	Buscar estudiantes habilitados por evento
-//	Eliminar habilitación de un estudiante para un evento
+//	Eliminar habilitaciï¿½n de un estudiante para un evento
 //	Generar reporte de habilitaciones
 
 		public JFrame frame;
@@ -137,10 +137,10 @@ public class UIHabilitarEstudianteEvento {
 				modelo.addColumn(columnNames[column]);
 			}
 
-			// Se crea un array que será una de las filas de la tabla.
+			// Se crea un array que serï¿½ una de las filas de la tabla.
 			fila = new Object[columnNames.length];
 		
-			// se define el tamaño de la tabla
+			// se define el tamaï¿½o de la tabla
 			table.setBounds(93, 215, 100, 100);
 
 				//EVENTOS
@@ -154,8 +154,8 @@ public class UIHabilitarEstudianteEvento {
 						 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 						 datosEvento="Id: "+ eventoSeleccionado.getId()+" "
 						 + "Titulo: "+ eventoSeleccionado.getTitulo()+"        "
-						 + "Tipo: "+ eventoSeleccionado.getTipo().getTipo()+"        "
-						 + "Modalidad: "+ eventoSeleccionado.getModalidad().getModalidad()+"\n"
+						 + "Tipo: "+ eventoSeleccionado.getTipo()+"        "
+						 + "Modalidad: "+ eventoSeleccionado.getModalidad()+"\n"
 						 + "Localizacion: "+ eventoSeleccionado.getLocalizacion()+"        "
 						 + "Inicio: "+ formatter.format(eventoSeleccionado.getInicio()) +"        "
 						 + "Fin: "+ formatter.format(eventoSeleccionado.getFin())+" ";
@@ -195,10 +195,10 @@ public class UIHabilitarEstudianteEvento {
 						modeloEstudiante.addColumn(columnNamesEstudiante[column]);
 					}
 
-					// Se crea un array que será una de las filas de la tabla.
+					// Se crea un array que serï¿½ una de las filas de la tabla.
 					filaEstudiante = new Object[columnNamesEstudiante.length];
 
-					// se define el tamaño de la tabla
+					// se define el tamaï¿½o de la tabla
 					tableEstudiante.setBounds(93, 215, 100, 100);
 
 					tableEstudiante.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -234,10 +234,10 @@ public class UIHabilitarEstudianteEvento {
 						modeloHabilitados.addColumn(columnNamesHabilitados[column]);
 					}
 
-					// Se crea un array que será una de las filas de la tabla.
+					// Se crea un array que serï¿½ una de las filas de la tabla.
 					filaHabilitados = new Object[columnNamesHabilitados.length];
 
-					// se define el tamaño de la tabla
+					// se define el tamaï¿½o de la tabla
 					tableHabilitados.setBounds(93, 215, 100, 100);
 
 					tableHabilitados.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -567,7 +567,7 @@ public class UIHabilitarEstudianteEvento {
 			limpiarTablaEventos();
 			listEventos = usuarioRemote.buscarEventosPor(id,titulo);
 			if(listEventos != null) {
-				// Se rellena cada posición del array con una de las columnas de la tabla en
+				// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 			// base de datos.
 				cargarTablaEvento(listEventos);
 			}
@@ -577,7 +577,7 @@ public class UIHabilitarEstudianteEvento {
 			limpiarTablaEstudiantes();
 			listEstudiantes = usuarioRemote.buscarEstudiantePor(ci,nombre,apellido,generacion,itr);
 			if(listEstudiantes != null) {
-				// Se rellena cada posición del array con una de las columnas de la tabla en
+				// Se rellena cada posiciï¿½n del array con una de las columnas de la tabla en
 			// base de datos.
 			cargarTablaEstudiante(listEstudiantes);
 			
@@ -645,12 +645,12 @@ public class UIHabilitarEstudianteEvento {
 //					"Id", "Titulo", "Tipo de evento", "Modalidad del evento", "Localizacion", "Inicio", "Fin"
 					fila[0] = evt.getId();
 					fila[1] = evt.getTitulo();
-					fila[2] = evt.getTipo().getTipo();
-					fila[3] = evt.getModalidad().getModalidad();
+					fila[2] = evt.getTipo();
+					fila[3] = evt.getModalidad();
 					fila[4] = evt.getLocalizacion();
 					fila[5] = formatter.format(evt.getInicio());
 					fila[6] = formatter.format(evt.getFin());
-					// Se añade al modelo la fila completa.
+					// Se aï¿½ade al modelo la fila completa.
 					modelo.addRow(fila);
 
 				}
@@ -663,7 +663,7 @@ public class UIHabilitarEstudianteEvento {
 					filaEstudiante[1] = est.getDocumento().toString();
 					filaEstudiante[2] = est.getNombres();
 					filaEstudiante[3] = est.getApellidos();
-					// Se añade al modelo la fila completa.
+					// Se aï¿½ade al modelo la fila completa.
 					modeloEstudiante.addRow(filaEstudiante);
 
 				}
@@ -688,7 +688,7 @@ public class UIHabilitarEstudianteEvento {
 					}else {
 						filaHabilitados[4] ="---";
 					}
-					// Se añade al modelo la fila completa.
+					// Se aï¿½ade al modelo la fila completa.
 					modeloHabilitados.addRow(filaHabilitados);
 
 				}
