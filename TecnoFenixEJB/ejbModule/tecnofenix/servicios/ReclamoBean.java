@@ -42,6 +42,8 @@ public class ReclamoBean implements ReclamoBeanRemote {
 
 	@Override
 	public Reclamo modificarReclamo(Reclamo reclamo) throws ServiciosException {
+		System.out.println(" MODIFICAR RECLAMO" );
+		System.out.println(reclamo.toString());
 		em.merge(reclamo);
 		em.flush();
 		return reclamo;
@@ -85,7 +87,19 @@ public class ReclamoBean implements ReclamoBeanRemote {
 		return null;
 	}
 
+	public List<Reclamo> buscarReclamosEstudiante(Integer id) throws ReclamoNoEncontradoException{
+		
+		List<Reclamo> list = new ArrayList<Reclamo>();
+		
+		TypedQuery<Reclamo> query = em.createQuery("SELECT r FROM Reclamo r INNER JOIN r.estudianteId est WHERE est.id="+id, Reclamo.class);
+		list = query.getResultList();
+		if (list == null) {
+			throw new ItrNoEncontradoException("Reclamo no encontrado.");
+		}
+
+		return list;
 	
+	}
 	
 	//TIPO ESTADO RECLAMO
 	@Override

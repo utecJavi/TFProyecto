@@ -19,6 +19,7 @@ public interface ReclamoBeanRemote {
 	List<Reclamo> listarReclamos();
 	//Se agrego en esta segunda evolucion
 	Reclamo buscarReclamoPorId(Integer id) throws ReclamoNoEncontradoException;
+	List<Reclamo> buscarReclamosEstudiante(Integer id) throws ReclamoNoEncontradoException;
 	
 	TipoEstadoReclamo crearTipoEstadoReclamo(TipoEstadoReclamo tEE);
 	TipoEstadoReclamo editarTipoEstadoReclamo(TipoEstadoReclamo tEE);

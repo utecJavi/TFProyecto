@@ -232,6 +232,8 @@ public class EventoBean implements EventoBeanRemote {
 
 		}
 		
+		conditions = conditions + " AND e.bajaLogica = " + activo;
+	
 		List<Evento> list =null;
 		try {
 			String jpql = "SELECT e FROM Evento e  " + joinJPQL + " WHERE 1=1 " + conditions;

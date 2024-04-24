@@ -73,6 +73,16 @@ public class Reclamo implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "reclamoId")
     private Collection<AccionReclamo> accionReclamoCollection;
     
+    @Basic(optional = true)
+    @JoinColumn(name = "estado_reclamo_id", referencedColumnName = "id")
+    @ManyToOne
+    private TipoEstadoReclamo estadoReclamoId;
+    
+    @Basic(optional = true)
+    @Column(name = "fecha_estado_reclamo")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaEstadoReclamo;
+    
     @JoinColumn(name = "evento_id", referencedColumnName = "id")
     @ManyToOne
     private Evento eventoId;
@@ -185,7 +195,23 @@ public class Reclamo implements Serializable {
 	}
 
 	
-    @Override
+    public TipoEstadoReclamo getEstadoReclamoId() {
+		return estadoReclamoId;
+	}
+
+	public void setEstadoReclamoId(TipoEstadoReclamo estadoReclamoId) {
+		this.estadoReclamoId = estadoReclamoId;
+	}
+
+	public Date getFechaEstadoReclamo() {
+		return fechaEstadoReclamo;
+	}
+
+	public void setFechaEstadoReclamo(Date fechaEstadoReclamo) {
+		this.fechaEstadoReclamo = fechaEstadoReclamo;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
@@ -205,9 +231,18 @@ public class Reclamo implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "tecnofenix.entidades.Reclamo[ id=" + id + " ]";
-    }
+	@Override
+	public String toString() {
+		return "Reclamo [id=" + id + ", titulo=" + titulo + ", detalle=" + detalle + ", fecha=" + fecha
+				+ ", accionReclamoCollection=" + accionReclamoCollection + ", estadoReclamoId=" + estadoReclamoId
+				+ ", fechaEstadoReclamo=" + fechaEstadoReclamo + ", eventoId=" + eventoId + ", estudianteId="
+				+ estudianteId + ", creditos=" + creditos + ", semestre=" + semestre + ", activo=" + activo + "]";
+	}
+
+//    @Override
+//    public String toString() {
+////        return "tecnofenix.entidades.Reclamo[ id=" + id + " ]";
+//    	
+//    }
     
 }
