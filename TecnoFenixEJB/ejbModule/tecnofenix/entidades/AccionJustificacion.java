@@ -63,6 +63,10 @@ public class AccionJustificacion implements Serializable {
     @ManyToOne(optional = false)
     private Analista analistaId;
 
+    @Basic(optional = true)
+    @Column(name = "activo" ,columnDefinition = "boolean default true")
+    private Boolean activo;
+    
     public AccionJustificacion() {
     }
 
@@ -116,7 +120,16 @@ public class AccionJustificacion implements Serializable {
         this.analistaId = analistaId;
     }
 
-    @Override
+    
+    public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);

@@ -1,5 +1,6 @@
 package tecnofenix.servicios;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -9,6 +10,9 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 import tecnofenix.entidades.AccionJustificacion;
+import tecnofenix.entidades.AccionReclamo;
+import tecnofenix.exception.ItrNoEncontradoException;
+import tecnofenix.exception.JustificacionNoEncontradaException;
 import tecnofenix.exception.ServiciosException;
 import tecnofenix.interfaces.AccionJustificacionBeanRemote;
 
@@ -30,29 +34,36 @@ public class AccionJustificacionBean implements AccionJustificacionBeanRemote {
 
 	@Override
 	public AccionJustificacion crearAccionJustificacion(AccionJustificacion accionJusti) throws ServiciosException {
+		try {
+			System.out.println("Backend AccionJustificacion crearAccionJustificacion");
 
-		try{
-			AccionJustificacion accionJusti1=em.merge(accionJusti);
+			if(accionJusti.getId()==null)System.out.println("accionJusti.getId()==null");
+			accionJusti = em.merge(accionJusti);
 			em.flush();
-			return accionJusti1;
-		}catch(PersistenceException e){
-			throw new ServiciosException("No se pudo crear la accion jutificacion");
+		} catch (Exception e) {
+			System.out.println(e);
 		}
+		
+		return accionJusti;
 
 	}
 
 	@Override
-	public void modificarAccionJustificacion(AccionJustificacion accionJusti) throws ServiciosException {
-		try{
+	public AccionJustificacion modificarAccionJustificacion(AccionJustificacion accionJusti) throws ServiciosException {
+		try {
+			accionJusti.setActivo(false);
 			em.merge(accionJusti);
 			em.flush();
-		}catch(PersistenceException e){
-			throw new ServiciosException("No se pudo actualizar laaccion jutificacion");
+		} catch (Exception e) {
+			System.out.println(e);
 		}
+		
+		
+		return accionJusti;
 	}
 
 	@Override
-	public void borrarAccionJustificacion(AccionJustificacion accionJusti) throws ServiciosException {
+	public AccionJustificacion borrarAccionJustificacion(AccionJustificacion accionJusti) throws ServiciosException {
 		
 		try{
 			AccionJustificacion accionJusti1 = em.find(AccionJustificacion.class, accionJusti.getId());
@@ -61,6 +72,7 @@ public class AccionJustificacionBean implements AccionJustificacionBeanRemote {
 		}catch(PersistenceException e){
 			throw new ServiciosException("No se pudo borrar la accion justificacion");
 		}
+		return accionJusti;
 	}
 
 	@Override
@@ -76,6 +88,26 @@ public class AccionJustificacionBean implements AccionJustificacionBeanRemote {
 		
 		TypedQuery<AccionJustificacion> query = em.createQuery("SELECT m FROM AccionJustificacion m",AccionJustificacion.class);
 		return query.getResultList();
+	}
+	
+	@Override
+	public List<AccionJustificacion> listAllAccionJustificacionByJustificacionID(Integer justificacionID) throws ServiciosException {
+		List<AccionJustificacion> list = new ArrayList<AccionJustificacion>();
+		try {
+		
+			String jpql = "SELECT a FROM AccionJustificacion a INNER JOIN a.justificacionId rID WHERE rID=" + justificacionID;
+			TypedQuery<AccionJustificacion> query = em.createQuery(jpql, AccionJustificacion.class);
+			System.out.println(jpql);
+			list = query.getResultList();
+			
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		if (list == null) {
+			throw new JustificacionNoEncontradaException("AccionJustificacion no encontrados para justificacion id "+justificacionID);
+		}
+		System.out.println("-----List<AccionJustificacion> listAllAccionJustificacionByJustificacionID------");
+		return list;
 	}
 
 }

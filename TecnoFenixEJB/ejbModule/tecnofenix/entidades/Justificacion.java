@@ -70,6 +70,20 @@ public class Justificacion implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "justificacionId")
     private Collection<AccionJustificacion> accionJustificacionCollection;
 
+    
+    @Basic(optional = true)
+    @JoinColumn(name = "estado_justificacion_id", referencedColumnName = "id")
+    @ManyToOne
+    private TipoEstadoJustificacion estadoJustificacionId;
+    
+    @Basic(optional = true)
+    @Column(name = "fecha_estado_justificacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaEstadoJustificacion;
+    
+    @Column(name = "activo")
+    private Boolean activo;
+    
     public Justificacion() {
     }
 
@@ -130,9 +144,33 @@ public class Justificacion implements Serializable {
 
     public void setAccionJustificacionCollection(Collection<AccionJustificacion> accionJustificacionCollection) {
         this.accionJustificacionCollection = accionJustificacionCollection;
-    }
+    }  
+    
+    public TipoEstadoJustificacion getEstadoJustificacionId() {
+		return estadoJustificacionId;
+	}
 
-    @Override
+	public void setEstadoJustificacionId(TipoEstadoJustificacion estadoJustificacionId) {
+		this.estadoJustificacionId = estadoJustificacionId;
+	}
+	
+	public Date getFechaEstadoJustificacion() {
+		return fechaEstadoJustificacion;
+	}
+
+	public void setFechaEstadoJustificacion(Date fechaEstadoJustificacion) {
+		this.fechaEstadoJustificacion = fechaEstadoJustificacion;
+	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
